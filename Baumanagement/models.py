@@ -15,8 +15,6 @@ class Company(models.Model):
     tel = models.CharField(max_length=512)
     address = models.CharField(max_length=512)
     role = models.ForeignKey(CompanyRole, on_delete=models.CASCADE)
-    create = models.DateTimeField('create')
-    edit = models.DateTimeField('last edit')
 
     def __str__(self):
         return self.name
