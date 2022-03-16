@@ -25,6 +25,9 @@ class CompanyRole(models.Model):
             each.count = new_count
             each.save()
 
+    def save(self, *args, **kwargs):
+        return super(CompanyRole, self).save(*args, **kwargs)
+
 
 class Company(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Firmenname')
@@ -46,6 +49,10 @@ class Company(models.Model):
     def fields():
         return 'name', 'address', 'city', 'email', 'phone', 'role', 'ceo'
 
+    def save(self, *args, **kwargs):
+        CompanyRole.count_companies()
+        return super(Company, self).save(*args, **kwargs)
+
 
 class Project(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Projekt')
@@ -54,7 +61,7 @@ class Project(models.Model):
                                 on_delete=models.RESTRICT, related_name='projects')
     address = models.CharField(max_length=256, null=False, blank=False, verbose_name='Adresse')
     city = models.CharField(max_length=256, null=False, blank=False, verbose_name='PLZ Stadt')
-    open = models.BooleanField(null=False, blank=False, verbose_name='Aktiv')
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
 
     class Meta:
         verbose_name = 'Projekt'
@@ -66,3 +73,28 @@ class Project(models.Model):
     @staticmethod
     def fields():
         return 'name', 'code', 'company', 'address', 'city', 'open'
+
+    def save(self, *args, **kwargs):
+        return super(Project, self).save(*args, **kwargs)
+
+
+class Contract(models.Model):
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Auftrag')
+    project = models.ForeignKey(Project, null=False, blank=False, verbose_name='Projekt',
+                                on_delete=models.RESTRICT, related_name='contracts')
+    company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bearbeiter',
+                                on_delete=models.RESTRICT, related_name='contracts')
+
+    class Meta:
+        verbose_name = 'Auftrag'
+        verbose_name_plural = 'Aufträge'
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def fields():
+        return 'name', 'project', 'company'
+
+    def save(self, *args, **kwargs):
+        return super(Contract, self).save(*args, **kwargs)

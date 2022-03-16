@@ -1,7 +1,7 @@
 import django_tables2 as tables
 from django.utils.html import format_html
 
-from .models import Company, CompanyRole, Project
+from .models import Company, CompanyRole, Project, Contract
 
 
 class CompanyTable(tables.Table):
@@ -32,5 +32,9 @@ class ProjectTable(tables.Table):
         model = Project
         fields = Project.fields()
 
-    # def render_name(self, value, record):
-    #     return format_html(f'<a href="/contract/{record.id}">{value}</a>')
+
+class ContractTable(tables.Table):
+    class Meta:
+        model = Contract
+        fields = Contract.fields()
+

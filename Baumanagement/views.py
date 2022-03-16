@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Company, CompanyRole, Project
-from Baumanagement.tables import CompanyTable, CompanyRoleTable, ProjectTable
+from Baumanagement.models import Company, CompanyRole, Project, Contract
+from Baumanagement.tables import CompanyTable, CompanyRoleTable, ProjectTable, ContractTable
 
 
 def companies(request):
@@ -10,7 +10,7 @@ def companies(request):
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Unternehmen'}
-    return render(request, 'Baumanagement/companies.html', context)
+    return render(request, 'Baumanagement/1table.html', context)
 
 
 def role(request, id):
@@ -18,7 +18,7 @@ def role(request, id):
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': f'Rolle - {CompanyRole.objects.get(id=id).name}'}
-    return render(request, 'Baumanagement/companies.html', context)
+    return render(request, 'Baumanagement/1table.html', context)
 
 
 def company_roles(request):
@@ -26,7 +26,7 @@ def company_roles(request):
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Rollen'}
-    return render(request, 'Baumanagement/companies.html', context)
+    return render(request, 'Baumanagement/1table.html', context)
 
 
 def projects(request):
@@ -34,7 +34,15 @@ def projects(request):
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Projekte'}
-    return render(request, 'Baumanagement/companies.html', context)
+    return render(request, 'Baumanagement/1table.html', context)
+
+
+def contracts(request):
+    table = ContractTable(Contract.objects.all(), order_by="id")
+    RequestConfig(request).configure(table)
+    context = {'table': table,
+               'h1': 'Alle Aufträge'}
+    return render(request, 'Baumanagement/1table.html', context)
 
 
 def test_view(request):
