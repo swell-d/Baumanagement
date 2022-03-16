@@ -21,10 +21,7 @@ class CompanyRoleTable(tables.Table):
         model = CompanyRole
         fields = CompanyRole.fields()
 
-    anzahl = tables.Column(empty_values=())
+    CompanyRole.count_companies()
 
     def render_name(self, value, record):
         return format_html(f'<a href="/role/{record.id}">{value}</a>')
-
-    def render_anzahl(self, record):
-        return Company.objects.filter(role=record.id).count()
