@@ -1,26 +1,27 @@
 from django.shortcuts import render
-from django.views.generic import ListView
 
 from Baumanagement.models import Company, CompanyRole
+from Baumanagement.tables import CompanyTable, CompanyRoleTable
 
 
-class CompanyListView(ListView):
-    model = Company
-    template_name = 'Baumanagement/CompanyList.html'
+def companies(request):
+    context = {'table': CompanyTable(Company.objects.all()),
+               'h1': 'Alle Unternehmen'}
+    return render(request, 'Baumanagement/companies.html', context)
 
 
-class CompanyRoleListView(ListView):
-    model = CompanyRole
-    template_name = 'Baumanagement/CompanyRoleList.html'
+def role(request, id):
+    context = {'table': CompanyTable(Company.objects.filter(role=id).all()),
+               'h1': f'Rolle - {CompanyRole.objects.get(id=id).name}'}
+    return render(request, 'Baumanagement/companies.html', context)
 
 
-def companies_by_role_view(request):
-    companies = Company.objects.all()
-    context = {'companies': companies}
-    return render(request, 'Baumanagement/CompaniesByRole.html', context)
+def company_roles(request):
+    context = {'table': CompanyRoleTable(CompanyRole.objects.all()),
+               'h1': 'Alle Rollen'}
+    return render(request, 'Baumanagement/companies.html', context)
 
 
-def companies_view(request):
-    companies = Company.objects.all()
-    context = {'companies': companies}
-    return render(request, 'Baumanagement/Companies.html', context)
+def test_view(request):
+    context = {'data': Company.objects.all()}
+    return render(request, 'Baumanagement/test.html', context)
