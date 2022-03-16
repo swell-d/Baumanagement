@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from .models import Company, CompanyRole
+from .models import Company, CompanyRole, Project
 
 admin.site.register(Company)
 admin.site.register(CompanyRole)
+admin.site.register(Project)
