@@ -1,0 +1,2 @@
+django-tables2
+django-bootstrap-v5
