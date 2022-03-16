@@ -18,7 +18,7 @@ class Company(models.Model):
     city = models.CharField(max_length=256, verbose_name='PLZ Stadt')
     email = models.EmailField(verbose_name='E-Mail')
     phone = models.CharField(max_length=128, verbose_name='Rufnummer')
-    role = models.ManyToManyField(CompanyRole, verbose_name='Rolle', related_name='role')
+    role = models.ManyToManyField(CompanyRole, verbose_name='Rolle', related_name='companies')
     ceo = models.CharField(max_length=256, verbose_name='Geschäftsführer')
 
     def __str__(self):

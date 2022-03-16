@@ -23,5 +23,6 @@ def company_roles(request):
 
 
 def test_view(request):
-    context = {'data': Company.objects.all()}
+    data = [', '.join([each2.name for each2 in each.companies.all()]) for each in CompanyRole.objects.all()]
+    context = {'data': data}
     return render(request, 'Baumanagement/test.html', context)
