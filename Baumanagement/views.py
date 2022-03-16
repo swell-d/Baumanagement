@@ -38,6 +38,6 @@ def projects(request):
 
 
 def test_view(request):
-    data = [', '.join([each2.name for each2 in each.companies.all()]) for each in CompanyRole.objects.all()]
-    context = {'data': data}
+    # data = [', '.join([each2.name for each2 in each.companies.all()]) for each in CompanyRole.objects.all()]
+    context = {'data': []}
     return render(request, 'Baumanagement/test.html', context)

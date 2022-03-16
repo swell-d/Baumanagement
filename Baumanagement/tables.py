@@ -32,5 +32,5 @@ class ProjectTable(tables.Table):
         model = Project
         fields = Project.fields()
 
-    def render_name(self, value, record):
-        return format_html(f'<a href="/contract/{record.id}">{value}</a>')
+    # def render_name(self, value, record):
+    #     return format_html(f'<a href="/contract/{record.id}">{value}</a>')

@@ -5,6 +5,10 @@ class CompanyRole(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rolle')
     count = models.IntegerField(null=False, blank=False, verbose_name='Anzahl')
 
+    class Meta:
+        verbose_name = 'Rolle'
+        verbose_name_plural = 'Rollen'
+
     def __str__(self):
         return self.name
 
@@ -16,9 +20,10 @@ class CompanyRole(models.Model):
     def count_companies(cls):
         for each in cls.objects.all():
             new_count = Company.objects.filter(role=each.id).count()
-            if each.count != new_count:
-                each.count = new_count
-                each.save()
+            if each.count == new_count:
+                continue
+            each.count = new_count
+            each.save()
 
 
 class Company(models.Model):
@@ -29,6 +34,10 @@ class Company(models.Model):
     phone = models.CharField(max_length=256, null=False, blank=True, verbose_name='Rufnummer')
     role = models.ManyToManyField(CompanyRole, blank=False, verbose_name='Rolle', related_name='companies')
     ceo = models.CharField(max_length=256, null=False, blank=True, verbose_name='Geschäftsführer')
+
+    class Meta:
+        verbose_name = 'Unternehmen'
+        verbose_name_plural = 'Unternehmen'
 
     def __str__(self):
         return self.name
@@ -45,10 +54,15 @@ class Project(models.Model):
                                 on_delete=models.RESTRICT, related_name='projects')
     address = models.CharField(max_length=256, null=False, blank=False, verbose_name='Adresse')
     city = models.CharField(max_length=256, null=False, blank=False, verbose_name='PLZ Stadt')
+    open = models.BooleanField(null=False, blank=False, verbose_name='Aktiv')
+
+    class Meta:
+        verbose_name = 'Projekt'
+        verbose_name_plural = 'Projekte'
 
     def __str__(self):
         return self.name
 
     @staticmethod
     def fields():
-        return 'name', 'code', 'company', 'address', 'city'
+        return 'name', 'code', 'company', 'address', 'city', 'open'
