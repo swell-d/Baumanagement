@@ -6,7 +6,7 @@ from Baumanagement.tables import CompanyTable, CompanyRoleTable
 
 
 def companies(request):
-    table = CompanyTable(Company.objects.all())
+    table = CompanyTable(Company.objects.all(), order_by="name")
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Unternehmen'}
@@ -14,7 +14,7 @@ def companies(request):
 
 
 def role(request, id):
-    table = CompanyTable(Company.objects.filter(role=id).all())
+    table = CompanyTable(Company.objects.filter(role=id).all(), order_by="name")
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': f'Rolle - {CompanyRole.objects.get(id=id).name}'}
@@ -22,7 +22,7 @@ def role(request, id):
 
 
 def company_roles(request):
-    table = CompanyRoleTable(CompanyRole.objects.all())
+    table = CompanyRoleTable(CompanyRole.objects.all(), order_by="name")
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Rollen'}
