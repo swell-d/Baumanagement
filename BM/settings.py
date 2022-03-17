@@ -131,4 +131,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #SWELL
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
+CSRF_TRUSTED_ORIGINS = ['https://baumanagement.herokuapp.com', 'http://127.0.0.1']
 django_heroku.settings(locals())
