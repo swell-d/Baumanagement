@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
 from pathlib import Path
-import django_heroku
+# import django_heroku
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -132,4 +132,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #SWELL
 DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
 CSRF_TRUSTED_ORIGINS = ['https://baumanagement.herokuapp.com', 'http://127.0.0.1']
-django_heroku.settings(locals())
+# django_heroku.settings(locals())
