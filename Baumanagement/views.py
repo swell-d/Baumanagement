@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Company, CompanyRole, Project, Contract
-from Baumanagement.tables import CompanyTable, CompanyRoleTable, ProjectTable, ContractTable
+from Baumanagement.models import Company, CompanyRole, Project, Contract, Payment
+from Baumanagement.tables import CompanyTable, CompanyRoleTable, ProjectTable, ContractTable, PaymentTable
 
 
 def companies(request):
@@ -42,6 +42,14 @@ def contracts(request):
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Aufträge'}
+    return render(request, 'Baumanagement/1table.html', context)
+
+
+def payments(request):
+    table = PaymentTable(Payment.objects.all(), order_by="id")
+    RequestConfig(request).configure(table)
+    context = {'table': table,
+               'h1': 'Alle Zahlungen'}
     return render(request, 'Baumanagement/1table.html', context)
 
 

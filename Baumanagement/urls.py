@@ -9,4 +9,5 @@ urlpatterns = [
     path("role/<int:id>", views.role),
     path("projects", views.projects),
     path("contracts", views.contracts),
+    path("payments", views.payments),
 ]

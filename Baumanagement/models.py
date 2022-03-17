@@ -3,7 +3,7 @@ from django.db import models
 
 class CompanyRole(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rolle')
-    count = models.IntegerField(null=False, blank=False, verbose_name='Anzahl')
+    # count = models.IntegerField(null=False, blank=False, verbose_name='Anzahl')
 
     class Meta:
         verbose_name = 'Rolle'
@@ -14,19 +14,19 @@ class CompanyRole(models.Model):
 
     @staticmethod
     def fields():
-        return 'name', 'count'
+        return 'name', 'count1'
 
-    @classmethod
-    def count_companies(cls):
-        for each in cls.objects.all():
-            new_count = Company.objects.filter(role=each.id).count()
-            if each.count == new_count:
-                continue
-            each.count = new_count
-            each.save()
+    def count_companies(self):
+        return self.companies.all().count()
 
-    def save(self, *args, **kwargs):
-        return super(CompanyRole, self).save(*args, **kwargs)
+    # @classmethod
+    # def count_companies(cls):
+    #     for each in cls.objects.all():
+    #         new_count = Company.objects.filter(role=each.id).count()
+    #         if each.count == new_count:
+    #             continue
+    #         each.count = new_count
+    #         each.save()
 
 
 class Company(models.Model):
@@ -74,9 +74,6 @@ class Project(models.Model):
     def fields():
         return 'name', 'code', 'company', 'address', 'city', 'open'
 
-    def save(self, *args, **kwargs):
-        return super(Project, self).save(*args, **kwargs)
-
 
 class Contract(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Auftrag')
@@ -94,7 +91,25 @@ class Contract(models.Model):
 
     @staticmethod
     def fields():
-        return 'name', 'project', 'company'
+        return 'name', 'project', 'company', 'payments'
 
-    def save(self, *args, **kwargs):
-        return super(Contract, self).save(*args, **kwargs)
+    def payed(self):
+        return sum(payment.amount for payment in self.payments.all())
+
+
+class Payment(models.Model):
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Beschreibung')
+    contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
+                                 on_delete=models.RESTRICT, related_name='payments')
+    amount = models.DecimalField(max_digits=12, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
+
+    class Meta:
+        verbose_name = 'Zahlung'
+        verbose_name_plural = 'Zahlungen'
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def fields():
+        return 'name', 'contract', 'amount'
