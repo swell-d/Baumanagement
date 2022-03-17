@@ -5,7 +5,28 @@ prettify
 {% block title %}Unternehmen{% endblock %}
 
 {% block content %}
-    <h1>Test</h1>
+    <h1>Willkommen</h1>
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+            <a class="nav-link active" href="/companies">Unternehmen</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/projects">Projekte</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/contracts">Aufträge</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/payments">Zahlungen</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/bills">Rechnungen</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link active" href="/admin">Admin</a>
+        </li>
+    </ul>
+    <h1>Testbereich</h1>
     <ul>
         {% for each in data %}
             <li>{{ each }}</li>

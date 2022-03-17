@@ -15,7 +15,8 @@ def main():
             "available on your PYTHONPATH environment variable? Did you "
             "forget to activate a virtual environment?"
         ) from exc
-    execute_from_command_line([r'C:/Users/WestfaliaBPE/PycharmProjects/BM/manage.py', 'runserver'])
+    print('http://127.0.0.1:8000/')
+    execute_from_command_line([r'C:/Users/WestfaliaBPE/PycharmProjects/BM/manage.py', 'runserver', '0.0.0.0:8000'])
 
 
 if __name__ == '__main__':

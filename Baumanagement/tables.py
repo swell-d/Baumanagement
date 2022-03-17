@@ -35,6 +35,8 @@ class ProjectTable(tables.Table):
         model = Project
         fields = Project.fields()
 
+    count_contracts = tables.Column(orderable=False, verbose_name='Aufträge')
+
     def render_address(self, record):
         return get_google_maps_link(record)
 
