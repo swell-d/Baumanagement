@@ -87,11 +87,29 @@ class Payment(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Beschreibung')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='payments')
-    amount = models.DecimalField(max_digits=12, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
 
     class Meta:
         verbose_name = 'Zahlung'
         verbose_name_plural = 'Zahlungen'
+
+    def __str__(self):
+        return self.name
+
+    @staticmethod
+    def fields():
+        return 'name', 'contract', 'amount'
+
+
+class Bill(models.Model):
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Beschreibung')
+    contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
+                                 on_delete=models.RESTRICT, related_name='bills')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
+
+    class Meta:
+        verbose_name = 'Rechnung'
+        verbose_name_plural = 'Rechnungen'
 
     def __str__(self):
         return self.name

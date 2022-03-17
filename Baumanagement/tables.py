@@ -1,7 +1,7 @@
 import django_tables2 as tables
 from django.utils.html import format_html
 
-from .models import Company, Project, Contract, Payment
+from .models import Company, Project, Contract, Payment, Bill
 
 
 class CompanyTable(tables.Table):
@@ -34,3 +34,9 @@ class PaymentTable(tables.Table):
     class Meta:
         model = Payment
         fields = Payment.fields()
+
+
+class BillTable(tables.Table):
+    class Meta:
+        model = Bill
+        fields = Bill.fields()

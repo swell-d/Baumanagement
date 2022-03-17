@@ -2,8 +2,8 @@ from django.shortcuts import render
 from django.utils.html import format_html
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Company, CompanyRole, Project, Contract, Payment
-from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable
+from Baumanagement.models import Company, CompanyRole, Project, Contract, Payment, Bill
+from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
 
 
 def roles_tags():
@@ -52,6 +52,14 @@ def payments(request):
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Zahlungen'}
+    return render(request, 'Baumanagement/1table.html', context)
+
+
+def bills(request):
+    table = BillTable(Bill.objects.all(), order_by="id")
+    RequestConfig(request).configure(table)
+    context = {'table': table,
+               'h1': 'Alle Rechnungen'}
     return render(request, 'Baumanagement/1table.html', context)
 
 
