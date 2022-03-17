@@ -19,7 +19,16 @@ def companies(request):
     context = {'table': table,
                'h1': 'Alle Unternehmen',
                'tags': roles_tags()}
-    return render(request, 'Baumanagement/1table.html', context)
+    return render(request, 'Baumanagement/tables.html', context)
+
+
+def company(request, id):
+    table = CompanyTable(Company.objects.filter(id=id).all())
+    RequestConfig(request).configure(table)
+    context = {'table': table,
+               'h1': f'Unternehmen - {Company.objects.get(id=id).name}',
+               'tags': roles_tags()}
+    return render(request, 'Baumanagement/tables.html', context)
 
 
 def role(request, id):
@@ -28,7 +37,7 @@ def role(request, id):
     context = {'table': table,
                'h1': f'Unternehmen - {CompanyRole.objects.get(id=id).name}',
                'tags': roles_tags()}
-    return render(request, 'Baumanagement/1table.html', context)
+    return render(request, 'Baumanagement/tables.html', context)
 
 
 def projects(request):
@@ -36,7 +45,7 @@ def projects(request):
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Projekte'}
-    return render(request, 'Baumanagement/1table.html', context)
+    return render(request, 'Baumanagement/tables.html', context)
 
 
 def contracts(request):
@@ -44,7 +53,7 @@ def contracts(request):
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Aufträge'}
-    return render(request, 'Baumanagement/1table.html', context)
+    return render(request, 'Baumanagement/tables.html', context)
 
 
 def payments(request):
@@ -52,7 +61,7 @@ def payments(request):
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Zahlungen'}
-    return render(request, 'Baumanagement/1table.html', context)
+    return render(request, 'Baumanagement/tables.html', context)
 
 
 def bills(request):
@@ -60,7 +69,7 @@ def bills(request):
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': 'Alle Rechnungen'}
-    return render(request, 'Baumanagement/1table.html', context)
+    return render(request, 'Baumanagement/tables.html', context)
 
 
 def test_view(request):

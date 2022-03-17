@@ -4,17 +4,23 @@
 <head>
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <style>
+        a {
+            text-decoration: none;
+            color: #212529;
+        }
+    </style>
     <title>{% block title %}Baumanagement{% endblock %}</title>
 </head>
 
 <body>
-    {% include "Baumanagement/navbar.html" %}
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                {% block content %}{% endblock %}
-            </div>
+{% include "Baumanagement/navbar.html" %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            {% block content %}{% endblock %}
         </div>
     </div>
+</div>
 </body>
 </html>

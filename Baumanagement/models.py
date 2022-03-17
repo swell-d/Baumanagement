@@ -34,7 +34,7 @@ class Company(models.Model):
 
     @staticmethod
     def fields():
-        return 'name', 'address', 'city', 'email', 'phone', 'role', 'ceo'
+        return 'name', 'address', 'email', 'phone', 'role', 'ceo'
 
 
 class Project(models.Model):

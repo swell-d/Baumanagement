@@ -1,3 +1,5 @@
+import urllib.parse
+
 import django_tables2 as tables
 from django.utils.html import format_html
 
@@ -8,6 +10,14 @@ class CompanyTable(tables.Table):
     class Meta:
         model = Company
         fields = Company.fields()
+        attrs = {'a': {'text-decoration': 'none;'}}
+
+    def render_name(self, record):
+        return format_html(f'<a href="/company/{record.id}">{record.name}</a>')
+
+    def render_address(self, record):
+        return format_html(
+            f'<a href="https://www.google.de/maps/search/{urllib.parse.quote_plus(record.address + " " + record.city)}" target="_blank">{record.address}, {record.city}</a>')
 
     def render_phone(self, value):
         return format_html(f'<a href="tel:{value}">{value}</a>')
