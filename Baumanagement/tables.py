@@ -21,14 +21,8 @@ class CompanyRoleTable(tables.Table):
         model = CompanyRole
         fields = CompanyRole.fields()
 
-    # CompanyRole.count_companies()
-    count1 = tables.Column(verbose_name='Anzahl')
-
     def render_name(self, value, record):
-        return format_html(f'<a href="/role/{record.id}">{value}</a>')
-
-    def render_count1(self, record):
-        return record.count_companies()
+        return format_html(f'<a href="/role/{record.id}">{value}</a> ({record.count_companies()})')
 
 
 class ProjectTable(tables.Table):
@@ -52,4 +46,3 @@ class PaymentTable(tables.Table):
     class Meta:
         model = Payment
         fields = Payment.fields()
-

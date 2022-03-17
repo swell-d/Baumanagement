@@ -3,7 +3,6 @@ from django.db import models
 
 class CompanyRole(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rolle')
-    # count = models.IntegerField(null=False, blank=False, verbose_name='Anzahl')
 
     class Meta:
         verbose_name = 'Rolle'
@@ -14,19 +13,10 @@ class CompanyRole(models.Model):
 
     @staticmethod
     def fields():
-        return 'name', 'count1'
+        return 'name',
 
     def count_companies(self):
         return self.companies.all().count()
-
-    # @classmethod
-    # def count_companies(cls):
-    #     for each in cls.objects.all():
-    #         new_count = Company.objects.filter(role=each.id).count()
-    #         if each.count == new_count:
-    #             continue
-    #         each.count = new_count
-    #         each.save()
 
 
 class Company(models.Model):
