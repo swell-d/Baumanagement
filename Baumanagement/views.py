@@ -25,9 +25,30 @@ def companies(request):
 def company(request, id):
     table = CompanyTable(Company.objects.filter(id=id).all())
     RequestConfig(request).configure(table)
+
+    projects = Project.objects.filter(company=id).all()
+    if projects:
+        table2 = ProjectTable(projects, order_by="name")
+        RequestConfig(request).configure(table2)
+        h2 = 'Projekte'
+    else:
+        table2, h2 = None, None
+
+    contracts = Contract.objects.filter(company=id).all()
+    if contracts:
+        table3 = ContractTable(contracts, order_by="name")
+        RequestConfig(request).configure(table3)
+        h3 = 'Aufträge'
+    else:
+        table3, h3 = None, None
+
     context = {'table': table,
                'h1': f'Unternehmen - {Company.objects.get(id=id).name}',
-               'tags': roles_tags()}
+               'tags': roles_tags(),
+               'table2': table2,
+               'h2': h2,
+               'table3': table3,
+               'h3': h3}
     return render(request, 'Baumanagement/tables.html', context)
 
 
