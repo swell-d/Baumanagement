@@ -37,8 +37,20 @@ class ProjectTable(tables.Table):
 
     count_contracts = tables.Column(orderable=False, verbose_name='Aufträge')
 
+    def render_name(self, record):
+        return format_html(f'<a href="/project/{record.id}">{record.name}</a>')
+
+    def render_code(self, record):
+        return format_html(f'<a href="/project/{record.id}">{record.code}</a>')
+
+    def render_company(self, record):
+        return format_html(f'<a href="/company/{record.company.id}">{record.company}</a>')
+
     def render_address(self, record):
         return get_google_maps_link(record)
+
+    def render_count_contracts(self, record, value):
+        return format_html(f'<a href="/project/{record.id}">{value}</a>')
 
 
 class ContractTable(tables.Table):

@@ -8,6 +8,7 @@ urlpatterns = [
     path("company/<int:id>", views.company),
     path("companies/<int:id>", views.role),
     path("projects", views.projects),
+    path("project/<int:id>", views.project),
     path("contracts", views.contracts),
     path("payments", views.payments),
     path("bills", views.bills),

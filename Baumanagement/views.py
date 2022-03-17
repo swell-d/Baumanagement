@@ -69,6 +69,25 @@ def projects(request):
     return render(request, 'Baumanagement/tables.html', context)
 
 
+def project(request, id):
+    table = ProjectTable(Project.objects.filter(id=id).all())
+    RequestConfig(request).configure(table)
+
+    contracts = Contract.objects.filter(project=id).all()
+    if contracts:
+        table2 = ContractTable(contracts, order_by="name")
+        RequestConfig(request).configure(table2)
+        h2 = 'Aufträge'
+    else:
+        table2, h2 = None, None
+
+    context = {'table': table,
+               'h1': f'Projekt - {Project.objects.get(id=id).name}',
+               'table2': table2,
+               'h2': h2}
+    return render(request, 'Baumanagement/tables.html', context)
+
+
 def contracts(request):
     table = ContractTable(Contract.objects.all(), order_by="id")
     RequestConfig(request).configure(table)
