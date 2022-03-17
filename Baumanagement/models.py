@@ -55,7 +55,7 @@ class Project(models.Model):
 
     @staticmethod
     def fields():
-        return 'name', 'code', 'company', 'address', 'city', 'open'
+        return 'name', 'code', 'company', 'address', 'open'
 
 
 class Contract(models.Model):

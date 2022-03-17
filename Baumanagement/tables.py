@@ -6,6 +6,11 @@ from django.utils.html import format_html
 from .models import Company, Project, Contract, Payment, Bill
 
 
+def get_google_maps_link(record):
+    return format_html(
+        f'<a href="https://www.google.de/maps/search/{urllib.parse.quote_plus(record.address + " " + record.city)}" target="_blank">{record.address}, {record.city}</a>')
+
+
 class CompanyTable(tables.Table):
     class Meta:
         model = Company
@@ -16,8 +21,7 @@ class CompanyTable(tables.Table):
         return format_html(f'<a href="/company/{record.id}">{record.name}</a>')
 
     def render_address(self, record):
-        return format_html(
-            f'<a href="https://www.google.de/maps/search/{urllib.parse.quote_plus(record.address + " " + record.city)}" target="_blank">{record.address}, {record.city}</a>')
+        return get_google_maps_link(record)
 
     def render_phone(self, value):
         return format_html(f'<a href="tel:{value}">{value}</a>')
@@ -30,6 +34,9 @@ class ProjectTable(tables.Table):
     class Meta:
         model = Project
         fields = Project.fields()
+
+    def render_address(self, record):
+        return get_google_maps_link(record)
 
 
 class ContractTable(tables.Table):
