@@ -64,6 +64,7 @@ class Contract(models.Model):
                                 on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bearbeiter',
                                 on_delete=models.RESTRICT, related_name='contracts')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
 
     class Meta:
         verbose_name = 'Auftrag'
@@ -73,6 +74,12 @@ class Contract(models.Model):
         return self.name
 
     @property
+    def due(self):
+        return sum(bill.amount for bill in self.bills.all())
+
+    due.fget.short_description = 'Rechnungen'
+
+    @property
     def payed(self):
         return sum(payment.amount for payment in self.payments.all())
 
@@ -80,7 +87,7 @@ class Contract(models.Model):
 
     @staticmethod
     def fields():
-        return 'project', 'name', 'company', 'payed'
+        return 'project', 'name', 'company', 'amount', 'due', 'payed'
 
 
 class Payment(models.Model):

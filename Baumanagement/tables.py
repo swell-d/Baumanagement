@@ -13,7 +13,7 @@ class CompanyTable(tables.Table):
         return format_html(f'<a href="tel:{value}">{value}</a>')
 
     def render_role(self, value):
-        return format_html(", ".join([f'<a href="/role/{role.id}">{role.name}</a>' for role in value.all()]))
+        return format_html(", ".join([f'<a href="/companies/{role.id}">{role.name}</a>' for role in value.all()]))
 
 
 class ProjectTable(tables.Table):
@@ -27,6 +27,7 @@ class ContractTable(tables.Table):
         model = Contract
         fields = Contract.fields()
 
+    due = tables.Column(orderable=False, verbose_name='Rechnungen')
     payed = tables.Column(orderable=False, verbose_name='Bezahlt')
 
 
