@@ -1,7 +1,7 @@
 import django_tables2 as tables
 from django.utils.html import format_html
 
-from .models import Company, CompanyRole, Project, Contract, Payment
+from .models import Company, Project, Contract, Payment
 
 
 class CompanyTable(tables.Table):
@@ -16,15 +16,6 @@ class CompanyTable(tables.Table):
         return format_html(", ".join([f'<a href="/role/{role.id}">{role.name}</a>' for role in value.all()]))
 
 
-class CompanyRoleTable(tables.Table):
-    class Meta:
-        model = CompanyRole
-        fields = CompanyRole.fields()
-
-    def render_name(self, value, record):
-        return format_html(f'<a href="/role/{record.id}">{value}</a> ({record.count_companies()})')
-
-
 class ProjectTable(tables.Table):
     class Meta:
         model = Project
@@ -36,10 +27,7 @@ class ContractTable(tables.Table):
         model = Contract
         fields = Contract.fields()
 
-    payments = tables.Column(verbose_name='Bezahlt')
-
-    def render_payments(self, record):
-        return record.payed()
+    payed = tables.Column(orderable=False, verbose_name='Bezahlt')
 
 
 class PaymentTable(tables.Table):

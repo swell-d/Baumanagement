@@ -11,10 +11,7 @@ class CompanyRole(models.Model):
     def __str__(self):
         return self.name
 
-    @staticmethod
-    def fields():
-        return 'name',
-
+    @property
     def count_companies(self):
         return self.companies.all().count()
 
@@ -38,10 +35,6 @@ class Company(models.Model):
     @staticmethod
     def fields():
         return 'name', 'address', 'city', 'email', 'phone', 'role', 'ceo'
-
-    def save(self, *args, **kwargs):
-        CompanyRole.count_companies()
-        return super(Company, self).save(*args, **kwargs)
 
 
 class Project(models.Model):
@@ -79,12 +72,15 @@ class Contract(models.Model):
     def __str__(self):
         return self.name
 
-    @staticmethod
-    def fields():
-        return 'name', 'project', 'company', 'payments'
-
+    @property
     def payed(self):
         return sum(payment.amount for payment in self.payments.all())
+
+    payed.fget.short_description = 'Bezahlt'
+
+    @staticmethod
+    def fields():
+        return 'project', 'name', 'company', 'payed'
 
 
 class Payment(models.Model):
