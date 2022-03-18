@@ -2,4 +2,3 @@ Django
 django-tables2
 django-bootstrap-v5
 django-filter
-django_heroku

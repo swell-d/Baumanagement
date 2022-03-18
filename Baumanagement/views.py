@@ -23,10 +23,10 @@ def companies(request):
 
 
 def company(request, id):
-    table = CompanyTable(Company.objects.filter(id=id).all())
+    table = CompanyTable(Company.objects.filter(id=id))
     RequestConfig(request).configure(table)
 
-    projects = Project.objects.filter(company=id).all()
+    projects = Project.objects.filter(company=id)
     if projects:
         table2 = ProjectTable(projects, order_by="name")
         RequestConfig(request).configure(table2)
@@ -34,7 +34,7 @@ def company(request, id):
     else:
         table2, h2 = None, None
 
-    contracts = Contract.objects.filter(company=id).all()
+    contracts = Contract.objects.filter(company=id)
     if contracts:
         table3 = ContractTable(contracts, order_by="name")
         RequestConfig(request).configure(table3)
@@ -53,7 +53,7 @@ def company(request, id):
 
 
 def role(request, id):
-    table = CompanyTable(Company.objects.filter(role=id).all(), order_by="name")
+    table = CompanyTable(Company.objects.filter(role=id), order_by="name")
     RequestConfig(request).configure(table)
     context = {'table': table,
                'h1': f'Unternehmen - {CompanyRole.objects.get(id=id).name}',
@@ -70,10 +70,10 @@ def projects(request):
 
 
 def project(request, id):
-    table = ProjectTable(Project.objects.filter(id=id).all())
+    table = ProjectTable(Project.objects.filter(id=id))
     RequestConfig(request).configure(table)
 
-    contracts = Contract.objects.filter(project=id).all()
+    contracts = Contract.objects.filter(project=id)
     if contracts:
         table2 = ContractTable(contracts, order_by="name")
         RequestConfig(request).configure(table2)

@@ -13,7 +13,7 @@ class CompanyRole(models.Model):
 
     @property
     def count_companies(self):
-        return self.companies.all().count()
+        return self.companies.count()
 
 
 class Company(models.Model):
@@ -55,7 +55,7 @@ class Project(models.Model):
 
     @property
     def count_contracts(self):
-        return self.contracts.all().count()
+        return self.contracts.count()
 
     @staticmethod
     def fields():
