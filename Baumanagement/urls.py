@@ -11,5 +11,6 @@ urlpatterns = [
     path("project/<int:id>", views.project),
     path("contracts", views.contracts),
     path("payments", views.payments),
+    path("project/<int:id>/payments", views.project_payments),
     path("bills", views.bills),
 ]

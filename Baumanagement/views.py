@@ -99,6 +99,14 @@ def payments(request):
     return render(request, 'Baumanagement/tables.html', context)
 
 
+def project_payments(request, id):
+    project = Project.objects.get(id=id)
+    table1 = PaymentTable(Payment.objects.filter(contract__in=project.contracts.all()), order_by="id")
+    RequestConfig(request).configure(table1)
+    context = {'titel1': f'Zahlungen - Projekt - {project.name}', 'table1': table1}
+    return render(request, 'Baumanagement/tables.html', context)
+
+
 def bills(request):
     table1 = BillTable(Bill.objects.all(), order_by="id")
     RequestConfig(request).configure(table1)
