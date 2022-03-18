@@ -8,13 +8,15 @@ from .models import Company, Project, Contract, Payment, Bill
 
 def get_google_maps_link(record):
     return format_html(
-        f'<a href="https://www.google.de/maps/search/{urllib.parse.quote_plus(record.address + " " + record.city)}" target="_blank">{record.address}, {record.city}</a>')
+        f'<a href="https://www.google.de/maps/search/{urllib.parse.quote_plus(record.address + " " + record.city)}" '
+        f'target="_blank">{record.address}, {record.city}</a>')
 
 
 class CompanyTable(tables.Table):
     class Meta:
         model = Company
         fields = Company.fields()
+        empty_text = "Keine Ergebnisse gefunden"
         attrs = {'a': {'text-decoration': 'none;'}}
 
     def render_name(self, record):
@@ -34,6 +36,7 @@ class ProjectTable(tables.Table):
     class Meta:
         model = Project
         fields = Project.fields()
+        empty_text = "Keine Ergebnisse gefunden"
 
     count_contracts = tables.Column(orderable=False, verbose_name='Aufträge')
 
@@ -57,6 +60,7 @@ class ContractTable(tables.Table):
     class Meta:
         model = Contract
         fields = Contract.fields()
+        empty_text = "Keine Ergebnisse gefunden"
 
     due = tables.Column(orderable=False, verbose_name='Rechnungen')
     payed = tables.Column(orderable=False, verbose_name='Bezahlt')
@@ -66,9 +70,11 @@ class PaymentTable(tables.Table):
     class Meta:
         model = Payment
         fields = Payment.fields()
+        empty_text = "Keine Ergebnisse gefunden"
 
 
 class BillTable(tables.Table):
     class Meta:
         model = Bill
         fields = Bill.fields()
+        empty_text = "Keine Ergebnisse gefunden"
