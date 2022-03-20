@@ -1,16 +1,28 @@
 from django.urls import path
 
 from . import views
+from . import views_companies
+from . import views_contracts
+from . import views_projects
 
 urlpatterns = [
-    path("", views.projects),
-    path("companies", views.companies),
-    path("company/<int:id>", views.company),
-    path("companies/<int:id>", views.role),
-    path("projects", views.projects),
-    path("project/<int:id>", views.project),
-    path("contracts", views.contracts),
+    path("", views_projects.projects),
+
+    path("companies", views_companies.companies),
+    path("companies/<int:id>", views_companies.companies_by_role),
+    path("company/<int:id>", views_companies.company),
+
+    path("projects", views_projects.projects),
+    path("project/<int:id>", views_projects.project),
+    path("project/<int:id>/payments", views_projects.project_payments),
+    path("project/<int:id>/bills", views_projects.project_bills),
+
+    path("contracts", views_contracts.contracts),
+    path("contract/<int:id>", views_contracts.contract),
+    path("contract/<int:id>/payments", views_contracts.contract_payments),
+    path("contract/<int:id>/bills", views_contracts.contract_bills),
+
     path("payments", views.payments),
-    path("project/<int:id>/payments", views.project_payments),
     path("bills", views.bills),
+
 ]

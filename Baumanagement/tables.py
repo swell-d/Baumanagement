@@ -20,7 +20,7 @@ class CompanyTable(tables.Table):
         attrs = {'a': {'text-decoration': 'none;'}}
 
     def render_name(self, record):
-        return format_html(f'<a href="/company/{record.id}">{record.name}</a>')
+        return format_html(f'<a href="/company/{record.id}">{record}</a>')
 
     def render_address(self, record):
         return get_google_maps_link(record)
@@ -29,7 +29,7 @@ class CompanyTable(tables.Table):
         return format_html(f'<a href="tel:{value}">{value}</a>')
 
     def render_role(self, value):
-        return format_html(", ".join([f'<a href="/companies/{role.id}">{role.name}</a>' for role in value.all()]))
+        return format_html(", ".join([f'<a href="/companies/{role.id}">{role}</a>' for role in value.all()]))
 
 
 class ProjectTable(tables.Table):
@@ -41,7 +41,7 @@ class ProjectTable(tables.Table):
     count_contracts = tables.Column(orderable=False, verbose_name='Aufträge')
 
     def render_name(self, record):
-        return format_html(f'<a href="/project/{record.id}">{record.name}</a>')
+        return format_html(f'<a href="/project/{record.id}">{record}</a>')
 
     def render_code(self, record):
         return format_html(f'<a href="/project/{record.id}">{record.code}</a>')
@@ -64,6 +64,21 @@ class ContractTable(tables.Table):
 
     due = tables.Column(orderable=False, verbose_name='Rechnungen')
     payed = tables.Column(orderable=False, verbose_name='Bezahlt')
+
+    def render_project(self, record):
+        return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')
+
+    def render_name(self, record):
+        return format_html(f'<a href="/contract/{record.id}">{record}</a>')
+    
+    def render_company(self, record):
+        return format_html(f'<a href="/company/{record.company.id}">{record.company}</a>')
+
+    def render_due(self, record, value):
+        return format_html(f'<a href="/contract/{record.id}/bills">{value}</a>')
+
+    def render_payed(self, record, value):
+        return format_html(f'<a href="/contract/{record.id}/payments">{value}</a>')
 
 
 class PaymentTable(tables.Table):
