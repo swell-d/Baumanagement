@@ -1,0 +1,6 @@
+a {
+    text-decoration: none;
+    color: #212529;
+}
+table.table thead th.asc.orderable:after {content: '▲'}
+table.table thead th.desc.orderable:after {content: '▼'}

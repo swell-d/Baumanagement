@@ -1,26 +1,22 @@
 {% load bootstrap5 %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="de">
-<head>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <style>
-        a {
-            text-decoration: none;
-            color: #212529;
-        }
-    </style>
-    <title>{% block title %}Baumanagement{% endblock %}</title>
-</head>
+    <head>
+        {% bootstrap_css %}
+        {% bootstrap_javascript %}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+        <title>{% block title %}Baumanagement{% endblock %}</title>
+    </head>
 
-<body>
-{% include "Baumanagement/navbar.html" %}
-<div class="container">
-    <div class="row">
-        <div class="col">
-            {% block content %}{% endblock %}
+    <body>
+        {% include "Baumanagement/navbar.html" %}
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>

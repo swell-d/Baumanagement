@@ -12,12 +12,17 @@ def get_google_maps_link(record):
         f'target="_blank">{record.address}, {record.city}</a>')
 
 
+class TableDesign:
+    empty_text = "Keine Ergebnisse gefunden"
+    template_name = "django_tables2/bootstrap4.html"
+    attrs = {'class': 'table table-hover',
+             'thead': {'class': 'thead-dark'}}
+
+
 class CompanyTable(tables.Table):
-    class Meta:
+    class Meta(TableDesign):
         model = Company
         fields = Company.fields()
-        empty_text = "Keine Ergebnisse gefunden"
-        attrs = {'a': {'text-decoration': 'none;'}}
 
     def render_name(self, record):
         return format_html(f'<a href="/company/{record.id}">{record}</a>')
@@ -33,10 +38,9 @@ class CompanyTable(tables.Table):
 
 
 class ProjectTable(tables.Table):
-    class Meta:
+    class Meta(TableDesign):
         model = Project
         fields = Project.fields()
-        empty_text = "Keine Ergebnisse gefunden"
 
     count_contracts = tables.Column(orderable=False, verbose_name='Aufträge')
 
@@ -57,10 +61,9 @@ class ProjectTable(tables.Table):
 
 
 class ContractTable(tables.Table):
-    class Meta:
+    class Meta(TableDesign):
         model = Contract
         fields = Contract.fields()
-        empty_text = "Keine Ergebnisse gefunden"
 
     due = tables.Column(orderable=False, verbose_name='Rechnungen')
     payed = tables.Column(orderable=False, verbose_name='Bezahlt')
@@ -82,10 +85,9 @@ class ContractTable(tables.Table):
 
 
 class PaymentTable(tables.Table):
-    class Meta:
+    class Meta(TableDesign):
         model = Payment
         fields = Payment.fields()
-        empty_text = "Keine Ergebnisse gefunden"
 
     def render_name(self, record):
         return format_html(f'<a href="/payment/{record.id}">{record}</a>')
@@ -95,10 +97,9 @@ class PaymentTable(tables.Table):
 
 
 class BillTable(tables.Table):
-    class Meta:
+    class Meta(TableDesign):
         model = Bill
         fields = Bill.fields()
-        empty_text = "Keine Ergebnisse gefunden"
 
     def render_name(self, record):
         return format_html(f'<a href="/bill/{record.id}">{record}</a>')
