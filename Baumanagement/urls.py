@@ -30,3 +30,7 @@ urlpatterns = [
     path("bill/<int:id>", views_bills.bill),
 
 ]
+
+
+def get_urls():
+    return [f'/{each.pattern}'.replace('<int:id>', '1') for each in urlpatterns]
