@@ -1,8 +1,9 @@
 from django.urls import path
 
-from . import views
+from . import views_bills
 from . import views_companies
 from . import views_contracts
+from . import views_payments
 from . import views_projects
 
 urlpatterns = [
@@ -22,7 +23,10 @@ urlpatterns = [
     path("contract/<int:id>/payments", views_contracts.contract_payments),
     path("contract/<int:id>/bills", views_contracts.contract_bills),
 
-    path("payments", views.payments),
-    path("bills", views.bills),
+    path("payments", views_payments.payments),
+    path("payment/<int:id>", views_payments.payment),
+
+    path("bills", views_bills.bills),
+    path("bill/<int:id>", views_bills.bill),
 
 ]

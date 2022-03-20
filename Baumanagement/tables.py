@@ -70,7 +70,7 @@ class ContractTable(tables.Table):
 
     def render_name(self, record):
         return format_html(f'<a href="/contract/{record.id}">{record}</a>')
-    
+
     def render_company(self, record):
         return format_html(f'<a href="/company/{record.company.id}">{record.company}</a>')
 
@@ -87,9 +87,21 @@ class PaymentTable(tables.Table):
         fields = Payment.fields()
         empty_text = "Keine Ergebnisse gefunden"
 
+    def render_name(self, record):
+        return format_html(f'<a href="/payment/{record.id}">{record}</a>')
+
+    def render_contract(self, record):
+        return format_html(f'<a href="/contract/{record.contract.id}">{record.contract}</a>')
+
 
 class BillTable(tables.Table):
     class Meta:
         model = Bill
         fields = Bill.fields()
         empty_text = "Keine Ergebnisse gefunden"
+
+    def render_name(self, record):
+        return format_html(f'<a href="/bill/{record.id}">{record}</a>')
+
+    def render_contract(self, record):
+        return format_html(f'<a href="/contract/{record.contract.id}">{record.contract}</a>')
