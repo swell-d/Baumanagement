@@ -1,3 +1,4 @@
+import re
 import urllib.parse
 
 import django_tables2 as tables
@@ -36,7 +37,7 @@ class CompanyTable(tables.Table):
         return get_google_maps_link(record)
 
     def render_phone(self, value):
-        return format_html(f'<a href="tel:{value}">{value}</a>')
+        return format_html(f'<a href="tel:{re.sub("[^0-9+]", "", value)}">{value}</a>')
 
     def render_role(self, value):
         return format_html(", ".join([f'<a href="/companies/{role.id}">{role}</a>' for role in value.all()]))
