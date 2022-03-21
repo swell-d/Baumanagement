@@ -17,6 +17,9 @@ class CompanyRole(models.Model):
 
 
 class Company(models.Model):
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
+
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Firmenname')
     address = models.CharField(max_length=256, null=False, blank=True, verbose_name='Adresse')
     city = models.CharField(max_length=256, null=False, blank=True, verbose_name='PLZ Stadt')
@@ -38,6 +41,9 @@ class Company(models.Model):
 
 
 class Project(models.Model):
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
+
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Projektname')
     code = models.CharField(max_length=256, null=False, blank=False, verbose_name='Kode')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bauherr',
@@ -59,10 +65,14 @@ class Project(models.Model):
 
     @staticmethod
     def fields():
-        return 'name', 'code', 'company', 'address', 'open', 'count_contracts'
+        return 'created', 'name', 'code', 'company', 'address', 'open', 'count_contracts'
 
 
 class Contract(models.Model):
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
+
+    date = models.DateField(null=False, blank=True, verbose_name='Datum')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Auftrag')
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name='Projekt',
                                 on_delete=models.RESTRICT, related_name='contracts')
@@ -87,11 +97,15 @@ class Contract(models.Model):
 
     @staticmethod
     def fields():
-        return 'project', 'name', 'company', 'amount', 'due', 'payed'
+        return 'created', 'project', 'company', 'name', 'date', 'amount', 'due', 'payed'
 
 
 class Bill(models.Model):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Beschreibung')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
+
+    date = models.DateField(null=False, blank=True, verbose_name='Datum')
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rechnung')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='bills')
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
@@ -113,11 +127,15 @@ class Bill(models.Model):
 
     @staticmethod
     def fields():
-        return 'project', 'contract', 'company', 'name', 'amount'
+        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount'
 
 
 class Payment(models.Model):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Beschreibung')
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
+
+    date = models.DateField(null=False, blank=True, verbose_name='Datum')
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Zahlung')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='payments')
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
@@ -139,4 +157,4 @@ class Payment(models.Model):
 
     @staticmethod
     def fields():
-        return 'project', 'contract', 'company', 'name', 'amount'
+        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount'
