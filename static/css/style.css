@@ -26,3 +26,7 @@ footer {
 form.form-inline input {
     margin: 4px;
 }
+
+table.table td, table.table th {
+    text-align: center;
+}
