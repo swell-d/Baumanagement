@@ -19,6 +19,11 @@ class TableDesign:
              'thead': {'class': 'thead-dark'}}
 
 
+class SummingColumn(tables.Column):
+    def render_footer(self, bound_column, table):
+        return sum(bound_column.accessor.resolve(row) for row in table.data)
+
+
 class CompanyTable(tables.Table):
     class Meta(TableDesign):
         model = Company
@@ -42,7 +47,7 @@ class ProjectTable(tables.Table):
         model = Project
         fields = Project.fields()
 
-    count_contracts = tables.Column(orderable=False, verbose_name='Aufträge')
+    count_contracts = SummingColumn(orderable=False, verbose_name='Aufträge')
 
     def render_name(self, record):
         return format_html(f'<a href="/project/{record.id}">{record}</a>')
@@ -65,8 +70,9 @@ class ContractTable(tables.Table):
         model = Contract
         fields = Contract.fields()
 
-    due = tables.Column(orderable=False, verbose_name='Rechnungen')
-    payed = tables.Column(orderable=False, verbose_name='Bezahlt')
+    amount = SummingColumn()
+    due = SummingColumn(orderable=False, verbose_name='Rechnungen')
+    payed = SummingColumn(orderable=False, verbose_name='Bezahlt')
 
     def render_project(self, record):
         return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')
@@ -85,6 +91,8 @@ class ContractTable(tables.Table):
 
 
 class PaymentTable(tables.Table):
+    amount = SummingColumn()
+
     class Meta(TableDesign):
         model = Payment
         fields = Payment.fields()
@@ -97,6 +105,8 @@ class PaymentTable(tables.Table):
 
 
 class BillTable(tables.Table):
+    amount = SummingColumn()
+
     class Meta(TableDesign):
         model = Bill
         fields = Bill.fields()
