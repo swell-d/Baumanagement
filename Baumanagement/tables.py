@@ -25,10 +25,17 @@ class SummingColumn(tables.Column):
         return sum(bound_column.accessor.resolve(row) for row in table.data)
 
 
+class CreateFooter(tables.Column):
+    def render_footer(self):
+        return ''
+
+
 class CompanyTable(tables.Table):
     class Meta(TableDesign):
         model = Company
         fields = Company.fields()
+
+    name = CreateFooter()
 
     def render_name(self, record):
         return format_html(f'<a href="/company/{record.id}">{record}</a>')
