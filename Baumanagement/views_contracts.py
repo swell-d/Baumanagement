@@ -1,14 +1,19 @@
 from django.shortcuts import render
 from django_tables2 import RequestConfig
 
+from Baumanagement.filters import ContractFilter, filter_form_prettify
 from Baumanagement.models import Contract, Payment, Bill
 from Baumanagement.tables import ContractTable, PaymentTable, BillTable
 
 
 def contracts(request):
-    table1 = ContractTable(Contract.objects.all(), order_by="id")
+    filter = ContractFilter(request.GET, queryset=Contract.objects.all())
+    table1 = ContractTable(filter.qs, order_by="id")
     RequestConfig(request).configure(table1)
-    context = {'titel1': 'Alle Aufträge', 'table1': table1}
+    filter_form = filter_form_prettify(filter.form)
+
+    context = {'titel1': 'Alle Aufträge', 'table1': table1,
+               'filter': filter, 'filter_form': filter_form}
     return render(request, 'Baumanagement/tables.html', context)
 
 

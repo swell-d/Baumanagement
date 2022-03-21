@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.utils.html import format_html
 from django_tables2 import RequestConfig
 
+from Baumanagement.filters import CompanyFilter, filter_form_prettify
 from Baumanagement.models import Company, CompanyRole, Project, Contract
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
 
@@ -15,9 +16,13 @@ def roles_tags():
 
 
 def companies(request):
-    table1 = CompanyTable(Company.objects.all(), order_by="name")
+    filter = CompanyFilter(request.GET, queryset=Company.objects.all())
+    table1 = CompanyTable(filter.qs, order_by="name")
     RequestConfig(request).configure(table1)
-    context = {'titel1': 'Alle Unternehmen', 'tags1': roles_tags(), 'table1': table1}
+    filter_form = filter_form_prettify(filter.form)
+
+    context = {'titel1': 'Alle Unternehmen', 'tags1': roles_tags(), 'table1': table1,
+               'filter': filter, 'filter_form': filter_form}
     return render(request, 'Baumanagement/tables.html', context)
 
 

@@ -1,14 +1,19 @@
 from django.shortcuts import render
 from django_tables2 import RequestConfig
 
+from Baumanagement.filters import ProjectFilter, filter_form_prettify
 from Baumanagement.models import Project, Contract, Payment, Bill
 from Baumanagement.tables import ProjectTable, ContractTable, PaymentTable, BillTable
 
 
 def projects(request):
-    table1 = ProjectTable(Project.objects.all(), order_by="name")
+    filter = ProjectFilter(request.GET, queryset=Project.objects.all())
+    table1 = ProjectTable(filter.qs, order_by="name")
     RequestConfig(request).configure(table1)
-    context = {'titel1': 'Alle Projekte', 'table1': table1}
+    filter_form = filter_form_prettify(filter.form)
+
+    context = {'titel1': 'Alle Projekte', 'table1': table1,
+               'filter': filter, 'filter_form': filter_form}
     return render(request, 'Baumanagement/tables.html', context)
 
 

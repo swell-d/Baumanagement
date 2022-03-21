@@ -38,7 +38,7 @@ class Company(models.Model):
 
 
 class Project(models.Model):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Projekt')
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Projektname')
     code = models.CharField(max_length=256, null=False, blank=False, verbose_name='Kode')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bauherr',
                                 on_delete=models.RESTRICT, related_name='projects')

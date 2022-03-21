@@ -14,7 +14,8 @@ def bills(request):
     RequestConfig(request).configure(table1)
     filter_form = filter_form_prettify(filter.form)
 
-    context = {'titel1': 'Alle Rechnungen', 'table1': table1, 'filter': filter, 'filter_form': filter_form}
+    context = {'titel1': 'Alle Rechnungen', 'table1': table1,
+               'filter': filter, 'filter_form': filter_form}
     return render(request, 'Baumanagement/tables.html', context)
 
 
