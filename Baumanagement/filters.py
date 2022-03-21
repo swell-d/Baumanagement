@@ -1,19 +1,17 @@
+import re
+
 import django_filters
 from django.utils.html import format_html
 
 from Baumanagement.models import Bill
 
-filter_form_replaces = [
-    ('<input', '<input onchange="this.form.submit()"'),
-    ('<select', '<select onchange="this.form.submit()"'),
-    ('type="number"', 'type="text"')
-]
-
 
 def filter_form_prettify(filter_form):
     filter_form_text = str(filter_form)
-    for each in filter_form_replaces:
-        filter_form_text = filter_form_text.replace(each[0], each[1])
+    filter_form_text = re.sub('<label[\S\s]+?>([\S\s]+?):[\S\s]+?<input',
+                              r'<input placeholder="\g<1>" onchange="this.form.submit()" ',
+                              filter_form_text)
+    filter_form_text = re.sub('type="number"', 'type="text"', filter_form_text)
     return format_html(filter_form_text)
 
 
