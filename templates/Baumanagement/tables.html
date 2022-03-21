@@ -10,9 +10,8 @@
         <h1>{{ titel1 }}</h1>
         {{ tags1 }}
         {% if filter %}
-            <form method="get">
-                {{ filter.form.as_p }}
-                <input type="submit" />
+            <form method="get" class="form form-inline">
+                {{ filter_form }}
             </form>
         {% endif %}
         {% render_table table1 %}

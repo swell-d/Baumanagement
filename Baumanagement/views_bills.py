@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from django_tables2 import RequestConfig
 
-from Baumanagement.filters import BillFilter
+from Baumanagement.filters import BillFilter, filter_form_prettify
 from Baumanagement.forms_bills import BillForm
 from Baumanagement.models import Bill
 from Baumanagement.tables import BillTable
@@ -12,8 +12,9 @@ def bills(request):
     filter = BillFilter(request.GET, queryset=Bill.objects.all())
     table1 = BillTable(filter.qs, order_by="id")
     RequestConfig(request).configure(table1)
+    filter_form = filter_form_prettify(filter.form)
 
-    context = {'titel1': 'Alle Rechnungen', 'table1': table1, 'filter': filter}
+    context = {'titel1': 'Alle Rechnungen', 'table1': table1, 'filter': filter, 'filter_form': filter_form}
     return render(request, 'Baumanagement/tables.html', context)
 
 
