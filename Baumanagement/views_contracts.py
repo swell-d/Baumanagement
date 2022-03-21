@@ -13,22 +13,24 @@ def contracts(request):
 
 
 def contract(request, id):
+    tables = []
     contract = Contract.objects.get(id=id)
 
     table1 = ContractTable(Contract.objects.filter(id=id))
     RequestConfig(request).configure(table1)
 
     bills = contract.bills.all()
-    table4 = BillTable(bills, order_by="id")
-    RequestConfig(request).configure(table4)
+    table = BillTable(bills, order_by="id")
+    RequestConfig(request).configure(table)
+    tables.append({'table': table, 'titel': 'Rechnungen'})
 
     payments = contract.payments.all()
-    table5 = PaymentTable(payments, order_by="id")
-    RequestConfig(request).configure(table5)
+    table = PaymentTable(payments, order_by="id")
+    RequestConfig(request).configure(table)
+    tables.append({'table': table, 'titel': 'Zahlungen'})
 
     context = {'titel1': f'Auftrag - {contract.name}', 'table1': table1,
-               'titel4': 'Rechnungen', 'table4': table4,
-               'titel5': 'Zahlungen', 'table5': table5}
+               'tables': tables}
     return render(request, 'Baumanagement/tables.html', context)
 
 

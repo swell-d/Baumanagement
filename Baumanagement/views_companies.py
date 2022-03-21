@@ -30,7 +30,7 @@ def companies_by_role(request, id):
 
 
 def company(request, id):
-    table1, table2, table3, table4, table5 = None, None, None, None, None
+    tables = []
     company = Company.objects.get(id=id)
 
     table1 = CompanyTable(Company.objects.filter(id=id))
@@ -38,25 +38,27 @@ def company(request, id):
 
     projects = Project.objects.filter(company=id)
     if projects:
-        table2 = ProjectTable(projects, order_by="name")
-        RequestConfig(request).configure(table2)
+        table = ProjectTable(projects, order_by="name")
+        RequestConfig(request).configure(table)
+        tables.append({'table': table, 'titel': 'Projekte'})
 
     contracts = Contract.objects.filter(company=id)
     if contracts:
-        table3 = ContractTable(contracts, order_by="name")
-        RequestConfig(request).configure(table3)
+        table = ContractTable(contracts, order_by="name")
+        RequestConfig(request).configure(table)
+        tables.append({'table': table, 'titel': 'Aufträge'})
 
         bills = QuerySet.union(*[contract.bills.all() for contract in contracts])
-        table4 = BillTable(bills, order_by="id")
-        RequestConfig(request).configure(table4)
+        table = BillTable(bills, order_by="id")
+        RequestConfig(request).configure(table)
+        tables.append({'table': table, 'titel': 'Rechnungen'})
 
         payments = QuerySet.union(*[contract.payments.all() for contract in contracts])
-        table5 = PaymentTable(payments, order_by="id")
-        RequestConfig(request).configure(table5)
+        table = PaymentTable(payments, order_by="id")
+        RequestConfig(request).configure(table)
+        tables.append({'table': table, 'titel': 'Zahlungen'})
 
     context = {'titel1': f'Unternehmen - {company.name}', 'tags1': roles_tags(), 'table1': table1,
-               'titel2': 'Projekte', 'table2': table2,
-               'titel3': 'Aufträge', 'table3': table3,
-               'titel4': 'Rechnungen', 'table4': table4,
-               'titel5': 'Zahlungen', 'table5': table5}
+               'tables': tables}
+
     return render(request, 'Baumanagement/tables.html', context)

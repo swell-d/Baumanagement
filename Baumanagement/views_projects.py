@@ -13,6 +13,7 @@ def projects(request):
 
 
 def project(request, id):
+    tables = []
     project = Project.objects.get(id=id)
 
     table1 = ProjectTable(Project.objects.filter(id=id))
@@ -20,14 +21,12 @@ def project(request, id):
 
     contracts = Contract.objects.filter(project=id)
     if contracts:
-        table2 = ContractTable(contracts, order_by="name")
-        RequestConfig(request).configure(table2)
-        titel2 = 'Aufträge'
-    else:
-        table2, titel2 = None, None
+        table = ContractTable(contracts, order_by="name")
+        RequestConfig(request).configure(table)
+        tables.append({'table': table, 'titel': 'Aufträge'})
 
     context = {'titel1': f'Projekt - {project.name}', 'table1': table1,
-               'titel2': titel2, 'table2': table2}
+               'tables': tables}
     return render(request, 'Baumanagement/tables.html', context)
 
 

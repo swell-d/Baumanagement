@@ -2,27 +2,23 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="de">
-    <head>
-        <meta charset="UTF-8">
-        {% bootstrap_css %}
-        {% bootstrap_javascript %}
-        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-        <title>{% block title %}Baumanagement{% endblock %}</title>
-    </head>
+<head>
+    <meta charset="UTF-8">
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <title>{% block title %}Baumanagement{% endblock %}</title>
+</head>
 
-    <body>
+<body>
 
-        {% include "Baumanagement/navbar.html" %}
+{% include "Baumanagement/navbar.html" %}
 
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    {% block content %}{% endblock %}
-                </div>
-            </div>
-        </div>
+<div class="container-fluid">
+    {% block content %}{% endblock %}
+</div>
 
-        {% include "Baumanagement/footer.html" %}
+{% include "Baumanagement/footer.html" %}
 
-    </body>
+</body>
 </html>
