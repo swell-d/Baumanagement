@@ -6,7 +6,7 @@ from Baumanagement.models import Bill
 class BillForm(forms.ModelForm):
     class Meta:
         model = Bill
-        fields = Bill.fields()
+        fields = ['name']  # Bill.fields()
         widgets = {
             'text': forms.Textarea(attrs={
                 'class': 'form-control',

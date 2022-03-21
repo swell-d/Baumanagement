@@ -90,24 +90,6 @@ class Contract(models.Model):
         return 'project', 'name', 'company', 'amount', 'due', 'payed'
 
 
-class Payment(models.Model):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Beschreibung')
-    contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
-                                 on_delete=models.RESTRICT, related_name='payments')
-    amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
-
-    class Meta:
-        verbose_name = 'Zahlung'
-        verbose_name_plural = 'Zahlungen'
-
-    def __str__(self):
-        return self.name
-
-    @staticmethod
-    def fields():
-        return 'name', 'contract', 'amount'
-
-
 class Bill(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Beschreibung')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
@@ -121,6 +103,40 @@ class Bill(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def project(self):
+        return self.contract.project
+
+    @property
+    def company(self):
+        return self.contract.company
+
     @staticmethod
     def fields():
-        return 'name', 'contract', 'amount'
+        return 'project', 'contract', 'company', 'name', 'amount'
+
+
+class Payment(models.Model):
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Beschreibung')
+    contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
+                                 on_delete=models.RESTRICT, related_name='payments')
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
+
+    class Meta:
+        verbose_name = 'Zahlung'
+        verbose_name_plural = 'Zahlungen'
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def project(self):
+        return self.contract.project
+
+    @property
+    def company(self):
+        return self.contract.company
+
+    @staticmethod
+    def fields():
+        return 'project', 'contract', 'company', 'name', 'amount'

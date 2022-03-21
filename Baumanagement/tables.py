@@ -73,7 +73,7 @@ class ContractTable(tables.Table):
 
     amount = SummingColumn()
     due = SummingColumn(orderable=False, verbose_name='Rechnungen')
-    payed = SummingColumn(orderable=False, verbose_name='Bezahlt')
+    payed = SummingColumn(orderable=False, verbose_name='Zahlungen')
 
     def render_project(self, record):
         return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')
@@ -91,29 +91,45 @@ class ContractTable(tables.Table):
         return format_html(f'<a href="/contract/{record.id}/payments">{value}</a>')
 
 
-class PaymentTable(tables.Table):
-    amount = SummingColumn()
-
-    class Meta(TableDesign):
-        model = Payment
-        fields = Payment.fields()
-
-    def render_name(self, record):
-        return format_html(f'<a href="/payment/{record.id}">{record}</a>')
-
-    def render_contract(self, record):
-        return format_html(f'<a href="/contract/{record.contract.id}">{record.contract}</a>')
-
-
 class BillTable(tables.Table):
-    amount = SummingColumn()
-
     class Meta(TableDesign):
         model = Bill
         fields = Bill.fields()
 
-    def render_name(self, record):
-        return format_html(f'<a href="/bill/{record.id}">{record}</a>')
+    project = tables.Column(orderable=False, verbose_name='Projekt')
+    company = tables.Column(orderable=False, verbose_name='Bearbeiter')
+    amount = SummingColumn()
+
+    def render_project(self, record):
+        return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')
 
     def render_contract(self, record):
         return format_html(f'<a href="/contract/{record.contract.id}">{record.contract}</a>')
+
+    def render_company(self, record):
+        return format_html(f'<a href="/company/{record.company.id}">{record.company}</a>')
+
+    def render_name(self, record):
+        return format_html(f'<a href="/bill/{record.id}">{record}</a>')
+
+
+class PaymentTable(tables.Table):
+    class Meta(TableDesign):
+        model = Payment
+        fields = Payment.fields()
+
+    project = tables.Column(orderable=False, verbose_name='Projekt')
+    company = tables.Column(orderable=False, verbose_name='Bearbeiter')
+    amount = SummingColumn()
+
+    def render_project(self, record):
+        return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')
+
+    def render_contract(self, record):
+        return format_html(f'<a href="/contract/{record.contract.id}">{record.contract}</a>')
+
+    def render_company(self, record):
+        return format_html(f'<a href="/company/{record.company.id}">{record.company}</a>')
+
+    def render_name(self, record):
+        return format_html(f'<a href="/payment/{record.id}">{record}</a>')
