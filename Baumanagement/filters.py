@@ -17,6 +17,7 @@ def filter_form_prettify(filter_form):
     filter_form_text = re.sub('<\/?tr>', '', filter_form_text)
     filter_form_text = re.sub('<\/?th>', '', filter_form_text)
     filter_form_text = re.sub('<\/?td>', '', filter_form_text)
+    filter_form_text = re.sub('step="any"', '', filter_form_text)
 
     return format_html(filter_form_text)
 
