@@ -1,13 +1,24 @@
 {% extends "Baumanagement/base.html" %}
 
 {% load render_table from django_tables2 %}
+{% load bootstrap5 %}
 
 {% block title %}{{ titel1 }}{% endblock %}
 
 {% block content %}
-    <h1>{{ titel1 }}</h1>
-    {{ tags1 }}
-    {% render_table table1 %}
+    {% if table1 %}
+        <h1>{{ titel1 }}</h1>
+        {{ tags1 }}
+        {% if filter %}
+            <form method="get">
+                {{ filter.form.as_p }}
+                <input type="submit" />
+            </form>
+        {% endif %}
+        {% render_table table1 %}
+    {% endif %}
+
+    {{ form }}
 
     {% if table2 %}
         <h2>{{ titel2 }}</h2>
