@@ -81,13 +81,9 @@ class Contract(models.Model):
     def due(self):
         return sum(bill.amount for bill in self.bills.all())
 
-    # due.fget.short_description = 'Rechnungen'
-
     @property
     def payed(self):
         return sum(payment.amount for payment in self.payments.all())
-
-    # payed.fget.short_description = 'Bezahlt'
 
     @staticmethod
     def fields():

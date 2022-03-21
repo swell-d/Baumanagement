@@ -11,6 +11,7 @@ def filter_form_prettify(filter_form):
     filter_form_text = re.sub('<label[\S\s]+?>([\S\s]+?):[\S\s]+?<input',
                               r'<input placeholder="\g<1>" onchange="this.form.submit()" ',
                               filter_form_text)
+    filter_form_text = re.sub('<select', '<select onchange="this.form.submit()"', filter_form_text)
     filter_form_text = re.sub('type="number"', 'type="text"', filter_form_text)
     return format_html(filter_form_text)
 
@@ -27,6 +28,7 @@ class ProjectFilter(django_filters.FilterSet):
         model = Project
         fields = {}
         fields['name'] = ['contains']
+        fields['open'] = ['exact']
 
 
 class ContractFilter(django_filters.FilterSet):
