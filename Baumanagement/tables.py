@@ -2,6 +2,7 @@ import re
 import urllib.parse
 
 import django_tables2 as tables
+from django.db.models import Count, Sum, F
 from django.utils.html import format_html
 
 from .models import Company, Project, Contract, Payment, Bill
@@ -56,7 +57,7 @@ class ProjectTable(tables.Table):
         model = Project
         fields = Project.fields()
 
-    count_contracts = SummingColumn(orderable=False, verbose_name='Aufträge')
+    count_contracts = SummingColumn(verbose_name='Aufträge')
 
     def render_name(self, record):
         return format_html(f'<a href="/project/{record.id}">{record}</a>')
@@ -73,6 +74,10 @@ class ProjectTable(tables.Table):
     def render_count_contracts(self, record, value):
         return format_html(f'<a href="/project/{record.id}">{value}</a>')
 
+    def order_count_contracts(self, queryset, is_descending):
+        new_queryset = queryset.annotate(count=Count('contracts')).order_by(("-" if is_descending else "") + "count")
+        return (new_queryset, True)
+
 
 class ContractTable(tables.Table):
     class Meta(TableDesign):
@@ -81,8 +86,8 @@ class ContractTable(tables.Table):
 
     amount_netto = SummingColumn()
     amount_brutto = SummingColumn()
-    due = SummingColumn(orderable=False, verbose_name='Rechnungen')
-    payed = SummingColumn(orderable=False, verbose_name='Zahlungen')
+    due = SummingColumn(verbose_name='Rechnungen')
+    payed = SummingColumn(verbose_name='Zahlungen')
 
     def render_project(self, record):
         return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')
@@ -99,14 +104,24 @@ class ContractTable(tables.Table):
     def render_payed(self, record, value):
         return format_html(f'<a href="/contract/{record.id}/payments">{value}</a>')
 
+    def order_due(self, queryset, is_descending):
+        new_queryset = queryset.annotate(tmp=Sum('bills__amount_brutto')).order_by(
+            ("-" if is_descending else "") + "tmp")
+        return (new_queryset, True)
+
+    def order_payed(self, queryset, is_descending):
+        new_queryset = queryset.annotate(tmp=Sum('payments__amount_brutto')).order_by(
+            ("-" if is_descending else "") + "tmp")
+        return (new_queryset, True)
+
 
 class BillTable(tables.Table):
     class Meta(TableDesign):
         model = Bill
         fields = Bill.fields()
 
-    project = tables.Column(orderable=False, verbose_name='Projekt')
-    company = tables.Column(orderable=False, verbose_name='Bearbeiter')
+    project = tables.Column(verbose_name='Projekt')
+    company = tables.Column(verbose_name='Bearbeiter')
     amount_netto = SummingColumn()
     amount_brutto = SummingColumn()
 
@@ -122,14 +137,24 @@ class BillTable(tables.Table):
     def render_name(self, record):
         return format_html(f'<a href="/bill/{record.id}">{record}</a>')
 
+    def order_project(self, queryset, is_descending):
+        new_queryset = queryset.annotate(tmp=F('contract__project__name')).order_by(
+            ("-" if is_descending else "") + "tmp")
+        return (new_queryset, True)
+
+    def order_company(self, queryset, is_descending):
+        new_queryset = queryset.annotate(tmp=F('contract__company__name')).order_by(
+            ("-" if is_descending else "") + "tmp")
+        return (new_queryset, True)
+
 
 class PaymentTable(tables.Table):
     class Meta(TableDesign):
         model = Payment
         fields = Payment.fields()
 
-    project = tables.Column(orderable=False, verbose_name='Projekt')
-    company = tables.Column(orderable=False, verbose_name='Bearbeiter')
+    project = tables.Column(verbose_name='Projekt')
+    company = tables.Column(verbose_name='Bearbeiter')
     amount_netto = SummingColumn()
     amount_brutto = SummingColumn()
 
@@ -144,3 +169,13 @@ class PaymentTable(tables.Table):
 
     def render_name(self, record):
         return format_html(f'<a href="/payment/{record.id}">{record}</a>')
+
+    def order_project(self, queryset, is_descending):
+        new_queryset = queryset.annotate(tmp=F('contract__project__name')).order_by(
+            ("-" if is_descending else "") + "tmp")
+        return (new_queryset, True)
+
+    def order_company(self, queryset, is_descending):
+        new_queryset = queryset.annotate(tmp=F('contract__company__name')).order_by(
+            ("-" if is_descending else "") + "tmp")
+        return (new_queryset, True)

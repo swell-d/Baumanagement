@@ -83,9 +83,9 @@ class Contract(models.Model):
                                 on_delete=models.RESTRICT, related_name='contracts')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                        verbose_name='Nettobetrag')
+    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name='Bruttobetrag')
-    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
 
     class Meta:
         verbose_name = 'Auftrag'
@@ -117,9 +117,9 @@ class Bill(models.Model):
                                  on_delete=models.RESTRICT, related_name='bills')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                        verbose_name='Nettobetrag')
+    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name='Bruttobetrag')
-    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
 
     class Meta:
         verbose_name = 'Rechnung'
@@ -151,9 +151,9 @@ class Payment(models.Model):
                                  on_delete=models.RESTRICT, related_name='payments')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                        verbose_name='Nettobetrag')
+    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name='Bruttobetrag')
-    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
 
     class Meta:
         verbose_name = 'Zahlung'
