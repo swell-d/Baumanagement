@@ -16,10 +16,7 @@ def roles_tags():
 
 def companies(request):
     search = request.GET.get('search')
-    realtime = request.GET.get('realtime')
-    if realtime:
-        search = realtime
-    if search:
+    if search is not None:
         text_fields = 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
         queries = [Q(**{f'{field}__icontains': search}) for field in text_fields]
         qs = Q()
@@ -33,7 +30,9 @@ def companies(request):
 
     context = {'titel1': 'Alle Unternehmen', 'tags1': roles_tags(), 'table1': table1, 'search': search,
                'url': request.path}
-    return render(request, 'Baumanagement/maintable.html' if realtime else 'Baumanagement/tables.html', context)
+    return render(request,
+                  'Baumanagement/maintable.html' if search is not None else 'Baumanagement/tables.html',
+                  context)
 
 
 def companies_by_role(request, id):

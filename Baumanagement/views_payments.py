@@ -8,8 +8,9 @@ from Baumanagement.tables import PaymentTable
 
 def payments(request):
     search = request.GET.get('search')
-    if search:
-        text_fields = 'contract__project__name', 'contract__company__name', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
+    if search is not None:
+        text_fields = 'contract__project__name', 'contract__company__name', 'contract__name', \
+                      'name', 'amount_netto', 'vat', 'amount_brutto'
         queries = [Q(**{f'{field}__icontains': search}) for field in text_fields]
         qs = Q()
         for query in queries:
@@ -20,8 +21,10 @@ def payments(request):
 
     RequestConfig(request).configure(table1)
 
-    context = {'titel1': 'Alle Zahlungen', 'table1': table1, 'search': search}
-    return render(request, 'Baumanagement/tables.html', context)
+    context = {'titel1': 'Alle Zahlungen', 'table1': table1, 'search': search, 'url': request.path}
+    return render(request,
+                  'Baumanagement/maintable.html' if search is not None else 'Baumanagement/tables.html',
+                  context)
 
 
 def payment(request, id):

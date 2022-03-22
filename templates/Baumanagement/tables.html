@@ -20,16 +20,11 @@
         <div class="row">
             <div class="col">
                 <form method="get" class="form form-inline d-flex justify-content-end">
-{#                oninput="mainTableReload(this.value)" #}
-                    <input placeholder="Suche" onchange="this.form.submit()" type="text" name="search" {% if search %} value="{{ search }}"{% endif %}>
+                    <input placeholder="Suche" oninput="mainTableReload(this.value)" type="text" name="search">
                 </form>
             </div>
         </div>
-        <div class="row" id="main-table">
-            <div class="col">
-                {% render_table table1 %}
-            </div>
-        </div>
+        {% include "Baumanagement/maintable.html" %}
     {% endif %}
 
     <div class="row">
