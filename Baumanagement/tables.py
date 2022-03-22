@@ -59,6 +59,9 @@ class ProjectTable(tables.Table):
 
     count_contracts = SummingColumn(verbose_name='Aufträge')
 
+    def render_created(self, record):
+        return format_html(f'<a href="/project/{record.id}">{record.created.strftime("%d.%m.%Y %H:%M")}</a>')
+
     def render_name(self, record):
         return format_html(f'<a href="/project/{record.id}">{record}</a>')
 
@@ -89,14 +92,29 @@ class ContractTable(tables.Table):
     due = SummingColumn(verbose_name='Rechnungen')
     payed = SummingColumn(verbose_name='Zahlungen')
 
+    def render_created(self, record):
+        return format_html(f'<a href="/contract/{record.id}">{record.created.strftime("%d.%m.%Y %H:%M")}</a>')
+
     def render_project(self, record):
         return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')
+
+    def render_company(self, record):
+        return format_html(f'<a href="/company/{record.company.id}">{record.company}</a>')
 
     def render_name(self, record):
         return format_html(f'<a href="/contract/{record.id}">{record}</a>')
 
-    def render_company(self, record):
-        return format_html(f'<a href="/company/{record.company.id}">{record.company}</a>')
+    def render_date(self, record):
+        return format_html(f'<a href="/contract/{record.id}">{record.date.strftime("%d.%m.%Y")}</a>')
+
+    def render_amount_netto(self, record, value):
+        return format_html(f'<a href="/contract/{record.id}">{value}</a>')
+
+    def render_vat(self, record, value):
+        return format_html(f'<a href="/contract/{record.id}">{value}</a>')
+
+    def render_amount_brutto(self, record, value):
+        return format_html(f'<a href="/contract/{record.id}">{value}</a>')
 
     def render_due(self, record, value):
         return format_html(f'<a href="/contract/{record.id}/bills">{value}</a>')
@@ -125,6 +143,9 @@ class BillTable(tables.Table):
     amount_netto = SummingColumn()
     amount_brutto = SummingColumn()
 
+    def render_created(self, record):
+        return format_html(f'<a href="/bill/{record.id}">{record.created.strftime("%d.%m.%Y %H:%M")}</a>')
+
     def render_project(self, record):
         return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')
 
@@ -136,6 +157,18 @@ class BillTable(tables.Table):
 
     def render_name(self, record):
         return format_html(f'<a href="/bill/{record.id}">{record}</a>')
+
+    def render_date(self, record):
+        return format_html(f'<a href="/bill/{record.id}">{record.date.strftime("%d.%m.%Y")}</a>')
+
+    def render_amount_netto(self, record, value):
+        return format_html(f'<a href="/bill/{record.id}">{value}</a>')
+
+    def render_vat(self, record, value):
+        return format_html(f'<a href="/bill/{record.id}">{value}</a>')
+
+    def render_amount_brutto(self, record, value):
+        return format_html(f'<a href="/bill/{record.id}">{value}</a>')
 
     def order_project(self, queryset, is_descending):
         new_queryset = queryset.annotate(tmp=F('contract__project__name')).order_by(
@@ -158,6 +191,9 @@ class PaymentTable(tables.Table):
     amount_netto = SummingColumn()
     amount_brutto = SummingColumn()
 
+    def render_created(self, record):
+        return format_html(f'<a href="/payment/{record.id}">{record.created.strftime("%d.%m.%Y %H:%M")}</a>')
+
     def render_project(self, record):
         return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')
 
@@ -169,6 +205,18 @@ class PaymentTable(tables.Table):
 
     def render_name(self, record):
         return format_html(f'<a href="/payment/{record.id}">{record}</a>')
+
+    def render_date(self, record):
+        return format_html(f'<a href="/payment/{record.id}">{record.date.strftime("%d.%m.%Y")}</a>')
+
+    def render_amount_netto(self, record, value):
+        return format_html(f'<a href="/payment/{record.id}">{value}</a>')
+
+    def render_vat(self, record, value):
+        return format_html(f'<a href="/payment/{record.id}">{value}</a>')
+
+    def render_amount_brutto(self, record, value):
+        return format_html(f'<a href="/payment/{record.id}">{value}</a>')
 
     def order_project(self, queryset, is_descending):
         new_queryset = queryset.annotate(tmp=F('contract__project__name')).order_by(

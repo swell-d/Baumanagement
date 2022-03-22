@@ -75,8 +75,8 @@ class Contract(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
 
-    date = models.DateField(null=False, blank=True, verbose_name='Datum')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Auftrag')
+    date = models.DateField(null=False, blank=True, verbose_name='Datum')
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name='Projekt',
                                 on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bearbeiter',
@@ -111,8 +111,8 @@ class Bill(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
 
-    date = models.DateField(null=False, blank=True, verbose_name='Datum')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rechnung')
+    date = models.DateField(null=False, blank=True, verbose_name='Datum')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='bills')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
@@ -145,8 +145,8 @@ class Payment(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
 
-    date = models.DateField(null=False, blank=True, verbose_name='Datum')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Zahlung')
+    date = models.DateField(null=False, blank=True, verbose_name='Datum')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='payments')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
