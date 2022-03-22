@@ -1,19 +1,26 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django_tables2 import RequestConfig
 
-from Baumanagement.filters import ContractFilter, filter_form_prettify
 from Baumanagement.models import Contract, Payment, Bill
 from Baumanagement.tables import ContractTable, PaymentTable, BillTable
 
 
 def contracts(request):
-    filter = ContractFilter(request.GET, queryset=Contract.objects.all())
-    table1 = ContractTable(filter.qs, order_by="id")
-    RequestConfig(request).configure(table1)
-    filter_form = filter_form_prettify(filter.form)
+    search = request.GET.get('search')
+    if search:
+        text_fields = 'project__name', 'company__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
+        queries = [Q(**{f'{field}__icontains': search}) for field in text_fields]
+        qs = Q()
+        for query in queries:
+            qs = qs | query
+        table1 = ContractTable(Contract.objects.filter(qs), order_by="id")
+    else:
+        table1 = ContractTable(Contract.objects.all(), order_by="id")
 
-    context = {'titel1': 'Alle Aufträge', 'table1': table1,
-               'filter': filter, 'filter_form': filter_form}
+    RequestConfig(request).configure(table1)
+
+    context = {'titel1': 'Alle Aufträge', 'table1': table1, 'search': search}
     return render(request, 'Baumanagement/tables.html', context)
 
 

@@ -1,19 +1,26 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django_tables2 import RequestConfig
 
-from Baumanagement.filters import ProjectFilter, filter_form_prettify
 from Baumanagement.models import Project, Contract, Payment, Bill
 from Baumanagement.tables import ProjectTable, ContractTable, PaymentTable, BillTable
 
 
 def projects(request):
-    filter = ProjectFilter(request.GET, queryset=Project.objects.all())
-    table1 = ProjectTable(filter.qs, order_by="name")
-    RequestConfig(request).configure(table1)
-    filter_form = filter_form_prettify(filter.form)
+    search = request.GET.get('search')
+    if search:
+        text_fields = 'name', 'code', 'company__name', 'address', 'city', 'land'
+        queries = [Q(**{f'{field}__icontains': search}) for field in text_fields]
+        qs = Q()
+        for query in queries:
+            qs = qs | query
+        table1 = ProjectTable(Project.objects.filter(qs), order_by="name")
+    else:
+        table1 = ProjectTable(Project.objects.all(), order_by="name")
 
-    context = {'titel1': 'Alle Projekte', 'table1': table1,
-               'filter': filter, 'filter_form': filter_form}
+    RequestConfig(request).configure(table1)
+
+    context = {'titel1': 'Alle Projekte', 'table1': table1, 'search': search}
     return render(request, 'Baumanagement/tables.html', context)
 
 

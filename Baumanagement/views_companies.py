@@ -1,9 +1,8 @@
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Q
 from django.shortcuts import render
 from django.utils.html import format_html
 from django_tables2 import RequestConfig
 
-from Baumanagement.filters import CompanyFilter, filter_form_prettify
 from Baumanagement.models import Company, CompanyRole, Project, Contract
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
 
@@ -16,13 +15,20 @@ def roles_tags():
 
 
 def companies(request):
-    filter = CompanyFilter(request.GET, queryset=Company.objects.all())
-    table1 = CompanyTable(filter.qs, order_by="name")
-    RequestConfig(request).configure(table1)
-    filter_form = filter_form_prettify(filter.form)
+    search = request.GET.get('search')
+    if search:
+        text_fields = 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
+        queries = [Q(**{f'{field}__icontains': search}) for field in text_fields]
+        qs = Q()
+        for query in queries:
+            qs = qs | query
+        table1 = CompanyTable(Company.objects.filter(qs), order_by="name")
+    else:
+        table1 = CompanyTable(Company.objects.all(), order_by="name")
 
-    context = {'titel1': 'Alle Unternehmen', 'tags1': roles_tags(), 'table1': table1,
-               'filter': filter, 'filter_form': filter_form}
+    RequestConfig(request).configure(table1)
+
+    context = {'titel1': 'Alle Unternehmen', 'tags1': roles_tags(), 'table1': table1, 'search': search}
     return render(request, 'Baumanagement/tables.html', context)
 
 

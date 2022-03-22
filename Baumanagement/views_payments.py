@@ -1,19 +1,26 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django_tables2 import RequestConfig
 
-from Baumanagement.filters import PaymentFilter, filter_form_prettify
 from Baumanagement.models import Payment
 from Baumanagement.tables import PaymentTable
 
 
 def payments(request):
-    filter = PaymentFilter(request.GET, queryset=Payment.objects.all())
-    table1 = PaymentTable(filter.qs, order_by="id")
-    RequestConfig(request).configure(table1)
-    filter_form = filter_form_prettify(filter.form)
+    search = request.GET.get('search')
+    if search:
+        text_fields = 'contract__project__name', 'contract__company__name', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
+        queries = [Q(**{f'{field}__icontains': search}) for field in text_fields]
+        qs = Q()
+        for query in queries:
+            qs = qs | query
+        table1 = PaymentTable(Payment.objects.filter(qs), order_by="id")
+    else:
+        table1 = PaymentTable(Payment.objects.all(), order_by="id")
 
-    context = {'titel1': 'Alle Zahlungen', 'table1': table1,
-               'filter': filter, 'filter_form': filter_form}
+    RequestConfig(request).configure(table1)
+
+    context = {'titel1': 'Alle Zahlungen', 'table1': table1, 'search': search}
     return render(request, 'Baumanagement/tables.html', context)
 
 

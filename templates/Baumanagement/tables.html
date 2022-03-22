@@ -17,16 +17,13 @@
                 {{ tags1 }}
             </div>
         </div>
-        {% if filter %}
-            <div class="row">
-                <div class="col">
-                    <form method="get" class="form form-inline">
-                        <label>Filter: </label>
-                        {{ filter_form }}
-                    </form>
-                </div>
+        <div class="row">
+            <div class="col">
+                <form method="get" class="form form-inline d-flex justify-content-end">
+                    <input placeholder="Suche" onchange="this.form.submit()" type="text" name="search" {% if search %} value="{{ search }}"{% endif %}>
+                </form>
             </div>
-        {% endif %}
+        </div>
         <div class="row">
             <div class="col">
                 {% render_table table1 %}
