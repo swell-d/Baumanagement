@@ -52,6 +52,7 @@ class Project(models.Model):
                                 on_delete=models.RESTRICT, related_name='projects')
     address = models.CharField(max_length=256, null=False, blank=False, verbose_name='Adresse')
     city = models.CharField(max_length=256, null=False, blank=False, verbose_name='PLZ Stadt')
+    land = models.CharField(max_length=256, null=False, blank=True, verbose_name='Land', default='Deutschland')
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
 
     class Meta:
