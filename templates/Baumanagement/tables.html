@@ -17,13 +17,15 @@
                 {{ tags1 }}
             </div>
         </div>
-        <div class="row">
-            <div class="col">
-                <form method="get" class="form form-inline d-flex justify-content-end">
-                    <input placeholder="Suche" oninput="mainTableReload(this.value)" type="text" name="search">
-                </form>
+        {% if search_field %}
+            <div class="row">
+                <div class="col">
+                    <form method="get" class="form form-inline d-flex justify-content-end">
+                        <input placeholder="Suche" oninput="mainTableReload(this.value)" type="text" name="search">
+                    </form>
+                </div>
             </div>
-        </div>
+        {% endif %}
         <div class="row" id="main-table">
             {% include "Baumanagement/maintable.html" %}
         </div>

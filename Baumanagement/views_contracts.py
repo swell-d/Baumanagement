@@ -20,7 +20,7 @@ def contracts(request):
 
     RequestConfig(request).configure(table1)
 
-    context = {'titel1': 'Alle Aufträge', 'table1': table1, 'search': search, 'url': request.path}
+    context = {'titel1': 'Alle Aufträge', 'table1': table1, 'search_field': True, 'url': request.path}
     return render(request,
                   'Baumanagement/maintable.html' if search is not None else 'Baumanagement/tables.html',
                   context)
