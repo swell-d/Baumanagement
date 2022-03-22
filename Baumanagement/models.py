@@ -23,10 +23,12 @@ class Company(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Firmenname')
     address = models.CharField(max_length=256, null=False, blank=True, verbose_name='Adresse')
     city = models.CharField(max_length=256, null=False, blank=True, verbose_name='PLZ Stadt')
+    land = models.CharField(max_length=256, null=False, blank=True, verbose_name='Land', default='Deutschland')
     email = models.EmailField(null=False, blank=True, verbose_name='E-Mail')
     phone = models.CharField(max_length=256, null=False, blank=True, verbose_name='Rufnummer')
     role = models.ManyToManyField(CompanyRole, blank=False, verbose_name='Rolle', related_name='companies')
     ceo = models.CharField(max_length=256, null=False, blank=True, verbose_name='Geschäftsführer')
+    vat_number = models.CharField(max_length=16, null=False, blank=True, verbose_name='VAT-Nummer')
 
     class Meta:
         verbose_name = 'Unternehmen'
@@ -37,7 +39,7 @@ class Company(models.Model):
 
     @staticmethod
     def fields():
-        return 'name', 'address', 'email', 'phone', 'role', 'ceo'
+        return 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number'
 
 
 class Project(models.Model):
@@ -78,8 +80,10 @@ class Contract(models.Model):
                                 on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bearbeiter',
                                 on_delete=models.RESTRICT, related_name='contracts')
-    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Nettobetrag')
-    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Bruttobetrag')
+    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
+                                       verbose_name='Nettobetrag')
+    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
+                                        verbose_name='Bruttobetrag')
     vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
 
     class Meta:
@@ -110,8 +114,10 @@ class Bill(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rechnung')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='bills')
-    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Nettobetrag')
-    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Bruttobetrag')
+    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
+                                       verbose_name='Nettobetrag')
+    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
+                                        verbose_name='Bruttobetrag')
     vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
 
     class Meta:
@@ -142,8 +148,10 @@ class Payment(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Zahlung')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='payments')
-    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Nettobetrag')
-    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Bruttobetrag')
+    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
+                                       verbose_name='Nettobetrag')
+    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
+                                        verbose_name='Bruttobetrag')
     vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
 
     class Meta:

@@ -8,16 +8,17 @@ from .models import Company, Project, Contract, Payment, Bill
 
 
 def get_google_maps_link(record):
-    return format_html(
-        f'<a href="https://www.google.de/maps/search/{urllib.parse.quote_plus(record.address + " " + record.city)}" '
-        f'target="_blank">{record.address}, {record.city}</a>')
+    link = urllib.parse.quote_plus(record.address + " " + record.city + " " + record.land)
+    text = f'{record.address}, {record.city}'
+    if record.land != 'Deutschland':
+        text += f', {record.land}'
+    return format_html(f'<a href="https://www.google.de/maps/search/{link}" target="_blank">{text}</a>')
 
 
 class TableDesign:
     empty_text = "Keine Ergebnisse gefunden"
     template_name = "django_tables2/bootstrap4.html"
-    attrs = {'class': 'table table-hover',
-             'thead': {'class': 'thead-dark'}}
+    attrs = {'class': 'table table-hover'}
 
 
 class SummingColumn(tables.Column):
