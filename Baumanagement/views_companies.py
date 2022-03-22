@@ -1,10 +1,11 @@
-from django.db.models import QuerySet, Q
-from django.shortcuts import render
+from django.db.models import QuerySet
 from django.utils.html import format_html
 from django_tables2 import RequestConfig
 
 from Baumanagement.models import Company, CompanyRole, Project, Contract
+from Baumanagement.search_fields import companies_search_fields, filter_queryset
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
+from Baumanagement.views import myrender
 
 
 def roles_tags():
@@ -15,23 +16,13 @@ def roles_tags():
 
 
 def companies(request):
-    search = request.GET.get('search')
     queryset = Company.objects.all()
-    if search is not None:
-        text_fields = 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
-        qs = Q()
-        for query in [Q(**{f'{field}__icontains': search}) for field in text_fields]:
-            qs = qs | query
-        queryset = queryset.filter(qs)
-
+    queryset = filter_queryset(queryset, request, companies_search_fields)
     table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
-
     context = {'titel1': 'Alle Unternehmen', 'tags1': roles_tags(), 'table1': table1, 'search_field': True,
                'url': request.path}
-    return render(request,
-                  'Baumanagement/maintable.html' if search is not None else 'Baumanagement/tables.html',
-                  context)
+    return myrender(request, context)
 
 
 def companies_by_role(request, id):
@@ -39,7 +30,7 @@ def companies_by_role(request, id):
     RequestConfig(request).configure(table1)
     context = {'titel1': f'Unternehmen - {CompanyRole.objects.get(id=id).name}', 'tags1': roles_tags(),
                'table1': table1}
-    return render(request, 'Baumanagement/tables.html', context)
+    return myrender(request, context)
 
 
 def company(request, id):
@@ -74,4 +65,4 @@ def company(request, id):
     context = {'titel1': f'Unternehmen - {company.name}', 'tags1': roles_tags(), 'table1': table1,
                'tables': tables}
 
-    return render(request, 'Baumanagement/tables.html', context)
+    return myrender(request, context)

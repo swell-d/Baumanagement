@@ -7,9 +7,16 @@
 {% block content %}
 
     {% if table1 %}
-        <div class="row">
-            <div class="col">
+        <div class="row align-items-end">
+            <div class="col-6">
                 <h1>{{ titel1 }}</h1>
+            </div>
+            <div class="col-6">
+                {% if search_field %}
+                    <form method="get" class="form form-inline d-flex justify-content-end">
+                        <input placeholder="Suche" oninput="mainTableReload(this.value)" type="text" name="search">
+                    </form>
+                {% endif %}
             </div>
         </div>
         <div class="row">
@@ -17,15 +24,6 @@
                 {{ tags1 }}
             </div>
         </div>
-        {% if search_field %}
-            <div class="row">
-                <div class="col">
-                    <form method="get" class="form form-inline d-flex justify-content-end">
-                        <input placeholder="Suche" oninput="mainTableReload(this.value)" type="text" name="search">
-                    </form>
-                </div>
-            </div>
-        {% endif %}
         <div class="row" id="main-table">
             {% include "Baumanagement/maintable.html" %}
         </div>
