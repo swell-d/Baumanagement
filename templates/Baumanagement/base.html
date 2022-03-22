@@ -13,10 +13,8 @@
         function mainTableReload(value) {
             const Http = new XMLHttpRequest();
             const url = "..{{ url }}" + "?search=" + value;
-            console.log(url);
             Http.open("GET", url);
             Http.send();
-
             Http.onreadystatechange = (e) => {
                 document.getElementById("main-table").innerHTML = Http.responseText
             }
