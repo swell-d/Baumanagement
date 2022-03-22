@@ -25,6 +25,7 @@ table.table thead th.desc.orderable:after {
 }
 
 table.table td, table.table th {
+    vertical-align: middle;
     text-align: center;
 }
 

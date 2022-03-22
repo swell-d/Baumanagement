@@ -16,16 +16,15 @@ def roles_tags():
 
 def companies(request):
     search = request.GET.get('search')
+    queryset = Company.objects.all()
     if search is not None:
         text_fields = 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
-        queries = [Q(**{f'{field}__icontains': search}) for field in text_fields]
         qs = Q()
-        for query in queries:
+        for query in [Q(**{f'{field}__icontains': search}) for field in text_fields]:
             qs = qs | query
-        table1 = CompanyTable(Company.objects.filter(qs), order_by="name")
-    else:
-        table1 = CompanyTable(Company.objects.all(), order_by="name")
+        queryset = queryset.filter(qs)
 
+    table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
 
     context = {'titel1': 'Alle Unternehmen', 'tags1': roles_tags(), 'table1': table1, 'search_field': True,

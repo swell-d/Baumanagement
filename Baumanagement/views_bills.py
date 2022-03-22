@@ -10,17 +10,16 @@ from Baumanagement.tables import BillTable
 
 def bills(request):
     search = request.GET.get('search')
+    queryset = Bill.objects.all()
     if search is not None:
         text_fields = 'contract__project__name', 'contract__company__name', 'contract__name', \
                       'name', 'amount_netto', 'vat', 'amount_brutto'
-        queries = [Q(**{f'{field}__icontains': search}) for field in text_fields]
         qs = Q()
-        for query in queries:
+        for query in [Q(**{f'{field}__icontains': search}) for field in text_fields]:
             qs = qs | query
-        table1 = BillTable(Bill.objects.filter(qs), order_by="id")
-    else:
-        table1 = BillTable(Bill.objects.all(), order_by="id")
+        queryset = queryset.filter(qs)
 
+    table1 = BillTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
 
     context = {'titel1': 'Alle Rechnungen', 'table1': table1, 'search_field': True, 'url': request.path}

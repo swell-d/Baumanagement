@@ -8,16 +8,15 @@ from Baumanagement.tables import ProjectTable, ContractTable, PaymentTable, Bill
 
 def projects(request):
     search = request.GET.get('search')
+    queryset = Project.objects.all()
     if search is not None:
         text_fields = 'name', 'code', 'company__name', 'address', 'city', 'land'
-        queries = [Q(**{f'{field}__icontains': search}) for field in text_fields]
         qs = Q()
-        for query in queries:
+        for query in [Q(**{f'{field}__icontains': search}) for field in text_fields]:
             qs = qs | query
-        table1 = ProjectTable(Project.objects.filter(qs), order_by="name")
-    else:
-        table1 = ProjectTable(Project.objects.all(), order_by="name")
+        queryset = queryset.filter(qs)
 
+    table1 = ProjectTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
 
     context = {'titel1': 'Alle Projekte', 'table1': table1, 'search_field': True, 'url': request.path}
