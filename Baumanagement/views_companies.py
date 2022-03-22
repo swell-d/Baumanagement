@@ -20,8 +20,7 @@ def companies(request):
     queryset = filter_queryset(queryset, request, companies_search_fields)
     table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
-    context = {'titel1': 'Alle Unternehmen', 'tags1': roles_tags(), 'table1': table1, 'search_field': True,
-               'url': request.path}
+    context = {'titel1': 'Alle Unternehmen', 'tags1': roles_tags(), 'table1': table1, 'search_field': True}
     return myrender(request, context)
 
 

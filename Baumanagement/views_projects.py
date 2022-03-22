@@ -11,7 +11,7 @@ def projects(request):
     queryset = filter_queryset(queryset, request, projects_search_fields)
     table1 = ProjectTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
-    context = {'titel1': 'Alle Projekte', 'table1': table1, 'search_field': True, 'url': request.path}
+    context = {'titel1': 'Alle Projekte', 'table1': table1, 'search_field': True}
     return myrender(request, context)
 
 

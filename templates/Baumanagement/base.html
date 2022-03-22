@@ -12,7 +12,7 @@
     <script>
         function mainTableReload(value) {
             const Http = new XMLHttpRequest();
-            const url = "..{{ url }}" + "?search=" + value;
+            const url = "{{ url }}" + "?search=" + value;
             Http.open("GET", url);
             Http.send();
             Http.onreadystatechange = (e) => {

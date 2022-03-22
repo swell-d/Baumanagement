@@ -13,7 +13,7 @@ def bills(request):
     queryset = filter_queryset(queryset, request, bills_search_fields)
     table1 = BillTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
-    context = {'titel1': 'Alle Rechnungen', 'table1': table1, 'search_field': True, 'url': request.path}
+    context = {'titel1': 'Alle Rechnungen', 'table1': table1, 'search_field': True}
     return myrender(request, context)
 
 

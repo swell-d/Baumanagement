@@ -11,7 +11,7 @@ def payments(request):
     queryset = filter_queryset(queryset, request, payments_search_fields)
     table1 = PaymentTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
-    context = {'titel1': 'Alle Zahlungen', 'table1': table1, 'search_field': True, 'url': request.path}
+    context = {'titel1': 'Alle Zahlungen', 'table1': table1, 'search_field': True}
     return myrender(request, context)
 
 
