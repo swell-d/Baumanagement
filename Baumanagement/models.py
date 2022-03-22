@@ -138,7 +138,7 @@ class Bill(models.Model):
 
     @staticmethod
     def fields():
-        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto',
+        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
 class Payment(models.Model):
@@ -172,4 +172,4 @@ class Payment(models.Model):
 
     @staticmethod
     def fields():
-        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto',
+        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
