@@ -11,9 +11,9 @@ class UrlTests(TestCase):
         self.CompanyRole = CompanyRole.objects.create(name='test')
         self.Company = Company.objects.create(name='test')
         self.Project = Project.objects.create(name='test', company_id=1)
-        self.Contract = Contract.objects.create(name='test', project_id=1, company_id=1, amount=1, date=datetime.now())
-        self.Payment = Payment.objects.create(name='test', contract_id=1, amount=1, date=datetime.now())
-        self.Bill = Bill.objects.create(name='test', contract_id=1, amount=1, date=datetime.now())
+        self.Contract = Contract.objects.create(name='test', project_id=1, company_id=1, amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
+        self.Payment = Payment.objects.create(name='test', contract_id=1, amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
+        self.Bill = Bill.objects.create(name='test', contract_id=1, amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
 
     def test_pages(self):
         client = Client()

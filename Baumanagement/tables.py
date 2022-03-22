@@ -78,7 +78,8 @@ class ContractTable(tables.Table):
         model = Contract
         fields = Contract.fields()
 
-    amount = SummingColumn()
+    amount_netto = SummingColumn()
+    amount_brutto = SummingColumn()
     due = SummingColumn(orderable=False, verbose_name='Rechnungen')
     payed = SummingColumn(orderable=False, verbose_name='Zahlungen')
 
@@ -105,7 +106,8 @@ class BillTable(tables.Table):
 
     project = tables.Column(orderable=False, verbose_name='Projekt')
     company = tables.Column(orderable=False, verbose_name='Bearbeiter')
-    amount = SummingColumn()
+    amount_netto = SummingColumn()
+    amount_brutto = SummingColumn()
 
     def render_project(self, record):
         return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')
@@ -127,7 +129,8 @@ class PaymentTable(tables.Table):
 
     project = tables.Column(orderable=False, verbose_name='Projekt')
     company = tables.Column(orderable=False, verbose_name='Bearbeiter')
-    amount = SummingColumn()
+    amount_netto = SummingColumn()
+    amount_brutto = SummingColumn()
 
     def render_project(self, record):
         return format_html(f'<a href="/project/{record.project.id}">{record.project}</a>')

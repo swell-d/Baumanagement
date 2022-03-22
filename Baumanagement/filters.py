@@ -42,7 +42,6 @@ class ContractFilter(django_filters.FilterSet):
         model = Contract
         fields = {}
         fields['name'] = ['contains']
-        fields['amount'] = ['contains']
 
 
 class PaymentFilter(django_filters.FilterSet):
@@ -50,7 +49,6 @@ class PaymentFilter(django_filters.FilterSet):
         model = Payment
         fields = {}
         fields['name'] = ['contains']
-        fields['amount'] = ['contains']
 
 
 class BillFilter(django_filters.FilterSet):
@@ -58,4 +56,3 @@ class BillFilter(django_filters.FilterSet):
         model = Bill
         fields = {}
         fields['name'] = ['contains']
-        fields['amount'] = ['contains']

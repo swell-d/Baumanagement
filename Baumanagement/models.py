@@ -78,7 +78,9 @@ class Contract(models.Model):
                                 on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bearbeiter',
                                 on_delete=models.RESTRICT, related_name='contracts')
-    amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
+    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Nettobetrag')
+    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Bruttobetrag')
+    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
 
     class Meta:
         verbose_name = 'Auftrag'
@@ -89,15 +91,15 @@ class Contract(models.Model):
 
     @property
     def due(self):
-        return sum(bill.amount for bill in self.bills.all())
+        return sum(bill.amount_brutto for bill in self.bills.all())
 
     @property
     def payed(self):
-        return sum(payment.amount for payment in self.payments.all())
+        return sum(payment.amount_brutto for payment in self.payments.all())
 
     @staticmethod
     def fields():
-        return 'created', 'project', 'company', 'name', 'date', 'amount', 'due', 'payed'
+        return 'created', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
 
 
 class Bill(models.Model):
@@ -108,7 +110,9 @@ class Bill(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rechnung')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='bills')
-    amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
+    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Nettobetrag')
+    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Bruttobetrag')
+    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
 
     class Meta:
         verbose_name = 'Rechnung'
@@ -127,7 +131,7 @@ class Bill(models.Model):
 
     @staticmethod
     def fields():
-        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount'
+        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto',
 
 
 class Payment(models.Model):
@@ -138,7 +142,9 @@ class Payment(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Zahlung')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='payments')
-    amount = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Betrag')
+    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Nettobetrag')
+    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False, verbose_name='Bruttobetrag')
+    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
 
     class Meta:
         verbose_name = 'Zahlung'
@@ -157,4 +163,4 @@ class Payment(models.Model):
 
     @staticmethod
     def fields():
-        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount'
+        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto',
