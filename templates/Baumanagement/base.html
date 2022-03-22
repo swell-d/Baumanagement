@@ -8,6 +8,21 @@
     {% bootstrap_javascript %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <title>{% block title %}Baumanagement{% endblock %}</title>
+
+    <script>
+        function mainTableReload(value) {
+            const Http = new XMLHttpRequest();
+            const url = "http://127.0.0.1:8000" + "{{ url }}" + "?realtime=" + value;
+            console.log(url);
+            Http.open("GET", url);
+            Http.send();
+
+            Http.onreadystatechange = (e) => {
+                document.getElementById("main-table").innerHTML = Http.responseText
+            }
+        }
+    </script>
+
 </head>
 
 <body>
