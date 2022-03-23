@@ -2,7 +2,7 @@ import re
 import urllib.parse
 
 import django_tables2 as tables
-from django.db.models import Count, Sum, F
+from django.db.models import Count, F
 from django.utils.html import format_html
 
 from .models import Company, Project, Contract, Payment, Bill
@@ -24,7 +24,7 @@ class TableDesign:
 
 class SummingColumn(tables.Column):
     def render_footer(self, bound_column, table):
-        return sum(bound_column.accessor.resolve(row) for row in table.data)
+        return f'{sum(bound_column.accessor.resolve(row) or 0 for row in table.data): .2f}'
 
 
 class CreateFooter(tables.Column):
@@ -117,20 +117,10 @@ class ContractTable(tables.Table):
         return format_html(f'<a href="/contract/{record.id}">{value}</a>')
 
     def render_due(self, record, value):
-        return format_html(f'<a href="/contract/{record.id}/bills">{value}</a>')
+        return format_html(f'<a href="/contract/{record.id}/bills">{value:.2f}</a>')
 
     def render_payed(self, record, value):
-        return format_html(f'<a href="/contract/{record.id}/payments">{value}</a>')
-
-    def order_due(self, queryset, is_descending):
-        new_queryset = queryset.annotate(tmp=Sum('bills__amount_brutto')).order_by(
-            ("-" if is_descending else "") + "tmp")
-        return (new_queryset, True)
-
-    def order_payed(self, queryset, is_descending):
-        new_queryset = queryset.annotate(tmp=Sum('payments__amount_brutto')).order_by(
-            ("-" if is_descending else "") + "tmp")
-        return (new_queryset, True)
+        return format_html(f'<a href="/contract/{record.id}/payments">{value:.2f}</a>')
 
 
 class BillTable(tables.Table):

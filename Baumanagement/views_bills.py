@@ -2,15 +2,14 @@ from django.views import View
 from django_tables2 import RequestConfig
 
 from Baumanagement.forms_bills import BillForm
-from Baumanagement.models import Bill
-from Baumanagement.search_fields import filter_queryset, bills_search_fields
+from Baumanagement.models import Bill, filter_queryset
 from Baumanagement.tables import BillTable
 from Baumanagement.views import myrender
 
 
 def bills(request):
     queryset = Bill.objects.all()
-    queryset = filter_queryset(queryset, request, bills_search_fields)
+    queryset = filter_queryset(queryset, request)
     table1 = BillTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
     context = {'titel1': 'Alle Rechnungen', 'table1': table1, 'search_field': True}

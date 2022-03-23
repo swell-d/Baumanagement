@@ -1,15 +1,14 @@
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Contract, Payment, Bill
-from Baumanagement.search_fields import contracts_search_fields, filter_queryset, bills_search_fields, \
-    payments_search_fields
+from Baumanagement.models import Contract, Payment, Bill, filter_queryset
 from Baumanagement.tables import ContractTable, PaymentTable, BillTable
 from Baumanagement.views import myrender
 
 
 def contracts(request):
-    queryset = Contract.objects.all()
-    queryset = filter_queryset(queryset, request, contracts_search_fields)
+    queryset = Contract.objects
+    queryset = Contract.extra_fields(queryset)
+    queryset = filter_queryset(queryset, request)
     table1 = ContractTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
     context = {'titel1': 'Alle Aufträge', 'table1': table1, 'search_field': True}
@@ -20,7 +19,9 @@ def contract(request, id):
     tables = []
     contract = Contract.objects.get(id=id)
 
-    table1 = ContractTable(Contract.objects.filter(id=id))
+    queryset = Contract.objects.filter(id=id)
+    queryset = Contract.extra_fields(queryset)
+    table1 = ContractTable(queryset)
     RequestConfig(request).configure(table1)
 
     bills = contract.bills.all()
@@ -41,7 +42,7 @@ def contract(request, id):
 def contract_bills(request, id):
     contract = Contract.objects.get(id=id)
     queryset = Bill.objects.filter(contract=contract)
-    queryset = filter_queryset(queryset, request, bills_search_fields)
+    queryset = filter_queryset(queryset, request)
     table1 = BillTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
     context = {'titel1': f'Rechnungen - Auftrag - {contract.name}', 'table1': table1, 'search_field': True}
@@ -52,7 +53,7 @@ def contract_bills(request, id):
 def contract_payments(request, id):
     contract = Contract.objects.get(id=id)
     queryset = Payment.objects.filter(contract=contract)
-    queryset = filter_queryset(queryset, request, payments_search_fields)
+    queryset = filter_queryset(queryset, request)
     table1 = PaymentTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
     context = {'titel1': f'Zahlungen - Auftrag - {contract.name}', 'table1': table1, 'search_field': True}

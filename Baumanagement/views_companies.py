@@ -2,8 +2,7 @@ from django.db.models import QuerySet
 from django.utils.html import format_html
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Company, CompanyRole, Project, Contract
-from Baumanagement.search_fields import companies_search_fields, filter_queryset
+from Baumanagement.models import Company, CompanyRole, Project, Contract, filter_queryset
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
 from Baumanagement.views import myrender
 
@@ -17,7 +16,7 @@ def roles_tags():
 
 def companies(request):
     queryset = Company.objects.all()
-    queryset = filter_queryset(queryset, request, companies_search_fields)
+    queryset = filter_queryset(queryset, request)
     table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
     context = {'titel1': 'Alle Unternehmen', 'tags1': roles_tags(), 'table1': table1, 'search_field': True}
@@ -46,6 +45,7 @@ def company(request, id):
         tables.append({'table': table, 'titel': 'Projekte'})
 
     contracts = Contract.objects.filter(company=id)
+    contracts = Contract.extra_fields(contracts)
     if contracts:
         table = ContractTable(contracts, order_by="name")
         RequestConfig(request).configure(table)

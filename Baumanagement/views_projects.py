@@ -1,14 +1,13 @@
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Project, Contract, Payment, Bill
-from Baumanagement.search_fields import projects_search_fields, filter_queryset
+from Baumanagement.models import Project, Contract, Payment, Bill, filter_queryset
 from Baumanagement.tables import ProjectTable, ContractTable, PaymentTable, BillTable
 from Baumanagement.views import myrender
 
 
 def projects(request):
     queryset = Project.objects.all()
-    queryset = filter_queryset(queryset, request, projects_search_fields)
+    queryset = filter_queryset(queryset, request)
     table1 = ProjectTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
     context = {'titel1': 'Alle Projekte', 'table1': table1, 'search_field': True}
@@ -23,6 +22,7 @@ def project(request, id):
     RequestConfig(request).configure(table1)
 
     contracts = Contract.objects.filter(project=id)
+    contracts = Contract.extra_fields(contracts)
     if contracts:
         table = ContractTable(contracts, order_by="name")
         RequestConfig(request).configure(table)

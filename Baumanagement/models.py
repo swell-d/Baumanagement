@@ -1,4 +1,15 @@
 from django.db import models
+from django.db.models import Sum, Q
+
+
+def filter_queryset(queryset, request):
+    search = request.GET.get('search')
+    if search is not None:
+        qs = Q()
+        for query in [Q(**{f'{field}__icontains': search}) for field in queryset[0].__class__.search_fields()]:
+            qs = qs | query
+        queryset = queryset.filter(qs)
+    return queryset
 
 
 class CompanyRole(models.Model):
@@ -19,7 +30,6 @@ class CompanyRole(models.Model):
 class Company(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Firmenname')
     address = models.CharField(max_length=256, null=False, blank=True, verbose_name='Adresse')
     city = models.CharField(max_length=256, null=False, blank=True, verbose_name='PLZ Stadt')
@@ -41,11 +51,14 @@ class Company(models.Model):
     def fields():
         return 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number'
 
+    @staticmethod
+    def search_fields():
+        return 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
+
 
 class Project(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Projektname')
     code = models.CharField(max_length=256, null=False, blank=False, verbose_name='Kode')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bauherr',
@@ -70,11 +83,14 @@ class Project(models.Model):
     def fields():
         return 'created', 'name', 'code', 'company', 'address', 'open', 'count_contracts'
 
+    @staticmethod
+    def search_fields():
+        return 'name', 'code', 'company__name', 'address', 'city', 'land'
+
 
 class Contract(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Auftrag')
     date = models.DateField(null=False, blank=True, verbose_name='Datum')
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name='Projekt',
@@ -94,23 +110,23 @@ class Contract(models.Model):
     def __str__(self):
         return self.name
 
-    @property
-    def due(self):
-        return sum(bill.amount_brutto for bill in self.bills.all())
-
-    @property
-    def payed(self):
-        return sum(payment.amount_brutto for payment in self.payments.all())
+    @staticmethod
+    def extra_fields(qs):
+        return qs.annotate(payed=Sum('payments__amount_brutto', distinct=True),
+                           due=Sum('bills__amount_brutto', distinct=True))
 
     @staticmethod
     def fields():
         return 'created', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
 
+    @staticmethod
+    def search_fields():
+        return 'project__name', 'company__name', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+
 
 class Bill(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rechnung')
     date = models.DateField(null=False, blank=True, verbose_name='Datum')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
@@ -140,11 +156,15 @@ class Bill(models.Model):
     def fields():
         return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
+    @staticmethod
+    def search_fields():
+        return 'contract__project__name', 'contract__company__name', 'contract__name', \
+               'name', 'amount_netto', 'vat', 'amount_brutto'
+
 
 class Payment(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Zahlung')
     date = models.DateField(null=False, blank=True, verbose_name='Datum')
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
@@ -173,3 +193,8 @@ class Payment(models.Model):
     @staticmethod
     def fields():
         return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
+
+    @staticmethod
+    def search_fields():
+        return 'contract__project__name', 'contract__company__name', 'contract__name', \
+               'name', 'amount_netto', 'vat', 'amount_brutto'
