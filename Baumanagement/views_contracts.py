@@ -25,11 +25,13 @@ def contract(request, id):
     RequestConfig(request).configure(table1)
 
     bills = contract.bills.all()
+    bills = Bill.extra_fields(bills)
     table = BillTable(bills, order_by="id")
     RequestConfig(request).configure(table)
     tables.append({'table': table, 'titel': 'Rechnungen'})
 
     payments = contract.payments.all()
+    payments = Payment.extra_fields(payments)
     table = PaymentTable(payments, order_by="id")
     RequestConfig(request).configure(table)
     tables.append({'table': table, 'titel': 'Zahlungen'})
@@ -46,7 +48,6 @@ def contract_bills(request, id):
     table1 = BillTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
     context = {'titel1': f'Rechnungen - Auftrag - {contract.name}', 'table1': table1, 'search_field': True}
-    # breakpoint()
     return myrender(request, context)
 
 

@@ -1,8 +1,7 @@
-from django.db.models import QuerySet
 from django.utils.html import format_html
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Company, CompanyRole, Project, Contract, filter_queryset
+from Baumanagement.models import Company, CompanyRole, Project, Contract, filter_queryset, Bill, Payment
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
 from Baumanagement.views import myrender
 
@@ -15,7 +14,7 @@ def roles_tags():
 
 
 def companies(request):
-    queryset = Company.objects.all()
+    queryset = Company.objects
     queryset = filter_queryset(queryset, request)
     table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
@@ -24,10 +23,12 @@ def companies(request):
 
 
 def companies_by_role(request, id):
-    table1 = CompanyTable(Company.objects.filter(role=id), order_by="name")
+    queryset = Company.objects.filter(role=id)
+    queryset = filter_queryset(queryset, request)
+    table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
     context = {'titel1': f'Unternehmen - {CompanyRole.objects.get(id=id).name}', 'tags1': roles_tags(),
-               'table1': table1}
+               'table1': table1, 'search_field': True}
     return myrender(request, context)
 
 
@@ -35,7 +36,8 @@ def company(request, id):
     tables = []
     company = Company.objects.get(id=id)
 
-    table1 = CompanyTable(Company.objects.filter(id=id))
+    queryset = Company.objects.filter(id=id)
+    table1 = CompanyTable(queryset)
     RequestConfig(request).configure(table1)
 
     projects = Project.objects.filter(company=id)
@@ -52,12 +54,14 @@ def company(request, id):
         RequestConfig(request).configure(table)
         tables.append({'table': table, 'titel': 'Aufträge'})
 
-        bills = QuerySet.union(*[contract.bills.all() for contract in contracts])
+        bills = [contract.bills.all() for contract in contracts]
+        bills = Bill.extra_fields(*bills)
         table = BillTable(bills, order_by="id")
         RequestConfig(request).configure(table)
         tables.append({'table': table, 'titel': 'Rechnungen'})
 
-        payments = QuerySet.union(*[contract.payments.all() for contract in contracts])
+        payments = [contract.payments.all() for contract in contracts]
+        payments = Payment.extra_fields(*payments)
         table = PaymentTable(payments, order_by="id")
         RequestConfig(request).configure(table)
         tables.append({'table': table, 'titel': 'Zahlungen'})

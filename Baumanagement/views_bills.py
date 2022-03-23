@@ -8,7 +8,8 @@ from Baumanagement.views import myrender
 
 
 def bills(request):
-    queryset = Bill.objects.all()
+    queryset = Bill.objects
+    queryset = Bill.extra_fields(queryset)
     queryset = filter_queryset(queryset, request)
     table1 = BillTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
@@ -18,7 +19,10 @@ def bills(request):
 
 def bill(request, id):
     bill = Bill.objects.get(id=id)
-    table1 = BillTable(Bill.objects.filter(id=id))
+
+    queryset = Bill.objects.filter(id=id)
+    queryset = Bill.extra_fields(queryset)
+    table1 = BillTable(queryset)
     RequestConfig(request).configure(table1)
     context = {'titel1': f'Rechnung - {bill.name}', 'table1': table1}
     return myrender(request, context)

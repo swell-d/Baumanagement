@@ -6,7 +6,7 @@ from Baumanagement.views import myrender
 
 
 def projects(request):
-    queryset = Project.objects.all()
+    queryset = Project.objects
     queryset = Project.extra_fields(queryset)
     queryset = filter_queryset(queryset, request)
     table1 = ProjectTable(queryset, order_by="name")
@@ -38,15 +38,21 @@ def project(request, id):
 
 def project_payments(request, id):
     project = Project.objects.get(id=id)
-    table1 = PaymentTable(Payment.objects.filter(contract__in=project.contracts.all()), order_by="id")
+    queryset = Payment.objects.filter(contract__in=project.contracts.all())
+    queryset = Payment.extra_fields(queryset)
+    queryset = filter_queryset(queryset, request)
+    table1 = PaymentTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
-    context = {'titel1': f'Zahlungen - Projekt - {project.name}', 'table1': table1}
+    context = {'titel1': f'Zahlungen - Projekt - {project.name}', 'table1': table1, 'search_field': True}
     return myrender(request, context)
 
 
 def project_bills(request, id):
     project = Project.objects.get(id=id)
-    table1 = BillTable(Bill.objects.filter(contract__in=project.contracts.all()), order_by="id")
+    queryset = Bill.objects.filter(contract__in=project.contracts.all())
+    queryset = Bill.extra_fields(queryset)
+    queryset = filter_queryset(queryset, request)
+    table1 = BillTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
-    context = {'titel1': f'Rechnungen - Projekt - {project.name}', 'table1': table1}
+    context = {'titel1': f'Rechnungen - Projekt - {project.name}', 'table1': table1, 'search_field': True}
     return myrender(request, context)

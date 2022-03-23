@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum, Q, Count
+from django.db.models import Sum, Q, Count, F
 
 
 def filter_queryset(queryset, request):
@@ -144,13 +144,9 @@ class Bill(models.Model):
     def __str__(self):
         return self.name
 
-    @property
-    def project(self):
-        return self.contract.project
-
-    @property
-    def company(self):
-        return self.contract.company
+    @staticmethod
+    def extra_fields(qs):
+        return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
 
     @staticmethod
     def fields():
@@ -158,8 +154,7 @@ class Bill(models.Model):
 
     @staticmethod
     def search_fields():
-        return 'contract__project__name', 'contract__company__name', 'contract__name', \
-               'name', 'amount_netto', 'vat', 'amount_brutto'
+        return 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
 
 
 class Payment(models.Model):
@@ -182,13 +177,9 @@ class Payment(models.Model):
     def __str__(self):
         return self.name
 
-    @property
-    def project(self):
-        return self.contract.project
-
-    @property
-    def company(self):
-        return self.contract.company
+    @staticmethod
+    def extra_fields(qs):
+        return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
 
     @staticmethod
     def fields():
@@ -196,5 +187,4 @@ class Payment(models.Model):
 
     @staticmethod
     def search_fields():
-        return 'contract__project__name', 'contract__company__name', 'contract__name', \
-               'name', 'amount_netto', 'vat', 'amount_brutto'
+        return 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
