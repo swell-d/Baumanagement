@@ -9,7 +9,7 @@
     {% if table1 %}
         <div class="row">
             <div class="col-6">
-                <h1>{{ titel1 }}</h1>
+                <span class="h1">{{ titel1 }}</span>
             </div>
             <div class="col-6 d-flex align-items-center justify-content-end">
                 {% if search_field %}
@@ -36,7 +36,7 @@
     {% for next_table in tables %}
         <div class="row">
             <div class="col">
-                <h2>{{ next_table.titel }}</h2>
+                <span class="h2">{{ next_table.titel }}</span><span> ({{ next_table.table.rows|length }})</span>
             </div>
         </div>
         <div class="row">
