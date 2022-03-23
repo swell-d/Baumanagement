@@ -15,6 +15,7 @@ def roles_tags():
 
 def companies(request):
     queryset = Company.objects
+    queryset = Company.extra_fields(queryset)
     queryset = filter_queryset(queryset, request)
     table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
@@ -24,6 +25,7 @@ def companies(request):
 
 def companies_by_role(request, id):
     queryset = Company.objects.filter(role=id)
+    queryset = Company.extra_fields(queryset)
     queryset = filter_queryset(queryset, request)
     table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
@@ -37,6 +39,7 @@ def company(request, id):
     company = Company.objects.get(id=id)
 
     queryset = Company.objects.filter(id=id)
+    queryset = Company.extra_fields(queryset)
     table1 = CompanyTable(queryset)
     RequestConfig(request).configure(table1)
 

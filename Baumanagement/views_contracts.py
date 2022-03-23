@@ -44,6 +44,7 @@ def contract(request, id):
 def contract_bills(request, id):
     contract = Contract.objects.get(id=id)
     queryset = Bill.objects.filter(contract=contract)
+    queryset = Bill.extra_fields(queryset)
     queryset = filter_queryset(queryset, request)
     table1 = BillTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
@@ -54,6 +55,7 @@ def contract_bills(request, id):
 def contract_payments(request, id):
     contract = Contract.objects.get(id=id)
     queryset = Payment.objects.filter(contract=contract)
+    queryset = Payment.extra_fields(queryset)
     queryset = filter_queryset(queryset, request)
     table1 = PaymentTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)

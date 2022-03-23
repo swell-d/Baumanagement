@@ -48,6 +48,10 @@ class Company(models.Model):
         return self.name
 
     @staticmethod
+    def extra_fields(qs):
+        return qs.all()
+
+    @staticmethod
     def fields():
         return 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number'
 

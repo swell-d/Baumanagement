@@ -5,7 +5,6 @@ from . import views_companies
 from . import views_contracts
 from . import views_payments
 from . import views_projects
-from .views_bills import BillView
 
 urlpatterns = [
     path("", views_projects.projects),
@@ -29,8 +28,6 @@ urlpatterns = [
 
     path("bills", views_bills.bills),
     path("bill/<int:id>", views_bills.bill),
-
-    path('test/', BillView.as_view(), name='bill'),
 
 ]
 
