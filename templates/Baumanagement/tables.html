@@ -7,15 +7,13 @@
 {% block content %}
 
     {% if table1 %}
-        <div class="row align-items-end">
+        <div class="row">
             <div class="col-6">
                 <h1>{{ titel1 }}</h1>
             </div>
-            <div class="col-6">
+            <div class="col-6 d-flex align-items-center justify-content-end">
                 {% if search_field %}
-                    <form method="get" class="form form-inline d-flex justify-content-end">
-                        <input placeholder="Suche" oninput="mainTableReload(this.value)" type="text" name="search">
-                    </form>
+                    <input placeholder="Suche" oninput="mainTableReload(this.value)" type="text" name="search">
                 {% endif %}
             </div>
         </div>
