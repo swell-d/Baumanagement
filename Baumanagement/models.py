@@ -14,6 +14,7 @@ def filter_queryset(queryset, request):
 
 class CompanyRole(models.Model):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rolle')
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
 
     class Meta:
         verbose_name = 'Rolle'
@@ -39,6 +40,7 @@ class Company(models.Model):
     role = models.ManyToManyField(CompanyRole, blank=False, verbose_name='Rolle', related_name='companies')
     ceo = models.CharField(max_length=256, null=False, blank=True, verbose_name='Geschäftsführer')
     vat_number = models.CharField(max_length=16, null=False, blank=True, verbose_name='VAT-Nummer')
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
 
     class Meta:
         verbose_name = 'Unternehmen'
@@ -106,6 +108,7 @@ class Contract(models.Model):
     vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name='Bruttobetrag')
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
 
     class Meta:
         verbose_name = 'Auftrag'
@@ -140,6 +143,7 @@ class Bill(models.Model):
     vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name='Bruttobetrag')
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
 
     class Meta:
         verbose_name = 'Rechnung'
@@ -173,6 +177,7 @@ class Payment(models.Model):
     vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name='Bruttobetrag')
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
 
     class Meta:
         verbose_name = 'Zahlung'

@@ -7,9 +7,13 @@ body {
     margin-bottom: 60px;
 }
 
-a {
+table.table a {
     text-decoration: none;
     color: #212529;
+}
+
+tr.text-muted a, tr.text-muted td {
+    color: lightgray;
 }
 
 form.form-inline input {

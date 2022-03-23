@@ -20,9 +20,8 @@ def bill(request, id):
     bill = Bill.objects.get(id=id)
 
     if request.method == 'POST':
-        formset = BillForm(request.POST, request.FILES)
+        formset = BillForm(request.POST, request.FILES, instance=bill)
         if formset.is_valid():
-            bill.name = formset.cleaned_data.get("name")
             bill.save()
 
     queryset = Bill.objects.filter(id=id)
@@ -39,4 +38,4 @@ def bill(request, id):
 class BillForm(ModelForm):
     class Meta:
         model = Bill
-        fields = ['name']  # ['contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto']  '__all__'
+        fields = ['open', 'name', 'contract', 'date', 'amount_netto', 'vat', 'amount_brutto']

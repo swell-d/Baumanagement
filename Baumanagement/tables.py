@@ -19,11 +19,12 @@ class TableDesign:
     empty_text = "Keine Ergebnisse gefunden"
     template_name = "django_tables2/bootstrap4.html"
     attrs = {'class': 'table table-hover'}
+    row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
 
 class SummingColumn2F(tables.Column):
     def render_footer(self, bound_column, table):
-        return f'{sum(bound_column.accessor.resolve(row) or 0 for row in table.data): .2f}'
+        return f'{sum(bound_column.accessor.resolve(row) or 0 for row in table.data if row.open): .2f}'
 
 
 class SummingColumnInt(tables.Column):
