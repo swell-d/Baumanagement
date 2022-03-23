@@ -1,3 +1,4 @@
+from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.utils.html import format_html
 from django_tables2 import RequestConfig
@@ -64,13 +65,15 @@ def company(request, id):
         tables.append({'table': table, 'titel': 'Aufträge'})
 
         bills = [contract.bills.all() for contract in contracts]
-        bills = Bill.extra_fields(*bills)
+        bills = [Bill.extra_fields(each) for each in bills]
+        bills = QuerySet.union(*bills)
         table = BillTable(bills, order_by="id")
         RequestConfig(request).configure(table)
         tables.append({'table': table, 'titel': 'Rechnungen'})
 
         payments = [contract.payments.all() for contract in contracts]
-        payments = Payment.extra_fields(*payments)
+        payments = [Payment.extra_fields(each) for each in payments]
+        payments = QuerySet.union(*payments)
         table = PaymentTable(payments, order_by="id")
         RequestConfig(request).configure(table)
         tables.append({'table': table, 'titel': 'Zahlungen'})
