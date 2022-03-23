@@ -54,12 +54,16 @@ class Company(models.Model):
         return qs.all()
 
     @staticmethod
-    def fields():
+    def table_fields():
         return 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number'
 
     @staticmethod
     def search_fields():
         return 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
+
+    @staticmethod
+    def form_fields():
+        return 'open', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number', 'role'
 
 
 class Project(models.Model):
@@ -86,12 +90,16 @@ class Project(models.Model):
         return qs.annotate(count_contracts=Count('contracts', distinct=True))
 
     @staticmethod
-    def fields():
+    def table_fields():
         return 'created', 'name', 'code', 'company', 'address', 'open', 'count_contracts'
 
     @staticmethod
     def search_fields():
         return 'name', 'code', 'company__name', 'address', 'city', 'land', 'count_contracts'
+
+    @staticmethod
+    def form_fields():
+        return 'open', 'name', 'code', 'company', 'address', 'city', 'land'
 
 
 class Contract(models.Model):
@@ -123,12 +131,16 @@ class Contract(models.Model):
                            due=Sum('bills__amount_brutto', distinct=True))
 
     @staticmethod
-    def fields():
+    def table_fields():
         return 'created', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
 
     @staticmethod
     def search_fields():
         return 'project__name', 'company__name', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+
+    @staticmethod
+    def form_fields():
+        return 'open', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
 class Bill(models.Model):
@@ -157,12 +169,16 @@ class Bill(models.Model):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
 
     @staticmethod
-    def fields():
+    def table_fields():
         return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
     @staticmethod
     def search_fields():
         return 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
+
+    @staticmethod
+    def form_fields():
+        return 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
 class Payment(models.Model):
@@ -191,9 +207,13 @@ class Payment(models.Model):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
 
     @staticmethod
-    def fields():
+    def table_fields():
         return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
     @staticmethod
     def search_fields():
         return 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
+
+    @staticmethod
+    def form_fields():
+        return 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'

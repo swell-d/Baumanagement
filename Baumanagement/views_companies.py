@@ -1,3 +1,4 @@
+from django.forms import ModelForm
 from django.utils.html import format_html
 from django_tables2 import RequestConfig
 
@@ -38,6 +39,11 @@ def company(request, id):
     tables = []
     company = Company.objects.get(id=id)
 
+    if request.method == 'POST':
+        formset = CompanyForm(request.POST, request.FILES, instance=company)
+        if formset.is_valid():
+            company.save()
+
     queryset = Company.objects.filter(id=id)
     queryset = Company.extra_fields(queryset)
     table1 = CompanyTable(queryset)
@@ -69,7 +75,14 @@ def company(request, id):
         RequestConfig(request).configure(table)
         tables.append({'table': table, 'titel': 'Zahlungen'})
 
+    form = CompanyForm(instance=company)
     context = {'titel1': f'Unternehmen - {company.name}', 'tags1': roles_tags(), 'table1': table1,
-               'tables': tables}
+               'tables': tables, 'form': form}
 
     return myrender(request, context)
+
+
+class CompanyForm(ModelForm):
+    class Meta:
+        model = Company
+        fields = Company.form_fields()

@@ -13,7 +13,8 @@ table.table a {
 }
 
 tr.text-muted a, tr.text-muted td {
-    color: lightgray;
+    color: gray;
+    text-decoration: line-through;
 }
 
 form.form-inline input {

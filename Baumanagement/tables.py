@@ -40,7 +40,7 @@ class CreateFooter(tables.Column):
 class CompanyTable(tables.Table):
     class Meta(TableDesign):
         model = Company
-        fields = Company.fields()
+        fields = Company.table_fields()
 
     name = CreateFooter()
 
@@ -60,7 +60,7 @@ class CompanyTable(tables.Table):
 class ProjectTable(tables.Table):
     class Meta(TableDesign):
         model = Project
-        fields = Project.fields()
+        fields = Project.table_fields()
 
     count_contracts = SummingColumnInt(verbose_name='Aufträge')
 
@@ -86,7 +86,7 @@ class ProjectTable(tables.Table):
 class ContractTable(tables.Table):
     class Meta(TableDesign):
         model = Contract
-        fields = Contract.fields()
+        fields = Contract.table_fields()
 
     amount_netto = SummingColumn2F()
     amount_brutto = SummingColumn2F()
@@ -127,7 +127,7 @@ class ContractTable(tables.Table):
 class BillTable(tables.Table):
     class Meta(TableDesign):
         model = Bill
-        fields = Bill.fields()
+        fields = Bill.table_fields()
 
     project = tables.Column(verbose_name='Projekt')
     company = tables.Column(verbose_name='Bearbeiter')
@@ -165,7 +165,7 @@ class BillTable(tables.Table):
 class PaymentTable(tables.Table):
     class Meta(TableDesign):
         model = Payment
-        fields = Payment.fields()
+        fields = Payment.table_fields()
 
     project = tables.Column(verbose_name='Projekt')
     company = tables.Column(verbose_name='Bearbeiter')

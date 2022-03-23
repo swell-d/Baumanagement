@@ -30,7 +30,6 @@ def bill(request, id):
     RequestConfig(request).configure(table1)
 
     form = BillForm(instance=bill)
-
     context = {'titel1': f'Rechnung - {bill.name}', 'table1': table1, 'form': form}
     return myrender(request, context)
 
@@ -38,4 +37,4 @@ def bill(request, id):
 class BillForm(ModelForm):
     class Meta:
         model = Bill
-        fields = ['open', 'name', 'contract', 'date', 'amount_netto', 'vat', 'amount_brutto']
+        fields = Bill.form_fields()

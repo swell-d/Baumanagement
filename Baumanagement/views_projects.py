@@ -1,3 +1,4 @@
+from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
 from Baumanagement.models import Project, Contract, Payment, Bill, filter_queryset
@@ -19,6 +20,11 @@ def project(request, id):
     tables = []
     project = Project.objects.get(id=id)
 
+    if request.method == 'POST':
+        formset = ProjectForm(request.POST, request.FILES, instance=project)
+        if formset.is_valid():
+            project.save()
+
     queryset = Project.objects.filter(id=id)
     queryset = Project.extra_fields(queryset)
     table1 = ProjectTable(queryset)
@@ -31,8 +37,9 @@ def project(request, id):
         RequestConfig(request).configure(table)
         tables.append({'table': table, 'titel': 'Aufträge'})
 
+    form = ProjectForm(instance=project)
     context = {'titel1': f'Projekt - {project.name}', 'table1': table1,
-               'tables': tables}
+               'tables': tables, 'form': form}
     return myrender(request, context)
 
 
@@ -56,3 +63,9 @@ def project_bills(request, id):
     RequestConfig(request).configure(table1)
     context = {'titel1': f'Rechnungen - Projekt - {project.name}', 'table1': table1, 'search_field': True}
     return myrender(request, context)
+
+
+class ProjectForm(ModelForm):
+    class Meta:
+        model = Project
+        fields = Project.form_fields()

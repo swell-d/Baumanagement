@@ -28,18 +28,6 @@
         </div>
     {% endif %}
 
-    {% if form %}
-        <div class="row">
-            <div class="col-6">
-                <form method="POST">
-                    {% csrf_token %}
-                    {{ form|crispy }}
-                    <button type="submit" class="btn btn-success mt-3">Speichern</button>
-                </form>
-            </div>
-        </div>
-    {% endif %}
-
     {% for next_table in tables %}
         <div class="row">
             <div class="col">
@@ -52,5 +40,17 @@
             </div>
         </div>
     {% endfor %}
+
+    {% if form %}
+        <div class="row">
+            <div class="col-8 offset-2">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-success mt-3 mb-3">Speichern</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
 
 {% endblock %}
