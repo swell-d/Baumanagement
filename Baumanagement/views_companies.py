@@ -39,6 +39,7 @@ def company(request, id):
     RequestConfig(request).configure(table1)
 
     projects = Project.objects.filter(company=id)
+    projects = Project.extra_fields(projects)
     if projects:
         table = ProjectTable(projects, order_by="name")
         RequestConfig(request).configure(table)

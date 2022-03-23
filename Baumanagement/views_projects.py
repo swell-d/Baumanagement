@@ -7,6 +7,7 @@ from Baumanagement.views import myrender
 
 def projects(request):
     queryset = Project.objects.all()
+    queryset = Project.extra_fields(queryset)
     queryset = filter_queryset(queryset, request)
     table1 = ProjectTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
@@ -18,7 +19,9 @@ def project(request, id):
     tables = []
     project = Project.objects.get(id=id)
 
-    table1 = ProjectTable(Project.objects.filter(id=id))
+    queryset = Project.objects.filter(id=id)
+    queryset = Project.extra_fields(queryset)
+    table1 = ProjectTable(queryset)
     RequestConfig(request).configure(table1)
 
     contracts = Contract.objects.filter(project=id)

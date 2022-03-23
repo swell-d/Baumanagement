@@ -131,5 +131,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#SWELL
+# SWELL
 CSRF_TRUSTED_ORIGINS = ['https://baumanagement.herokuapp.com', 'http://127.0.0.1']
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True

@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum, Q
+from django.db.models import Sum, Q, Count
 
 
 def filter_queryset(queryset, request):
@@ -75,9 +75,9 @@ class Project(models.Model):
     def __str__(self):
         return self.name
 
-    @property
-    def count_contracts(self):
-        return self.contracts.count()
+    @staticmethod
+    def extra_fields(qs):
+        return qs.annotate(count_contracts=Count('contracts', distinct=True))
 
     @staticmethod
     def fields():
@@ -85,7 +85,7 @@ class Project(models.Model):
 
     @staticmethod
     def search_fields():
-        return 'name', 'code', 'company__name', 'address', 'city', 'land'
+        return 'name', 'code', 'company__name', 'address', 'city', 'land', 'count_contracts'
 
 
 class Contract(models.Model):

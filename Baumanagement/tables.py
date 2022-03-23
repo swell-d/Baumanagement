@@ -77,10 +77,6 @@ class ProjectTable(tables.Table):
     def render_count_contracts(self, record, value):
         return format_html(f'<a href="/project/{record.id}">{value}</a>')
 
-    def order_count_contracts(self, queryset, is_descending):
-        new_queryset = queryset.annotate(count=Count('contracts')).order_by(("-" if is_descending else "") + "count")
-        return (new_queryset, True)
-
 
 class ContractTable(tables.Table):
     class Meta(TableDesign):
