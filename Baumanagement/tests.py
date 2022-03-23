@@ -21,9 +21,9 @@ class UrlTests(TestCase):
     def test_pages(self):
         client = Client()
         for url in get_urls():
-            print(url)
+            print(f'http://127.0.0.1:8000{url}')
             response = client.get(url)
             self.assertEqual(response.status_code, 200)
-            print(f'{url}?search=')
+            print(f'http://127.0.0.1:8000{url}?search=')
             response = client.get(f'{url}?search=')
             self.assertEqual(response.status_code, 200)

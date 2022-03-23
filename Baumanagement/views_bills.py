@@ -1,7 +1,6 @@
-from django.views import View
+from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
-from Baumanagement.forms_bills import BillForm
 from Baumanagement.models import Bill, filter_queryset
 from Baumanagement.tables import BillTable
 from Baumanagement.views import myrender
@@ -20,19 +19,24 @@ def bills(request):
 def bill(request, id):
     bill = Bill.objects.get(id=id)
 
+    if request.method == 'POST':
+        formset = BillForm(request.POST, request.FILES)
+        if formset.is_valid():
+            bill.name = formset.cleaned_data.get("name")
+            bill.save()
+
     queryset = Bill.objects.filter(id=id)
     queryset = Bill.extra_fields(queryset)
     table1 = BillTable(queryset)
     RequestConfig(request).configure(table1)
-    context = {'titel1': f'Rechnung - {bill.name}', 'table1': table1}
+
+    form = BillForm(instance=bill)
+
+    context = {'titel1': f'Rechnung - {bill.name}', 'table1': table1, 'form': form}
     return myrender(request, context)
 
 
-class BillView(View):
-    def get(self, request, *args, **kwarg):
-        form = BillForm()
-        context = {'form': form}
-        return myrender(request, context)
-
-    def post(self, request, *args, **kwarg):
-        pass
+class BillForm(ModelForm):
+    class Meta:
+        model = Bill
+        fields = ['name']  # ['contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto']  '__all__'

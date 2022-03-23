@@ -27,11 +27,17 @@
         </div>
     {% endif %}
 
-    <div class="row">
-        <div class="col">
-            {{ form }}
+    {% if form %}
+        <div class="row">
+            <div class="col">
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="Speichern">
+                </form>
+            </div>
         </div>
-    </div>
+    {% endif %}
 
     {% for next_table in tables %}
         <div class="row">
