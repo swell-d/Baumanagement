@@ -17,13 +17,7 @@ def roles_tags():
 
 def companies(request):
     context = {'titel1': 'Alle Unternehmen'}
-
-    if request.method == 'POST':
-        formset = CompanyForm(request.POST, request.FILES)
-        if formset.is_valid():
-            Company(**formset.cleaned_data).save()
-    context['form'] = CompanyForm()
-    context['buttons'] = ['New']
+    form_new_company(request, context)
 
     queryset = Company.extra_fields(Company.objects)
     queryset = add_search_field(queryset, request, context)
@@ -38,13 +32,7 @@ def companies(request):
 def companies_by_role(request, id):
     role = CompanyRole.objects.get(id=id)
     context = {'titel1': f'Unternehmen - {role.name}'}
-
-    if request.method == 'POST':
-        formset = CompanyForm(request.POST, request.FILES)
-        if formset.is_valid():
-            Company(**formset.cleaned_data).save()
-    context['form'] = CompanyForm()
-    context['buttons'] = ['New']
+    form_new_company(request, context)
 
     queryset = Company.objects.filter(role=id)
     queryset = Company.extra_fields(queryset)
@@ -60,13 +48,7 @@ def companies_by_role(request, id):
 def company(request, id):
     company = Company.objects.get(id=id)
     context = {'titel1': f'Unternehmen - {company.name}', 'tables': []}
-
-    if request.method == 'POST':
-        formset = CompanyForm(request.POST, request.FILES, instance=company)
-        if formset.is_valid():
-            company.save()
-    context['form'] = CompanyForm(instance=company)
-    context['buttons'] = ['Edit']
+    form_edit_company(request, context, company)
 
     queryset = Company.objects.filter(id=id)
     queryset = Company.extra_fields(queryset)
@@ -109,3 +91,21 @@ class CompanyForm(ModelForm):
     class Meta:
         model = Company
         fields = Company.form_fields()
+
+
+def form_new_company(request, context):
+    if request.method == 'POST':
+        formset = CompanyForm(request.POST, request.FILES)
+        if formset.is_valid():
+            Company(**formset.cleaned_data).save()
+    context['form'] = CompanyForm()
+    context['buttons'] = ['New']
+
+
+def form_edit_company(request, context, company):
+    if request.method == 'POST':
+        formset = CompanyForm(request.POST, request.FILES, instance=company)
+        if formset.is_valid():
+            company.save()
+    context['form'] = CompanyForm(instance=company)
+    context['buttons'] = ['Edit']

@@ -8,13 +8,7 @@ from Baumanagement.views import myrender
 
 def bills(request):
     context = {'titel1': 'Alle Rechnungen'}
-
-    if request.method == 'POST':
-        formset = BillForm(request.POST, request.FILES)
-        if formset.is_valid():
-            Bill(**formset.cleaned_data).save()
-    context['form'] = BillForm()
-    context['buttons'] = ['New']
+    form_new_bill(request, context)
 
     queryset = Bill.extra_fields(Bill.objects)
     queryset = add_search_field(queryset, request, context)
@@ -28,13 +22,7 @@ def bills(request):
 def contract_bills(request, id):
     contract = Contract.objects.get(id=id)
     context = {'titel1': f'Rechnungen - Auftrag - {contract.name}'}
-
-    if request.method == 'POST':
-        formset = BillForm(request.POST, request.FILES)
-        if formset.is_valid():
-            Bill(**formset.cleaned_data).save()
-    context['form'] = BillForm()
-    context['buttons'] = ['New']
+    form_new_bill(request, context)
 
     queryset = Bill.objects.filter(contract=contract)
     queryset = Bill.extra_fields(queryset)
@@ -49,13 +37,7 @@ def contract_bills(request, id):
 def project_bills(request, id):
     project = Project.objects.get(id=id)
     context = {'titel1': f'Rechnungen - Projekt - {project.name}'}
-
-    if request.method == 'POST':
-        formset = BillForm(request.POST, request.FILES)
-        if formset.is_valid():
-            Bill(**formset.cleaned_data).save()
-    context['form'] = BillForm()
-    context['buttons'] = ['New']
+    form_new_bill(request, context)
 
     queryset = Bill.objects.filter(contract__in=project.contracts.all())
     queryset = Bill.extra_fields(queryset)
@@ -70,13 +52,7 @@ def project_bills(request, id):
 def bill(request, id):
     bill = Bill.objects.get(id=id)
     context = {'titel1': f'Rechnung - {bill.name}', 'tables': []}
-
-    if request.method == 'POST':
-        formset = BillForm(request.POST, request.FILES, instance=bill)
-        if formset.is_valid():
-            bill.save()
-    context['form'] = BillForm(instance=bill)
-    context['buttons'] = ['Edit']
+    form_edit_bill(request, context, bill)
 
     queryset = Bill.objects.filter(id=id)
     queryset = Bill.extra_fields(queryset)
@@ -91,3 +67,21 @@ class BillForm(ModelForm):
     class Meta:
         model = Bill
         fields = Bill.form_fields()
+
+
+def form_new_bill(request, context):
+    if request.method == 'POST':
+        formset = BillForm(request.POST, request.FILES)
+        if formset.is_valid():
+            Bill(**formset.cleaned_data).save()
+    context['form'] = BillForm()
+    context['buttons'] = ['New']
+
+
+def form_edit_bill(request, context, bill):
+    if request.method == 'POST':
+        formset = BillForm(request.POST, request.FILES, instance=bill)
+        if formset.is_valid():
+            bill.save()
+    context['form'] = BillForm(instance=bill)
+    context['buttons'] = ['Edit']

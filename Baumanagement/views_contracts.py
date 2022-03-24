@@ -8,13 +8,7 @@ from Baumanagement.views import myrender
 
 def contracts(request):
     context = {'titel1': 'Alle Aufträge'}
-
-    if request.method == 'POST':
-        formset = ContractForm(request.POST, request.FILES)
-        if formset.is_valid():
-            Contract(**formset.cleaned_data).save()
-    context['form'] = ContractForm()
-    context['buttons'] = ['New']
+    form_new_contract(request, context)
 
     queryset = Contract.extra_fields(Contract.objects)
     queryset = add_search_field(queryset, request, context)
@@ -28,13 +22,7 @@ def contracts(request):
 def contract(request, id):
     contract = Contract.objects.get(id=id)
     context = {'titel1': f'Auftrag - {contract.name}', 'tables': []}
-
-    if request.method == 'POST':
-        formset = ContractForm(request.POST, request.FILES, instance=contract)
-        if formset.is_valid():
-            contract.save()
-    context['form'] = ContractForm(instance=contract)
-    context['buttons'] = ['Edit']
+    form_edit_contract(request, context, contract)
 
     queryset = Contract.objects.filter(id=id)
     queryset = Contract.extra_fields(queryset)
@@ -61,3 +49,21 @@ class ContractForm(ModelForm):
     class Meta:
         model = Contract
         fields = Contract.form_fields()
+
+
+def form_new_contract(request, context):
+    if request.method == 'POST':
+        formset = ContractForm(request.POST, request.FILES)
+        if formset.is_valid():
+            Contract(**formset.cleaned_data).save()
+    context['form'] = ContractForm()
+    context['buttons'] = ['New']
+
+
+def form_edit_contract(request, context, contract):
+    if request.method == 'POST':
+        formset = ContractForm(request.POST, request.FILES, instance=contract)
+        if formset.is_valid():
+            contract.save()
+    context['form'] = ContractForm(instance=contract)
+    context['buttons'] = ['Edit']
