@@ -14,7 +14,7 @@ def payments(request):
         if formset.is_valid():
             Payment(**formset.cleaned_data).save()
     context['form'] = PaymentForm()
-    context['buttons'] = ['Neu']
+    context['buttons'] = ['New']
 
     queryset = Payment.extra_fields(Payment.objects)
     queryset = filter_queryset(queryset, request)
@@ -28,19 +28,21 @@ def payments(request):
 
 def payment(request, id):
     payment = Payment.objects.get(id=id)
+    context = {'titel1': f'Zahlung - {payment.name}', 'tables': []}
 
-    form = PaymentForm(instance=payment)
     if request.method == 'POST':
         formset = PaymentForm(request.POST, request.FILES, instance=payment)
         if formset.is_valid():
             payment.save()
+    context['form'] = PaymentForm(instance=payment)
+    context['buttons'] = ['Edit']
 
     queryset = Payment.objects.filter(id=id)
     queryset = Payment.extra_fields(queryset)
     table1 = PaymentTable(queryset)
     RequestConfig(request).configure(table1)
+    context['table1'] = table1
 
-    context = {'titel1': f'Zahlung - {payment.name}', 'table1': table1, 'form': form}
     return myrender(request, context)
 
 

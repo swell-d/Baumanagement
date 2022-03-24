@@ -14,7 +14,7 @@ def bills(request):
         if formset.is_valid():
             Bill(**formset.cleaned_data).save()
     context['form'] = BillForm()
-    context['buttons'] = ['Neu']
+    context['buttons'] = ['New']
 
     queryset = Bill.extra_fields(Bill.objects)
     queryset = filter_queryset(queryset, request)
@@ -28,19 +28,21 @@ def bills(request):
 
 def bill(request, id):
     bill = Bill.objects.get(id=id)
+    context = {'titel1': f'Rechnung - {bill.name}', 'tables': []}
 
     if request.method == 'POST':
         formset = BillForm(request.POST, request.FILES, instance=bill)
         if formset.is_valid():
             bill.save()
+    context['form'] = BillForm(instance=bill)
+    context['buttons'] = ['Edit']
 
     queryset = Bill.objects.filter(id=id)
     queryset = Bill.extra_fields(queryset)
     table1 = BillTable(queryset)
     RequestConfig(request).configure(table1)
+    context['table1'] = table1
 
-    form = BillForm(instance=bill)
-    context = {'titel1': f'Rechnung - {bill.name}', 'table1': table1, 'form': form}
     return myrender(request, context)
 
 

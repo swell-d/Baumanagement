@@ -23,7 +23,7 @@ def companies(request):
         if formset.is_valid():
             Company(**formset.cleaned_data).save()
     context['form'] = CompanyForm()
-    context['buttons'] = ['Neu']
+    context['buttons'] = ['New']
 
     queryset = Company.extra_fields(Company.objects)
     queryset = filter_queryset(queryset, request)
@@ -48,50 +48,49 @@ def companies_by_role(request, id):
 
 
 def company(request, id):
-    tables = []
     company = Company.objects.get(id=id)
+    context = {'titel1': f'Unternehmen - {company.name}', 'tables': []}
 
     if request.method == 'POST':
         formset = CompanyForm(request.POST, request.FILES, instance=company)
         if formset.is_valid():
             company.save()
+    context['form'] = CompanyForm(instance=company)
+    context['buttons'] = ['Edit']
 
     queryset = Company.objects.filter(id=id)
     queryset = Company.extra_fields(queryset)
     table1 = CompanyTable(queryset)
     RequestConfig(request).configure(table1)
+    context['table1'] = table1
 
     projects = Project.objects.filter(company=id)
     projects = Project.extra_fields(projects)
     if projects:
         table = ProjectTable(projects, order_by="name")
         RequestConfig(request).configure(table)
-        tables.append({'table': table, 'titel': 'Projekte'})
+        context['tables'].append({'table': table, 'titel': 'Projekte'})
 
     contracts = Contract.objects.filter(company=id)
     contracts = Contract.extra_fields(contracts)
     if contracts:
         table = ContractTable(contracts, order_by="name")
         RequestConfig(request).configure(table)
-        tables.append({'table': table, 'titel': 'Aufträge'})
+        context['tables'].append({'table': table, 'titel': 'Aufträge'})
 
         bills = [contract.bills.all() for contract in contracts]
         bills = [Bill.extra_fields(each) for each in bills]
         bills = QuerySet.union(*bills)
         table = BillTable(bills, order_by="id")
         RequestConfig(request).configure(table)
-        tables.append({'table': table, 'titel': 'Rechnungen'})
+        context['tables'].append({'table': table, 'titel': 'Rechnungen'})
 
         payments = [contract.payments.all() for contract in contracts]
         payments = [Payment.extra_fields(each) for each in payments]
         payments = QuerySet.union(*payments)
         table = PaymentTable(payments, order_by="id")
         RequestConfig(request).configure(table)
-        tables.append({'table': table, 'titel': 'Zahlungen'})
-
-    form = CompanyForm(instance=company)
-    context = {'titel1': f'Unternehmen - {company.name}', 'table1': table1,
-               'tables': tables, 'form': form}
+        context['tables'].append({'table': table, 'titel': 'Zahlungen'})
 
     return myrender(request, context)
 

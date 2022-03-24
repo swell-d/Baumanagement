@@ -13,12 +13,13 @@
             </div>
             <div class="col-2 d-flex align-items-center">
                 {% if form %}
-                    {% if "Neu" in buttons %}
+                    {% if "New" in buttons %}
                         <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
                                 data-bs-target="#ModalForm">
                             Neu
                         </button>
-                    {% else %}
+                    {% endif %}
+                    {% if "Edit" in buttons %}
                         <button type="button" class="btn btn-secondary m-2" data-bs-toggle="modal"
                                 data-bs-target="#ModalForm">
                             Bearbeiten

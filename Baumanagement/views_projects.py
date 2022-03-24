@@ -14,7 +14,7 @@ def projects(request):
         if formset.is_valid():
             Project(**formset.cleaned_data).save()
     context['form'] = ProjectForm()
-    context['buttons'] = ['Neu']
+    context['buttons'] = ['New']
 
     queryset = Project.extra_fields(Project.objects)
     queryset = filter_queryset(queryset, request)
@@ -27,29 +27,29 @@ def projects(request):
 
 
 def project(request, id):
-    tables = []
     project = Project.objects.get(id=id)
+    context = {'titel1': f'Projekt - {project.name}', 'tables': []}
 
     if request.method == 'POST':
         formset = ProjectForm(request.POST, request.FILES, instance=project)
         if formset.is_valid():
             project.save()
+    context['form'] = ProjectForm(instance=project)
+    context['buttons'] = ['Edit']
 
     queryset = Project.objects.filter(id=id)
     queryset = Project.extra_fields(queryset)
     table1 = ProjectTable(queryset)
     RequestConfig(request).configure(table1)
+    context['table1'] = table1
 
     contracts = Contract.objects.filter(project=id)
     contracts = Contract.extra_fields(contracts)
     if contracts:
         table = ContractTable(contracts, order_by="name")
         RequestConfig(request).configure(table)
-        tables.append({'table': table, 'titel': 'Aufträge'})
+        context['tables'].append({'table': table, 'titel': 'Aufträge'})
 
-    form = ProjectForm(instance=project)
-    context = {'titel1': f'Projekt - {project.name}', 'table1': table1,
-               'tables': tables, 'form': form}
     return myrender(request, context)
 
 

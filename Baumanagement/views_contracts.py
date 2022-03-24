@@ -14,7 +14,7 @@ def contracts(request):
         if formset.is_valid():
             Contract(**formset.cleaned_data).save()
     context['form'] = ContractForm()
-    context['buttons'] = ['Neu']
+    context['buttons'] = ['New']
 
     queryset = Contract.extra_fields(Contract.objects)
     queryset = filter_queryset(queryset, request)
@@ -27,34 +27,34 @@ def contracts(request):
 
 
 def contract(request, id):
-    tables = []
     contract = Contract.objects.get(id=id)
+    context = {'titel1': f'Auftrag - {contract.name}', 'tables': []}
 
     if request.method == 'POST':
         formset = ContractForm(request.POST, request.FILES, instance=contract)
         if formset.is_valid():
             contract.save()
+    context['form'] = ContractForm(instance=contract)
+    context['buttons'] = ['Edit']
 
     queryset = Contract.objects.filter(id=id)
     queryset = Contract.extra_fields(queryset)
     table1 = ContractTable(queryset)
     RequestConfig(request).configure(table1)
+    context['table1'] = table1
 
     bills = contract.bills.all()
     bills = Bill.extra_fields(bills)
     table = BillTable(bills, order_by="id")
     RequestConfig(request).configure(table)
-    tables.append({'table': table, 'titel': 'Rechnungen'})
+    context['tables'].append({'table': table, 'titel': 'Rechnungen'})
 
     payments = contract.payments.all()
     payments = Payment.extra_fields(payments)
     table = PaymentTable(payments, order_by="id")
     RequestConfig(request).configure(table)
-    tables.append({'table': table, 'titel': 'Zahlungen'})
+    context['tables'].append({'table': table, 'titel': 'Zahlungen'})
 
-    form = ContractForm(instance=contract)
-    context = {'titel1': f'Auftrag - {contract.name}', 'table1': table1,
-               'tables': tables, 'form': form}
     return myrender(request, context)
 
 
