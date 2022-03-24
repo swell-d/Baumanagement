@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django.utils.html import format_html
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Company, CompanyRole, Project, Contract, filter_queryset, Bill, Payment
+from Baumanagement.models import Company, CompanyRole, Project, Contract, add_search_field, Bill, Payment
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
 from Baumanagement.views import myrender
 
@@ -26,8 +26,7 @@ def companies(request):
     context['buttons'] = ['New']
 
     queryset = Company.extra_fields(Company.objects)
-    queryset = filter_queryset(queryset, request)
-    context['search_field'] = True
+    queryset = add_search_field(queryset, request, context)
     table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
     context['table1'] = table1
@@ -49,8 +48,7 @@ def companies_by_role(request, id):
 
     queryset = Company.objects.filter(role=id)
     queryset = Company.extra_fields(queryset)
-    queryset = filter_queryset(queryset, request)
-    context['search_field'] = True
+    queryset = add_search_field(queryset, request, context)
     table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
     context['table1'] = table1

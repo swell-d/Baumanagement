@@ -2,13 +2,14 @@ from django.db import models
 from django.db.models import Sum, Q, F, Case, When
 
 
-def filter_queryset(queryset, request):
+def add_search_field(queryset, request, context):
     search = request.GET.get('search')
     if search is not None:
         qs = Q()
         for query in [Q(**{f'{field}__icontains': search}) for field in queryset[0].__class__.search_fields()]:
             qs = qs | query
         queryset = queryset.filter(qs)
+    context['search_field'] = True
     return queryset
 
 

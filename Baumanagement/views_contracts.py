@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Contract, Payment, Bill, filter_queryset
+from Baumanagement.models import Contract, Payment, Bill, add_search_field
 from Baumanagement.tables import ContractTable, PaymentTable, BillTable
 from Baumanagement.views import myrender
 
@@ -17,8 +17,7 @@ def contracts(request):
     context['buttons'] = ['New']
 
     queryset = Contract.extra_fields(Contract.objects)
-    queryset = filter_queryset(queryset, request)
-    context['search_field'] = True
+    queryset = add_search_field(queryset, request, context)
     table1 = ContractTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
     context['table1'] = table1
