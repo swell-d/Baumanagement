@@ -1,3 +1,5 @@
+import datetime
+
 from django.db import models
 from django.db.models import Sum, Q, F, Case, When
 
@@ -107,14 +109,14 @@ class Contract(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Auftrag')
-    date = models.DateField(null=False, blank=True, verbose_name='Datum')
+    date = models.DateField(null=False, blank=True, verbose_name='Datum', default=datetime.date.today)
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name='Projekt',
                                 on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bearbeiter',
                                 on_delete=models.RESTRICT, related_name='contracts')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                        verbose_name='Nettobetrag')
-    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
+    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt %', default=19)
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name='Bruttobetrag')
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
@@ -148,12 +150,12 @@ class Bill(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rechnung')
-    date = models.DateField(null=False, blank=True, verbose_name='Datum')
+    date = models.DateField(null=False, blank=True, verbose_name='Datum', default=datetime.date.today)
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='bills')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                        verbose_name='Nettobetrag')
-    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
+    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt %', default=19)
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name='Bruttobetrag')
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
@@ -186,12 +188,12 @@ class Payment(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
     updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Zahlung')
-    date = models.DateField(null=False, blank=True, verbose_name='Datum')
+    date = models.DateField(null=False, blank=True, verbose_name='Datum', default=datetime.date.today)
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
                                  on_delete=models.RESTRICT, related_name='payments')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                        verbose_name='Nettobetrag')
-    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt')
+    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt %', default=19)
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name='Bruttobetrag')
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
