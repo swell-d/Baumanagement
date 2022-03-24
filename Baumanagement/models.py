@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum, Q, Count, F
+from django.db.models import Sum, Q, F, Case, When
 
 
 def filter_queryset(queryset, request):
@@ -87,7 +87,7 @@ class Project(models.Model):
 
     @staticmethod
     def extra_fields(qs):
-        return qs.annotate(count_contracts=Count('contracts', distinct=True))
+        return qs.annotate(count_contracts=Sum(Case(When(contracts__open=True, then=1))))
 
     @staticmethod
     def table_fields():
@@ -127,8 +127,8 @@ class Contract(models.Model):
 
     @staticmethod
     def extra_fields(qs):
-        return qs.annotate(payed=Sum('payments__amount_brutto', distinct=True),
-                           due=Sum('bills__amount_brutto', distinct=True))
+        return qs.annotate(payed=Sum(Case(When(payments__open=True, then='payments__amount_brutto')), distinct=True)) \
+            .annotate(due=Sum(Case(When(bills__open=True, then='bills__amount_brutto')), distinct=True))
 
     @staticmethod
     def table_fields():

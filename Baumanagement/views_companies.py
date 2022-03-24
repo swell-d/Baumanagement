@@ -85,11 +85,11 @@ def company(request, id):
 
     contracts = Contract.objects.filter(company=id)
     contracts = Contract.extra_fields(contracts)
-    if contracts:
-        table = ContractTable(contracts, order_by="name")
-        RequestConfig(request).configure(table)
-        context['tables'].append({'table': table, 'titel': 'Aufträge'})
+    table = ContractTable(contracts, order_by="name")
+    RequestConfig(request).configure(table)
+    context['tables'].append({'table': table, 'titel': 'Aufträge'})
 
+    if contracts:
         bills = [contract.bills.all() for contract in contracts]
         bills = [Bill.extra_fields(each) for each in bills]
         bills = QuerySet.union(*bills)
