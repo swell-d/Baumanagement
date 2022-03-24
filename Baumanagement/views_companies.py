@@ -37,13 +37,25 @@ def companies(request):
 
 
 def companies_by_role(request, id):
+    role = CompanyRole.objects.get(id=id)
+    context = {'titel1': f'Unternehmen - {role.name}'}
+
+    if request.method == 'POST':
+        formset = CompanyForm(request.POST, request.FILES)
+        if formset.is_valid():
+            Company(**formset.cleaned_data).save()
+    context['form'] = CompanyForm()
+    context['buttons'] = ['New']
+
     queryset = Company.objects.filter(role=id)
     queryset = Company.extra_fields(queryset)
     queryset = filter_queryset(queryset, request)
+    context['search_field'] = True
     table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
-    context = {'titel1': f'Unternehmen - {CompanyRole.objects.get(id=id).name}', 'tags1': roles_tags(),
-               'table1': table1, 'search_field': True}
+    context['table1'] = table1
+    context['tags1'] = roles_tags()
+
     return myrender(request, context)
 
 

@@ -1,8 +1,8 @@
 from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Project, Contract, Payment, Bill, filter_queryset
-from Baumanagement.tables import ProjectTable, ContractTable, PaymentTable, BillTable
+from Baumanagement.models import Project, Contract, filter_queryset
+from Baumanagement.tables import ProjectTable, ContractTable
 from Baumanagement.views import myrender
 
 
@@ -50,28 +50,6 @@ def project(request, id):
         RequestConfig(request).configure(table)
         context['tables'].append({'table': table, 'titel': 'Aufträge'})
 
-    return myrender(request, context)
-
-
-def project_payments(request, id):
-    project = Project.objects.get(id=id)
-    queryset = Payment.objects.filter(contract__in=project.contracts.all())
-    queryset = Payment.extra_fields(queryset)
-    queryset = filter_queryset(queryset, request)
-    table1 = PaymentTable(queryset, order_by="id")
-    RequestConfig(request).configure(table1)
-    context = {'titel1': f'Zahlungen - Projekt - {project.name}', 'table1': table1, 'search_field': True}
-    return myrender(request, context)
-
-
-def project_bills(request, id):
-    project = Project.objects.get(id=id)
-    queryset = Bill.objects.filter(contract__in=project.contracts.all())
-    queryset = Bill.extra_fields(queryset)
-    queryset = filter_queryset(queryset, request)
-    table1 = BillTable(queryset, order_by="id")
-    RequestConfig(request).configure(table1)
-    context = {'titel1': f'Rechnungen - Projekt - {project.name}', 'table1': table1, 'search_field': True}
     return myrender(request, context)
 
 

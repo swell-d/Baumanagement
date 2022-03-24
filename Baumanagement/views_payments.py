@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Payment, filter_queryset, Contract
+from Baumanagement.models import Payment, filter_queryset, Contract, Project
 from Baumanagement.tables import PaymentTable
 from Baumanagement.views import myrender
 
@@ -41,6 +41,28 @@ def contract_payments(request, id):
     queryset = Payment.extra_fields(queryset)
     context['search_field'] = True
     queryset = filter_queryset(queryset, request)
+    table1 = PaymentTable(queryset, order_by="id")
+    RequestConfig(request).configure(table1)
+    context['table1'] = table1
+
+    return myrender(request, context)
+
+
+def project_payments(request, id):
+    project = Project.objects.get(id=id)
+    context = {'titel1': f'Zahlungen - Projekt - {project.name}'}
+
+    if request.method == 'POST':
+        formset = PaymentForm(request.POST, request.FILES)
+        if formset.is_valid():
+            Payment(**formset.cleaned_data).save()
+    context['form'] = PaymentForm()
+    context['buttons'] = ['New']
+
+    queryset = Payment.objects.filter(contract__in=project.contracts.all())
+    queryset = Payment.extra_fields(queryset)
+    queryset = filter_queryset(queryset, request)
+    context['search_field'] = True
     table1 = PaymentTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
     context['table1'] = table1

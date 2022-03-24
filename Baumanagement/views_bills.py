@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Bill, filter_queryset, Contract
+from Baumanagement.models import Bill, filter_queryset, Contract, Project
 from Baumanagement.tables import BillTable
 from Baumanagement.views import myrender
 
@@ -38,6 +38,28 @@ def contract_bills(request, id):
     context['buttons'] = ['New']
 
     queryset = Bill.objects.filter(contract=contract)
+    queryset = Bill.extra_fields(queryset)
+    queryset = filter_queryset(queryset, request)
+    context['search_field'] = True
+    table1 = BillTable(queryset, order_by="id")
+    RequestConfig(request).configure(table1)
+    context['table1'] = table1
+
+    return myrender(request, context)
+
+
+def project_bills(request, id):
+    project = Project.objects.get(id=id)
+    context = {'titel1': f'Rechnungen - Projekt - {project.name}'}
+
+    if request.method == 'POST':
+        formset = BillForm(request.POST, request.FILES)
+        if formset.is_valid():
+            Bill(**formset.cleaned_data).save()
+    context['form'] = BillForm()
+    context['buttons'] = ['New']
+
+    queryset = Bill.objects.filter(contract__in=project.contracts.all())
     queryset = Bill.extra_fields(queryset)
     queryset = filter_queryset(queryset, request)
     context['search_field'] = True

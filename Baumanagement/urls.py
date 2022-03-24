@@ -15,8 +15,8 @@ urlpatterns = [
 
     path("projects", views_projects.projects),
     path("project/<int:id>", views_projects.project),
-    path("project/<int:id>/payments", views_projects.project_payments),
-    path("project/<int:id>/bills", views_projects.project_bills),
+    path("project/<int:id>/payments", views_payments.project_payments),
+    path("project/<int:id>/bills", views_bills.project_bills),
 
     path("contracts", views_contracts.contracts),
     path("contract/<int:id>", views_contracts.contract),
