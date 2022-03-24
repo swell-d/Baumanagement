@@ -7,12 +7,22 @@ from Baumanagement.views import myrender
 
 
 def contracts(request):
-    queryset = Contract.objects
-    queryset = Contract.extra_fields(queryset)
+    context = {'titel1': 'Alle Aufträge'}
+
+    if request.method == 'POST':
+        formset = ContractForm(request.POST, request.FILES)
+        if formset.is_valid():
+            Contract(**formset.cleaned_data).save()
+    context['form'] = ContractForm()
+    context['buttons'] = ['Neu']
+
+    queryset = Contract.extra_fields(Contract.objects)
     queryset = filter_queryset(queryset, request)
+    context['search_field'] = True
     table1 = ContractTable(queryset, order_by="id")
     RequestConfig(request).configure(table1)
-    context = {'titel1': 'Alle Aufträge', 'table1': table1, 'search_field': True}
+    context['table1'] = table1
+
     return myrender(request, context)
 
 

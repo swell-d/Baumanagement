@@ -7,12 +7,22 @@ from Baumanagement.views import myrender
 
 
 def projects(request):
-    queryset = Project.objects
-    queryset = Project.extra_fields(queryset)
+    context = {'titel1': 'Alle Projekte'}
+
+    if request.method == 'POST':
+        formset = ProjectForm(request.POST, request.FILES)
+        if formset.is_valid():
+            Project(**formset.cleaned_data).save()
+    context['form'] = ProjectForm()
+    context['buttons'] = ['Neu']
+
+    queryset = Project.extra_fields(Project.objects)
     queryset = filter_queryset(queryset, request)
+    context['search_field'] = True
     table1 = ProjectTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
-    context = {'titel1': 'Alle Projekte', 'table1': table1, 'search_field': True}
+    context['table1'] = table1
+
     return myrender(request, context)
 
 

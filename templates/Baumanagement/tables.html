@@ -13,9 +13,17 @@
             </div>
             <div class="col-2 d-flex align-items-center">
                 {% if form %}
-                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#ModalForm">
-                        Bearbeiten
-                    </button>
+                    {% if "Neu" in buttons %}
+                        <button type="button" class="btn btn-primary m-2" data-bs-toggle="modal"
+                                data-bs-target="#ModalForm">
+                            Neu
+                        </button>
+                    {% else %}
+                        <button type="button" class="btn btn-secondary m-2" data-bs-toggle="modal"
+                                data-bs-target="#ModalForm">
+                            Bearbeiten
+                        </button>
+                    {% endif %}
                     <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="ModalFormLabel"
                          aria-hidden="true">
                         {% include "Baumanagement/form.html" %}
