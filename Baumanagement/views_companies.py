@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.utils.html import format_html
@@ -98,6 +99,7 @@ def form_new_company(request, context):
         formset = CompanyForm(request.POST, request.FILES)
         if formset.is_valid():
             Company(**formset.cleaned_data).save()
+            messages.success(request, 'Hinzugefügt')
     context['form'] = CompanyForm()
     context['buttons'] = ['New']
 
@@ -107,5 +109,6 @@ def form_edit_company(request, context, company):
         formset = CompanyForm(request.POST, request.FILES, instance=company)
         if formset.is_valid():
             company.save()
+            messages.success(request, f'{company.name} geändert')
     context['form'] = CompanyForm(instance=company)
     context['buttons'] = ['Edit']

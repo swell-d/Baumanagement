@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
@@ -74,6 +75,7 @@ def form_new_bill(request, context):
         formset = BillForm(request.POST, request.FILES)
         if formset.is_valid():
             Bill(**formset.cleaned_data).save()
+            messages.success(request, 'Hinzugefügt')
     context['form'] = BillForm()
     context['buttons'] = ['New']
 
@@ -83,5 +85,6 @@ def form_edit_bill(request, context, bill):
         formset = BillForm(request.POST, request.FILES, instance=bill)
         if formset.is_valid():
             bill.save()
+            messages.success(request, f'{bill.name} geändert')
     context['form'] = BillForm(instance=bill)
     context['buttons'] = ['Edit']

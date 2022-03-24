@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
@@ -74,6 +75,7 @@ def form_new_payment(request, context):
         formset = PaymentForm(request.POST, request.FILES)
         if formset.is_valid():
             Payment(**formset.cleaned_data).save()
+            messages.success(request, 'Hinzugefügt')
     context['form'] = PaymentForm()
     context['buttons'] = ['New']
 
@@ -83,5 +85,6 @@ def form_edit_payment(request, context, payment):
         formset = PaymentForm(request.POST, request.FILES, instance=payment)
         if formset.is_valid():
             payment.save()
+            messages.success(request, f'{payment.name} geändert')
     context['form'] = PaymentForm(instance=payment)
     context['buttons'] = ['Edit']

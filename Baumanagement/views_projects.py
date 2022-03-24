@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
@@ -51,6 +52,7 @@ def form_new_project(request, context):
         formset = ProjectForm(request.POST, request.FILES)
         if formset.is_valid():
             Project(**formset.cleaned_data).save()
+            messages.success(request, 'Hinzugefügt')
     context['form'] = ProjectForm()
     context['buttons'] = ['New']
 
@@ -60,5 +62,6 @@ def form_edit_project(request, context, project):
         formset = ProjectForm(request.POST, request.FILES, instance=project)
         if formset.is_valid():
             project.save()
+            messages.success(request, f'{project.name} geändert')
     context['form'] = ProjectForm(instance=project)
     context['buttons'] = ['Edit']

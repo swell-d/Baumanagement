@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
@@ -56,6 +57,7 @@ def form_new_contract(request, context):
         formset = ContractForm(request.POST, request.FILES)
         if formset.is_valid():
             Contract(**formset.cleaned_data).save()
+            messages.success(request, 'Hinzugefügt')
     context['form'] = ContractForm()
     context['buttons'] = ['New']
 
@@ -65,5 +67,17 @@ def form_edit_contract(request, context, contract):
         formset = ContractForm(request.POST, request.FILES, instance=contract)
         if formset.is_valid():
             contract.save()
+            messages.success(request, f'{contract.name} geändert')
+            if not contract.open:
+                for bill in contract.bills.all():
+                    if bill.open:
+                        bill.open = False
+                        messages.warning(request, f'{bill.name} deaktiviert')
+                        bill.save()
+                for payment in contract.payments.all():
+                    if payment.open:
+                        payment.open = False
+                        messages.warning(request, f'{payment.name} deaktiviert')
+                        payment.save()
     context['form'] = ContractForm(instance=contract)
     context['buttons'] = ['Edit']
