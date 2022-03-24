@@ -20,8 +20,8 @@ urlpatterns = [
 
     path("contracts", views_contracts.contracts),
     path("contract/<int:id>", views_contracts.contract),
-    path("contract/<int:id>/payments", views_contracts.contract_payments),
-    path("contract/<int:id>/bills", views_contracts.contract_bills),
+    path("contract/<int:id>/payments", views_payments.contract_payments),
+    path("contract/<int:id>/bills", views_bills.contract_bills),
 
     path("payments", views_payments.payments),
     path("payment/<int:id>", views_payments.payment),
