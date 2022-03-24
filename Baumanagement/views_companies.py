@@ -79,7 +79,7 @@ def company(request, id):
         tables.append({'table': table, 'titel': 'Zahlungen'})
 
     form = CompanyForm(instance=company)
-    context = {'titel1': f'Unternehmen - {company.name}', 'tags1': roles_tags(), 'table1': table1,
+    context = {'titel1': f'Unternehmen - {company.name}', 'table1': table1,
                'tables': tables, 'form': form}
 
     return myrender(request, context)

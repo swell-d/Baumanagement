@@ -4,23 +4,15 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <link rel="icon" type="image/png" href="{% static 'favicon-48x48.png' %}" sizes="48x48" />
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <title>{% block title %}Baumanagement{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'favicon-48x48.png' %}" sizes="48x48"/>
 
-    <script>
-        function mainTableReload(value) {
-            const Http = new XMLHttpRequest();
-            const url = "{{ url }}" + "?search=" + value;
-            Http.open("GET", url);
-            Http.send();
-            Http.onreadystatechange = (e) => {
-                document.getElementById("main-table").innerHTML = Http.responseText
-            }
-        }
-    </script>
+    {% bootstrap_css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
+
+    {% bootstrap_javascript %}
+    <script src="{% static 'scripts/search.js' %}"></script>
+
+    <title>{% block title %}Baumanagement{% endblock %}</title>
 
 </head>
 
