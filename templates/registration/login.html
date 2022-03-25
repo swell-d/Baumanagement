@@ -1,0 +1,52 @@
+{% extends "Baumanagement/base.html" %}
+
+{% block content %}
+    <div class="container">
+        <div class="row justify-content-center mt-3">
+            <div class="col-md-6">
+
+                {% if form.errors %}
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        Ihr Benutzername und Ihr Passwort stimmen nicht überein. Bitte versuchen Sie es erneut.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endif %}
+
+                {% if next %}
+                    {% if user.is_authenticated %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            Ihr Konto hat keinen Zugriff auf diese Seite. Um fortzufahren, melden Sie sich bitte mit
+                            einem
+                            Konto an, das Zugang hat.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% else %}
+                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                            Bitte melden Sie sich an, um diese Seite zu sehen.
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                <form method="post" action="{% url 'login' %}">
+                    {% csrf_token %}
+
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">Benutzername:</label>
+                        <input type="text" class="form-control" name="username" autofocus="" autocapitalize="none"
+                               autocomplete="username" maxlength="150" required="" id="id_username">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">Passwort:</label>
+                        <input type="password" class="form-control" name="password" autocomplete="current-password"
+                               required="" id="id_password">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                    <input type="hidden" name="next" value="{{ next }}"/>
+                </form>
+                <div class="mt-2"><a href="{% url 'password_reset' %}">Passwort vergessen?</a></div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

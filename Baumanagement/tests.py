@@ -1,5 +1,6 @@
 from datetime import datetime
 
+from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 
 from Baumanagement.models import CompanyRole, Company, Project, Contract, Payment, Bill
@@ -17,9 +18,17 @@ class UrlTests(TestCase):
                                               date=datetime.now())
         self.Bill = Bill.objects.create(name='test', contract_id=1, amount_netto=1, vat=1, amount_brutto=1,
                                         date=datetime.now())
+        self.client.force_login(User.objects.get_or_create(username='testuser')[0])
+        user = User.objects.create(username='test')
+        user.set_password('test')
+        user.save()
+        group = Group.objects.create(name="admins")
+        group.save()
 
     def test_pages(self):
         client = Client()
+        logged_in = client.login(username='test', password='test')
+
         for url in get_urls():
             print(f'http://127.0.0.1:8000{url}')
             response = client.get(url)
