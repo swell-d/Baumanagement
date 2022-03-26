@@ -58,7 +58,7 @@ class Company(models.Model):
 
     @staticmethod
     def table_fields():
-        return 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number'
+        return 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number', 'files'
 
     @staticmethod
     def search_fields():
@@ -94,7 +94,7 @@ class Project(models.Model):
 
     @staticmethod
     def table_fields():
-        return 'created', 'name', 'code', 'company', 'address', 'open', 'count_contracts'
+        return 'created', 'name', 'code', 'company', 'address', 'open', 'count_contracts', 'files'
 
     @staticmethod
     def search_fields():
@@ -135,7 +135,7 @@ class Contract(models.Model):
 
     @staticmethod
     def table_fields():
-        return 'created', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+        return 'created', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed', 'files'
 
     @staticmethod
     def search_fields():
@@ -173,7 +173,7 @@ class Bill(models.Model):
 
     @staticmethod
     def table_fields():
-        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
+        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto', 'files'
 
     @staticmethod
     def search_fields():
@@ -211,7 +211,7 @@ class Payment(models.Model):
 
     @staticmethod
     def table_fields():
-        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
+        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto', 'files'
 
     @staticmethod
     def search_fields():
@@ -220,3 +220,23 @@ class Payment(models.Model):
     @staticmethod
     def form_fields():
         return 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
+
+
+class File(models.Model):
+    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
+    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Name')
+    file = models.FileField(blank=True, upload_to="%Y/%m/%d", verbose_name="Dateien")
+
+    company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.RESTRICT, related_name='files')
+    project = models.ForeignKey(Project, null=True, blank=True, on_delete=models.RESTRICT, related_name='files')
+    contract = models.ForeignKey(Contract, null=True, blank=True, on_delete=models.RESTRICT, related_name='files')
+    bill = models.ForeignKey(Bill, null=True, blank=True, on_delete=models.RESTRICT, related_name='files')
+    payment = models.ForeignKey(Payment, null=True, blank=True, on_delete=models.RESTRICT, related_name='files')
+
+    class Meta:
+        verbose_name = 'Datei'
+        verbose_name_plural = 'Dateien'
+
+    def __str__(self):
+        return self.name

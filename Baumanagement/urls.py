@@ -3,6 +3,7 @@ from django.urls import path
 from . import views_bills
 from . import views_companies
 from . import views_contracts
+from . import views_delete
 from . import views_payments
 from . import views_projects
 
@@ -28,6 +29,8 @@ urlpatterns = [
 
     path("bills", views_bills.bills),
     path("bill/<int:id>", views_bills.bill),
+
+    path("delete_file/<int:id>", views_delete.delete_file),
 
 ]
 

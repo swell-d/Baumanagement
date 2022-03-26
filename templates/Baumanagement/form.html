@@ -6,10 +6,22 @@
             <h5 class="modal-title" id="ModalFormLabel">{{ titel1 }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
             <div class="modal-body">
                 {% csrf_token %}
                 {{ form|crispy }}
+                {% if files_form is not None %}
+                    <div class="mb-3">
+                        <label for="id_file">Dateien</label>
+                        <input name="file" class="form-control" type="file" id="id_file" multiple>
+                    </div>
+                    {% for file in files_form %}
+                        <div>
+                            <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>&nbsp;
+                            <a href="/delete_file/{{ file.id }}?next={{ url }}" class="text-decoration-none">&#x274C;</a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Zurück</button>

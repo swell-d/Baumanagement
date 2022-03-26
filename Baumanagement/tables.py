@@ -37,12 +37,20 @@ class CreateFooter(tables.Column):
         return ''
 
 
-class CompanyTable(tables.Table):
+class Files:
+    def render_files(self, record):
+        return format_html('&emsp;'.join([f'<a href="{each.file.url}" target="_blank">'
+                                          f'{str(each)[str(each).rfind(".") + 1:].upper()}'
+                                          f'</a>' for each in record.files.all()]))
+
+
+class CompanyTable(tables.Table, Files):
     class Meta(TableDesign):
         model = Company
         fields = Company.table_fields()
 
     name = CreateFooter()
+    files = tables.Column(verbose_name='Dateien')
 
     def render_name(self, record, value):
         return format_html(f'<a href="/company/{record.id}">{value}</a>')
@@ -57,12 +65,13 @@ class CompanyTable(tables.Table):
         return format_html(", ".join([f'<a href="/companies/{role.id}">{role}</a>' for role in value.all()]))
 
 
-class ProjectTable(tables.Table):
+class ProjectTable(tables.Table, Files):
     class Meta(TableDesign):
         model = Project
         fields = Project.table_fields()
 
     count_contracts = SummingColumnInt(verbose_name='Aufträge')
+    files = tables.Column(verbose_name='Dateien')
 
     def render_created(self, record, value):
         return format_html(f'<a href="/project/{record.id}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
@@ -83,7 +92,7 @@ class ProjectTable(tables.Table):
         return format_html(f'<a href="/project/{record.id}">{value}</a>')
 
 
-class ContractTable(tables.Table):
+class ContractTable(tables.Table, Files):
     class Meta(TableDesign):
         model = Contract
         fields = Contract.table_fields()
@@ -92,6 +101,7 @@ class ContractTable(tables.Table):
     amount_brutto = SummingColumn2F()
     due = SummingColumn2F(verbose_name='Rechnungen')
     payed = SummingColumn2F(verbose_name='Zahlungen')
+    files = tables.Column(verbose_name='Dateien')
 
     def render_created(self, record, value):
         return format_html(f'<a href="/contract/{record.id}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
@@ -124,7 +134,7 @@ class ContractTable(tables.Table):
         return format_html(f'<a href="/contract/{record.id}/payments">{value:.2f}</a>')
 
 
-class BillTable(tables.Table):
+class BillTable(tables.Table, Files):
     class Meta(TableDesign):
         model = Bill
         fields = Bill.table_fields()
@@ -133,6 +143,7 @@ class BillTable(tables.Table):
     company = tables.Column(verbose_name='Bearbeiter')
     amount_netto = SummingColumn2F()
     amount_brutto = SummingColumn2F()
+    files = tables.Column(verbose_name='Dateien')
 
     def render_created(self, record, value):
         return format_html(f'<a href="/bill/{record.id}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
@@ -162,7 +173,7 @@ class BillTable(tables.Table):
         return format_html(f'<a href="/bill/{record.id}">{value}</a>')
 
 
-class PaymentTable(tables.Table):
+class PaymentTable(tables.Table, Files):
     class Meta(TableDesign):
         model = Payment
         fields = Payment.table_fields()
@@ -171,6 +182,7 @@ class PaymentTable(tables.Table):
     company = tables.Column(verbose_name='Bearbeiter')
     amount_netto = SummingColumn2F()
     amount_brutto = SummingColumn2F()
+    files = tables.Column(verbose_name='Dateien')
 
     def render_created(self, record, value):
         return format_html(f'<a href="/payment/{record.id}">{value.strftime("%d.%m.%Y %H:%M")}</a>')

@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Payment, add_search_field, Contract, Project
+from Baumanagement.models import Payment, add_search_field, Contract, Project, File
 from Baumanagement.tables import PaymentTable
 from Baumanagement.views import myrender
 
@@ -74,9 +74,12 @@ def form_new_payment(request, context):
     if request.method == 'POST':
         formset = PaymentForm(request.POST, request.FILES)
         if formset.is_valid():
-            Payment(**formset.cleaned_data).save()
-            messages.success(request, 'Hinzugefügt')
+            new_object = Payment(**formset.cleaned_data)
+            new_object.save()
+            messages.success(request, f'{new_object.name} hinzugefügt')
+            upload_files(request, payment=new_object)
     context['form'] = PaymentForm()
+    context['files_form'] = []
     context['buttons'] = ['New']
 
 
@@ -86,5 +89,14 @@ def form_edit_payment(request, context, payment):
         if formset.is_valid():
             payment.save()
             messages.success(request, f'{payment.name} geändert')
+            upload_files(request, payment=payment)
     context['form'] = PaymentForm(instance=payment)
+    context['files_form'] = payment.files.all()
     context['buttons'] = ['Edit']
+
+
+def upload_files(request, *args, **kwargs):
+    for file in request.FILES.getlist('file'):
+        file_instance = File(name=file.name, file=file, **kwargs)
+        file_instance.save()
+        messages.success(request, f'{file.name} hinzugefügt')
