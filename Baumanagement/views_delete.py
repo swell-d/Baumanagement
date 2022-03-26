@@ -1,7 +1,7 @@
 import os
 
 from django.contrib import messages
-from django.shortcuts import redirect
+from django.http import HttpResponse
 
 from Baumanagement.models import File
 
@@ -12,4 +12,4 @@ def delete_file(request, id):
     os.remove(file.file.path)
     file.delete()
     messages.success(request, f'{filename} gelöscht')
-    return redirect(request.GET.get('next', '/'))
+    return HttpResponse('')

@@ -4,7 +4,8 @@
     <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title" id="ModalFormLabel">{{ titel1 }}</h5>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    onClick="window.location.reload();"></button>
         </div>
         <form method="POST" enctype="multipart/form-data">
             <div class="modal-body">
@@ -16,15 +17,18 @@
                         <input name="file" class="form-control" type="file" id="id_file" multiple>
                     </div>
                     {% for file in files_form %}
-                        <div>
-                            <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>&nbsp;
-                            <a href="/delete_file/{{ file.id }}?next={{ url }}" class="text-decoration-none">&#x274C;</a>
+                        <div class="alert alert-light alert-dismissible fade show" role="alert">
+                            <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                    onclick="deleteFile({{ file.id }})"></button>
                         </div>
                     {% endfor %}
                 {% endif %}
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Zurück</button>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"
+                        onClick="window.location.reload();">Zurück
+                </button>
                 <button type="submit" class="btn btn-success">Speichern</button>
             </div>
         </form>

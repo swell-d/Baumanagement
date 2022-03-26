@@ -25,8 +25,8 @@
                             Bearbeiten
                         </button>
                     {% endif %}
-                    <div class="modal fade" id="ModalForm" tabindex="-1" aria-labelledby="ModalFormLabel"
-                         aria-hidden="true">
+                    <div class="modal fade" id="ModalForm" data-bs-backdrop="static" data-bs-keyboard="false"
+                         tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                         {% include "Baumanagement/form.html" %}
                     </div>
                 {% endif %}

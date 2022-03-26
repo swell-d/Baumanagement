@@ -7,3 +7,10 @@ function mainTableReload(path, value) {
         document.getElementById("main-table").innerHTML = Http.responseText
     }
 }
+
+function deleteFile(id) {
+    const Http = new XMLHttpRequest();
+    const url = "/delete_file/" + id;
+    Http.open("GET", url);
+    Http.send();
+}
