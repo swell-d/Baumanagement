@@ -4,7 +4,7 @@ from django_tables2 import RequestConfig
 
 from Baumanagement.models import Contract, Payment, Bill, add_search_field
 from Baumanagement.tables import ContractTable, PaymentTable, BillTable
-from Baumanagement.views import myrender
+from Baumanagement.views import myrender, upload_files
 
 
 def contracts(request):
@@ -56,9 +56,12 @@ def form_new_contract(request, context):
     if request.method == 'POST':
         formset = ContractForm(request.POST, request.FILES)
         if formset.is_valid():
-            Contract(**formset.cleaned_data).save()
-            messages.success(request, 'Hinzugefügt')
+            new_object = Contract(**formset.cleaned_data)
+            new_object.save()
+            messages.success(request, f'{new_object.name} hinzugefügt')
+            upload_files(request, contract=new_object)
     context['form'] = ContractForm()
+    context['files_form'] = []
     context['buttons'] = ['New']
 
 
@@ -68,6 +71,7 @@ def form_edit_contract(request, context, contract):
         if formset.is_valid():
             contract.save()
             messages.success(request, f'{contract.name} geändert')
+            upload_files(request, contract=contract)
             if not contract.open:
                 for bill in contract.bills.all():
                     if bill.open:
@@ -80,4 +84,5 @@ def form_edit_contract(request, context, contract):
                         messages.warning(request, f'{payment.name} deaktiviert')
                         payment.save()
     context['form'] = ContractForm(instance=contract)
+    context['files_form'] = contract.files.all()
     context['buttons'] = ['Edit']

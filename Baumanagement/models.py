@@ -135,7 +135,7 @@ class Contract(models.Model):
 
     @staticmethod
     def table_fields():
-        return 'created', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed', 'files'
+        return 'created', 'project', 'company', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
 
     @staticmethod
     def search_fields():
@@ -173,7 +173,7 @@ class Bill(models.Model):
 
     @staticmethod
     def table_fields():
-        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto', 'files'
+        return 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
 
     @staticmethod
     def search_fields():
@@ -211,7 +211,7 @@ class Payment(models.Model):
 
     @staticmethod
     def table_fields():
-        return 'created', 'project', 'company', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto', 'files'
+        return 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
 
     @staticmethod
     def search_fields():

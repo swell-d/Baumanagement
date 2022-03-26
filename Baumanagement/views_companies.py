@@ -6,7 +6,7 @@ from django_tables2 import RequestConfig
 
 from Baumanagement.models import Company, CompanyRole, Project, Contract, add_search_field, Bill, Payment
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
-from Baumanagement.views import myrender
+from Baumanagement.views import myrender, upload_files
 
 
 def roles_tags():
@@ -98,9 +98,12 @@ def form_new_company(request, context):
     if request.method == 'POST':
         formset = CompanyForm(request.POST, request.FILES)
         if formset.is_valid():
-            Company(**formset.cleaned_data).save()
-            messages.success(request, 'Hinzugefügt')
+            new_object = Company(**formset.cleaned_data)
+            new_object.save()
+            messages.success(request, f'{new_object.name} hinzugefügt')
+            upload_files(request, company=new_object)
     context['form'] = CompanyForm()
+    context['files_form'] = []
     context['buttons'] = ['New']
 
 
@@ -110,5 +113,7 @@ def form_edit_company(request, context, company):
         if formset.is_valid():
             company.save()
             messages.success(request, f'{company.name} geändert')
+            upload_files(request, company=company)
     context['form'] = CompanyForm(instance=company)
+    context['files_form'] = company.files.all()
     context['buttons'] = ['Edit']

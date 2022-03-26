@@ -2,9 +2,9 @@ from django.contrib import messages
 from django.forms import ModelForm
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Payment, add_search_field, Contract, Project, File
+from Baumanagement.models import Payment, add_search_field, Contract, Project
 from Baumanagement.tables import PaymentTable
-from Baumanagement.views import myrender
+from Baumanagement.views import myrender, upload_files
 
 
 def payments(request):
@@ -95,8 +95,3 @@ def form_edit_payment(request, context, payment):
     context['buttons'] = ['Edit']
 
 
-def upload_files(request, *args, **kwargs):
-    for file in request.FILES.getlist('file'):
-        file_instance = File(name=file.name, file=file, **kwargs)
-        file_instance.save()
-        messages.success(request, f'{file.name} hinzugefügt')

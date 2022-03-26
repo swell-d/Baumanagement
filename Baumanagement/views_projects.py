@@ -4,7 +4,7 @@ from django_tables2 import RequestConfig
 
 from Baumanagement.models import Project, Contract, add_search_field
 from Baumanagement.tables import ProjectTable, ContractTable
-from Baumanagement.views import myrender
+from Baumanagement.views import myrender, upload_files
 
 
 def projects(request):
@@ -51,9 +51,12 @@ def form_new_project(request, context):
     if request.method == 'POST':
         formset = ProjectForm(request.POST, request.FILES)
         if formset.is_valid():
-            Project(**formset.cleaned_data).save()
-            messages.success(request, 'Hinzugefügt')
+            new_object = Project(**formset.cleaned_data)
+            new_object.save()
+            messages.success(request, f'{new_object.name} hinzugefügt')
+            upload_files(request, project=new_object)
     context['form'] = ProjectForm()
+    context['files_form'] = []
     context['buttons'] = ['New']
 
 
@@ -63,5 +66,7 @@ def form_edit_project(request, context, project):
         if formset.is_valid():
             project.save()
             messages.success(request, f'{project.name} geändert')
+            upload_files(request, project=project)
     context['form'] = ProjectForm(instance=project)
+    context['files_form'] = project.files.all()
     context['buttons'] = ['Edit']
