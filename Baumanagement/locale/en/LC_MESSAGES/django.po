@@ -1,0 +1,75 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-03-27 20:49+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: .\models.py:36
+msgid "Created"
+msgstr "Created"
+
+#: .\models.py:37
+msgid "Updated"
+msgstr "Updated"
+
+#: .\models.py:38
+msgid "Name"
+msgstr "Name"
+
+#: .\models.py:39
+msgid "Address"
+msgstr "Address"
+
+#: .\models.py:40
+msgid "City"
+msgstr "City"
+
+#: .\models.py:41
+msgid "Land"
+msgstr "Land"
+
+#: .\models.py:42
+msgid "E-mail"
+msgstr "E-mail"
+
+#: .\models.py:43
+msgid "Phone"
+msgstr "Phone"
+
+#: .\models.py:44
+msgid "Role"
+msgstr "Role"
+
+#: .\models.py:45
+msgid "CEO"
+msgstr "CEO"
+
+#: .\models.py:46
+msgid "VAT number"
+msgstr "VAT number"
+
+#: .\models.py:47
+msgid "Open"
+msgstr "Open"
+
+#: .\models.py:50
+msgid "Company"
+msgstr "Company"
+
+#: .\models.py:51
+msgid "Companies"
+msgstr "Companies"

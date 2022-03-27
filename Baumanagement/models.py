@@ -2,6 +2,7 @@ import datetime
 
 from django.db import models
 from django.db.models import Sum, Q, F, Case, When
+from django.utils.translation import gettext_lazy as _
 
 
 def add_search_field(queryset, request, context):
@@ -32,22 +33,22 @@ class CompanyRole(models.Model):
 
 
 class Company(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
-    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Firmenname')
-    address = models.CharField(max_length=256, null=False, blank=True, verbose_name='Adresse')
-    city = models.CharField(max_length=256, null=False, blank=True, verbose_name='PLZ Stadt')
-    land = models.CharField(max_length=256, null=False, blank=True, verbose_name='Land', default='Deutschland')
-    email = models.EmailField(null=False, blank=True, verbose_name='E-Mail')
-    phone = models.CharField(max_length=256, null=False, blank=True, verbose_name='Rufnummer')
-    role = models.ManyToManyField(CompanyRole, blank=False, verbose_name='Rolle', related_name='companies')
-    ceo = models.CharField(max_length=256, null=False, blank=True, verbose_name='Geschäftsführer')
-    vat_number = models.CharField(max_length=16, null=False, blank=True, verbose_name='VAT-Nummer')
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
+    address = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Address'))
+    city = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('City'))
+    land = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Land'), default='Deutschland')
+    email = models.EmailField(null=False, blank=True, verbose_name=_('E-mail'))
+    phone = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Phone'))
+    role = models.ManyToManyField(CompanyRole, blank=False, verbose_name=_('Role'), related_name='companies')
+    ceo = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('CEO'))
+    vat_number = models.CharField(max_length=16, null=False, blank=True, verbose_name=_('VAT number'))
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
-        verbose_name = 'Unternehmen'
-        verbose_name_plural = 'Unternehmen'
+        verbose_name = _('Company')
+        verbose_name_plural = _('Companies')
 
     def __str__(self):
         return self.name
