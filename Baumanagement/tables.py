@@ -2,6 +2,7 @@ import re
 import urllib.parse
 
 import django_tables2 as tables
+from django.urls import reverse
 from django.utils.html import format_html
 
 from .models import Company, Project, Contract, Payment, Bill
@@ -53,7 +54,8 @@ class CompanyTable(tables.Table, Files):
     files = tables.Column(verbose_name='Dateien')
 
     def render_name(self, record, value):
-        return format_html(f'<a href="/company/{record.id}">{value}</a>')
+        link = reverse('companies_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_address(self, record, value):
         return get_google_maps_link(record)

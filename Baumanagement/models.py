@@ -17,12 +17,12 @@ def add_search_field(queryset, request, context):
 
 
 class CompanyRole(models.Model):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rolle')
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Role'))
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
-        verbose_name = 'Rolle'
-        verbose_name_plural = 'Rollen'
+        verbose_name = _('Role')
+        verbose_name_plural = _('Roles')
 
     def __str__(self):
         return self.name
@@ -35,7 +35,7 @@ class CompanyRole(models.Model):
 class Company(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Company name'))
     address = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Address'))
     city = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('City'))
     land = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Land'), default='Deutschland')
@@ -71,20 +71,20 @@ class Company(models.Model):
 
 
 class Project(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
-    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Projektname')
-    code = models.CharField(max_length=256, null=False, blank=False, verbose_name='Kode')
-    company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bauherr',
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Project name'))
+    code = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Code'))
+    company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')
-    address = models.CharField(max_length=256, null=False, blank=False, verbose_name='Adresse')
-    city = models.CharField(max_length=256, null=False, blank=False, verbose_name='PLZ Stadt')
-    land = models.CharField(max_length=256, null=False, blank=True, verbose_name='Land', default='Deutschland')
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
+    address = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Address'))
+    city = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('City'))
+    land = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Land'), default='Deutschland')
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
-        verbose_name = 'Projekt'
-        verbose_name_plural = 'Projekte'
+        verbose_name = _('Project')
+        verbose_name_plural = _('Projects')
 
     def __str__(self):
         return self.name
@@ -107,24 +107,24 @@ class Project(models.Model):
 
 
 class Contract(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
-    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Auftrag')
-    date = models.DateField(null=False, blank=True, verbose_name='Datum', default=datetime.date.today)
-    project = models.ForeignKey(Project, null=False, blank=False, verbose_name='Projekt',
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Contract name'))
+    date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
+    project = models.ForeignKey(Project, null=False, blank=False, verbose_name=_('Project'),
                                 on_delete=models.RESTRICT, related_name='contracts')
-    company = models.ForeignKey(Company, null=False, blank=False, verbose_name='Bearbeiter',
+    company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                       verbose_name='Nettobetrag')
-    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt %', default=19)
+                                       verbose_name=_('Amount netto'))
+    vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                        verbose_name='Bruttobetrag')
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
+                                        verbose_name=_('Amount brutto'))
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
-        verbose_name = 'Auftrag'
-        verbose_name_plural = 'Aufträge'
+        verbose_name = _('Contract')
+        verbose_name_plural = _('Contracts')
 
     def __str__(self):
         return self.name
@@ -148,22 +148,22 @@ class Contract(models.Model):
 
 
 class Bill(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
-    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Rechnung')
-    date = models.DateField(null=False, blank=True, verbose_name='Datum', default=datetime.date.today)
-    contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Bill name'))
+    date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
+    contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='bills')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                       verbose_name='Nettobetrag')
-    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt %', default=19)
+                                       verbose_name=_('Amount netto'))
+    vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                        verbose_name='Bruttobetrag')
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
+                                        verbose_name=_('Amount brutto'))
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
-        verbose_name = 'Rechnung'
-        verbose_name_plural = 'Rechnungen'
+        verbose_name = _('Bill')
+        verbose_name_plural = _('Bills')
 
     def __str__(self):
         return self.name
@@ -186,22 +186,22 @@ class Bill(models.Model):
 
 
 class Payment(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
-    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Zahlung')
-    date = models.DateField(null=False, blank=True, verbose_name='Datum', default=datetime.date.today)
-    contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name='Auftrag',
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Payment name'))
+    date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
+    contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='payments')
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                       verbose_name='Nettobetrag')
-    vat = models.FloatField(null=False, blank=False, verbose_name='MWSt %', default=19)
+                                       verbose_name=_('Amount netto'))
+    vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                        verbose_name='Bruttobetrag')
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name='Aktiv')
+                                        verbose_name=_('Amount brutto'))
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
-        verbose_name = 'Zahlung'
-        verbose_name_plural = 'Zahlungen'
+        verbose_name = _('Payment')
+        verbose_name_plural = _('Payments')
 
     def __str__(self):
         return self.name
@@ -224,10 +224,10 @@ class Payment(models.Model):
 
 
 class File(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name='Hinzugefügt')
-    updated = models.DateTimeField(auto_now=True, verbose_name='Geändert')
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name='Name')
-    file = models.FileField(blank=True, upload_to="%Y/%m/%d", verbose_name="Dateien")
+    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
+    file = models.FileField(blank=True, upload_to="%Y/%m/%d", verbose_name=_('Files'))
 
     company = models.ForeignKey(Company, null=True, blank=True, on_delete=models.RESTRICT, related_name='files')
     project = models.ForeignKey(Project, null=True, blank=True, on_delete=models.RESTRICT, related_name='files')
@@ -236,8 +236,8 @@ class File(models.Model):
     payment = models.ForeignKey(Payment, null=True, blank=True, on_delete=models.RESTRICT, related_name='files')
 
     class Meta:
-        verbose_name = 'Datei'
-        verbose_name_plural = 'Dateien'
+        verbose_name = _('File')
+        verbose_name_plural = _('Files')
 
     def __str__(self):
         return self.name

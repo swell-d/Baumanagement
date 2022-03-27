@@ -1,3 +1,4 @@
+{% load i18n %}
 <nav class="navbar fixed-bottom navbar-light bg-light">
     <div class="container-fluid">
         <div>
@@ -5,6 +6,14 @@
             <a href="mailto:3952800@gmail.com" target="_blank" class="text-reset text-decoration-none">
                 Dmitry Rudenko
             </a>
+        </div>
+        <div>
+            {% get_current_language as CURRENT_LANGUAGE %}
+            {% get_available_languages as AVAILABLE_LANGUAGES %}
+            {% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+            {% for language in languages %}
+                &nbsp;<a href="/{{ language.code }}/" class="text-reset text-decoration-none">{{ language.code }}</a>&nbsp;
+            {% endfor %}
         </div>
     </div>
 </nav>

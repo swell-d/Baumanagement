@@ -4,7 +4,7 @@
 
 <nav class="navbar navbar-expand-md navbar-light bg-light">
     <div class="container-fluid">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="{% url 'index' %}">
             <img class="me-2" src="{% static 'favicon-48x48.png' %}" alt="Baumanagement" width="48" height="48"/>
             Baumanagement
         </a>
@@ -15,19 +15,19 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="/companies">Unternehmen</a>
+                    <a class="nav-link active" href="{% url 'companies' %}">{% translate "Companies" %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/projects">Projekte</a>
+                    <a class="nav-link active" href="{% url 'projects' %}">{% translate "Projects" %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/contracts">Aufträge</a>
+                    <a class="nav-link active" href="{% url 'contracts' %}">{% translate "Contracts" %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/bills">Rechnungen</a>
+                    <a class="nav-link active" href="{% url 'bills' %}">{% translate "Bills" %}</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="/payments">Zahlungen</a>
+                    <a class="nav-link active" href="{% url 'payments' %}">{% translate "Payments" %}</a>
                 </li>
             </ul>
             <ul class="navbar-nav">
