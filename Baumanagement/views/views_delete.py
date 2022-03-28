@@ -3,7 +3,7 @@ import os
 from django.contrib import messages
 from django.http import HttpResponse
 from django.utils.translation import gettext_lazy as _
-from Baumanagement.models import File
+from Baumanagement.models.models import File
 
 
 def delete_file(request, id):

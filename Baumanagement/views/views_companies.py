@@ -6,7 +6,8 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Company, CompanyRole, Project, Contract, add_search_field, Bill, Payment
+from Baumanagement.models.models import Company, CompanyRole, Project, Contract, Bill, Payment
+from Baumanagement.models.abstract import add_search_field
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
 from Baumanagement.views.views import myrender, upload_files
 

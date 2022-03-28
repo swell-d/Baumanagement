@@ -3,7 +3,8 @@ from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 
-from Baumanagement.models import Project, Contract, add_search_field
+from Baumanagement.models.models import Project, Contract
+from Baumanagement.models.abstract import add_search_field
 from Baumanagement.tables import ProjectTable, ContractTable
 from Baumanagement.views.views import myrender, upload_files
 

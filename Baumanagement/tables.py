@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from .models import Company, Project, Contract, Payment, Bill
+from Baumanagement.models.models import Company, Project, Contract, Payment, Bill
 
 
 def get_google_maps_link(record):

@@ -1,22 +1,13 @@
 import datetime
 
 from django.db import models
-from django.db.models import Sum, Q, F, Case, When
+from django.db.models import Sum, F, Case, When
 from django.utils.translation import gettext_lazy as _
 
-
-def add_search_field(queryset, request, context):
-    search = request.GET.get('search')
-    if search is not None:
-        qs = Q()
-        for query in [Q(**{f'{field}__icontains': search}) for field in queryset[0].__class__.search_fields()]:
-            qs = qs | query
-        queryset = queryset.filter(qs)
-    context['search_field'] = True
-    return queryset
+from Baumanagement.models.abstract import BaseModel
 
 
-class CompanyRole(models.Model):
+class CompanyRole(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Role'))
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
@@ -32,9 +23,7 @@ class CompanyRole(models.Model):
         return self.companies.count()
 
 
-class Company(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
-    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+class Company(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Company name'))
     address = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Address'))
     city = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('City'))
@@ -49,9 +38,6 @@ class Company(models.Model):
     class Meta:
         verbose_name = _('Company')
         verbose_name_plural = _('Companies')
-
-    def __str__(self):
-        return self.name
 
     @staticmethod
     def extra_fields(qs):
@@ -70,9 +56,7 @@ class Company(models.Model):
         return 'open', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number', 'role'
 
 
-class Project(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
-    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+class Project(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Project name'))
     code = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
@@ -85,9 +69,6 @@ class Project(models.Model):
     class Meta:
         verbose_name = _('Project')
         verbose_name_plural = _('Projects')
-
-    def __str__(self):
-        return self.name
 
     @staticmethod
     def extra_fields(qs):
@@ -106,9 +87,7 @@ class Project(models.Model):
         return 'open', 'name', 'code', 'company', 'address', 'city', 'land'
 
 
-class Contract(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
-    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+class Contract(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Contract name'))
     date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name=_('Project'),
@@ -125,9 +104,6 @@ class Contract(models.Model):
     class Meta:
         verbose_name = _('Contract')
         verbose_name_plural = _('Contracts')
-
-    def __str__(self):
-        return self.name
 
     @staticmethod
     def extra_fields(qs):
@@ -147,9 +123,7 @@ class Contract(models.Model):
         return 'open', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
-class Bill(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
-    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+class Bill(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Bill name'))
     date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
@@ -165,9 +139,6 @@ class Bill(models.Model):
         verbose_name = _('Bill')
         verbose_name_plural = _('Bills')
 
-    def __str__(self):
-        return self.name
-
     @staticmethod
     def extra_fields(qs):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
@@ -185,9 +156,7 @@ class Bill(models.Model):
         return 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
-class Payment(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
-    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+class Payment(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Payment name'))
     date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
@@ -203,9 +172,6 @@ class Payment(models.Model):
         verbose_name = _('Payment')
         verbose_name_plural = _('Payments')
 
-    def __str__(self):
-        return self.name
-
     @staticmethod
     def extra_fields(qs):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
@@ -223,9 +189,7 @@ class Payment(models.Model):
         return 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
-class File(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
-    updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+class File(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     file = models.FileField(blank=True, upload_to="%Y/%m/%d", verbose_name=_('Files'))
 
@@ -238,6 +202,3 @@ class File(models.Model):
     class Meta:
         verbose_name = _('File')
         verbose_name_plural = _('Files')
-
-    def __str__(self):
-        return self.name
