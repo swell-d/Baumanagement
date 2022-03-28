@@ -45,8 +45,8 @@ class Files:
         text = ''.join([f'<a href="{each.file.url}" target="_blank">{str(each)[str(each).rfind(".") + 1:].upper()}</a>'
                         for each in files[:1]])
         if len(files) > 1:
-            text += f'''&nbsp;
-<button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#fileModal{record.id}">
+            text += f'''
+<button type="button" class="btn btn-outline-secondary btn-sm ms-2" data-bs-toggle="modal" data-bs-target="#fileModal{record.id}">
     +{len(files) - 1}
 </button>
 <div class="modal fade" id="fileModal{record.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
