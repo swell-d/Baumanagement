@@ -33,3 +33,14 @@ class AddressModel(models.Model):
 
     class Meta:
         abstract = True
+
+
+class PriceModel(models.Model):
+    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
+                                       verbose_name=_('Amount netto'))
+    vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
+    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
+                                        verbose_name=_('Amount brutto'))
+
+    class Meta:
+        abstract = True

@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Sum, F, Case, When
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.abstract import BaseModel, AddressModel
+from Baumanagement.models.abstract import BaseModel, AddressModel, PriceModel
 
 
 class CompanyRole(BaseModel):
@@ -13,9 +13,6 @@ class CompanyRole(BaseModel):
     class Meta:
         verbose_name = _('Role')
         verbose_name_plural = _('Roles')
-
-    def __str__(self):
-        return self.name
 
     @property
     def count_companies(self):
@@ -78,18 +75,13 @@ class Project(BaseModel, AddressModel):
         return 'open', 'name', 'code', 'company', 'address', 'city', 'land'
 
 
-class Contract(BaseModel):
+class Contract(BaseModel, PriceModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Contract name'))
     date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name=_('Project'),
                                 on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
-    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                       verbose_name=_('Amount netto'))
-    vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
-    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                        verbose_name=_('Amount brutto'))
 
     class Meta:
         verbose_name = _('Contract')
@@ -113,16 +105,11 @@ class Contract(BaseModel):
         return 'open', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
-class Bill(BaseModel):
+class Bill(BaseModel, PriceModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Bill name'))
     date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='bills')
-    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                       verbose_name=_('Amount netto'))
-    vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
-    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                        verbose_name=_('Amount brutto'))
 
     class Meta:
         verbose_name = _('Bill')
@@ -145,16 +132,11 @@ class Bill(BaseModel):
         return 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
-class Payment(BaseModel):
+class Payment(BaseModel, PriceModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Payment name'))
     date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='payments')
-    amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                       verbose_name=_('Amount netto'))
-    vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
-    amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
-                                        verbose_name=_('Amount brutto'))
 
     class Meta:
         verbose_name = _('Payment')
