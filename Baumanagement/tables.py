@@ -76,7 +76,7 @@ class ProjectTable(tables.Table, Files):
         model = Project
         fields = Project.table_fields()
 
-    count_contracts = SummingColumnInt(verbose_name='Aufträge')
+    count_contracts = SummingColumnInt(verbose_name=_('Contracts'))
     files = tables.Column(verbose_name=_('Files'))
 
     def render_created(self, record, value):
@@ -110,8 +110,8 @@ class ContractTable(tables.Table, Files):
 
     amount_netto = SummingColumn2F()
     amount_brutto = SummingColumn2F()
-    due = SummingColumn2F(verbose_name='Rechnungen')
-    payed = SummingColumn2F(verbose_name='Zahlungen')
+    due = SummingColumn2F(verbose_name=_('Bills'))
+    payed = SummingColumn2F(verbose_name=_('Payments'))
     files = tables.Column(verbose_name=_('Files'))
 
     def render_created(self, record, value):
@@ -160,8 +160,8 @@ class BillTable(tables.Table, Files):
         model = Bill
         fields = Bill.table_fields()
 
-    project = tables.Column(verbose_name='Projekt')
-    company = tables.Column(verbose_name='Bearbeiter')
+    project = tables.Column(verbose_name=_('Project'))
+    company = tables.Column(verbose_name=_('Company'))
     amount_netto = SummingColumn2F()
     amount_brutto = SummingColumn2F()
     files = tables.Column(verbose_name=_('Files'))
@@ -208,8 +208,8 @@ class PaymentTable(tables.Table, Files):
         model = Payment
         fields = Payment.table_fields()
 
-    project = tables.Column(verbose_name='Projekt')
-    company = tables.Column(verbose_name='Bearbeiter')
+    project = tables.Column(verbose_name=_('Project'))
+    company = tables.Column(verbose_name=_('Company'))
     amount_netto = SummingColumn2F()
     amount_brutto = SummingColumn2F()
     files = tables.Column(verbose_name=_('Files'))
