@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.db.models import QuerySet
 from django.forms import ModelForm
+from django.urls import reverse
 from django.utils.html import format_html
 from django_tables2 import RequestConfig
 
@@ -10,10 +11,14 @@ from Baumanagement.views.views import myrender, upload_files
 
 
 def roles_tags():
-    filtered_roles = [each for each in CompanyRole.objects.order_by('name') if each.count_companies > 0]
-    return format_html(f'<a href="/companies">Alle</a> ({Company.objects.count()}), ' +
-                       ', '.join(f'<a href="/companies/{each.id}">{each.name}</a> ({each.count_companies})'
-                                 for each in filtered_roles))
+    def role_link(role):
+        return reverse('companies_id', args=[role.id])
+
+    filtered_roles = [role for role in CompanyRole.objects.order_by('name') if role.count_companies > 0]
+    link = reverse('companies')
+    return format_html(f'<a href="{link}">Alle</a> ({Company.objects.count()}), ' +
+                       ', '.join(f'<a href="{role_link(role)}">{role.name}</a> ({role.count_companies})'
+                                 for role in filtered_roles))
 
 
 def companies(request):
