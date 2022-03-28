@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-28 14:37+0200\n"
+"POT-Creation-Date: 2022-03-28 15:37+0200\n"
 "PO-Revision-Date: 2022-03-28 14:39+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -245,3 +245,13 @@ msgstr "All payments"
 #: .\views\views_projects.py:12
 msgid "All projects"
 msgstr "All projects"
+
+
+msgid "created"
+msgstr "created"
+
+msgid "changed"
+msgstr "changed"
+
+msgid "disabled"
+msgstr "disabled"
