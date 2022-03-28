@@ -39,17 +39,20 @@
                         </a>
                         <ul class="dropdown-menu me-10" aria-labelledby="navbarDropdown">
                             {% if request.user|has_group:"admins" %}
-                                <li><a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
+                                <li><a class="dropdown-item" href="{% url 'admin:index' %}"
+                                       target="_blank">{% translate "Admin" %}</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
                             {% endif %}
-                            <li><a class="dropdown-item" href="{% url 'logout' %}?next=/">Logout</a></li>
+                            <li><a class="dropdown-item" href="{% url 'logout' %}?next=/">{% translate "Logout" %}</a>
+                            </li>
                         </ul>
                     </li>
                 {% endif %}
                 {% if not user.is_authenticated %}
-                    <li><a class="nav-link active" href="{% url 'login' %}?next={{ request.path }}">Login</a></li>
+                    <li><a class="nav-link active"
+                           href="{% url 'login' %}?next={{ request.path }}">{% translate "Login" %}</a></li>
                 {% endif %}
             </ul>
         </div>

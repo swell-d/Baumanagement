@@ -1,4 +1,5 @@
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 <div class="modal-dialog">
     <div class="modal-content">
@@ -13,7 +14,7 @@
                 {{ form|crispy }}
                 {% if files_form is not None %}
                     <div class="mb-3">
-                        <label for="id_file">Dateien</label>
+                        <label for="id_file">{% translate "Files" %}</label>
                         <input name="file" class="form-control" type="file" id="id_file" multiple>
                     </div>
                     {% for file in files_form %}
@@ -27,9 +28,9 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                        onClick="window.location.reload();">Zurück
+                        onClick="window.location.reload();">{% translate "Close" %}
                 </button>
-                <button type="submit" class="btn btn-success">Speichern</button>
+                <button type="submit" class="btn btn-success">{% translate "Save" %}</button>
             </div>
         </form>
     </div>

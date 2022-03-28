@@ -1,5 +1,7 @@
 {% extends "base.html" %}
 
+{% load i18n %}
+
 {% block content %}
     <div class="container">
         <div class="row justify-content-center mt-3">
@@ -7,7 +9,7 @@
 
                 {% if form.errors %}
                     <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                        Ihr Benutzername und Ihr Passwort stimmen nicht überein. Bitte versuchen Sie es erneut.
+                        {% translate "Your username and password do not match. Please try again." %}
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 {% endif %}
@@ -15,14 +17,12 @@
                 {% if next %}
                     {% if user.is_authenticated %}
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            Ihr Konto hat keinen Zugriff auf diese Seite. Um fortzufahren, melden Sie sich bitte mit
-                            einem
-                            Konto an, das Zugang hat.
+                            {% translate "Your account does not have access to this page. To continue, please log in with an account that has access." %}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     {% else %}
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                            Bitte melden Sie sich an, um diese Seite zu sehen.
+                            {% translate "Please log in to view this page." %}
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     {% endif %}
@@ -32,19 +32,19 @@
                     {% csrf_token %}
 
                     <div class="mb-3">
-                        <label for="id_username" class="form-label">Benutzername:</label>
+                        <label for="id_username" class="form-label">{% translate "Username" %}:</label>
                         <input type="text" class="form-control" name="username" autofocus="" autocapitalize="none"
                                autocomplete="username" maxlength="150" required="" id="id_username">
                     </div>
                     <div class="mb-3">
-                        <label for="id_password" class="form-label">Passwort:</label>
+                        <label for="id_password" class="form-label">{% translate "Password" %}:</label>
                         <input type="password" class="form-control" name="password" autocomplete="current-password"
                                required="" id="id_password">
                     </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary">{% translate "Login" %}</button>
                     <input type="hidden" name="next" value="{{ next }}"/>
                 </form>
-                <div class="mt-2"><a href="{% url 'password_reset' %}">Passwort vergessen?</a></div>
+                <div class="mt-2"><a href="{% url 'password_reset' %}">{% translate "Reset password" %}</a></div>
 
             </div>
         </div>
