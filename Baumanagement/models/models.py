@@ -9,7 +9,6 @@ from Baumanagement.models.abstract import BaseModel, AddressModel
 
 class CompanyRole(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Role'))
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
         verbose_name = _('Role')
@@ -30,7 +29,6 @@ class Company(BaseModel, AddressModel):
     role = models.ManyToManyField(CompanyRole, blank=False, verbose_name=_('Role'), related_name='companies')
     ceo = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('CEO'))
     vat_number = models.CharField(max_length=16, null=False, blank=True, verbose_name=_('VAT number'))
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
         verbose_name = _('Company')
@@ -58,7 +56,6 @@ class Project(BaseModel, AddressModel):
     code = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
         verbose_name = _('Project')
@@ -93,7 +90,6 @@ class Contract(BaseModel):
     vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name=_('Amount brutto'))
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
         verbose_name = _('Contract')
@@ -127,7 +123,6 @@ class Bill(BaseModel):
     vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name=_('Amount brutto'))
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
         verbose_name = _('Bill')
@@ -160,7 +155,6 @@ class Payment(BaseModel):
     vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
     amount_brutto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                         verbose_name=_('Amount brutto'))
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
         verbose_name = _('Payment')

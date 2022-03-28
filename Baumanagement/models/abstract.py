@@ -17,6 +17,7 @@ def add_search_field(queryset, request, context):
 class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
+    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:
         abstract = True
