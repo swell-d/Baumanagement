@@ -39,7 +39,7 @@
                         </a>
                         <ul class="dropdown-menu me-10" aria-labelledby="navbarDropdown">
                             {% if request.user|has_group:"admins" %}
-                                <li><a class="dropdown-item" href="/admin" target="_blank">Admin</a></li>
+                                <li><a class="dropdown-item" href="{% url 'admin:index' %}" target="_blank">Admin</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

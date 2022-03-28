@@ -10,7 +10,7 @@ function mainTableReload(path, value) {
 
 function deleteFile(id) {
     const Http = new XMLHttpRequest();
-    const url = "/delete_file/" + id;
+    const url = "/en/delete_file/" + id;
     Http.open("GET", url);
     Http.send();
 }
