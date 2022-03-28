@@ -4,6 +4,7 @@ import urllib.parse
 import django_tables2 as tables
 from django.urls import reverse
 from django.utils.html import format_html
+from django.utils.translation import gettext_lazy as _
 
 from .models import Company, Project, Contract, Payment, Bill
 
@@ -17,7 +18,7 @@ def get_google_maps_link(record):
 
 
 class TableDesign:
-    empty_text = "Keine Ergebnisse gefunden"
+    empty_text = _("No results found")
     template_name = "django_tables2/bootstrap4.html"
     attrs = {'class': 'table table-hover'}
     row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
@@ -51,10 +52,10 @@ class CompanyTable(tables.Table, Files):
         fields = Company.table_fields()
 
     name = CreateFooter()
-    files = tables.Column(verbose_name='Dateien')
+    files = tables.Column(verbose_name=_('Files'))
 
     def render_name(self, record, value):
-        link = reverse('companies_id', args=[record.id])
+        link = reverse('company_id', args=[record.id])
         return format_html(f'<a href="{link}">{value}</a>')
 
     def render_address(self, record, value):
@@ -64,7 +65,10 @@ class CompanyTable(tables.Table, Files):
         return format_html(f'<a href="tel:{re.sub("[^0-9+]", "", value)}">{value}</a>')
 
     def render_role(self, record, value):
-        return format_html(", ".join([f'<a href="/companies/{role.id}">{role}</a>' for role in value.all()]))
+        def role_link(role):
+            return reverse('companies_id', args=[role.id])
+
+        return format_html(", ".join([f'<a href="{role_link(role)}">{role}</a>' for role in value.all()]))
 
 
 class ProjectTable(tables.Table, Files):
@@ -73,25 +77,30 @@ class ProjectTable(tables.Table, Files):
         fields = Project.table_fields()
 
     count_contracts = SummingColumnInt(verbose_name='Aufträge')
-    files = tables.Column(verbose_name='Dateien')
+    files = tables.Column(verbose_name=_('Files'))
 
     def render_created(self, record, value):
-        return format_html(f'<a href="/project/{record.id}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
+        link = reverse('project_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
 
     def render_name(self, record, value):
-        return format_html(f'<a href="/project/{record.id}">{value}</a>')
+        link = reverse('project_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_code(self, record, value):
-        return format_html(f'<a href="/project/{record.id}">{value}</a>')
+        link = reverse('project_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_company(self, record, value):
-        return format_html(f'<a href="/company/{record.company.id}">{value}</a>')
+        link = reverse('company_id', args=[record.company.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_address(self, record, value):
         return get_google_maps_link(record)
 
     def render_count_contracts(self, record, value):
-        return format_html(f'<a href="/project/{record.id}">{value}</a>')
+        link = reverse('project_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
 
 class ContractTable(tables.Table, Files):
@@ -103,37 +112,47 @@ class ContractTable(tables.Table, Files):
     amount_brutto = SummingColumn2F()
     due = SummingColumn2F(verbose_name='Rechnungen')
     payed = SummingColumn2F(verbose_name='Zahlungen')
-    files = tables.Column(verbose_name='Dateien')
+    files = tables.Column(verbose_name=_('Files'))
 
     def render_created(self, record, value):
-        return format_html(f'<a href="/contract/{record.id}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
+        link = reverse('contract_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
 
     def render_project(self, record, value):
-        return format_html(f'<a href="/project/{record.project.id}">{value}</a>')
+        link = reverse('project_id', args=[record.project.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_company(self, record, value):
-        return format_html(f'<a href="/company/{record.company.id}">{value}</a>')
+        link = reverse('company_id', args=[record.company.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_name(self, record, value):
-        return format_html(f'<a href="/contract/{record.id}">{value}</a>')
+        link = reverse('contract_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_date(self, record, value):
-        return format_html(f'<a href="/contract/{record.id}">{value.strftime("%d.%m.%Y")}</a>')
+        link = reverse('contract_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y")}</a>')
 
     def render_amount_netto(self, record, value):
-        return format_html(f'<a href="/contract/{record.id}">{value}</a>')
+        link = reverse('contract_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_vat(self, record, value):
-        return format_html(f'<a href="/contract/{record.id}">{value}</a>')
+        link = reverse('contract_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_amount_brutto(self, record, value):
-        return format_html(f'<a href="/contract/{record.id}">{value}</a>')
+        link = reverse('contract_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_due(self, record, value):
-        return format_html(f'<a href="/contract/{record.id}/bills">{value:.2f}</a>')
+        link = reverse('contract_id_bills', args=[record.id])
+        return format_html(f'<a href="{link}">{value:.2f}</a>')
 
     def render_payed(self, record, value):
-        return format_html(f'<a href="/contract/{record.id}/payments">{value:.2f}</a>')
+        link = reverse('contract_id_payments', args=[record.id])
+        return format_html(f'<a href="{link}">{value:.2f}</a>')
 
 
 class BillTable(tables.Table, Files):
@@ -145,34 +164,43 @@ class BillTable(tables.Table, Files):
     company = tables.Column(verbose_name='Bearbeiter')
     amount_netto = SummingColumn2F()
     amount_brutto = SummingColumn2F()
-    files = tables.Column(verbose_name='Dateien')
+    files = tables.Column(verbose_name=_('Files'))
 
     def render_created(self, record, value):
-        return format_html(f'<a href="/bill/{record.id}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
+        link = reverse('bill_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
 
     def render_project(self, record, value):
-        return format_html(f'<a href="/project/{record.contract.project.id}">{value}</a>')
+        link = reverse('project_id', args=[record.contract.project.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_contract(self, record, value):
-        return format_html(f'<a href="/contract/{record.contract.id}">{value}</a>')
+        link = reverse('contract_id', args=[record.contract.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_company(self, record, value):
-        return format_html(f'<a href="/company/{record.contract.company.id}">{value}</a>')
+        link = reverse('company_id', args=[record.contract.company.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_name(self, record, value):
-        return format_html(f'<a href="/bill/{record.id}">{value}</a>')
+        link = reverse('bill_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_date(self, record, value):
-        return format_html(f'<a href="/bill/{record.id}">{value.strftime("%d.%m.%Y")}</a>')
+        link = reverse('bill_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y")}</a>')
 
     def render_amount_netto(self, record, value):
-        return format_html(f'<a href="/bill/{record.id}">{value}</a>')
+        link = reverse('bill_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_vat(self, record, value):
-        return format_html(f'<a href="/bill/{record.id}">{value}</a>')
+        link = reverse('bill_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_amount_brutto(self, record, value):
-        return format_html(f'<a href="/bill/{record.id}">{value}</a>')
+        link = reverse('bill_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
 
 class PaymentTable(tables.Table, Files):
@@ -184,31 +212,40 @@ class PaymentTable(tables.Table, Files):
     company = tables.Column(verbose_name='Bearbeiter')
     amount_netto = SummingColumn2F()
     amount_brutto = SummingColumn2F()
-    files = tables.Column(verbose_name='Dateien')
+    files = tables.Column(verbose_name=_('Files'))
 
     def render_created(self, record, value):
-        return format_html(f'<a href="/payment/{record.id}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
+        link = reverse('payment_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
 
     def render_project(self, record, value):
-        return format_html(f'<a href="/project/{record.contract.project.id}">{value}</a>')
+        link = reverse('project_id', args=[record.contract.project.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_contract(self, record, value):
-        return format_html(f'<a href="/contract/{record.contract.id}">{value}</a>')
+        link = reverse('contract_id', args=[record.contract.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_company(self, record, value):
-        return format_html(f'<a href="/company/{record.contract.company.id}">{value}</a>')
+        link = reverse('company_id', args=[record.contract.company.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_name(self, record, value):
-        return format_html(f'<a href="/payment/{record.id}">{value}</a>')
+        link = reverse('payment_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_date(self, record, value):
-        return format_html(f'<a href="/payment/{record.id}">{value.strftime("%d.%m.%Y")}</a>')
+        link = reverse('payment_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y")}</a>')
 
     def render_amount_netto(self, record, value):
-        return format_html(f'<a href="/payment/{record.id}">{value}</a>')
+        link = reverse('payment_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_vat(self, record, value):
-        return format_html(f'<a href="/payment/{record.id}">{value}</a>')
+        link = reverse('payment_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
 
     def render_amount_brutto(self, record, value):
-        return format_html(f'<a href="/payment/{record.id}">{value}</a>')
+        link = reverse('payment_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
