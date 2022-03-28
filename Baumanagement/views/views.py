@@ -9,7 +9,7 @@ from Baumanagement.models import File
 @login_required
 def myrender(request, context):
     search = request.GET.get('search')
-    template = 'Baumanagement/tables.html' if search is None else 'Baumanagement/maintable.html'
+    template = 'tables.html' if search is None else 'maintable.html'
     return render(request, template, context)
 
 

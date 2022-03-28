@@ -21,3 +21,9 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+#  Poedit
+#  https://mlocati.github.io/articles/gettext-iconv-windows.html
+#  cd Baumanagement
+#  django-admin makemessages -a --ignore venv
+#  django-admin compilemessages --ignore venv

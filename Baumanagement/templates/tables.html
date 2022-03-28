@@ -20,7 +20,7 @@
                     </button>
                     <div class="modal fade" id="ModalForm" data-bs-backdrop="static" data-bs-keyboard="false"
                          tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                        {% include "Baumanagement/form.html" %}
+                        {% include "form.html" %}
                     </div>
                 {% endif %}
             </div>
@@ -37,11 +37,11 @@
             </div>
         </div>
         <div class="row" id="main-table">
-            {% include "Baumanagement/maintable.html" %}
+            {% include "maintable.html" %}
         </div>
     {% endif %}
 
-    {% include 'Baumanagement/messages.html' %}
+    {% include 'messages.html' %}
 
     {% for next_table in tables %}
         <div class="row">

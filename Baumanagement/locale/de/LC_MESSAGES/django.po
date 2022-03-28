@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-27 21:35+0200\n"
-"PO-Revision-Date: 2022-03-27 22:02+0200\n"
+"POT-Creation-Date: 2022-03-28 14:37+0200\n"
+"PO-Revision-Date: 2022-03-28 14:38+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -73,11 +73,12 @@ msgstr "Geschäftsführer"
 msgid "VAT number"
 msgstr "VAT-Nummer"
 
-#: .\models.py:50 .\models.py:78 .\models.py:116
+#: .\models.py:50 .\models.py:78 .\models.py:116 .\tables.py:164
+#: .\tables.py:212
 msgid "Company"
 msgstr "Unternehmen"
 
-#: .\models.py:51
+#: .\models.py:51 .\templates\navbar.html:18
 msgid "Companies"
 msgstr "Unternehmen"
 
@@ -89,11 +90,11 @@ msgstr "Projektname"
 msgid "Code"
 msgstr "Kode"
 
-#: .\models.py:86 .\models.py:114
+#: .\models.py:86 .\models.py:114 .\tables.py:163 .\tables.py:211
 msgid "Project"
 msgstr "Projekt"
 
-#: .\models.py:87
+#: .\models.py:87 .\templates\navbar.html:21 .\views\views_companies.py:71
 msgid "Projects"
 msgstr "Projekte"
 
@@ -121,7 +122,8 @@ msgstr "Bruttobetrag"
 msgid "Contract"
 msgstr "Auftrag"
 
-#: .\models.py:127
+#: .\models.py:127 .\tables.py:79 .\templates\navbar.html:24
+#: .\views\views_companies.py:77 .\views\views_projects.py:40
 msgid "Contracts"
 msgstr "Aufträge"
 
@@ -133,7 +135,8 @@ msgstr "Rechnung"
 msgid "Bill"
 msgstr "Rechnung"
 
-#: .\models.py:166
+#: .\models.py:166 .\tables.py:113 .\templates\navbar.html:27
+#: .\views\views_companies.py:85 .\views\views_contracts.py:39
 msgid "Bills"
 msgstr "Rechnungen"
 
@@ -145,7 +148,8 @@ msgstr "Zahlung"
 msgid "Payment"
 msgstr "Zahlung"
 
-#: .\models.py:204
+#: .\models.py:204 .\tables.py:114 .\templates\navbar.html:30
+#: .\views\views_companies.py:92 .\views\views_contracts.py:45
 msgid "Payments"
 msgstr "Zahlungen"
 
@@ -153,10 +157,93 @@ msgstr "Zahlungen"
 msgid "Name"
 msgstr "Name"
 
-#: .\models.py:230 .\models.py:240
+#: .\models.py:230 .\models.py:240 .\tables.py:55 .\tables.py:80
+#: .\tables.py:115 .\tables.py:167 .\tables.py:215 .\templates\form.html:17
 msgid "Files"
 msgstr "Dateien"
 
 #: .\models.py:239
 msgid "File"
 msgstr "Datei"
+
+#: .\tables.py:21
+msgid "No results found"
+msgstr "Keine Ergebnisse gefunden"
+
+#: .\templates\form.html:31
+msgid "Close"
+msgstr "Schließen"
+
+#: .\templates\form.html:33
+msgid "Save"
+msgstr "Speichern"
+
+#: .\templates\navbar.html:43
+msgid "Admin"
+msgstr "Admin"
+
+#: .\templates\navbar.html:48
+msgid "Logout"
+msgstr "Abmelden"
+
+#: .\templates\navbar.html:55 .\templates\registration\login.html:44
+msgid "Login"
+msgstr "Anmelden"
+
+#: .\templates\registration\login.html:12
+msgid "Your username and password do not match. Please try again."
+msgstr ""
+"Ihr Benutzername und Ihr Passwort stimmen nicht überein. Bitte versuchen Sie "
+"es erneut."
+
+#: .\templates\registration\login.html:20
+msgid ""
+"Your account does not have access to this page. To continue, please log in "
+"with an account that has access."
+msgstr ""
+"Ihr Konto hat keinen Zugriff auf diese Seite. Um fortzufahren, melden Sie "
+"sich bitte mit einem Konto an, das Zugang hat."
+
+#: .\templates\registration\login.html:25
+msgid "Please log in to view this page."
+msgstr "Bitte melden Sie sich an, um diese Seite zu sehen."
+
+#: .\templates\registration\login.html:35
+msgid "Username"
+msgstr "Benutzername"
+
+#: .\templates\registration\login.html:40
+msgid "Password"
+msgstr "Passwort"
+
+#: .\templates\registration\login.html:47
+msgid "Reset password"
+msgstr "Passwort neu setzen"
+
+#: .\templates\tables.html:19
+msgid "New"
+msgstr "Neu"
+
+#: .\templates\tables.html:19
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: .\views\views_bills.py:12
+msgid "All bills"
+msgstr "Alle Rechnungen"
+
+#: .\views\views_companies.py:26
+msgid "All companies"
+msgstr "Alle Unternehmen"
+
+#: .\views\views_contracts.py:12
+msgid "All contracts"
+msgstr "Alle Aufträge"
+
+#: .\views\views_payments.py:12
+msgid "All payments"
+msgstr "Alle Zahlungen"
+
+#: .\views\views_projects.py:12
+msgid "All projects"
+msgstr "Alle Projekte"

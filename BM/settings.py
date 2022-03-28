@@ -61,7 +61,7 @@ ROOT_URLCONF = 'BM.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'],
+        'DIRS': [BASE_DIR / 'templates', 'Baumanagement/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -122,7 +122,8 @@ LANGUAGES = (
 )
 
 LOCALE_PATHS = [
-    BASE_DIR / 'locale/',
+    os.path.join(BASE_DIR, "locale"),
+    os.path.join(BASE_DIR, "Baumanagement/locale"),
 ]
 
 # Static files (CSS, JavaScript, Images)
