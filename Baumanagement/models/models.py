@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Sum, F, Case, When
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.abstract import BaseModel
+from Baumanagement.models.abstract import BaseModel, AddressModel
 
 
 class CompanyRole(BaseModel):
@@ -23,11 +23,8 @@ class CompanyRole(BaseModel):
         return self.companies.count()
 
 
-class Company(BaseModel):
+class Company(BaseModel, AddressModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Company name'))
-    address = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Address'))
-    city = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('City'))
-    land = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Land'), default='Deutschland')
     email = models.EmailField(null=False, blank=True, verbose_name=_('E-mail'))
     phone = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Phone'))
     role = models.ManyToManyField(CompanyRole, blank=False, verbose_name=_('Role'), related_name='companies')
@@ -56,14 +53,11 @@ class Company(BaseModel):
         return 'open', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number', 'role'
 
 
-class Project(BaseModel):
+class Project(BaseModel, AddressModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Project name'))
     code = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')
-    address = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Address'))
-    city = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('City'))
-    land = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Land'), default='Deutschland')
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     class Meta:

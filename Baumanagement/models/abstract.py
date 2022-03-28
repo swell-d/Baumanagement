@@ -23,3 +23,12 @@ class BaseModel(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class AddressModel(models.Model):
+    address = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Address'))
+    city = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('City'))
+    land = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Land'), default='Deutschland')
+
+    class Meta:
+        abstract = True
