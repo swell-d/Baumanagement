@@ -6,7 +6,7 @@ from django_tables2 import RequestConfig
 
 from Baumanagement.models import Company, CompanyRole, Project, Contract, add_search_field, Bill, Payment
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
-from Baumanagement.views import myrender, upload_files
+from Baumanagement.views.views import myrender, upload_files
 
 
 def roles_tags():

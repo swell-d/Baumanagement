@@ -4,7 +4,7 @@ from django_tables2 import RequestConfig
 
 from Baumanagement.models import Bill, add_search_field, Contract, Project
 from Baumanagement.tables import BillTable
-from Baumanagement.views import myrender, upload_files
+from Baumanagement.views.views import myrender, upload_files
 
 
 def bills(request):

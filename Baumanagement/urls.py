@@ -1,11 +1,6 @@
 from django.urls import path
 
-from . import views_bills
-from . import views_companies
-from . import views_contracts
-from . import views_delete
-from . import views_payments
-from . import views_projects
+from .views import views_bills, views_companies, views_delete, views_contracts, views_payments, views_projects
 
 urlpatterns = [
     path("", views_projects.projects, name='index'),
