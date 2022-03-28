@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.forms import ModelForm
+from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 
 from Baumanagement.models import Payment, add_search_field, Contract, Project
@@ -8,7 +9,7 @@ from Baumanagement.views.views import myrender, upload_files
 
 
 def payments(request):
-    context = {'titel1': 'Alle Zahlungen'}
+    context = {'titel1': _('All payments')}
     form_new_payment(request, context)
 
     queryset = Payment.extra_fields(Payment.objects)
@@ -22,7 +23,7 @@ def payments(request):
 
 def contract_payments(request, id):
     contract = Contract.objects.get(id=id)
-    context = {'titel1': f'Zahlungen - Auftrag - {contract.name}'}
+    context = {'titel1': f'{_("Payments")} - {_("Contract")} - {contract.name}'}
     form_new_payment(request, context)
 
     queryset = Payment.objects.filter(contract=contract)
@@ -37,7 +38,7 @@ def contract_payments(request, id):
 
 def project_payments(request, id):
     project = Project.objects.get(id=id)
-    context = {'titel1': f'Zahlungen - Projekt - {project.name}'}
+    context = {'titel1': f'{_("Payments")} - {_("Project")} - {project.name}'}
     form_new_payment(request, context)
 
     queryset = Payment.objects.filter(contract__in=project.contracts.all())
@@ -52,7 +53,7 @@ def project_payments(request, id):
 
 def payment(request, id):
     payment = Payment.objects.get(id=id)
-    context = {'titel1': f'Zahlung - {payment.name}', 'tables': []}
+    context = {'titel1': f'{_("Payment")} - {payment.name}', 'tables': []}
     form_edit_payment(request, context, payment)
 
     queryset = Payment.objects.filter(id=id)
@@ -76,7 +77,7 @@ def form_new_payment(request, context):
         if formset.is_valid():
             new_object = Payment(**formset.cleaned_data)
             new_object.save()
-            messages.success(request, f'{new_object.name} hinzugefügt')
+            messages.success(request, f'{new_object.name} {_("created")}')
             upload_files(request, payment=new_object)
     context['form'] = PaymentForm()
     context['files_form'] = []
@@ -88,10 +89,8 @@ def form_edit_payment(request, context, payment):
         formset = PaymentForm(request.POST, request.FILES, instance=payment)
         if formset.is_valid():
             payment.save()
-            messages.success(request, f'{payment.name} geändert')
+            messages.success(request, f'{payment.name} {_("changed")}')
             upload_files(request, payment=payment)
     context['form'] = PaymentForm(instance=payment)
     context['files_form'] = payment.files.all()
     context['buttons'] = ['Edit']
-
-

@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.forms import ModelForm
+from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 
 from Baumanagement.models import Contract, Payment, Bill, add_search_field
@@ -8,7 +9,7 @@ from Baumanagement.views.views import myrender, upload_files
 
 
 def contracts(request):
-    context = {'titel1': 'Alle Aufträge'}
+    context = {'titel1': _("All contracts")}
     form_new_contract(request, context)
 
     queryset = Contract.extra_fields(Contract.objects)
@@ -22,7 +23,7 @@ def contracts(request):
 
 def contract(request, id):
     contract = Contract.objects.get(id=id)
-    context = {'titel1': f'Auftrag - {contract.name}', 'tables': []}
+    context = {'titel1': f'{_("Contract")} - {contract.name}', 'tables': []}
     form_edit_contract(request, context, contract)
 
     queryset = Contract.objects.filter(id=id)
@@ -35,13 +36,13 @@ def contract(request, id):
     bills = Bill.extra_fields(bills)
     table = BillTable(bills, order_by="id")
     RequestConfig(request).configure(table)
-    context['tables'].append({'table': table, 'titel': 'Rechnungen'})
+    context['tables'].append({'table': table, 'titel': _("Bills")})
 
     payments = contract.payments.all()
     payments = Payment.extra_fields(payments)
     table = PaymentTable(payments, order_by="id")
     RequestConfig(request).configure(table)
-    context['tables'].append({'table': table, 'titel': 'Zahlungen'})
+    context['tables'].append({'table': table, 'titel': _("Payments")})
 
     return myrender(request, context)
 
@@ -58,7 +59,7 @@ def form_new_contract(request, context):
         if formset.is_valid():
             new_object = Contract(**formset.cleaned_data)
             new_object.save()
-            messages.success(request, f'{new_object.name} hinzugefügt')
+            messages.success(request, f'{new_object.name} {_("created")}')
             upload_files(request, contract=new_object)
     context['form'] = ContractForm()
     context['files_form'] = []
@@ -70,18 +71,18 @@ def form_edit_contract(request, context, contract):
         formset = ContractForm(request.POST, request.FILES, instance=contract)
         if formset.is_valid():
             contract.save()
-            messages.success(request, f'{contract.name} geändert')
+            messages.success(request, f'{contract.name} {_("changed")}')
             upload_files(request, contract=contract)
             if not contract.open:
                 for bill in contract.bills.all():
                     if bill.open:
                         bill.open = False
-                        messages.warning(request, f'{bill.name} deaktiviert')
+                        messages.warning(request, f'{bill.name} {_("disabled")}')
                         bill.save()
                 for payment in contract.payments.all():
                     if payment.open:
                         payment.open = False
-                        messages.warning(request, f'{payment.name} deaktiviert')
+                        messages.warning(request, f'{payment.name} {_("disabled")}')
                         payment.save()
     context['form'] = ContractForm(instance=contract)
     context['files_form'] = contract.files.all()

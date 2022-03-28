@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.forms import ModelForm
+from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 
 from Baumanagement.models import Bill, add_search_field, Contract, Project
@@ -8,7 +9,7 @@ from Baumanagement.views.views import myrender, upload_files
 
 
 def bills(request):
-    context = {'titel1': 'Alle Rechnungen'}
+    context = {'titel1': _('All bills')}
     form_new_bill(request, context)
 
     queryset = Bill.extra_fields(Bill.objects)
@@ -22,7 +23,7 @@ def bills(request):
 
 def contract_bills(request, id):
     contract = Contract.objects.get(id=id)
-    context = {'titel1': f'Rechnungen - Auftrag - {contract.name}'}
+    context = {'titel1': f'{_("Bills")} - {_("Contract")} - {contract.name}'}
     form_new_bill(request, context)
 
     queryset = Bill.objects.filter(contract=contract)
@@ -37,7 +38,7 @@ def contract_bills(request, id):
 
 def project_bills(request, id):
     project = Project.objects.get(id=id)
-    context = {'titel1': f'Rechnungen - Projekt - {project.name}'}
+    context = {'titel1': f'{_("Bills")} - {_("Project")} - {project.name}'}
     form_new_bill(request, context)
 
     queryset = Bill.objects.filter(contract__in=project.contracts.all())
@@ -52,7 +53,7 @@ def project_bills(request, id):
 
 def bill(request, id):
     bill = Bill.objects.get(id=id)
-    context = {'titel1': f'Rechnung - {bill.name}', 'tables': []}
+    context = {'titel1': f'{_("Bill")} - {bill.name}', 'tables': []}
     form_edit_bill(request, context, bill)
 
     queryset = Bill.objects.filter(id=id)
@@ -76,7 +77,7 @@ def form_new_bill(request, context):
         if formset.is_valid():
             new_object = Bill(**formset.cleaned_data)
             new_object.save()
-            messages.success(request, f'{new_object.name} hinzugefügt')
+            messages.success(request, f'{new_object.name} {_("created")}')
             upload_files(request, bill=new_object)
     context['form'] = BillForm()
     context['files_form'] = []
@@ -88,7 +89,7 @@ def form_edit_bill(request, context, bill):
         formset = BillForm(request.POST, request.FILES, instance=bill)
         if formset.is_valid():
             bill.save()
-            messages.success(request, f'{bill.name} geändert')
+            messages.success(request, f'{bill.name} {_("changed")}')
             upload_files(request, bill=bill)
     context['form'] = BillForm(instance=bill)
     context['files_form'] = bill.files.all()
