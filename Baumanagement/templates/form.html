@@ -18,7 +18,7 @@
                         <input name="file" class="form-control" type="file" id="id_file" multiple>
                     </div>
                     {% for file in files_form %}
-                        <div class="alert alert-light alert-dismissible fade show" role="alert">
+                        <div class="alert alert-light alert-dismissible fade show mb-0" role="alert">
                             <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
                                     onclick="deleteFile({{ file.id }})"></button>
