@@ -41,9 +41,29 @@ class CreateFooter(tables.Column):
 
 class Files:
     def render_files(self, record):
-        return format_html('&emsp;'.join([f'<a href="{each.file.url}" target="_blank">'
-                                          f'{str(each)[str(each).rfind(".") + 1:].upper()}'
-                                          f'</a>' for each in record.files.all()]))
+        files = record.files.all()
+        text = ''.join([f'<a href="{each.file.url}" target="_blank">{str(each)[str(each).rfind(".") + 1:].upper()}</a>'
+                        for each in files[:1]])
+        if len(files) > 1:
+            text += f'''&nbsp;
+<button type="button" class="btn btn-secondary btn-sm" data-bs-toggle="modal" data-bs-target="#fileModal{record.id}">
+    +{len(files) - 1}
+</button>
+<div class="modal fade" id="fileModal{record.id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">{_('Files')}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        {'<br>'.join([f'<a href="{each.file.url}" target="_blank">{str(each)}</a>' for each in files])}
+      </div>
+    </div>
+  </div>
+</div>
+'''
+        return format_html(text)
 
 
 class CompanyTable(tables.Table, Files):
