@@ -20,7 +20,7 @@
                     </a>
                     <ul class="dropdown-menu me-10" aria-labelledby="navbarDropdown">
                         {% for language in languages %}
-                            <li><a href="/{{ language.code }}/" class="dropdown-item">{{ language.name }}</a></li>
+                            <li><a href="/{{ language.code }}{{ url|slice:"3:" }}" class="dropdown-item">{{ language.code }}</a></li>
                         {% endfor %}
                     </ul>
                 </li>
