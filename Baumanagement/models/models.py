@@ -1,4 +1,5 @@
 import datetime
+import os
 
 from django.db import models
 from django.db.models import Sum, F, Case, When
@@ -172,3 +173,13 @@ class File(BaseModel):
     class Meta:
         verbose_name = _('File')
         verbose_name_plural = _('Files')
+
+    def delete(self, *args, **kwargs):
+        try:
+            os.remove(self.file.path)
+        except FileNotFoundError:
+            pass
+        super().delete(*args, **kwargs)
+
+
+FilesClasses = {'File': File}

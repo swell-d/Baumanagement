@@ -25,6 +25,9 @@ class BaseModel(models.Model):
     def __str__(self):
         return self.name
 
+    def class_name(self):
+        return self.__class__.__name__
+
 
 class AddressModel(models.Model):
     address = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Address'))

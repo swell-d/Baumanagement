@@ -8,9 +8,10 @@ function mainTableReload(path, value) {
     }
 }
 
-function deleteFile(id) {
+function deleteFile(csrftoken, class_name, id) {
     const Http = new XMLHttpRequest();
-    const url = "/en/delete_file/" + id;
-    Http.open("GET", url);
+    const url = "/en/delete_file/" + class_name + "/" + id;
+    Http.open("POST", url);
+    Http.setRequestHeader("X-CSRFToken", csrftoken);
     Http.send();
 }

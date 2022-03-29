@@ -1,15 +1,15 @@
-import os
-
 from django.contrib import messages
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseNotFound
 from django.utils.translation import gettext_lazy as _
-from Baumanagement.models.models import File
+
+from Baumanagement.models.models import FilesClasses
 
 
-def delete_file(request, id):
-    file = File.objects.get(id=id)
+def delete_file(request, class_name, id):
+    if request.method != 'POST':
+        return HttpResponseNotFound('')
+    file = FilesClasses[class_name].objects.get(id=id)
     filename = file.name
-    os.remove(file.file.path)
     file.delete()
     messages.success(request, f'{filename} {_("deleted")}')
     return HttpResponse('')

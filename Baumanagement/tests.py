@@ -10,14 +10,16 @@ from Baumanagement.urls import get_urls
 class UrlTests(TestCase):
     def setUp(self):
         self.CompanyRole = CompanyRole.objects.create(name='test')
-        self.Company = Company.objects.create(name='test').role.add(self.CompanyRole)
-        self.Project = Project.objects.create(name='test', company_id=1)
-        self.Contract = Contract.objects.create(name='test', project_id=1, company_id=1, amount_netto=1, vat=1,
-                                                amount_brutto=1, date=datetime.now())
-        self.Payment = Payment.objects.create(name='test', contract_id=1, amount_netto=1, vat=1, amount_brutto=1,
-                                              date=datetime.now())
-        self.Bill = Bill.objects.create(name='test', contract_id=1, amount_netto=1, vat=1, amount_brutto=1,
-                                        date=datetime.now())
+        self.Company = Company.objects.create(name='test')
+        self.Company.role.add(self.CompanyRole)
+        self.Company.save()
+        self.Project = Project.objects.create(name='test', company=self.Company)
+        self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,
+                                                amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
+        self.Payment = Payment.objects.create(name='test', contract=self.Contract,
+                                              amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
+        self.Bill = Bill.objects.create(name='test', contract=self.Contract,
+                                        amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
         with open('files/test.txt', 'w') as file:
             file.write('')
         self.File = File.objects.create(name='test', file='test.txt')
@@ -46,6 +48,7 @@ class UrlTests(TestCase):
                 response = client.get(f'{url}?search=', follow=True)
                 self.assertEqual(response.status_code, 200)
             else:
-                if '/de/' not in url: continue
-                response = client.get(url, follow=True)
+                if '/de/' not in url:
+                    continue
+                response = client.post(url)
                 self.assertEqual(response.status_code, 200)

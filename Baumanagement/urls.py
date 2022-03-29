@@ -25,12 +25,12 @@ urlpatterns = [
     path("bills", views_bills.bills, name="bills"),
     path("bill/<int:id>", views_bills.bill, name="bill_id"),
 
-    path("delete_file/<int:id>", views_delete.delete_file, name="delete_file_id"),
+    path("delete_file/<slug:class_name>/<int:id>", views_delete.delete_file, name="delete_file_id"),
 
 ]
 
 
 def get_urls():
-    urls = [f'/de/{each.pattern}'.replace('<int:id>', '1') for each in urlpatterns]
+    urls = [f'/de/{each.pattern}'.replace('<int:id>', '1').replace('<slug:class_name>', 'File') for each in urlpatterns]
     urls += [f'/en/{each.pattern}'.replace('<int:id>', '1') for each in urlpatterns]
     return urls
