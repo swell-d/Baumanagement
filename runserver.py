@@ -24,6 +24,6 @@ if __name__ == '__main__':
 
 #  Poedit
 #  https://mlocati.github.io/articles/gettext-iconv-windows.html
-#  cd Baumanagement
+
 #  python manage.py makemessages -a -v 3 --ignore venv
 #  python manage.py compilemessages --ignore venv
