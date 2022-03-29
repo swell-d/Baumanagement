@@ -3,7 +3,8 @@ from datetime import datetime
 from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 
-from Baumanagement.models.models import CompanyRole, Company, Project, Contract, Payment, Bill, File
+from Baumanagement.models.models import CompanyRole, Company, Project, Contract, Payment, Bill
+from Baumanagement.models.models_files import File
 from Baumanagement.urls import get_urls
 
 

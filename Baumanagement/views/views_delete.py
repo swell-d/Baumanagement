@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.http import HttpResponse, HttpResponseNotFound
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models import FilesClasses
+from Baumanagement.models.models_files import FilesClasses
 
 
 def delete_file(request, class_name, id):

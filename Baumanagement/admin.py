@@ -1,6 +1,7 @@
 from django.contrib import admin
 
-from Baumanagement.models.models import Company, CompanyRole, Project, Contract, Payment, Bill, File
+from Baumanagement.models.models import Company, CompanyRole, Project, Contract, Payment, Bill
+from Baumanagement.models.models_files import File
 
 
 class FileInline(admin.TabularInline):
