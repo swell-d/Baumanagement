@@ -3,8 +3,8 @@ from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 
-from Baumanagement.models.models import Project, Contract
 from Baumanagement.models.abstract import add_search_field
+from Baumanagement.models.models import Project, Contract
 from Baumanagement.tables import ProjectTable, ContractTable
 from Baumanagement.views.views import myrender, upload_files
 
@@ -56,7 +56,7 @@ def form_new_project(request, context):
             new_object = Project(**formset.cleaned_data)
             new_object.save()
             messages.success(request, f'{new_object.name} {_("created")}')
-            upload_files(request, project=new_object)
+            upload_files(request, new_object)
     context['form'] = ProjectForm()
     context['files_form'] = []
     context['buttons'] = ['New']
@@ -68,7 +68,7 @@ def form_edit_project(request, context, project):
         if formset.is_valid():
             project.save()
             messages.success(request, f'{project.name} {_("changed")}')
-            upload_files(request, project=project)
+            upload_files(request, project)
     context['form'] = ProjectForm(instance=project)
-    context['files_form'] = project.files.all()
+    context['files_form'] = project.files
     context['buttons'] = ['Edit']

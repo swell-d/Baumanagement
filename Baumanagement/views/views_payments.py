@@ -3,8 +3,8 @@ from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 
-from Baumanagement.models.models import Payment, Contract, Project
 from Baumanagement.models.abstract import add_search_field
+from Baumanagement.models.models import Payment, Contract, Project
 from Baumanagement.tables import PaymentTable
 from Baumanagement.views.views import myrender, upload_files
 
@@ -79,7 +79,7 @@ def form_new_payment(request, context):
             new_object = Payment(**formset.cleaned_data)
             new_object.save()
             messages.success(request, f'{new_object.name} {_("created")}')
-            upload_files(request, payment=new_object)
+            upload_files(request, new_object)
     context['form'] = PaymentForm()
     context['files_form'] = []
     context['buttons'] = ['New']
@@ -91,7 +91,7 @@ def form_edit_payment(request, context, payment):
         if formset.is_valid():
             payment.save()
             messages.success(request, f'{payment.name} {_("changed")}')
-            upload_files(request, payment=payment)
+            upload_files(request, payment)
     context['form'] = PaymentForm(instance=payment)
-    context['files_form'] = payment.files.all()
+    context['files_form'] = payment.files
     context['buttons'] = ['Edit']

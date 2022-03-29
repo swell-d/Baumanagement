@@ -1,8 +1,9 @@
-import os
-
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+
+from Baumanagement.models.models_files import File
 
 
 def add_search_field(queryset, request, context):
@@ -27,9 +28,6 @@ class BaseModel(models.Model):
     def __str__(self):
         return self.name
 
-    def class_name(self):
-        return self.__class__.__name__
-
 
 class AddressModel(models.Model):
     address = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Address'))
@@ -52,15 +50,18 @@ class PriceModel(models.Model):
 
 
 class FileModel(models.Model):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
-    file = models.FileField(blank=True, upload_to="%Y/%m/%d", verbose_name=_('Files'))
+    file_ids = models.JSONField(default=list, null=False, blank=False, verbose_name=_('Files'))
 
     class Meta:
         abstract = True
 
-    def delete(self, *args, **kwargs):
-        try:
-            os.remove(self.file.path)
-        except FileNotFoundError:
-            pass
-        super().delete(*args, **kwargs)
+    @property
+    def files(self):
+        result = []
+        for id in self.file_ids:
+            try:
+                result.append(File.objects.get(id=id))
+            except ObjectDoesNotExist:
+                self.file_ids.remove(id)
+                self.save()
+        return result

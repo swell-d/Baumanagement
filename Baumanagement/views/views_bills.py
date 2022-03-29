@@ -3,8 +3,8 @@ from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 
-from Baumanagement.models.models import Bill, Contract, Project
 from Baumanagement.models.abstract import add_search_field
+from Baumanagement.models.models import Bill, Contract, Project
 from Baumanagement.tables import BillTable
 from Baumanagement.views.views import myrender, upload_files
 
@@ -79,7 +79,7 @@ def form_new_bill(request, context):
             new_object = Bill(**formset.cleaned_data)
             new_object.save()
             messages.success(request, f'{new_object.name} {_("created")}')
-            upload_files(request, bill=new_object)
+            upload_files(request, new_object)
     context['form'] = BillForm()
     context['files_form'] = []
     context['buttons'] = ['New']
@@ -91,7 +91,7 @@ def form_edit_bill(request, context, bill):
         if formset.is_valid():
             bill.save()
             messages.success(request, f'{bill.name} {_("changed")}')
-            upload_files(request, bill=bill)
+            upload_files(request, bill)
     context['form'] = BillForm(instance=bill)
-    context['files_form'] = bill.files.all()
+    context['files_form'] = bill.files
     context['buttons'] = ['Edit']

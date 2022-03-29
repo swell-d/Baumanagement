@@ -4,7 +4,7 @@ from django.db import models
 from django.db.models import Sum, F, Case, When
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.abstract import BaseModel, AddressModel, PriceModel
+from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel, PriceModel
 
 
 class CompanyRole(BaseModel):
@@ -19,7 +19,7 @@ class CompanyRole(BaseModel):
         return self.companies.count()
 
 
-class Company(BaseModel, AddressModel):
+class Company(BaseModel, AddressModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Company name'))
     email = models.EmailField(null=False, blank=True, verbose_name=_('E-mail'))
     phone = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Phone'))
@@ -48,7 +48,7 @@ class Company(BaseModel, AddressModel):
         return 'open', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number', 'role'
 
 
-class Project(BaseModel, AddressModel):
+class Project(BaseModel, AddressModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Project name'))
     code = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
@@ -75,7 +75,7 @@ class Project(BaseModel, AddressModel):
         return 'open', 'name', 'code', 'company', 'address', 'city', 'land'
 
 
-class Contract(BaseModel, PriceModel):
+class Contract(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Contract name'))
     date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name=_('Project'),
@@ -105,7 +105,7 @@ class Contract(BaseModel, PriceModel):
         return 'open', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
-class Bill(BaseModel, PriceModel):
+class Bill(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Bill name'))
     date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
@@ -132,7 +132,7 @@ class Bill(BaseModel, PriceModel):
         return 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
-class Payment(BaseModel, PriceModel):
+class Payment(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Payment name'))
     date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),

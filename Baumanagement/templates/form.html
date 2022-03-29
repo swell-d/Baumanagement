@@ -28,7 +28,7 @@
                             <div class="alert alert-light alert-dismissible fade show mb-0" role="alert">
                                 <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-                                        onclick="deleteFile(&quot;{{ csrf_token }}&quot;, &quot;{{ file.class_name }}&quot;, {{ file.id }})"></button>
+                                        onclick="deleteFile(&quot;{{ csrf_token }}&quot;, {{ file.id }})"></button>
                             </div>
                         {% endfor %}
                     {% endif %}

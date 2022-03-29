@@ -41,7 +41,7 @@ class CreateFooter(tables.Column):
 
 class Files:
     def render_files(self, record):
-        files = record.files.all()
+        files = record.files
         text = ''.join([f'<a href="{each.file.url}" target="_blank">{str(each)[str(each).rfind(".") + 1:].upper()}</a>'
                         for each in files[:1]])
         if len(files) > 1:

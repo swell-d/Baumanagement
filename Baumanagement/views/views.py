@@ -13,8 +13,9 @@ def myrender(request, context):
     return render(request, template, context)
 
 
-def upload_files(request, *args, **kwargs):
+def upload_files(request, object):
     for file in request.FILES.getlist('file'):
-        file_instance = File(name=file.name, file=file, **kwargs)
-        file_instance.save()
+        file_instance = File.objects.create(name=file.name, file=file)
+        object.file_ids.append(file_instance.id)
+        object.save()
         messages.success(request, f'{file.name} {_("uploaded")}')
