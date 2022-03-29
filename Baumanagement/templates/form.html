@@ -6,7 +6,7 @@
         <div class="modal-header">
             <h5 class="modal-title" id="ModalFormLabel">{{ titel1 }}</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    onClick="window.location.reload();"></button>
+                    onClick="location.href=location.href"></button>
         </div>
         <form method="POST" enctype="multipart/form-data">
             <div class="modal-body">
@@ -28,7 +28,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal"
-                        onClick="window.location.reload();">{% translate "Close" %}
+                        onClick="location.href=location.href">{% translate "Close" %}
                 </button>
                 <button type="submit" class="btn btn-success">{% translate "Save" %}</button>
             </div>
