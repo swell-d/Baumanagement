@@ -3,8 +3,10 @@ import os
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from Baumanagement.models.abstract import BaseModel
 
-class File(models.Model):
+
+class File(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     file = models.FileField(blank=False, upload_to="%Y/%m/%d", verbose_name=_('Files'))
 
@@ -13,11 +15,11 @@ class File(models.Model):
         verbose_name_plural = _('Files')
 
     def delete(self, *args, **kwargs):
-        try:
-            os.remove(self.file.path)
-        except FileNotFoundError:
-            pass
+        from Baumanagement.models.abstract import FileModel
+        os.remove(self.file.path) if os.path.exists(self.file.path) else None
+        for cls in FileModel.__subclasses__():
+            for obj in cls.objects.all():
+                if self.id in obj.file_ids:
+                    obj.file_ids.remove(self.id)
+                    obj.save()
         super().delete(*args, **kwargs)
-
-    def __str__(self):
-        return self.name

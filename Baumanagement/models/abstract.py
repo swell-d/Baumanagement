@@ -1,9 +1,6 @@
-from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
-
-from Baumanagement.models.models_files import File
 
 
 def add_search_field(queryset, request, context):
@@ -50,18 +47,12 @@ class PriceModel(models.Model):
 
 
 class FileModel(models.Model):
-    file_ids = models.JSONField(default=list, null=False, blank=False, verbose_name=_('Files'))
+    file_ids = models.JSONField(default=list, null=False, blank=True, verbose_name=_('Files'))
 
     class Meta:
         abstract = True
 
     @property
     def files(self):
-        result = []
-        for id in self.file_ids:
-            try:
-                result.append(File.objects.get(id=id))
-            except ObjectDoesNotExist:
-                self.file_ids.remove(id)
-                self.save()
-        return result
+        from Baumanagement.models.models_files import File
+        return [File.objects.get(id=id) for id in self.file_ids]

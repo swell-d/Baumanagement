@@ -246,7 +246,6 @@ msgstr "All payments"
 msgid "All projects"
 msgstr "All projects"
 
-
 msgid "created"
 msgstr "created"
 
@@ -255,3 +254,9 @@ msgstr "changed"
 
 msgid "disabled"
 msgstr "disabled"
+
+msgid "deleted"
+msgstr "deleted"
+
+msgid "uploaded"
+msgstr "uploaded"

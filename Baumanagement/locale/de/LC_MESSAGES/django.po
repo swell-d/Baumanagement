@@ -256,3 +256,9 @@ msgstr "wurde geändert"
 
 msgid "disabled"
 msgstr "wurde deaktiviert"
+
+msgid "deleted"
+msgstr "wurde gelöscht"
+
+msgid "uploaded"
+msgstr "wurde hinzugefügt"
