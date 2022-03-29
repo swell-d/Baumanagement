@@ -8,8 +8,7 @@ from Baumanagement.models.models_files import File
 
 @login_required
 def myrender(request, context):
-    search = request.GET.get('search')
-    template = 'tables.html' if search is None else 'maintable.html'
+    template = 'tables.html' if request.GET.get('search') is None else 'maintable.html'
     return render(request, template, context)
 
 
