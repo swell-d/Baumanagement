@@ -45,8 +45,8 @@ class UrlTests(TestCase):
             if 'delete' not in url:
                 response = client.get(url, follow=True)
                 self.assertEqual(response.status_code, 200)
-                print(f'http://127.0.0.1:8000{url}?search=')
-                response = client.get(f'{url}?search=', follow=True)
+                print(f'http://127.0.0.1:8000{url}?search=1')
+                response = client.get(f'{url}?search=1', follow=True)
                 self.assertEqual(response.status_code, 200)
             else:
                 if '/de/' not in url:
