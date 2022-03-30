@@ -2,6 +2,7 @@ import re
 import urllib.parse
 
 import django_tables2 as tables
+from django.db.models.functions import Length
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -60,6 +61,8 @@ class Files:
         return format_html(text)
 
     def order_files(self, queryset, is_descending):
+        queryset = queryset.annotate(countfiles=Length('file_ids')).order_by(
+            ("-" if is_descending else "") + "countfiles")
         return (queryset, True)
 
 
