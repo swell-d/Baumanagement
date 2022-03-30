@@ -33,4 +33,4 @@ def object_table(request, id):
 
 
 def generate_projects_by_queryset(request, context, queryset):
-    generate_next_objects_table(request, context, baseClass, tableClass, FormClass, queryset, _("Projects"))
+    generate_next_objects_table(request, context, baseClass, tableClass, queryset, _("Projects"))

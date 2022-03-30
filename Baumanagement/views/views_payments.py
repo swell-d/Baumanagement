@@ -46,4 +46,4 @@ def project_payments(request, id):
 
 
 def generate_payments_by_queryset(request, context, queryset):
-    generate_next_objects_table(request, context, baseClass, tableClass, FormClass, queryset, _("Payments"))
+    generate_next_objects_table(request, context, baseClass, tableClass, queryset, _("Payments"))

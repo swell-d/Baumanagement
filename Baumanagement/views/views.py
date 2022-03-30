@@ -41,8 +41,7 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
     context['table1'] = table1
 
 
-def generate_next_objects_table(request, context, baseClass, tableClass, formClass, queryset, titel):
-    new_object_form(request, context, formClass)
+def generate_next_objects_table(request, context, baseClass, tableClass, queryset, titel):
     try:
         queryset = baseClass.extra_fields(queryset)
     except NotSupportedError:
