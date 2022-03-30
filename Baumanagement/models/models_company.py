@@ -52,6 +52,6 @@ class Account(BaseModel, FileModel):
     def extra_fields(qs):
         return qs.all()
 
-    table_fields = 'company', 'name', 'IBAN', 'BIC', 'files'
+    table_fields = 'created', 'company', 'name', 'IBAN', 'BIC', 'files'
     search_fields = 'company__name', 'name', 'IBAN', 'BIC'
     form_fields = 'open', 'company', 'name', 'IBAN', 'BIC'

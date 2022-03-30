@@ -46,4 +46,4 @@ def project_bills(request, id):
 
 
 def generate_bills_by_queryset(request, context, queryset):
-    generate_next_objects_table(request, context, baseClass, tableClass, queryset, _("Bills"))
+    generate_next_objects_table(request, context, baseClass, tableClass, queryset)

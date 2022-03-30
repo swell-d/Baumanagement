@@ -56,4 +56,4 @@ def disable_children(request, contract):
 
 
 def generate_contracts_by_queryset(request, context, queryset):
-    generate_next_objects_table(request, context, baseClass, tableClass, queryset, _("Contracts"))
+    generate_next_objects_table(request, context, baseClass, tableClass, queryset)
