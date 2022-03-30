@@ -24,9 +24,8 @@ def objects_table(request):
 
 def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
-    object = queryset.first()
-    context = {'titel1': f'{_("Project")} - {object.name}', 'tables': []}
-    generate_object_table(request, context, queryset, baseClass, tableClass, FormClass)
+    context = {'titel1': f'{_("Project")} - {queryset.first().name}', 'tables': []}
+    generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
 
     contracts = Contract.objects.filter(project=id)
     contracts = Contract.extra_fields(contracts)

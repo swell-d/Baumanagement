@@ -22,16 +22,17 @@ def upload_files(request, object):
         messages.success(request, f'{file.name} {_("uploaded")}')
 
 
-def generate_objects_table(request, context, baseClass, tableClass, formClass):
+def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
+    queryset = queryset or baseClass.objects
     new_object_form(request, context, formClass)
-    queryset = baseClass.extra_fields(baseClass.objects)
+    queryset = baseClass.extra_fields(queryset)
     queryset = add_search_field(queryset, request, context)
     table1 = tableClass(queryset, order_by="-created", orderable=request.GET.get('search') is None)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 
 
-def generate_object_table(request, context, queryset, baseClass, tableClass, formClass):
+def generate_object_table(request, context, baseClass, tableClass, formClass, queryset):
     edit_object_form(request, context, formClass, queryset.first())
     queryset = baseClass.extra_fields(queryset)
     table1 = tableClass(queryset)

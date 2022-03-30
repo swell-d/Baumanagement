@@ -1,11 +1,9 @@
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
-from django_tables2 import RequestConfig
 
-from Baumanagement.models.abstract import add_search_field
 from Baumanagement.models.models import Bill, Contract, Project
 from Baumanagement.tables import BillTable
-from Baumanagement.views.views import myrender, new_object_form, generate_objects_table, generate_object_table
+from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
 
 baseClass = Bill
 tableClass = BillTable
@@ -25,37 +23,22 @@ def objects_table(request):
 
 def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
-    object = queryset.first()
-    context = {'titel1': f'{_("Bill")} - {object.name}', 'tables': []}
-    generate_object_table(request, context, queryset, baseClass, tableClass, FormClass)
+    context = {'titel1': f'{_("Bill")} - {queryset.first().name}', 'tables': []}
+    generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
 
 def contract_bills(request, id):
     contract = Contract.objects.get(id=id)
     context = {'titel1': f'{_("Bills")} - {_("Contract")} - {contract.name}'}
-    new_object_form(request, context, FormClass)
-
     queryset = baseClass.objects.filter(contract=contract)
-    queryset = baseClass.extra_fields(queryset)
-    queryset = add_search_field(queryset, request, context)
-    table1 = tableClass(queryset, order_by="id")
-    RequestConfig(request).configure(table1)
-    context['table1'] = table1
-
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
 
 def project_bills(request, id):
     project = Project.objects.get(id=id)
     context = {'titel1': f'{_("Bills")} - {_("Project")} - {project.name}'}
-    new_object_form(request, context, FormClass)
-
     queryset = baseClass.objects.filter(contract__in=project.contracts.all())
-    queryset = baseClass.extra_fields(queryset)
-    queryset = add_search_field(queryset, request, context)
-    table1 = tableClass(queryset, order_by="id")
-    RequestConfig(request).configure(table1)
-    context['table1'] = table1
-
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
