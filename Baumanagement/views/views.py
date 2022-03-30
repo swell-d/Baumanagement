@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 
 from Baumanagement.models.abstract import add_search_field
+from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_files import File
 
 
@@ -40,6 +41,8 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
     table1 = tableClass(queryset)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
+    comment_ids = queryset.first().comment_ids
+    context['comments'] = [Comment.objects.get(id=id) for id in comment_ids]
 
 
 def generate_next_objects_table(request, context, baseClass, tableClass, queryset):

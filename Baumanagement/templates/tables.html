@@ -36,7 +36,7 @@
 
     {% include 'messages.html' %}
 
-    {% if tables %}
+    {% if comments != None %}
         <div class="tab">
             {% for next_table in tables %}
                 <button class="tablinks" onclick="openTab(event, '{{ next_table.titel }}')"
@@ -44,6 +44,10 @@
                     {{ next_table.titel }} ({{ next_table.table.rows|length }})
                 </button>
             {% endfor %}
+
+            <button class="tablinks" onclick="openTab(event, 'Comments')">
+                {% translate "Comments" %} ({{ comments|length }})
+            </button>
         </div>
         {% for next_table in tables %}
             <div id="{{ next_table.titel }}" class="tabcontent">
@@ -59,7 +63,17 @@
                 </div>
             </div>
         {% endfor %}
-        <script>document.getElementById("defaultOpen").click();</script>
-    {% endif %}
+        <div id="Comments" class="tabcontent">
+            {% for comment in comments %}
+                <div class="row mb-2">
+                    <div class="col">
+                        <span class="text-muted">{{ comment.created }}</span><br>
+                        <span class="h6">Unknown user:</span>&nbsp;&nbsp;{{ comment.name }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    <script>document.getElementById("defaultOpen").click();</script>
+    {%endif %}
 
 {% endblock %}

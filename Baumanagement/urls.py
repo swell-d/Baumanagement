@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import views_bills, views_companies, views_delete, views_contracts, views_payments, views_projects, \
-    views_accounts
+    views_accounts, views_comments
 
 urlpatterns = [
     path("", views_projects.objects_table, name='index'),
@@ -28,6 +28,9 @@ urlpatterns = [
 
     path("bills", views_bills.objects_table, name="bills"),
     path("bill/<int:id>", views_bills.object_table, name="bill_id"),
+
+    path("comments", views_comments.objects_table, name="comments"),
+    path("comment/<int:id>", views_comments.object_table, name="comment_id"),
 
     path("delete_file/<int:id>", views_delete.delete_file, name="delete_file_id"),
 

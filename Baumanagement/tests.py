@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 
 from Baumanagement.models.models import Project, Contract, Payment, Bill
+from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account
 from Baumanagement.models.models_files import File
 from Baumanagement.urls import get_urls
@@ -23,6 +24,7 @@ class UrlTests(TestCase):
                                               amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
         self.Bill = Bill.objects.create(name='test', contract=self.Contract,
                                         amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
+        self.Comment = Comment.objects.create(name='test')
         with open('files/test.txt', 'w') as file:
             file.write('')
         self.File = File.objects.create(name='test', file='test.txt')

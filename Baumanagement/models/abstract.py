@@ -18,6 +18,7 @@ class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
+    comment_ids = models.JSONField(default=list, null=False, blank=True, verbose_name=_('Comments'))
 
     class Meta:
         abstract = True
