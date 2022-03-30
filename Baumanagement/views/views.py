@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.db import NotSupportedError
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
@@ -42,7 +43,10 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
 
 def generate_next_objects_table(request, context, baseClass, tableClass, formClass, queryset, titel):
     new_object_form(request, context, formClass)
-    queryset = baseClass.extra_fields(queryset)
+    try:
+        queryset = baseClass.extra_fields(queryset)
+    except NotSupportedError:
+        pass
     table = tableClass(queryset, order_by="-created")
     RequestConfig(request).configure(table)
     context['tables'].append({'table': table, 'titel': titel})
