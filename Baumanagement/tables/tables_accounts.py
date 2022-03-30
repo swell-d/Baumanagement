@@ -14,10 +14,6 @@ class AccountTable(tables.Table, Files):
 
     files = tables.Column(verbose_name=_('Files'))
 
-    def render_created(self, record, value):
-        link = reverse('account_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
-
     def render_company(self, record, value):
         link = reverse('company_id', args=[record.company.id])
         return format_html(f'<a href="{link}">{value}</a>')

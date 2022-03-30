@@ -18,10 +18,6 @@ class PaymentTable(tables.Table, Files):
     amount_brutto = SummingColumn2F()
     files = tables.Column(verbose_name=_('Files'))
 
-    def render_created(self, record, value):
-        link = reverse('payment_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
-
     def render_project(self, record, value):
         link = reverse('project_id', args=[record.contract.project.id])
         return format_html(f'<a href="{link}">{value}</a>')

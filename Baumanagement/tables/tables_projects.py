@@ -15,10 +15,6 @@ class ProjectTable(tables.Table, Files):
     count_contracts = SummingColumnInt(verbose_name=_('Contracts'))
     files = tables.Column(verbose_name=_('Files'))
 
-    def render_created(self, record, value):
-        link = reverse('project_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y %H:%M")}</a>')
-
     def render_name(self, record, value):
         link = reverse('project_id', args=[record.id])
         return format_html(f'<a href="{link}">{value}</a>')
