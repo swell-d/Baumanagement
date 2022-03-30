@@ -55,12 +55,12 @@ def object_table(request, id):
 
     bills = [contract.bills.all() for contract in contracts]
     bills = [Bill.extra_fields(each) for each in bills]
-    bills = QuerySet.union(*bills) if bills else bills
+    bills = QuerySet.union(*bills) if bills else []
     generate_bills_by_queryset(request, context, bills)
 
     payments = [contract.payments.all() for contract in contracts]
     payments = [Payment.extra_fields(each) for each in payments]
-    payments = QuerySet.union(*payments) if payments else payments
+    payments = QuerySet.union(*payments) if payments else []
     generate_payments_by_queryset(request, context, payments)
 
     return myrender(request, context)

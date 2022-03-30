@@ -45,7 +45,7 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
 def generate_next_objects_table(request, context, baseClass, tableClass, queryset):
     try:
         queryset = baseClass.extra_fields(queryset)
-    except NotSupportedError:
+    except (NotSupportedError, AttributeError):
         pass
     table = tableClass(queryset, order_by="-created")
     RequestConfig(request).configure(table)
