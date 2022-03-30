@@ -3,7 +3,7 @@ from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Contract
-from Baumanagement.tables.tables import ContractTable
+from Baumanagement.tables.tables_contracts import ContractTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
 from Baumanagement.views.views_bills import generate_bills_by_queryset
