@@ -272,3 +272,6 @@ msgstr "Accounts"
 
 msgid "All accounts"
 msgstr "All accounts"
+
+msgid "Main account"
+msgstr "Main account"

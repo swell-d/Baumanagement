@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import NotSupportedError
+from django.db.models import QuerySet
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
@@ -55,8 +56,16 @@ def new_object_form(request, context, cls):
     if request.method == 'POST':
         formset = cls(request.POST, request.FILES)
         if formset.is_valid():
+            many_to_many_fields = {}
+            for key, value in formset.cleaned_data.copy().items():
+                if isinstance(value, QuerySet):
+                    many_to_many_fields[key] = value
+                    formset.cleaned_data.pop(key)
             new_object = cls.Meta.model(**formset.cleaned_data)
             new_object.save()
+            if many_to_many_fields:
+                new_object.role.set(many_to_many_fields['role'])
+                new_object.save()
             messages.success(request, f'{new_object.name} {_("created")}')
             upload_files(request, new_object)
     context['form'] = cls()

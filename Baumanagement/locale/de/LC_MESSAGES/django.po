@@ -274,3 +274,6 @@ msgstr "Konten"
 
 msgid "All accounts"
 msgstr "Alle Konten"
+
+msgid "Main account"
+msgstr "Haupt Konto"

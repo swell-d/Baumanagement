@@ -36,10 +36,15 @@ class Company(BaseModel, AddressModel, FileModel):
     search_fields = 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
     form_fields = 'open', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number', 'role'
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.accounts.count() == 0:
+            Account.objects.create(name=_('Main account'), company=self)
+
 
 class Account(BaseModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
-                                on_delete=models.RESTRICT, related_name='accounts')
+                                on_delete=models.CASCADE, related_name='accounts')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Account name'))
     IBAN = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('IBAN'))
     BIC = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('BIC'))
