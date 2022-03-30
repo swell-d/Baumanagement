@@ -40,7 +40,7 @@ class Company(BaseModel, AddressModel, FileModel):
 class Account(BaseModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='accounts')
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Company name'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Account name'))
     IBAN = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('IBAN'))
     BIC = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('BIC'))
 

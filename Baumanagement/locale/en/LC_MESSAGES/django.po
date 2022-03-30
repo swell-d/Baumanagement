@@ -260,3 +260,15 @@ msgstr "deleted"
 
 msgid "uploaded"
 msgstr "uploaded"
+
+msgid "Account"
+msgstr "Account"
+
+msgid "Account name"
+msgstr "Account name"
+
+msgid "Accounts"
+msgstr "Accounts"
+
+msgid "All accounts"
+msgstr "All accounts"

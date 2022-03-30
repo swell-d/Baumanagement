@@ -262,3 +262,15 @@ msgstr "wurde gelöscht"
 
 msgid "uploaded"
 msgstr "wurde hinzugefügt"
+
+msgid "Account"
+msgstr "Konto"
+
+msgid "Account name"
+msgstr "Kontoname"
+
+msgid "Accounts"
+msgstr "Konten"
+
+msgid "All accounts"
+msgstr "Alle Konten"
