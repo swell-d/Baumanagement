@@ -6,8 +6,8 @@ from Baumanagement.models.models import Contract
 from Baumanagement.tables import ContractTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
-from Baumanagement.views.views_bills import generate_bills_by_contract
-from Baumanagement.views.views_payments import generate_payments_by_contract
+from Baumanagement.views.views_bills import generate_bills_by_queryset
+from Baumanagement.views.views_payments import generate_payments_by_queryset
 
 baseClass = Contract
 tableClass = ContractTable
@@ -33,10 +33,10 @@ def object_table(request, id):
     disable_children(request, queryset.first())
 
     bills = queryset.first().bills.all()
-    generate_bills_by_contract(request, context, bills)
+    generate_bills_by_queryset(request, context, bills)
 
     payments = queryset.first().payments.all()
-    generate_payments_by_contract(request, context, payments)
+    generate_payments_by_queryset(request, context, payments)
 
     return myrender(request, context)
 
@@ -55,6 +55,5 @@ def disable_children(request, contract):
                 payment.save()
 
 
-def generate_contracts_by_project(request, context, id):
-    queryset = baseClass.objects.filter(project=id)
+def generate_contracts_by_queryset(request, context, queryset):
     generate_next_objects_table(request, context, baseClass, tableClass, FormClass, queryset, _("Contracts"))

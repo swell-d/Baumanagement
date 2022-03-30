@@ -45,5 +45,5 @@ def project_bills(request, id):
     return myrender(request, context)
 
 
-def generate_bills_by_contract(request, context, queryset):
+def generate_bills_by_queryset(request, context, queryset):
     generate_next_objects_table(request, context, baseClass, tableClass, FormClass, queryset, _("Bills"))

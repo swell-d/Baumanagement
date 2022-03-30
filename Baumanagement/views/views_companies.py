@@ -3,11 +3,14 @@ from django.forms import ModelForm
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
-from django_tables2 import RequestConfig
 
 from Baumanagement.models.models import Company, CompanyRole, Project, Contract, Bill, Payment
-from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
+from Baumanagement.tables import CompanyTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
+from Baumanagement.views.views_bills import generate_bills_by_queryset
+from Baumanagement.views.views_contracts import generate_contracts_by_queryset
+from Baumanagement.views.views_payments import generate_payments_by_queryset
+from Baumanagement.views.views_projects import generate_projects_by_queryset
 
 baseClass = Company
 tableClass = CompanyTable
@@ -40,32 +43,22 @@ def object_table(request, id):
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
 
     projects = Project.objects.filter(company=id)
-    projects = Project.extra_fields(projects)
     if projects:
-        table = ProjectTable(projects, order_by="name")
-        RequestConfig(request).configure(table)
-        context['tables'].append({'table': table, 'titel': _("Projects")})
+        generate_projects_by_queryset(request, context, projects)
 
     contracts = Contract.objects.filter(company=id)
-    contracts = Contract.extra_fields(contracts)
-    table = ContractTable(contracts, order_by="name")
-    RequestConfig(request).configure(table)
-    context['tables'].append({'table': table, 'titel': _("Contracts")})
+    generate_contracts_by_queryset(request, context, contracts)
 
     if contracts:
         bills = [contract.bills.all() for contract in contracts]
         bills = [Bill.extra_fields(each) for each in bills]
         bills = QuerySet.union(*bills)
-        table = BillTable(bills, order_by="id")
-        RequestConfig(request).configure(table)
-        context['tables'].append({'table': table, 'titel': _("Bills")})
+        generate_bills_by_queryset(request, context, bills)
 
         payments = [contract.payments.all() for contract in contracts]
         payments = [Payment.extra_fields(each) for each in payments]
         payments = QuerySet.union(*payments)
-        table = PaymentTable(payments, order_by="id")
-        RequestConfig(request).configure(table)
-        context['tables'].append({'table': table, 'titel': _("Payments")})
+        generate_payments_by_queryset(request, context, payments)
 
     return myrender(request, context)
 
