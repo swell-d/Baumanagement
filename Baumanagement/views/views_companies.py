@@ -48,22 +48,20 @@ def object_table(request, id):
     generate_accounts_by_queryset(request, context, accounts)
 
     projects = Project.objects.filter(company=id)
-    if projects:
-        generate_projects_by_queryset(request, context, projects)
+    generate_projects_by_queryset(request, context, projects)
 
     contracts = Contract.objects.filter(company=id)
     generate_contracts_by_queryset(request, context, contracts)
 
-    if contracts:
-        bills = [contract.bills.all() for contract in contracts]
-        bills = [Bill.extra_fields(each) for each in bills]
-        bills = QuerySet.union(*bills)
-        generate_bills_by_queryset(request, context, bills)
+    bills = [contract.bills.all() for contract in contracts]
+    bills = [Bill.extra_fields(each) for each in bills]
+    bills = QuerySet.union(*bills) if bills else bills
+    generate_bills_by_queryset(request, context, bills)
 
-        payments = [contract.payments.all() for contract in contracts]
-        payments = [Payment.extra_fields(each) for each in payments]
-        payments = QuerySet.union(*payments)
-        generate_payments_by_queryset(request, context, payments)
+    payments = [contract.payments.all() for contract in contracts]
+    payments = [Payment.extra_fields(each) for each in payments]
+    payments = QuerySet.union(*payments) if payments else payments
+    generate_payments_by_queryset(request, context, payments)
 
     return myrender(request, context)
 

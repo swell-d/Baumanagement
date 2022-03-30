@@ -36,17 +36,39 @@
 
     {% include 'messages.html' %}
 
+{#    {% for next_table in tables %}#}
+{#        <div class="row">#}
+{#            <div class="col">#}
+{#                <span class="h2">{{ next_table.titel }}</span><span> ({{ next_table.table.rows|length }})</span>#}
+{#            </div>#}
+{#        </div>#}
+{#        <div class="row">#}
+{#            <div class="col">#}
+{#                {% render_table next_table.table %}#}
+{#            </div>#}
+{#        </div>#}
+{#    {% endfor %}#}
+
+    <div class="tab">
+        {% for next_table in tables %}
+            <button class="tablinks" onclick="openTab(event, '{{ next_table.titel }}')">{{ next_table.titel }} ({{ next_table.table.rows|length }})</button>
+        {% endfor %}
+    </div>
+
     {% for next_table in tables %}
-        <div class="row">
-            <div class="col">
-                <span class="h2">{{ next_table.titel }}</span><span> ({{ next_table.table.rows|length }})</span>
+        <div id="{{ next_table.titel }}" class="tabcontent">
+            <div class="row">
+                <div class="col">
+                    <span class="h2">{{ next_table.titel }}</span><span> ({{ next_table.table.rows|length }})</span>
+                </div>
             </div>
-        </div>
-        <div class="row">
-            <div class="col">
-                {% render_table next_table.table %}
+            <div class="row">
+                <div class="col">
+                    {% render_table next_table.table %}
+                </div>
             </div>
         </div>
     {% endfor %}
+
 
 {% endblock %}
