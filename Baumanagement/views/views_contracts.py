@@ -3,12 +3,12 @@ from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 
-from Baumanagement.models.abstract import add_search_field
 from Baumanagement.models.models import Contract, Payment, Bill
 from Baumanagement.tables import ContractTable, PaymentTable, BillTable
-from Baumanagement.views.views import myrender, new_object_form, edit_object_form
+from Baumanagement.views.views import myrender, edit_object_form, generate_objects_table
 
 baseClass = Contract
+tableClass = ContractTable
 
 
 class FormClass(ModelForm):
@@ -19,14 +19,7 @@ class FormClass(ModelForm):
 
 def contracts(request):
     context = {'titel1': _("All contracts")}
-    new_object_form(request, context, FormClass)
-
-    queryset = baseClass.extra_fields(baseClass.objects)
-    queryset = add_search_field(queryset, request, context)
-    table1 = ContractTable(queryset, order_by="id", orderable=request.GET.get('search') is None)
-    RequestConfig(request).configure(table1)
-    context['table1'] = table1
-
+    generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
 
@@ -38,7 +31,7 @@ def contract(request, id):
 
     queryset = baseClass.objects.filter(id=id)
     queryset = baseClass.extra_fields(queryset)
-    table1 = ContractTable(queryset)
+    table1 = tableClass(queryset)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 

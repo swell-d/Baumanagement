@@ -8,9 +8,10 @@ from django_tables2 import RequestConfig
 from Baumanagement.models.abstract import add_search_field
 from Baumanagement.models.models import Company, CompanyRole, Project, Contract, Bill, Payment
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
-from Baumanagement.views.views import myrender, new_object_form, edit_object_form
+from Baumanagement.views.views import myrender, new_object_form, edit_object_form, generate_objects_table
 
 baseClass = Company
+tableClass = CompanyTable
 
 
 class FormClass(ModelForm):
@@ -29,15 +30,8 @@ def roles_tags():
 
 def companies(request):
     context = {'titel1': _('All companies')}
-    new_object_form(request, context, FormClass)
-
-    queryset = baseClass.extra_fields(baseClass.objects)
-    queryset = add_search_field(queryset, request, context)
-    table1 = CompanyTable(queryset, order_by="name", orderable=request.GET.get('search') is None)
-    RequestConfig(request).configure(table1)
-    context['table1'] = table1
+    generate_objects_table(request, context, baseClass, tableClass, FormClass)
     context['tags1'] = roles_tags()
-
     return myrender(request, context)
 
 
@@ -49,7 +43,7 @@ def companies_by_role(request, id):
     queryset = baseClass.objects.filter(role=id)
     queryset = baseClass.extra_fields(queryset)
     queryset = add_search_field(queryset, request, context)
-    table1 = CompanyTable(queryset, order_by="name")
+    table1 = tableClass(queryset, order_by="name")
     RequestConfig(request).configure(table1)
     context['table1'] = table1
     context['tags1'] = roles_tags()
@@ -64,7 +58,7 @@ def company(request, id):
 
     queryset = baseClass.objects.filter(id=id)
     queryset = baseClass.extra_fields(queryset)
-    table1 = CompanyTable(queryset)
+    table1 = tableClass(queryset)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 

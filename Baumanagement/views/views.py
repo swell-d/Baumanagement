@@ -2,7 +2,9 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
+from django_tables2 import RequestConfig
 
+from Baumanagement.models.abstract import add_search_field
 from Baumanagement.models.models_files import File
 
 
@@ -18,6 +20,15 @@ def upload_files(request, object):
         object.file_ids.append(file_instance.id)
         object.save()
         messages.success(request, f'{file.name} {_("uploaded")}')
+
+
+def generate_objects_table(request, context, baseClass, tableClass, formClass):
+    new_object_form(request, context, formClass)
+    queryset = baseClass.extra_fields(baseClass.objects)
+    queryset = add_search_field(queryset, request, context)
+    table1 = tableClass(queryset, order_by="-created", orderable=request.GET.get('search') is None)
+    RequestConfig(request).configure(table1)
+    context['table1'] = table1
 
 
 def new_object_form(request, context, cls):
