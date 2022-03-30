@@ -15,7 +15,7 @@ def projects(request):
 
     queryset = Project.extra_fields(Project.objects)
     queryset = add_search_field(queryset, request, context)
-    table1 = ProjectTable(queryset, order_by="name")
+    table1 = ProjectTable(queryset, order_by="name", orderable=request.GET.get('search') is None)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 
@@ -46,7 +46,7 @@ def project(request, id):
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        fields = Project.form_fields()
+        fields = Project.form_fields
 
 
 def form_new_project(request, context):

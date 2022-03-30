@@ -15,7 +15,7 @@ def contracts(request):
 
     queryset = Contract.extra_fields(Contract.objects)
     queryset = add_search_field(queryset, request, context)
-    table1 = ContractTable(queryset, order_by="id")
+    table1 = ContractTable(queryset, order_by="id", orderable=request.GET.get('search') is None)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 
@@ -51,7 +51,7 @@ def contract(request, id):
 class ContractForm(ModelForm):
     class Meta:
         model = Contract
-        fields = Contract.form_fields()
+        fields = Contract.form_fields
 
 
 def form_new_contract(request, context):

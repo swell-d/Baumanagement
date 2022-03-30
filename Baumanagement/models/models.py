@@ -35,17 +35,9 @@ class Company(BaseModel, AddressModel, FileModel):
     def extra_fields(qs):
         return qs.all()
 
-    @staticmethod
-    def table_fields():
-        return 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number', 'files'
-
-    @staticmethod
-    def search_fields():
-        return 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
-
-    @staticmethod
-    def form_fields():
-        return 'open', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number', 'role'
+    table_fields = 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number', 'files'
+    search_fields = 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
+    form_fields = 'open', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number', 'role'
 
 
 class Project(BaseModel, AddressModel, FileModel):
@@ -62,17 +54,9 @@ class Project(BaseModel, AddressModel, FileModel):
     def extra_fields(qs):
         return qs.annotate(count_contracts=Sum(Case(When(contracts__open=True, then=1))))
 
-    @staticmethod
-    def table_fields():
-        return 'created', 'name', 'code', 'company', 'address', 'open', 'count_contracts', 'files'
-
-    @staticmethod
-    def search_fields():
-        return 'name', 'code', 'company__name', 'address', 'city', 'land', 'count_contracts'
-
-    @staticmethod
-    def form_fields():
-        return 'open', 'name', 'code', 'company', 'address', 'city', 'land'
+    table_fields = 'created', 'name', 'code', 'company', 'address', 'open', 'count_contracts', 'files'
+    search_fields = 'name', 'code', 'company__name', 'address', 'city', 'land', 'count_contracts'
+    form_fields = 'open', 'name', 'code', 'company', 'address', 'city', 'land'
 
 
 class Contract(BaseModel, PriceModel, FileModel):
@@ -92,17 +76,9 @@ class Contract(BaseModel, PriceModel, FileModel):
         return qs.annotate(payed=Sum(Case(When(payments__open=True, then='payments__amount_brutto')), distinct=True)) \
             .annotate(due=Sum(Case(When(bills__open=True, then='bills__amount_brutto')), distinct=True))
 
-    @staticmethod
-    def table_fields():
-        return 'created', 'project', 'company', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
-
-    @staticmethod
-    def search_fields():
-        return 'project__name', 'company__name', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
-
-    @staticmethod
-    def form_fields():
-        return 'open', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
+    table_fields = 'created', 'project', 'company', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    search_fields = 'project__name', 'company__name', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    form_fields = 'open', 'project', 'company', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
 class Bill(BaseModel, PriceModel, FileModel):
@@ -119,17 +95,9 @@ class Bill(BaseModel, PriceModel, FileModel):
     def extra_fields(qs):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
 
-    @staticmethod
-    def table_fields():
-        return 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
-
-    @staticmethod
-    def search_fields():
-        return 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
-
-    @staticmethod
-    def form_fields():
-        return 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
+    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
+    search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
+    form_fields = 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
 
 
 class Payment(BaseModel, PriceModel, FileModel):
@@ -146,14 +114,6 @@ class Payment(BaseModel, PriceModel, FileModel):
     def extra_fields(qs):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
 
-    @staticmethod
-    def table_fields():
-        return 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
-
-    @staticmethod
-    def search_fields():
-        return 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
-
-    @staticmethod
-    def form_fields():
-        return 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
+    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
+    search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
+    form_fields = 'open', 'contract', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'

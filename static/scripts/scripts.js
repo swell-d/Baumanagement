@@ -1,7 +1,12 @@
 function mainTableReload(path, value) {
+    if (value == "") {
+        location.href = location.href;
+        return;
+    }
     const Http = new XMLHttpRequest();
-    const url = path + "?search=" + value;
-    Http.open("GET", url);
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    urlSearchParams.set('search', value);
+    Http.open("GET", path + '?' + urlSearchParams.toString());
     Http.send();
     Http.onreadystatechange = (e) => {
         document.getElementById("main-table").innerHTML = Http.responseText

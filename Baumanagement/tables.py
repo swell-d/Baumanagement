@@ -63,7 +63,7 @@ class Files:
 class CompanyTable(tables.Table, Files):
     class Meta(TableDesign):
         model = Company
-        fields = Company.table_fields()
+        fields = Company.table_fields
 
     name = CreateFooter()
     files = tables.Column(verbose_name=_('Files'))
@@ -88,7 +88,7 @@ class CompanyTable(tables.Table, Files):
 class ProjectTable(tables.Table, Files):
     class Meta(TableDesign):
         model = Project
-        fields = Project.table_fields()
+        fields = Project.table_fields
 
     count_contracts = SummingColumnInt(verbose_name=_('Contracts'))
     files = tables.Column(verbose_name=_('Files'))
@@ -120,7 +120,7 @@ class ProjectTable(tables.Table, Files):
 class ContractTable(tables.Table, Files):
     class Meta(TableDesign):
         model = Contract
-        fields = Contract.table_fields()
+        fields = Contract.table_fields
 
     amount_netto = SummingColumn2F()
     amount_brutto = SummingColumn2F()
@@ -172,7 +172,7 @@ class ContractTable(tables.Table, Files):
 class BillTable(tables.Table, Files):
     class Meta(TableDesign):
         model = Bill
-        fields = Bill.table_fields()
+        fields = Bill.table_fields
 
     project = tables.Column(verbose_name=_('Project'))
     company = tables.Column(verbose_name=_('Company'))
@@ -220,7 +220,7 @@ class BillTable(tables.Table, Files):
 class PaymentTable(tables.Table, Files):
     class Meta(TableDesign):
         model = Payment
-        fields = Payment.table_fields()
+        fields = Payment.table_fields
 
     project = tables.Column(verbose_name=_('Project'))
     company = tables.Column(verbose_name=_('Company'))

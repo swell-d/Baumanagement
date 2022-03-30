@@ -15,7 +15,7 @@ def bills(request):
 
     queryset = Bill.extra_fields(Bill.objects)
     queryset = add_search_field(queryset, request, context)
-    table1 = BillTable(queryset, order_by="id")
+    table1 = BillTable(queryset, order_by="id", orderable=request.GET.get('search') is None)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 
@@ -69,7 +69,7 @@ def bill(request, id):
 class BillForm(ModelForm):
     class Meta:
         model = Bill
-        fields = Bill.form_fields()
+        fields = Bill.form_fields
 
 
 def form_new_bill(request, context):

@@ -15,7 +15,7 @@ def payments(request):
 
     queryset = Payment.extra_fields(Payment.objects)
     queryset = add_search_field(queryset, request, context)
-    table1 = PaymentTable(queryset, order_by="id")
+    table1 = PaymentTable(queryset, order_by="id", orderable=request.GET.get('search') is None)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 
@@ -69,7 +69,7 @@ def payment(request, id):
 class PaymentForm(ModelForm):
     class Meta:
         model = Payment
-        fields = Payment.form_fields()
+        fields = Payment.form_fields
 
 
 def form_new_payment(request, context):

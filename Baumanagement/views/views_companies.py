@@ -13,14 +13,11 @@ from Baumanagement.views.views import myrender, upload_files
 
 
 def roles_tags():
-    def role_link(role):
-        return reverse('companies_id', args=[role.id])
-
-    filtered_roles = [role for role in CompanyRole.objects.order_by('name') if role.count_companies > 0]
-    link = reverse('companies')
-    return format_html(f'<a href="{link}">{_("All")}</a> ({Company.objects.count()}), ' +
-                       ', '.join(f'<a href="{role_link(role)}">{role.name}</a> ({role.count_companies})'
-                                 for role in filtered_roles))
+    html = f'''<a href="{reverse('companies')}">{_('All')}</a> ({Company.objects.count()}), '''
+    html += ', '.join(
+        f'''<a href="{reverse('companies_id', args=[role.id])}">{role.name}</a> ({role.count_companies})'''
+        for role in CompanyRole.objects.order_by('name') if role.count_companies > 0)
+    return format_html(html)
 
 
 def companies(request):
@@ -29,7 +26,7 @@ def companies(request):
 
     queryset = Company.extra_fields(Company.objects)
     queryset = add_search_field(queryset, request, context)
-    table1 = CompanyTable(queryset, order_by="name")
+    table1 = CompanyTable(queryset, order_by="name", orderable=request.GET.get('search') is None)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
     context['tags1'] = roles_tags()
@@ -98,7 +95,7 @@ def company(request, id):
 class CompanyForm(ModelForm):
     class Meta:
         model = Company
-        fields = Company.form_fields()
+        fields = Company.form_fields
 
 
 def form_new_company(request, context):
