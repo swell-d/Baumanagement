@@ -59,6 +59,9 @@ class Files:
 </div>'''
         return format_html(text)
 
+    def order_files(self, queryset, is_descending):
+        return (queryset, True)
+
 
 class CompanyTable(tables.Table, Files):
     class Meta(TableDesign):

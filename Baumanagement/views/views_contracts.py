@@ -8,12 +8,20 @@ from Baumanagement.models.models import Contract, Payment, Bill
 from Baumanagement.tables import ContractTable, PaymentTable, BillTable
 from Baumanagement.views.views import myrender, new_object_form, edit_object_form
 
+baseClass = Contract
+
+
+class FormClass(ModelForm):
+    class Meta:
+        model = baseClass
+        fields = baseClass.form_fields
+
 
 def contracts(request):
     context = {'titel1': _("All contracts")}
-    new_object_form(request, context, ContractForm)
+    new_object_form(request, context, FormClass)
 
-    queryset = Contract.extra_fields(Contract.objects)
+    queryset = baseClass.extra_fields(baseClass.objects)
     queryset = add_search_field(queryset, request, context)
     table1 = ContractTable(queryset, order_by="id", orderable=request.GET.get('search') is None)
     RequestConfig(request).configure(table1)
@@ -23,13 +31,13 @@ def contracts(request):
 
 
 def contract(request, id):
-    contract = Contract.objects.get(id=id)
+    contract = baseClass.objects.get(id=id)
     context = {'titel1': f'{_("Contract")} - {contract.name}', 'tables': []}
-    edit_object_form(request, context, ContractForm, contract)
+    edit_object_form(request, context, FormClass, contract)
     disable_children(request, contract)
 
-    queryset = Contract.objects.filter(id=id)
-    queryset = Contract.extra_fields(queryset)
+    queryset = baseClass.objects.filter(id=id)
+    queryset = baseClass.extra_fields(queryset)
     table1 = ContractTable(queryset)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
@@ -49,12 +57,6 @@ def contract(request, id):
     return myrender(request, context)
 
 
-class ContractForm(ModelForm):
-    class Meta:
-        model = Contract
-        fields = Contract.form_fields
-
-
 def disable_children(request, contract):
     if request.method == 'POST' and not contract.open:
         for bill in contract.bills.all():
@@ -67,4 +69,3 @@ def disable_children(request, contract):
                 payment.open = False
                 messages.warning(request, f'{payment.name} {_("disabled")}')
                 payment.save()
-

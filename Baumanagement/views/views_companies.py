@@ -10,9 +10,17 @@ from Baumanagement.models.models import Company, CompanyRole, Project, Contract,
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
 from Baumanagement.views.views import myrender, new_object_form, edit_object_form
 
+baseClass = Company
+
+
+class FormClass(ModelForm):
+    class Meta:
+        model = baseClass
+        fields = baseClass.form_fields
+
 
 def roles_tags():
-    html = f'''<a href="{reverse('companies')}">{_('All')}</a> ({Company.objects.count()}), '''
+    html = f'''<a href="{reverse('companies')}">{_('All')}</a> ({baseClass.objects.count()}), '''
     html += ', '.join(
         f'''<a href="{reverse('companies_id', args=[role.id])}">{role.name}</a> ({role.count_companies})'''
         for role in CompanyRole.objects.order_by('name') if role.count_companies > 0)
@@ -21,9 +29,9 @@ def roles_tags():
 
 def companies(request):
     context = {'titel1': _('All companies')}
-    new_object_form(request, context, CompanyForm)
+    new_object_form(request, context, FormClass)
 
-    queryset = Company.extra_fields(Company.objects)
+    queryset = baseClass.extra_fields(baseClass.objects)
     queryset = add_search_field(queryset, request, context)
     table1 = CompanyTable(queryset, order_by="name", orderable=request.GET.get('search') is None)
     RequestConfig(request).configure(table1)
@@ -36,10 +44,10 @@ def companies(request):
 def companies_by_role(request, id):
     role = CompanyRole.objects.get(id=id)
     context = {'titel1': f'{_("Companies")} - {role.name}'}
-    new_object_form(request, context, CompanyForm)
+    new_object_form(request, context, FormClass)
 
-    queryset = Company.objects.filter(role=id)
-    queryset = Company.extra_fields(queryset)
+    queryset = baseClass.objects.filter(role=id)
+    queryset = baseClass.extra_fields(queryset)
     queryset = add_search_field(queryset, request, context)
     table1 = CompanyTable(queryset, order_by="name")
     RequestConfig(request).configure(table1)
@@ -50,12 +58,12 @@ def companies_by_role(request, id):
 
 
 def company(request, id):
-    company = Company.objects.get(id=id)
+    company = baseClass.objects.get(id=id)
     context = {'titel1': f'{_("Company")} - {company.name}', 'tables': []}
-    edit_object_form(request, context, CompanyForm, company)
+    edit_object_form(request, context, FormClass, company)
 
-    queryset = Company.objects.filter(id=id)
-    queryset = Company.extra_fields(queryset)
+    queryset = baseClass.objects.filter(id=id)
+    queryset = baseClass.extra_fields(queryset)
     table1 = CompanyTable(queryset)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
@@ -89,9 +97,3 @@ def company(request, id):
         context['tables'].append({'table': table, 'titel': _("Payments")})
 
     return myrender(request, context)
-
-
-class CompanyForm(ModelForm):
-    class Meta:
-        model = Company
-        fields = Company.form_fields
