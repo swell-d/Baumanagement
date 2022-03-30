@@ -47,7 +47,7 @@ def generate_next_objects_table(request, context, baseClass, tableClass, queryse
         queryset = baseClass.extra_fields(queryset)
     except (NotSupportedError, AttributeError):
         pass
-    table = tableClass(queryset, order_by="-created")
+    table = tableClass(queryset, order_by="-created", orderable=False)
     RequestConfig(request).configure(table)
     context['tables'].append({'table': table, 'titel': baseClass._meta.verbose_name_plural})
 
