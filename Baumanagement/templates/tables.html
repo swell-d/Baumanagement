@@ -39,7 +39,10 @@
     {% if tables %}
         <div class="tab">
             {% for next_table in tables %}
-                <button class="tablinks" onclick="openTab(event, '{{ next_table.titel }}')">{{ next_table.titel }} ({{ next_table.table.rows|length }})</button>
+                <button class="tablinks" onclick="openTab(event, '{{ next_table.titel }}')"
+                        {% if forloop.first %} id="defaultOpen"{%endif %}>
+                    {{ next_table.titel }} ({{ next_table.table.rows|length }})
+                </button>
             {% endfor %}
         </div>
         {% for next_table in tables %}
@@ -56,6 +59,7 @@
                 </div>
             </div>
         {% endfor %}
+        <script>document.getElementById("defaultOpen").click();</script>
     {% endif %}
 
 {% endblock %}
