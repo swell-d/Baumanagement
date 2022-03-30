@@ -1,12 +1,13 @@
 from django.contrib import messages
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
-from django_tables2 import RequestConfig
 
-from Baumanagement.models.models import Contract, Payment, Bill
-from Baumanagement.tables import ContractTable, PaymentTable, BillTable
+from Baumanagement.models.models import Contract
+from Baumanagement.tables import ContractTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
+from Baumanagement.views.views_bills import generate_bills_by_contract
+from Baumanagement.views.views_payments import generate_payments_by_contract
 
 baseClass = Contract
 tableClass = ContractTable
@@ -28,19 +29,14 @@ def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
     context = {'titel1': f'{_("Contract")} - {queryset.first().name}', 'tables': []}
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
+
     disable_children(request, queryset.first())
 
     bills = queryset.first().bills.all()
-    bills = Bill.extra_fields(bills)
-    table = BillTable(bills, order_by="id")
-    RequestConfig(request).configure(table)
-    context['tables'].append({'table': table, 'titel': _("Bills")})
+    generate_bills_by_contract(request, context, bills)
 
     payments = queryset.first().payments.all()
-    payments = Payment.extra_fields(payments)
-    table = PaymentTable(payments, order_by="id")
-    RequestConfig(request).configure(table)
-    context['tables'].append({'table': table, 'titel': _("Payments")})
+    generate_payments_by_contract(request, context, payments)
 
     return myrender(request, context)
 

@@ -3,7 +3,8 @@ from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Bill, Contract, Project
 from Baumanagement.tables import BillTable
-from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
+from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
+    generate_next_objects_table
 
 baseClass = Bill
 tableClass = BillTable
@@ -42,3 +43,7 @@ def project_bills(request, id):
     queryset = baseClass.objects.filter(contract__in=project.contracts.all())
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
+
+
+def generate_bills_by_contract(request, context, queryset):
+    generate_next_objects_table(request, context, baseClass, tableClass, FormClass, queryset, _("Bills"))
