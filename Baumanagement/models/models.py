@@ -5,39 +5,7 @@ from django.db.models import Sum, F, Case, When
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel, PriceModel
-
-
-class CompanyRole(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Role'))
-
-    class Meta:
-        verbose_name = _('Role')
-        verbose_name_plural = _('Roles')
-
-    @property
-    def count_companies(self):
-        return self.companies.count()
-
-
-class Company(BaseModel, AddressModel, FileModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Company name'))
-    email = models.EmailField(null=False, blank=True, verbose_name=_('E-mail'))
-    phone = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Phone'))
-    role = models.ManyToManyField(CompanyRole, blank=False, verbose_name=_('Role'), related_name='companies')
-    ceo = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('CEO'))
-    vat_number = models.CharField(max_length=16, null=False, blank=True, verbose_name=_('VAT number'))
-
-    class Meta:
-        verbose_name = _('Company')
-        verbose_name_plural = _('Companies')
-
-    @staticmethod
-    def extra_fields(qs):
-        return qs.all()
-
-    table_fields = 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number', 'files'
-    search_fields = 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
-    form_fields = 'open', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number', 'role'
+from Baumanagement.models.models_company import Company
 
 
 class Project(BaseModel, AddressModel, FileModel):
@@ -54,9 +22,9 @@ class Project(BaseModel, AddressModel, FileModel):
     def extra_fields(qs):
         return qs.annotate(count_contracts=Sum(Case(When(contracts__open=True, then=1))))
 
-    table_fields = 'created', 'name', 'code', 'company', 'address', 'open', 'count_contracts', 'files'
-    search_fields = 'name', 'code', 'company__name', 'address', 'city', 'land', 'count_contracts'
-    form_fields = 'open', 'name', 'code', 'company', 'address', 'city', 'land'
+    table_fields = 'created', 'company', 'name', 'code', 'address', 'open', 'count_contracts', 'files'
+    search_fields = 'company__name', 'name', 'code', 'address', 'city', 'land', 'count_contracts'
+    form_fields = 'open', 'company', 'name', 'code', 'address', 'city', 'land'
 
 
 class Contract(BaseModel, PriceModel, FileModel):

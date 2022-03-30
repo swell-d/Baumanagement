@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models import Company
+from Baumanagement.models.models_company import Company
 from Baumanagement.tables.tables import Files, TableDesign, get_google_maps_link
 
 

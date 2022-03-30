@@ -4,7 +4,8 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models import Company, CompanyRole, Project, Contract, Bill, Payment
+from Baumanagement.models.models import Project, Contract, Bill, Payment
+from Baumanagement.models.models_company import CompanyRole, Company
 from Baumanagement.tables.tables_companies import CompanyTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
 from Baumanagement.views.views_bills import generate_bills_by_queryset
