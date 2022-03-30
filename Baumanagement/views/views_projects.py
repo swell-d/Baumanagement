@@ -1,10 +1,10 @@
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
-from django_tables2 import RequestConfig
 
-from Baumanagement.models.models import Project, Contract
-from Baumanagement.tables import ProjectTable, ContractTable
+from Baumanagement.models.models import Project
+from Baumanagement.tables import ProjectTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
+from Baumanagement.views.views_contracts import generate_contracts_by_project
 
 baseClass = Project
 tableClass = ProjectTable
@@ -26,12 +26,5 @@ def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
     context = {'titel1': f'{_("Project")} - {queryset.first().name}', 'tables': []}
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
-
-    contracts = Contract.objects.filter(project=id)
-    contracts = Contract.extra_fields(contracts)
-    if contracts:
-        table = ContractTable(contracts, order_by="name")
-        RequestConfig(request).configure(table)
-        context['tables'].append({'table': table, 'titel': _("Contracts")})
-
+    generate_contracts_by_project(request, context, id)
     return myrender(request, context)

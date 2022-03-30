@@ -40,6 +40,14 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
     context['table1'] = table1
 
 
+def generate_next_objects_table(request, context, baseClass, tableClass, formClass, queryset, titel):
+    new_object_form(request, context, formClass)
+    queryset = baseClass.extra_fields(queryset)
+    table = tableClass(queryset, order_by="-created")
+    RequestConfig(request).configure(table)
+    context['tables'].append({'table': table, 'titel': titel})
+
+
 def new_object_form(request, context, cls):
     if request.method == 'POST':
         formset = cls(request.POST, request.FILES)

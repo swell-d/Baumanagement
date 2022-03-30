@@ -5,7 +5,8 @@ from django_tables2 import RequestConfig
 
 from Baumanagement.models.models import Contract, Payment, Bill
 from Baumanagement.tables import ContractTable, PaymentTable, BillTable
-from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
+from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
+    generate_next_objects_table
 
 baseClass = Contract
 tableClass = ContractTable
@@ -27,7 +28,7 @@ def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
     context = {'titel1': f'{_("Contract")} - {queryset.first().name}', 'tables': []}
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
-    disable_children(request, object)
+    disable_children(request, queryset.first())
 
     bills = queryset.first().bills.all()
     bills = Bill.extra_fields(bills)
@@ -56,3 +57,8 @@ def disable_children(request, contract):
                 payment.open = False
                 messages.warning(request, f'{payment.name} {_("disabled")}')
                 payment.save()
+
+
+def generate_contracts_by_project(request, context, id):
+    queryset = baseClass.objects.filter(project=id)
+    generate_next_objects_table(request, context, baseClass, tableClass, FormClass, queryset, _("Contracts"))
