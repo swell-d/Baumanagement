@@ -1,4 +1,3 @@
-from django.contrib import messages
 from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.urls import reverse
@@ -9,7 +8,7 @@ from django_tables2 import RequestConfig
 from Baumanagement.models.abstract import add_search_field
 from Baumanagement.models.models import Company, CompanyRole, Project, Contract, Bill, Payment
 from Baumanagement.tables import CompanyTable, ProjectTable, ContractTable, PaymentTable, BillTable
-from Baumanagement.views.views import myrender, upload_files
+from Baumanagement.views.views import myrender, new_object_form, edit_object_form
 
 
 def roles_tags():
@@ -22,7 +21,7 @@ def roles_tags():
 
 def companies(request):
     context = {'titel1': _('All companies')}
-    form_new_company(request, context)
+    new_object_form(request, context, CompanyForm)
 
     queryset = Company.extra_fields(Company.objects)
     queryset = add_search_field(queryset, request, context)
@@ -37,7 +36,7 @@ def companies(request):
 def companies_by_role(request, id):
     role = CompanyRole.objects.get(id=id)
     context = {'titel1': f'{_("Companies")} - {role.name}'}
-    form_new_company(request, context)
+    new_object_form(request, context, CompanyForm)
 
     queryset = Company.objects.filter(role=id)
     queryset = Company.extra_fields(queryset)
@@ -53,7 +52,7 @@ def companies_by_role(request, id):
 def company(request, id):
     company = Company.objects.get(id=id)
     context = {'titel1': f'{_("Company")} - {company.name}', 'tables': []}
-    form_edit_company(request, context, company)
+    edit_object_form(request, context, CompanyForm, company)
 
     queryset = Company.objects.filter(id=id)
     queryset = Company.extra_fields(queryset)
@@ -96,28 +95,3 @@ class CompanyForm(ModelForm):
     class Meta:
         model = Company
         fields = Company.form_fields
-
-
-def form_new_company(request, context):
-    if request.method == 'POST':
-        formset = CompanyForm(request.POST, request.FILES)
-        if formset.is_valid():
-            new_object = Company(**formset.cleaned_data)
-            new_object.save()
-            messages.success(request, f'{new_object.name} {_("created")}')
-            upload_files(request, new_object)
-    context['form'] = CompanyForm()
-    context['files_form'] = []
-    context['buttons'] = ['New']
-
-
-def form_edit_company(request, context, company):
-    if request.method == 'POST':
-        formset = CompanyForm(request.POST, request.FILES, instance=company)
-        if formset.is_valid():
-            company.save()
-            messages.success(request, f'{company.name} {_("changed")}')
-            upload_files(request, company)
-    context['form'] = CompanyForm(instance=company)
-    context['files_form'] = company.files
-    context['buttons'] = ['Edit']

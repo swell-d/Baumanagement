@@ -6,12 +6,12 @@ from django_tables2 import RequestConfig
 from Baumanagement.models.abstract import add_search_field
 from Baumanagement.models.models import Contract, Payment, Bill
 from Baumanagement.tables import ContractTable, PaymentTable, BillTable
-from Baumanagement.views.views import myrender, upload_files
+from Baumanagement.views.views import myrender, new_object_form, edit_object_form
 
 
 def contracts(request):
     context = {'titel1': _("All contracts")}
-    form_new_contract(request, context)
+    new_object_form(request, context, ContractForm)
 
     queryset = Contract.extra_fields(Contract.objects)
     queryset = add_search_field(queryset, request, context)
@@ -25,7 +25,8 @@ def contracts(request):
 def contract(request, id):
     contract = Contract.objects.get(id=id)
     context = {'titel1': f'{_("Contract")} - {contract.name}', 'tables': []}
-    form_edit_contract(request, context, contract)
+    edit_object_form(request, context, ContractForm, contract)
+    disable_children(request, contract)
 
     queryset = Contract.objects.filter(id=id)
     queryset = Contract.extra_fields(queryset)
@@ -54,37 +55,16 @@ class ContractForm(ModelForm):
         fields = Contract.form_fields
 
 
-def form_new_contract(request, context):
-    if request.method == 'POST':
-        formset = ContractForm(request.POST, request.FILES)
-        if formset.is_valid():
-            new_object = Contract(**formset.cleaned_data)
-            new_object.save()
-            messages.success(request, f'{new_object.name} {_("created")}')
-            upload_files(request, new_object)
-    context['form'] = ContractForm()
-    context['files_form'] = []
-    context['buttons'] = ['New']
+def disable_children(request, contract):
+    if request.method == 'POST' and not contract.open:
+        for bill in contract.bills.all():
+            if bill.open:
+                bill.open = False
+                messages.warning(request, f'{bill.name} {_("disabled")}')
+                bill.save()
+        for payment in contract.payments.all():
+            if payment.open:
+                payment.open = False
+                messages.warning(request, f'{payment.name} {_("disabled")}')
+                payment.save()
 
-
-def form_edit_contract(request, context, contract):
-    if request.method == 'POST':
-        formset = ContractForm(request.POST, request.FILES, instance=contract)
-        if formset.is_valid():
-            contract.save()
-            messages.success(request, f'{contract.name} {_("changed")}')
-            upload_files(request, contract)
-            if not contract.open:
-                for bill in contract.bills.all():
-                    if bill.open:
-                        bill.open = False
-                        messages.warning(request, f'{bill.name} {_("disabled")}')
-                        bill.save()
-                for payment in contract.payments.all():
-                    if payment.open:
-                        payment.open = False
-                        messages.warning(request, f'{payment.name} {_("disabled")}')
-                        payment.save()
-    context['form'] = ContractForm(instance=contract)
-    context['files_form'] = contract.files
-    context['buttons'] = ['Edit']
