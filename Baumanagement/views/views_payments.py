@@ -2,7 +2,7 @@ from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Payment, Contract, Project
-from Baumanagement.tables import PaymentTable
+from Baumanagement.tables.tables import PaymentTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
 

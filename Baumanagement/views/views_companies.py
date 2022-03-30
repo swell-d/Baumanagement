@@ -5,7 +5,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Company, CompanyRole, Project, Contract, Bill, Payment
-from Baumanagement.tables import CompanyTable
+from Baumanagement.tables.tables import CompanyTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
 from Baumanagement.views.views_bills import generate_bills_by_queryset
 from Baumanagement.views.views_contracts import generate_contracts_by_queryset
