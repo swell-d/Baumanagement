@@ -31,6 +31,14 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass):
     context['table1'] = table1
 
 
+def generate_object_table(request, context, queryset, baseClass, tableClass, formClass):
+    edit_object_form(request, context, formClass, queryset.first())
+    queryset = baseClass.extra_fields(queryset)
+    table1 = tableClass(queryset)
+    RequestConfig(request).configure(table1)
+    context['table1'] = table1
+
+
 def new_object_form(request, context, cls):
     if request.method == 'POST':
         formset = cls(request.POST, request.FILES)

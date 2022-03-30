@@ -4,7 +4,7 @@ from django_tables2 import RequestConfig
 
 from Baumanagement.models.models import Project, Contract
 from Baumanagement.tables import ProjectTable, ContractTable
-from Baumanagement.views.views import myrender, edit_object_form, generate_objects_table
+from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
 
 baseClass = Project
 tableClass = ProjectTable
@@ -23,15 +23,10 @@ def objects_table(request):
 
 
 def object_table(request, id):
-    project = baseClass.objects.get(id=id)
-    context = {'titel1': f'{_("Project")} - {project.name}', 'tables': []}
-    edit_object_form(request, context, FormClass, project)
-
     queryset = baseClass.objects.filter(id=id)
-    queryset = baseClass.extra_fields(queryset)
-    table1 = tableClass(queryset)
-    RequestConfig(request).configure(table1)
-    context['table1'] = table1
+    object = queryset.first()
+    context = {'titel1': f'{_("Project")} - {object.name}', 'tables': []}
+    generate_object_table(request, context, queryset, baseClass, tableClass, FormClass)
 
     contracts = Contract.objects.filter(project=id)
     contracts = Contract.extra_fields(contracts)
