@@ -17,7 +17,7 @@ class FormClass(ModelForm):
         fields = baseClass.form_fields
 
 
-def bills(request):
+def objects_table(request):
     context = {'titel1': _('All bills')}
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
@@ -53,7 +53,7 @@ def project_bills(request, id):
     return myrender(request, context)
 
 
-def bill(request, id):
+def object_table(request, id):
     bill = baseClass.objects.get(id=id)
     context = {'titel1': f'{_("Bill")} - {bill.name}', 'tables': []}
     edit_object_form(request, context, FormClass, bill)

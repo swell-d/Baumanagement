@@ -16,13 +16,13 @@ class FormClass(ModelForm):
         fields = baseClass.form_fields
 
 
-def projects(request):
+def objects_table(request):
     context = {'titel1': _('All projects')}
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
 
-def project(request, id):
+def object_table(request, id):
     project = baseClass.objects.get(id=id)
     context = {'titel1': f'{_("Project")} - {project.name}', 'tables': []}
     edit_object_form(request, context, FormClass, project)

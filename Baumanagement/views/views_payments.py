@@ -17,7 +17,7 @@ class FormClass(ModelForm):
         fields = baseClass.form_fields
 
 
-def payments(request):
+def objects_table(request):
     context = {'titel1': _('All payments')}
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
@@ -53,7 +53,7 @@ def project_payments(request, id):
     return myrender(request, context)
 
 
-def payment(request, id):
+def object_table(request, id):
     payment = baseClass.objects.get(id=id)
     context = {'titel1': f'{_("Payment")} - {payment.name}', 'tables': []}
     edit_object_form(request, context, FormClass, payment)

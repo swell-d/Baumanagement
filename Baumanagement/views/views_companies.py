@@ -28,7 +28,7 @@ def roles_tags():
     return format_html(html)
 
 
-def companies(request):
+def objects_table(request):
     context = {'titel1': _('All companies')}
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     context['tags1'] = roles_tags()
@@ -51,7 +51,7 @@ def companies_by_role(request, id):
     return myrender(request, context)
 
 
-def company(request, id):
+def object_table(request, id):
     company = baseClass.objects.get(id=id)
     context = {'titel1': f'{_("Company")} - {company.name}', 'tables': []}
     edit_object_form(request, context, FormClass, company)
