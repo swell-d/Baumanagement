@@ -9,11 +9,11 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import django_heroku
 import os
-from pathlib import Path
-
 from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _
+from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -156,3 +156,5 @@ MESSAGE_TAGS = {
 
 MEDIA_URL = '/files/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
+
+django_heroku.settings(locals())
