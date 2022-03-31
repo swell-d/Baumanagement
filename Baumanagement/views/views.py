@@ -1,3 +1,5 @@
+import inspect
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import NotSupportedError
@@ -97,7 +99,8 @@ def new_object_form(request, context, cls):
             upload_files(request, new_object)
         add_comment_to_object(request, new_object)
     context['form'] = cls()
-    context['files_form'] = []
+    if 'FileModel' in str(inspect.getmro(cls.Meta.model)):
+        context['files_form'] = []
     context['buttons'] = ['New']
 
 
@@ -109,5 +112,6 @@ def edit_object_form(request, context, cls, object):
             messages.success(request, f'{object.name} {_("changed")}')
             upload_files(request, object)
     context['form'] = cls(instance=object)
-    context['files_form'] = object.files
+    if 'FileModel' in str(inspect.getmro(object.__class__)):
+        context['files_form'] = object.files
     context['buttons'] = ['Edit']

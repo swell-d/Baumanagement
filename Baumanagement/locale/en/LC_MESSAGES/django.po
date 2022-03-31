@@ -275,3 +275,6 @@ msgstr "All accounts"
 
 msgid "Main account"
 msgstr "Main account"
+
+msgid "All roles"
+msgstr "All roles"

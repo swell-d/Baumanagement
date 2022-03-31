@@ -14,12 +14,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'companies' %}">{% translate "Companies" %}</a>
+                <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" href="#" id="companyDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {% translate "Companies" %}
+                    </a>
+                    <ul class="dropdown-menu me-10" aria-labelledby="companyDropdown">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'companies' %}">{% translate "Companies" %}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'companyroles' %}">{% translate "Roles" %}</a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'accounts' %}">{% translate "Accounts" %}</a>
+                        </li>
+                    </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'accounts' %}">{% translate "Accounts" %}</a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link active" href="{% url 'projects' %}">{% translate "Projects" %}</a>
                 </li>
@@ -35,27 +47,27 @@
             </ul>
             <ul class="navbar-nav">
                 {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                           data-bs-toggle="dropdown" aria-expanded="false">
-                            {{ user.get_username }}
-                        </a>
-                        <ul class="dropdown-menu me-10" aria-labelledby="navbarDropdown">
-                            {% if request.user|has_group:"admins" %}
-                                <li><a class="dropdown-item" href="{% url 'admin:index' %}"
-                                       target="_blank">{% translate "Admin" %}</a></li>
-                                <li>
-                                    <hr class="dropdown-divider">
-                                </li>
-                            {% endif %}
-                            <li><a class="dropdown-item" href="{% url 'logout' %}?next=/">{% translate "Logout" %}</a>
-                            </li>
-                        </ul>
-                    </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ user.get_username }}
+                    </a>
+                    <ul class="dropdown-menu me-10" aria-labelledby="navbarDropdown">
+                        {% if request.user|has_group:"admins" %}
+                        <li><a class="dropdown-item" href="{% url 'admin:index' %}"
+                               target="_blank">{% translate "Admin" %}</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        {% endif %}
+                        <li><a class="dropdown-item" href="{% url 'logout' %}?next=/">{% translate "Logout" %}</a>
+                        </li>
+                    </ul>
+                </li>
                 {% endif %}
                 {% if not user.is_authenticated %}
-                    <li><a class="nav-link active"
-                           href="{% url 'login' %}?next={{ request.path }}">{% translate "Login" %}</a></li>
+                <li><a class="nav-link active"
+                       href="{% url 'login' %}?next={{ request.path }}">{% translate "Login" %}</a></li>
                 {% endif %}
             </ul>
         </div>

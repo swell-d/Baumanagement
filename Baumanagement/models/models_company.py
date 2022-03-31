@@ -11,9 +11,17 @@ class CompanyRole(BaseModel):
         verbose_name = _('Role')
         verbose_name_plural = _('Roles')
 
+    @staticmethod
+    def extra_fields(qs):
+        return qs.all()
+
     @property
     def count_companies(self):
         return self.companies.count()
+
+    table_fields = 'name',
+    search_fields = 'name',
+    form_fields = 'name',
 
 
 class Company(BaseModel, AddressModel, FileModel):
