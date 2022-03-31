@@ -4,4 +4,3 @@ django-bootstrap-v5
 django-filter
 django-crispy-forms
 python-gettext
-django-extensions
