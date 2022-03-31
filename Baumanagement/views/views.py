@@ -42,7 +42,8 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
     RequestConfig(request).configure(table1)
     context['table1'] = table1
     comment_ids = queryset.first().comment_ids
-    context['comments'] = [Comment.objects.get(id=id) for id in comment_ids]
+    context['tables'].append({'titel': _('Comments'), 'count': len(comment_ids),
+                             'comments': [Comment.objects.get(id=id) for id in comment_ids]})
 
 
 def generate_next_objects_table(request, context, baseClass, tableClass, queryset):
@@ -52,7 +53,7 @@ def generate_next_objects_table(request, context, baseClass, tableClass, queryse
         pass
     table = tableClass(queryset, order_by="-created", orderable=False)
     RequestConfig(request).configure(table)
-    context['tables'].append({'table': table, 'titel': baseClass._meta.verbose_name_plural})
+    context['tables'].append({'table': table, 'titel': baseClass._meta.verbose_name_plural, 'count': len(table.rows)})
 
 
 def new_object_form(request, context, cls):

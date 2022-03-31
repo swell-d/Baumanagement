@@ -1,0 +1,32 @@
+{% load i18n %}
+{% load render_table from django_tables2 %}
+
+{% if tables %}
+    <div class="tab">
+        {% for tab in tables %}
+            <button class="tablinks" onclick="openTab(event, '{{ tab.titel }}')"
+                    {% if forloop.first %} id="defaultOpen"{% endif %}>
+                {{ tab.titel }} ({{ tab.count }})
+            </button>
+        {% endfor %}
+    </div>
+    {% for tab in tables %}
+        <div id="{{ tab.titel }}" class="tabcontent">
+            <div class="row">
+                <div class="col">
+                    {% if tab.table %}{% render_table tab.table %}{% endif %}
+
+                    {% for comment in tab.comments %}
+                        <div class="row mb-2">
+                            <div class="col">
+                                <span class="text-muted">{{ comment.created }}</span><br>
+                                <span class="h6">Unknown user:</span>&nbsp;&nbsp;{{ comment.name }}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    <script>document.getElementById("defaultOpen").click();</script>
+{% endif %}
