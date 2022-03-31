@@ -62,9 +62,11 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
     RequestConfig(request).configure(table1)
     context['table1'] = table1
     comment_ids = queryset.first().comment_ids
+    comments = [{'object': Comment.objects.get(id=id), 'files': None} for id in comment_ids]
+    for comment in comments:
+        comment['files'] = [File.objects.get(id=id) for id in comment['object'].file_ids]
     context['tables'].append({'titel': _('Comments'), 'count': len(comment_ids),
-                              'comments': [Comment.objects.get(id=id) for id in comment_ids],
-                              'form': CommentFormClass(), 'files_form': []})
+                              'comments': comments, 'form': CommentFormClass(), 'files_form': []})
 
 
 def generate_next_objects_table(request, context, baseClass, tableClass, queryset):
