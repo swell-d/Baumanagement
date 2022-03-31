@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.db import NotSupportedError
 from django.db.models import QuerySet
+from django.forms import ModelForm
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
@@ -9,6 +10,13 @@ from django_tables2 import RequestConfig
 from Baumanagement.models.abstract import add_search_field
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_files import File
+from Baumanagement.models.models_map import get_base_models
+
+
+class CommentFormClass(ModelForm):
+    class Meta:
+        model = Comment
+        fields = Comment.form_fields
 
 
 @login_required
@@ -17,12 +25,24 @@ def myrender(request, context):
     return render(request, template, context)
 
 
-def upload_files(request, object):
+def upload_files(request, new_object):
     for file in request.FILES.getlist('file'):
         file_instance = File.objects.create(name=file.name, file=file)
-        object.file_ids.append(file_instance.id)
-        object.save()
+        new_object.file_ids.append(file_instance.id)
+        new_object.save()
         messages.success(request, f'{file.name} {_("uploaded")}')
+
+
+def add_comment_to_object(request, new_object):
+    path = request.POST.get('newCommentNextURL')
+    if path:
+        object_name, id = path[4:].split('/')
+        if '?' in id:
+            id = id[:id.find('?')]
+        base_models = get_base_models()
+        obj = base_models[object_name].objects.get(id=int(id))
+        obj.comment_ids.append(new_object.id)
+        obj.save()
 
 
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
@@ -43,7 +63,8 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
     context['table1'] = table1
     comment_ids = queryset.first().comment_ids
     context['tables'].append({'titel': _('Comments'), 'count': len(comment_ids),
-                             'comments': [Comment.objects.get(id=id) for id in comment_ids]})
+                              'comments': [Comment.objects.get(id=id) for id in comment_ids],
+                              'form': CommentFormClass(), 'files_form': []})
 
 
 def generate_next_objects_table(request, context, baseClass, tableClass, queryset):
@@ -72,6 +93,7 @@ def new_object_form(request, context, cls):
                 new_object.save()
             messages.success(request, f'{new_object.name} {_("created")}')
             upload_files(request, new_object)
+        add_comment_to_object(request, new_object)
     context['form'] = cls()
     context['files_form'] = []
     context['buttons'] = ['New']

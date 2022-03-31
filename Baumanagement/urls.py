@@ -11,7 +11,7 @@ urlpatterns = [
     path("company/<int:id>", views_companies.object_table, name="company_id"),
 
     path("accounts", views_accounts.objects_table, name="accounts"),
-    path("accounts/<int:id>", views_accounts.object_table, name="account_id"),
+    path("account/<int:id>", views_accounts.object_table, name="account_id"),
 
     path("projects", views_projects.objects_table, name="projects"),
     path("project/<int:id>", views_projects.object_table, name="project_id"),

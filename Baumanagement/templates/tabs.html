@@ -1,5 +1,7 @@
 {% load i18n %}
+{% load crispy_forms_tags %}
 {% load render_table from django_tables2 %}
+{% get_current_language as lang %}
 
 {% if tables %}
     <div class="tab">
@@ -16,14 +18,60 @@
                 <div class="col">
                     {% if tab.table %}{% render_table tab.table %}{% endif %}
 
-                    {% for comment in tab.comments %}
-                        <div class="row mb-2">
-                            <div class="col">
-                                <span class="text-muted">{{ comment.created }}</span><br>
-                                <span class="h6">Unknown user:</span>&nbsp;&nbsp;{{ comment.name }}
+                    {% if tab.comments is not None %}
+                        {% for comment in tab.comments %}
+                            <div class="row mb-2">
+                                <div class="col">
+                                    <span class="text-muted">{{ comment.created }}</span><br>
+                                    <span class="h6">Unknown user:</span>&nbsp;&nbsp;{{ comment.name }}
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        <button type="button" class="btn btn-outline-secondary mt-2" data-bs-toggle="modal"
+                                data-bs-target="#CommentForm">
+                            {% translate "New comment" %}
+                        </button>
+                        <div class="modal fade" id="CommentForm" data-bs-backdrop="static" data-bs-keyboard="false"
+                             tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="CommentFormLabel">{% translate "New comment" %}</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"
+                                                onClick="location.href=location.href"></button>
+                                    </div>
+                                    <form method="POST" enctype="multipart/form-data" action="/{{ lang }}/comments">
+                                        <div class="modal-body">
+                                            {% csrf_token %}
+                                            <input type="hidden" name="newCommentNextURL" id="newCommentNextURL"
+                                                   value="{{ request.path }}">
+                                            {{ tab.form|crispy }}
+                                            {% if files_form is not None %}
+                                                <div class="mb-3">
+                                                    <label for="id_file">{% translate "Files" %}</label>
+                                                    <input name="file" class="form-control" type="file" id="id_file"
+                                                           multiple>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-outline-secondary"
+                                                    data-bs-dismiss="modal"
+                                                    onClick="location.href=location.href">{% translate "Close" %}
+                                            </button>
+                                            <button type="submit"
+                                                    class="btn btn-success">{% translate "Send" %}</button>
+                                        </div>
+
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    {% endfor %}
+
+                    {% endif %}
                 </div>
             </div>
         </div>

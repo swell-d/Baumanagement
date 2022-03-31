@@ -14,11 +14,11 @@
         <div>
             <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                    <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         {{ CURRENT_LANGUAGE }}
                     </a>
-                    <ul class="dropdown-menu me-10" aria-labelledby="navbarDropdown">
+                    <ul class="dropdown-menu me-10" aria-labelledby="langDropdown">
                         {% for language in languages %}
                             <li><a href="/{{ language.code }}{{ request.path|slice:"3:" }}"
                                    class="dropdown-item">{{ language.code }}</a></li>
