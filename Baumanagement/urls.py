@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import views_bills, views_companies, views_delete, views_contracts, views_payments, views_projects, \
-    views_accounts, views_comments, views_roles
+    views_accounts, views_comments, views_roles, views_currencies
 
 urlpatterns = [
     path("", views_projects.objects_table, name='index'),
@@ -12,6 +12,9 @@ urlpatterns = [
     path("companies", views_companies.objects_table, name="companies"),
     path("companies/<int:id>", views_companies.companies_by_role, name="companies_id"),
     path("company/<int:id>", views_companies.object_table, name="company_id"),
+
+    path("currencies", views_currencies.objects_table, name="currencies"),
+    path("currency/<int:id>", views_currencies.object_table, name="currency_id"),
 
     path("accounts", views_accounts.objects_table, name="accounts"),
     path("account/<int:id>", views_accounts.object_table, name="account_id"),

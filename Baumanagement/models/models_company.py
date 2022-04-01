@@ -50,12 +50,31 @@ class Company(BaseModel, AddressModel, FileModel):
             Account.objects.create(name=_('Main account'), company=self)
 
 
+class Currency(BaseModel):
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
+    code = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Code'))
+
+    class Meta:
+        verbose_name = _('Currency')
+        verbose_name_plural = _('Currencies')
+
+    @staticmethod
+    def extra_fields(qs):
+        return qs.all()
+
+    table_fields = 'name', 'code'
+    search_fields = 'name', 'code'
+    form_fields = 'name', 'code'
+
+
 class Account(BaseModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.CASCADE, related_name='accounts')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Account name'))
     IBAN = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('IBAN'))
     BIC = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('BIC'))
+    # currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
+    #                              on_delete=models.RESTRICT, related_name='accounts')
 
     class Meta:
         verbose_name = _('Account')
