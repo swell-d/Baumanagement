@@ -1,4 +1,5 @@
 from datetime import datetime
+from pathlib import Path
 
 from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
@@ -25,6 +26,8 @@ class UrlTests(TestCase):
         self.Bill = Bill.objects.create(name='test', contract=self.Contract,
                                         amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
         self.Comment = Comment.objects.create(name='test')
+
+        Path("files").mkdir(parents=True, exist_ok=True)
         with open('files/test.txt', 'w') as file:
             file.write('')
         self.File = File.objects.create(name='test', file='test.txt')

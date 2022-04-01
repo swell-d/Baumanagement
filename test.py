@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 """Django's command-line utility for administrative tasks."""
 import os
-import sys
 
 
 def main():
@@ -16,7 +15,7 @@ def main():
             "forget to activate a virtual environment?"
         ) from exc
     print('http://127.0.0.1:8000/')
-    execute_from_command_line([r'C:/Users/WestfaliaBPE/PycharmProjects/BM/manage.py', 'test'])
+    execute_from_command_line(['manage.py', 'test'])
 
 
 if __name__ == '__main__':
