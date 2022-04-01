@@ -17,7 +17,7 @@ class FormClass(ModelForm):
 
 
 def objects_table(request):
-    context = {'titel1': _('All comments')}
+    context = {}
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     if request.method == 'POST' and request.POST.get('newCommentNextURL'):
         return redirect(request.POST.get('newCommentNextURL'))

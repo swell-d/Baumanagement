@@ -34,7 +34,7 @@ def roles_tags():
 
 
 def objects_table(request):
-    context = {'titel1': _('All companies')}
+    context = {}
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     context['tags1'] = roles_tags()
     return myrender(request, context)

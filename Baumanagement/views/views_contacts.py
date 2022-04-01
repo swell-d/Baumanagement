@@ -17,7 +17,7 @@ class FormClass(ModelForm):
 
 
 def objects_table(request):
-    context = {'titel1': _('All contacts')}
+    context = {}
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 

@@ -17,14 +17,14 @@ class FormClass(ModelForm):
 
 
 def objects_table(request):
-    context = {'titel1': _('All accounts')}
+    context = {}
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
 
 def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
-    context = {'titel1': f'{_("Account")} - {queryset.first().name}', 'tables': []}
+    context = {'titel1': f'{baseClass._meta.verbose_name} - {queryset.first().name}', 'tables': []}
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
