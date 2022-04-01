@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-28 15:37+0200\n"
-"PO-Revision-Date: 2022-03-28 14:38+0200\n"
+"POT-Creation-Date: 2022-04-01 18:24+0200\n"
+"PO-Revision-Date: 2022-04-01 18:31+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: de\n"
@@ -18,185 +18,264 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: .\models.py:20 .\models.py:24 .\models.py:44
-msgid "Role"
-msgstr "Rolle"
-
-#: .\models.py:21 .\models.py:47 .\models.py:83 .\models.py:123 .\models.py:162
-#: .\models.py:200
-msgid "Open"
-msgstr "Aktiv"
-
-#: .\models.py:25
-msgid "Roles"
-msgstr "Rollen"
-
-#: .\models.py:36 .\models.py:74 .\models.py:110 .\models.py:151
-#: .\models.py:189 .\models.py:227
+#: .\Baumanagement\models\abstract.py:18
 msgid "Created"
 msgstr "Hinzugefügt"
 
-#: .\models.py:37 .\models.py:75 .\models.py:111 .\models.py:152
-#: .\models.py:190 .\models.py:228
+#: .\Baumanagement\models\abstract.py:19
 msgid "Updated"
 msgstr "Geändert"
 
-#: .\models.py:38
-msgid "Company name"
-msgstr "Firmenname"
+#: .\Baumanagement\models\abstract.py:20
+msgid "Open"
+msgstr "Aktiv"
 
-#: .\models.py:39 .\models.py:80
+#: .\Baumanagement\models\abstract.py:21
+#: .\Baumanagement\models\models_comments.py:12
+#: .\Baumanagement\views\views.py:70
+msgid "Comments"
+msgstr "Kommentare"
+
+#: .\Baumanagement\models\abstract.py:31
 msgid "Address"
 msgstr "Adresse"
 
-#: .\models.py:40 .\models.py:81
+#: .\Baumanagement\models\abstract.py:32
 msgid "City"
 msgstr "PLZ Stadt"
 
-#: .\models.py:41 .\models.py:82
+#: .\Baumanagement\models\abstract.py:33
 msgid "Land"
 msgstr "Land"
 
-#: .\models.py:42
-msgid "E-mail"
-msgstr "E-Mail"
-
-#: .\models.py:43
-msgid "Phone"
-msgstr "Rufnummer"
-
-#: .\models.py:45
-msgid "CEO"
-msgstr "Geschäftsführer"
-
-#: .\models.py:46
-msgid "VAT number"
-msgstr "VAT-Nummer"
-
-#: .\models.py:50 .\models.py:78 .\models.py:116 .\tables.py:164
-#: .\tables.py:212
-msgid "Company"
-msgstr "Unternehmen"
-
-#: .\models.py:51 .\templates\navbar.html:18
-msgid "Companies"
-msgstr "Unternehmen"
-
-#: .\models.py:76
-msgid "Project name"
-msgstr "Projektname"
-
-#: .\models.py:77
-msgid "Code"
-msgstr "Kode"
-
-#: .\models.py:86 .\models.py:114 .\tables.py:163 .\tables.py:211
-msgid "Project"
-msgstr "Projekt"
-
-#: .\models.py:87 .\templates\navbar.html:21 .\views\views_companies.py:71
-msgid "Projects"
-msgstr "Projekte"
-
-#: .\models.py:112
-msgid "Contract name"
-msgstr "Auftrag"
-
-#: .\models.py:113 .\models.py:154 .\models.py:192
-msgid "Date"
-msgstr "Datum"
-
-#: .\models.py:119 .\models.py:158 .\models.py:196
+#: .\Baumanagement\models\abstract.py:41
 msgid "Amount netto"
 msgstr "Nettobetrag"
 
-#: .\models.py:120 .\models.py:159 .\models.py:197
+#: .\Baumanagement\models\abstract.py:42
 msgid "VAT %"
 msgstr "MWSt %"
 
-#: .\models.py:122 .\models.py:161 .\models.py:199
+#: .\Baumanagement\models\abstract.py:44
 msgid "Amount brutto"
 msgstr "Bruttobetrag"
 
-#: .\models.py:126 .\models.py:155 .\models.py:193
-msgid "Contract"
-msgstr "Auftrag"
-
-#: .\models.py:127 .\tables.py:79 .\templates\navbar.html:24
-#: .\views\views_companies.py:77 .\views\views_projects.py:40
-msgid "Contracts"
-msgstr "Aufträge"
-
-#: .\models.py:153
-msgid "Bill name"
-msgstr "Rechnung"
-
-#: .\models.py:165
-msgid "Bill"
-msgstr "Rechnung"
-
-#: .\models.py:166 .\tables.py:113 .\templates\navbar.html:27
-#: .\views\views_companies.py:85 .\views\views_contracts.py:39
-msgid "Bills"
-msgstr "Rechnungen"
-
-#: .\models.py:191
-msgid "Payment name"
-msgstr "Zahlung"
-
-#: .\models.py:203
-msgid "Payment"
-msgstr "Zahlung"
-
-#: .\models.py:204 .\tables.py:114 .\templates\navbar.html:30
-#: .\views\views_companies.py:92 .\views\views_contracts.py:45
-msgid "Payments"
-msgstr "Zahlungen"
-
-#: .\models.py:229
-msgid "Name"
-msgstr "Name"
-
-#: .\models.py:230 .\models.py:240 .\tables.py:55 .\tables.py:80
-#: .\tables.py:115 .\tables.py:167 .\tables.py:215 .\templates\form.html:17
+#: .\Baumanagement\models\abstract.py:51
+#: .\Baumanagement\models\models_files.py:11
+#: .\Baumanagement\models\models_files.py:15
+#: .\Baumanagement\tables\tables_accounts.py:15
+#: .\Baumanagement\tables\tables_bills.py:19
+#: .\Baumanagement\tables\tables_companies.py:17
+#: .\Baumanagement\tables\tables_contracts.py:19
+#: .\Baumanagement\tables\tables_payments.py:19
+#: .\Baumanagement\tables\tables_projects.py:16
+#: .\Baumanagement\templates\form.html:25
+#: .\Baumanagement\templates\tabs.html:58
 msgid "Files"
 msgstr "Dateien"
 
-#: .\models.py:239
+#: .\Baumanagement\models\models.py:12
+msgid "Project name"
+msgstr "Projektname"
+
+#: .\Baumanagement\models\models.py:13
+#: .\Baumanagement\models\models_company.py:55
+msgid "Code"
+msgstr "Kode"
+
+#: .\Baumanagement\models\models.py:14 .\Baumanagement\models\models.py:35
+#: .\Baumanagement\models\models_company.py:36
+#: .\Baumanagement\models\models_company.py:71
+#: .\Baumanagement\tables\tables_bills.py:16
+#: .\Baumanagement\tables\tables_payments.py:16
+msgid "Company"
+msgstr "Unternehmen"
+
+#: .\Baumanagement\models\models.py:18 .\Baumanagement\models\models.py:33
+#: .\Baumanagement\tables\tables_bills.py:15
+#: .\Baumanagement\tables\tables_payments.py:15
+msgid "Project"
+msgstr "Projekt"
+
+#: .\Baumanagement\models\models.py:19 .\Baumanagement\templates\navbar.html:39
+msgid "Projects"
+msgstr "Projekte"
+
+#: .\Baumanagement\models\models.py:31
+msgid "Contract name"
+msgstr "Auftrag"
+
+#: .\Baumanagement\models\models.py:32 .\Baumanagement\models\models.py:54
+#: .\Baumanagement\models\models.py:73
+msgid "Date"
+msgstr "Datum"
+
+#: .\Baumanagement\models\models.py:39 .\Baumanagement\models\models.py:55
+#: .\Baumanagement\models\models.py:74
+msgid "Contract"
+msgstr "Auftrag"
+
+#: .\Baumanagement\models\models.py:40
+#: .\Baumanagement\tables\tables_projects.py:15
+#: .\Baumanagement\templates\navbar.html:42
+msgid "Contracts"
+msgstr "Aufträge"
+
+#: .\Baumanagement\models\models.py:53
+msgid "Bill name"
+msgstr "Rechnung"
+
+#: .\Baumanagement\models\models.py:59
+msgid "Bill"
+msgstr "Rechnung"
+
+#: .\Baumanagement\models\models.py:60
+#: .\Baumanagement\tables\tables_contracts.py:17
+#: .\Baumanagement\templates\navbar.html:45
+msgid "Bills"
+msgstr "Rechnungen"
+
+#: .\Baumanagement\models\models.py:72
+msgid "Payment name"
+msgstr "Zahlung"
+
+#: .\Baumanagement\models\models.py:78
+msgid "Payment"
+msgstr "Zahlung"
+
+#: .\Baumanagement\models\models.py:79
+#: .\Baumanagement\tables\tables_contracts.py:18
+#: .\Baumanagement\templates\navbar.html:48
+msgid "Payments"
+msgstr "Zahlungen"
+
+#: .\Baumanagement\models\models_comments.py:8
+#: .\Baumanagement\models\models_comments.py:11
+msgid "Comment"
+msgstr "Kommentar"
+
+#: .\Baumanagement\models\models_company.py:8
+#: .\Baumanagement\models\models_company.py:11
+#: .\Baumanagement\models\models_company.py:31
+msgid "Role"
+msgstr "Rolle"
+
+#: .\Baumanagement\models\models_company.py:12
+#: .\Baumanagement\templates\navbar.html:27
+msgid "Roles"
+msgstr "Rollen"
+
+#: .\Baumanagement\models\models_company.py:28
+msgid "Company name"
+msgstr "Firmenname"
+
+#: .\Baumanagement\models\models_company.py:29
+msgid "E-mail"
+msgstr "E-Mail"
+
+#: .\Baumanagement\models\models_company.py:30
+msgid "Phone"
+msgstr "Rufnummer"
+
+#: .\Baumanagement\models\models_company.py:32
+msgid "CEO"
+msgstr "Geschäftsführer"
+
+#: .\Baumanagement\models\models_company.py:33
+msgid "VAT number"
+msgstr "VAT-Nummer"
+
+#: .\Baumanagement\models\models_company.py:37
+#: .\Baumanagement\templates\navbar.html:20
+#: .\Baumanagement\templates\navbar.html:24
+msgid "Companies"
+msgstr "Unternehmen"
+
+#: .\Baumanagement\models\models_company.py:50
+msgid "Main account"
+msgstr "Haupt Konto"
+
+#: .\Baumanagement\models\models_company.py:54
+#: .\Baumanagement\models\models_files.py:10
+msgid "Name"
+msgstr "Name"
+
+#: .\Baumanagement\models\models_company.py:58
+msgid "Currency"
+msgstr "Währung"
+
+#: .\Baumanagement\models\models_company.py:59
+#: .\Baumanagement\templates\navbar.html:33
+#: .\Baumanagement\views\views_currencies.py:19
+msgid "Currencies"
+msgstr "Währungen"
+
+#: .\Baumanagement\models\models_company.py:73
+msgid "Account name"
+msgstr "Kontoname"
+
+#: .\Baumanagement\models\models_company.py:74
+msgid "IBAN"
+msgstr "IBAN"
+
+#: .\Baumanagement\models\models_company.py:75
+msgid "BIC"
+msgstr "BIC"
+
+#: .\Baumanagement\models\models_company.py:80
+msgid "Account"
+msgstr "Konto"
+
+#: .\Baumanagement\models\models_company.py:81
+#: .\Baumanagement\templates\navbar.html:30
+msgid "Accounts"
+msgstr "Konten"
+
+#: .\Baumanagement\models\models_files.py:14
 msgid "File"
 msgstr "Datei"
 
-#: .\tables.py:21
+#: .\Baumanagement\tables\tables.py:10
 msgid "No results found"
 msgstr "Keine Ergebnisse gefunden"
 
-#: .\templates\form.html:31
+#: .\Baumanagement\templates\form.html:7
+msgid "New"
+msgstr "Neu"
+
+#: .\Baumanagement\templates\form.html:7
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: .\Baumanagement\templates\form.html:40
+#: .\Baumanagement\templates\tabs.html:67
 msgid "Close"
 msgstr "Schließen"
 
-#: .\templates\form.html:33
+#: .\Baumanagement\templates\form.html:42
 msgid "Save"
 msgstr "Speichern"
 
-#: .\templates\navbar.html:43
+#: .\Baumanagement\templates\navbar.html:61
 msgid "Admin"
 msgstr "Admin"
 
-#: .\templates\navbar.html:48
+#: .\Baumanagement\templates\navbar.html:66
 msgid "Logout"
 msgstr "Abmelden"
 
-#: .\templates\navbar.html:55 .\templates\registration\login.html:44
+#: .\Baumanagement\templates\navbar.html:73
+#: .\Baumanagement\templates\registration\login.html:44
 msgid "Login"
 msgstr "Anmelden"
 
-#: .\templates\registration\login.html:12
+#: .\Baumanagement\templates\registration\login.html:12
 msgid "Your username and password do not match. Please try again."
 msgstr ""
 "Ihr Benutzername und Ihr Passwort stimmen nicht überein. Bitte versuchen Sie "
 "es erneut."
 
-#: .\templates\registration\login.html:20
+#: .\Baumanagement\templates\registration\login.html:20
 msgid ""
 "Your account does not have access to this page. To continue, please log in "
 "with an account that has access."
@@ -204,79 +283,74 @@ msgstr ""
 "Ihr Konto hat keinen Zugriff auf diese Seite. Um fortzufahren, melden Sie "
 "sich bitte mit einem Konto an, das Zugang hat."
 
-#: .\templates\registration\login.html:25
+#: .\Baumanagement\templates\registration\login.html:25
 msgid "Please log in to view this page."
 msgstr "Bitte melden Sie sich an, um diese Seite zu sehen."
 
-#: .\templates\registration\login.html:35
+#: .\Baumanagement\templates\registration\login.html:35
 msgid "Username"
 msgstr "Benutzername"
 
-#: .\templates\registration\login.html:40
+#: .\Baumanagement\templates\registration\login.html:40
 msgid "Password"
 msgstr "Passwort"
 
-#: .\templates\registration\login.html:47
+#: .\Baumanagement\templates\registration\login.html:47
 msgid "Reset password"
 msgstr "Passwort neu setzen"
 
-#: .\templates\tables.html:19
-msgid "New"
-msgstr "Neu"
+#: .\Baumanagement\templates\tabs.html:37
+#: .\Baumanagement\templates\tabs.html:45
+msgid "New comment"
+msgstr "Neuer Kommentar"
 
-#: .\templates\tables.html:19
-msgid "Edit"
-msgstr "Bearbeiten"
+#: .\Baumanagement\templates\tabs.html:70
+msgid "Send"
+msgstr "Senden"
 
-#: .\views\views_bills.py:12
-msgid "All bills"
-msgstr "Alle Rechnungen"
-
-#: .\views\views_companies.py:26
-msgid "All companies"
-msgstr "Alle Unternehmen"
-
-#: .\views\views_contracts.py:12
-msgid "All contracts"
-msgstr "Alle Aufträge"
-
-#: .\views\views_payments.py:12
-msgid "All payments"
-msgstr "Alle Zahlungen"
-
-#: .\views\views_projects.py:12
-msgid "All projects"
-msgstr "Alle Projekte"
-
-msgid "created"
-msgstr "wurde erschaffen"
-
-msgid "changed"
-msgstr "wurde geändert"
-
-msgid "disabled"
-msgstr "wurde deaktiviert"
-
-msgid "deleted"
-msgstr "wurde gelöscht"
-
-msgid "uploaded"
-msgstr "wurde hinzugefügt"
-
-msgid "Account"
-msgstr "Konto"
-
-msgid "Account name"
-msgstr "Kontoname"
-
-msgid "Accounts"
-msgstr "Konten"
-
+#: .\Baumanagement\views\views_accounts.py:20
 msgid "All accounts"
 msgstr "Alle Konten"
 
-msgid "Main account"
-msgstr "Haupt Konto"
+#: .\Baumanagement\views\views_bills.py:20
+msgid "All bills"
+msgstr "Alle Rechnungen"
 
+#: .\Baumanagement\views\views_comments.py:20
+msgid "All comments"
+msgstr "Alle Kommentare"
+
+#: .\Baumanagement\views\views_companies.py:36
+msgid "All companies"
+msgstr "Alle Unternehmen"
+
+#: .\Baumanagement\views\views_contracts.py:23
+msgid "All contracts"
+msgstr "Alle Aufträge"
+
+#: .\Baumanagement\views\views_payments.py:20
+msgid "All payments"
+msgstr "Alle Zahlungen"
+
+#: .\Baumanagement\views\views_projects.py:21
+msgid "All projects"
+msgstr "Alle Projekte"
+
+#: .\Baumanagement\views\views_roles.py:19
 msgid "All roles"
 msgstr "Alle Rollen"
+
+#~ msgid "created"
+#~ msgstr "wurde erschaffen"
+
+#~ msgid "changed"
+#~ msgstr "wurde geändert"
+
+#~ msgid "disabled"
+#~ msgstr "wurde deaktiviert"
+
+#~ msgid "deleted"
+#~ msgstr "wurde gelöscht"
+
+#~ msgid "uploaded"
+#~ msgstr "wurde hinzugefügt"
