@@ -69,12 +69,12 @@ class Currency(BaseModel):
 
 class Account(BaseModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
-                                on_delete=models.CASCADE, related_name='accounts')
+                                on_delete=models.RESTRICT, related_name='accounts')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Account name'))
-    IBAN = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('IBAN'))
-    BIC = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('BIC'))
     currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
                                  on_delete=models.RESTRICT, related_name='accounts', default=1)
+    IBAN = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('IBAN'))
+    BIC = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('BIC'))
 
     class Meta:
         verbose_name = _('Account')
@@ -85,5 +85,26 @@ class Account(BaseModel, FileModel):
         return qs.all()
 
     table_fields = 'created', 'company', 'name', 'currency', 'IBAN', 'BIC', 'files'
-    search_fields = 'company__name', 'name', 'currency', 'IBAN', 'BIC'
+    search_fields = 'company__name', 'name', 'currency__name', 'IBAN', 'BIC'
     form_fields = 'open', 'company', 'name', 'currency', 'IBAN', 'BIC'
+
+
+class Contact(BaseModel, FileModel):
+    company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
+                                on_delete=models.RESTRICT, related_name='contacts')
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
+    email = models.EmailField(null=False, blank=True, verbose_name=_('E-mail'))
+    phone = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Phone'))
+    position = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Position'))
+
+    class Meta:
+        verbose_name = _('Contact')
+        verbose_name_plural = _('Contacts')
+
+    @staticmethod
+    def extra_fields(qs):
+        return qs.all()
+
+    table_fields = 'created', 'company', 'name', 'email', 'phone', 'position', 'files'
+    search_fields = 'company__name', 'name', 'email', 'phone', 'position'
+    form_fields = 'company', 'name', 'email', 'phone', 'position'

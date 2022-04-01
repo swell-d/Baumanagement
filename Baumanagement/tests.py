@@ -6,7 +6,7 @@ from django.test import TestCase, Client
 
 from Baumanagement.models.models import Project, Contract, Payment, Bill
 from Baumanagement.models.models_comments import Comment
-from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency
+from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
 from Baumanagement.models.models_files import File
 from Baumanagement.urls import get_urls
 
@@ -17,8 +17,9 @@ class UrlTests(TestCase):
         self.Company = Company.objects.create(name='test')
         self.Company.role.add(self.CompanyRole)
         self.Company.save()
-        self.Account = Account.objects.create(name='test', company=self.Company)
         self.Currency = Currency.objects.create(name='test', code='test')
+        self.Account = Account.objects.create(name='test', company=self.Company, currency=self.Currency)
+        self.Contact = Contact.objects.create(name='test', company=self.Company)
         self.Project = Project.objects.create(name='test', company=self.Company)
         self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,
                                                 amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())

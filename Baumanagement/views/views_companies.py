@@ -10,6 +10,7 @@ from Baumanagement.tables.tables_companies import CompanyTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
 from Baumanagement.views.views_accounts import generate_accounts_by_queryset
 from Baumanagement.views.views_bills import generate_bills_by_queryset
+from Baumanagement.views.views_contacts import generate_contacts_by_queryset
 from Baumanagement.views.views_contracts import generate_contracts_by_queryset
 from Baumanagement.views.views_payments import generate_payments_by_queryset
 from Baumanagement.views.views_projects import generate_projects_by_queryset
@@ -46,6 +47,9 @@ def object_table(request, id):
 
     accounts = queryset.first().accounts.all()
     generate_accounts_by_queryset(request, context, accounts)
+
+    contacts = queryset.first().contacts.all()
+    generate_contacts_by_queryset(request, context, contacts)
 
     projects = Project.objects.filter(company=id)
     generate_projects_by_queryset(request, context, projects)

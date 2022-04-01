@@ -22,6 +22,10 @@ class AccountTable(tables.Table, Files):
         link = reverse('account_id', args=[record.id])
         return format_html(f'<a href="{link}">{value}</a>')
 
+    def render_currency(self, record, value):
+        link = reverse('account_id', args=[record.id])
+        return format_html(f'<a href="{link}">{value}</a>')
+
     def render_IBAN(self, record, value):
         link = reverse('account_id', args=[record.id])
         return format_html(f'<a href="{link}">{value}</a>')
