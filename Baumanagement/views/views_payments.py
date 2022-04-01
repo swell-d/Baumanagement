@@ -23,15 +23,15 @@ def objects_table(request):
 
 
 def object_table(request, id):
+    context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
-    context = {'titel1': f'{_("Payment")} - {queryset.first().name}', 'tables': []}
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
 
 def contract_payments(request, id):
     contract = Contract.objects.get(id=id)
-    context = {'titel1': f'{_("Payments")} - {_("Contract")} - {contract.name}'}
+    context = {'titel1': f'{_("Contract")} "{contract.name}" - {_("Payments")}'}
     queryset = baseClass.objects.filter(contract=contract)
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
@@ -39,7 +39,7 @@ def contract_payments(request, id):
 
 def project_payments(request, id):
     project = Project.objects.get(id=id)
-    context = {'titel1': f'{_("Payments")} - {_("Project")} - {project.name}'}
+    context = {'titel1': f'{_("Project")} "{project.name}" - {_("Payments")}'}
     queryset = baseClass.objects.filter(contract__in=project.contracts.all())
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)

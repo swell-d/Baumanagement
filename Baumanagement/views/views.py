@@ -48,7 +48,7 @@ def add_comment_to_object(request, new_object):
 
 
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
-    context['titel1'] = f'{_("All")} {baseClass._meta.verbose_name_plural}'
+    context.setdefault('titel1', f'{_("All")} {baseClass._meta.verbose_name_plural}')
     queryset = queryset or baseClass.objects
     new_object_form(request, context, formClass)
     queryset = baseClass.extra_fields(queryset)
@@ -59,6 +59,7 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
 
 
 def generate_object_table(request, context, baseClass, tableClass, formClass, queryset):
+    context.setdefault('titel1', f'{baseClass._meta.verbose_name} - {queryset.first().name}')
     edit_object_form(request, context, formClass, queryset.first())
     queryset = baseClass.extra_fields(queryset)
     table1 = tableClass(queryset)

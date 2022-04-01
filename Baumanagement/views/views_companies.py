@@ -41,8 +41,8 @@ def objects_table(request):
 
 
 def object_table(request, id):
+    context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
-    context = {'titel1': f'{_("Company")} - {queryset.first().name}', 'tables': []}
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
 
     accounts = queryset.first().accounts.all()

@@ -26,8 +26,8 @@ def objects_table(request):
 
 
 def object_table(request, id):
+    context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
-    context = {'titel1': f'{_("Contract")} - {queryset.first().name}', 'tables': []}
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
 
     disable_children(request, queryset.first())

@@ -1,5 +1,4 @@
 from django.forms import ModelForm
-from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Currency
 from Baumanagement.tables.tables_currencies import CurrencyTable
@@ -22,7 +21,7 @@ def objects_table(request):
 
 
 def object_table(request, id):
+    context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
-    context = {'titel1': f'{_("Currency")} - {queryset.first().name}', 'tables': []}
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)

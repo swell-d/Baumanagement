@@ -1,5 +1,4 @@
 from django.forms import ModelForm
-from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Project
 from Baumanagement.tables.tables_projects import ProjectTable
@@ -24,8 +23,8 @@ def objects_table(request):
 
 
 def object_table(request, id):
+    context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
-    context = {'titel1': f'{_("Project")} - {queryset.first().name}', 'tables': []}
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
     contracts = queryset.first().contracts.all()
     generate_contracts_by_queryset(request, context, contracts)
