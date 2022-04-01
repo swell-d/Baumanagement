@@ -7,7 +7,7 @@ def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BM.settings')
     execute_from_command_line(['manage.py', 'makemigrations', 'Baumanagement'])
     execute_from_command_line(['manage.py', 'migrate'])
-    print('http://127.0.0.1:8000/')
+    print('http://127.0.0.1:8000/de/')
     execute_from_command_line(['manage.py', 'runserver', '0.0.0.0:8000'])
 
 

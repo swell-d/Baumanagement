@@ -73,8 +73,8 @@ class Account(BaseModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Account name'))
     IBAN = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('IBAN'))
     BIC = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('BIC'))
-    # currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
-    #                              on_delete=models.RESTRICT, related_name='accounts')
+    currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
+                                 on_delete=models.RESTRICT, related_name='accounts', default=1)
 
     class Meta:
         verbose_name = _('Account')
@@ -84,6 +84,6 @@ class Account(BaseModel, FileModel):
     def extra_fields(qs):
         return qs.all()
 
-    table_fields = 'created', 'company', 'name', 'IBAN', 'BIC', 'files'
-    search_fields = 'company__name', 'name', 'IBAN', 'BIC'
-    form_fields = 'open', 'company', 'name', 'IBAN', 'BIC'
+    table_fields = 'created', 'company', 'name', 'currency', 'IBAN', 'BIC', 'files'
+    search_fields = 'company__name', 'name', 'currency', 'IBAN', 'BIC'
+    form_fields = 'open', 'company', 'name', 'currency', 'IBAN', 'BIC'
