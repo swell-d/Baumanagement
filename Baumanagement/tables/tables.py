@@ -40,7 +40,7 @@ class Files:
                   for each in record.files])}
     </ul>
 </div>'''
-        return format_html(text)
+        return format_html(text or '—')
 
     def order_files(self, queryset, is_descending):
         queryset = queryset.annotate(countfiles=Length('file_ids')).order_by(
