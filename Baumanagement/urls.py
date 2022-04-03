@@ -12,6 +12,8 @@ urlpatterns = [
     path("companies", views_companies.objects_table, name="companies"),
     path("companies/<int:id>", views_companies.companies_by_role, name="companies_id"),
     path("company/<int:id>", views_companies.object_table, name="company_id"),
+    path("company/<int:id>/payments", views_payments.company_payments, name="company_id_payments"),
+    path("company/<int:id>/bills", views_bills.company_bills, name="company_id_bills"),
 
     path("currencies", views_currencies.objects_table, name="currencies"),
     path("currency/<int:id>", views_currencies.object_table, name="currency_id"),

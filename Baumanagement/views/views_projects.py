@@ -32,10 +32,10 @@ def object_table(request, id):
     contracts = queryset.first().contracts.all()
     generate_contracts_by_queryset(request, context, contracts)
 
-    bills = Bill.objects.filter(contract__in=queryset.first().contracts.all())
+    bills = Bill.objects.filter(contract__project=queryset.first())
     generate_bills_by_queryset(request, context, bills)
 
-    payments = Payment.objects.filter(contract__in=queryset.first().contracts.all())
+    payments = Payment.objects.filter(contract__project=queryset.first())
     generate_payments_by_queryset(request, context, payments)
 
     return myrender(request, context)

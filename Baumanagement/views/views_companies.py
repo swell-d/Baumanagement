@@ -1,10 +1,9 @@
-from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models import Project, Contract, Bill, Payment
+from Baumanagement.models.models import Bill, Payment
 from Baumanagement.models.models_company import CompanyRole, Company
 from Baumanagement.tables.tables_companies import CompanyTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
@@ -51,20 +50,16 @@ def object_table(request, id):
     contacts = queryset.first().contacts.all()
     generate_contacts_by_queryset(request, context, contacts)
 
-    projects = Project.objects.filter(company=id)
+    projects = queryset.first().projects.all()
     generate_projects_by_queryset(request, context, projects)
 
-    contracts = Contract.objects.filter(company=id)
+    contracts = queryset.first().contracts.all()
     generate_contracts_by_queryset(request, context, contracts)
 
-    bills = [contract.bills.all() for contract in contracts]
-    bills = [Bill.extra_fields(each) for each in bills]
-    bills = QuerySet.union(*bills) if bills else []
+    bills = Bill.objects.filter(contract__company=queryset.first())
     generate_bills_by_queryset(request, context, bills)
 
-    payments = [contract.payments.all() for contract in contracts]
-    payments = [Payment.extra_fields(each) for each in payments]
-    payments = QuerySet.union(*payments) if payments else []
+    payments = Payment.objects.filter(contract__company=queryset.first())
     generate_payments_by_queryset(request, context, payments)
 
     return myrender(request, context)

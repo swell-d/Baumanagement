@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db import NotSupportedError
 from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.shortcuts import render
@@ -83,10 +82,7 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
 
 
 def generate_next_objects_table(request, context, baseClass, tableClass, queryset):
-    try:
-        queryset = baseClass.extra_fields(queryset)
-    except (NotSupportedError, AttributeError):
-        pass
+    queryset = baseClass.extra_fields(queryset)
     table = tableClass(queryset, order_by="-created", orderable=False)
     RequestConfig(request).configure(table)
     context['tables'].append({'table': table, 'titel': baseClass._meta.verbose_name_plural, 'count': len(table.rows)})
