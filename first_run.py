@@ -1,5 +1,6 @@
 import os
 
+from django.apps import apps
 from django.contrib.auth import get_user_model
 from django.core.management import execute_from_command_line
 
@@ -15,6 +16,13 @@ def main():
 
     from django.contrib.auth.models import Group
     Group.objects.get_or_create(name='admins')
+
+    # Currency = apps.get_model("Baumanagement", "Currency")
+    # Currency.objects.get_or_create(name='Euro', code='EUR')
+    # Currency.objects.get_or_create(name='US-Dollar', code='USD')
+    #
+    # Role = apps.get_model("Baumanagement", "Role")
+    # Role.objects.get_or_create(name='Meine Firma')
 
     execute_from_command_line(['manage.py', 'collectstatic'])
 
