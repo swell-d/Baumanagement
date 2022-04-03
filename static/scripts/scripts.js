@@ -1,14 +1,21 @@
 function mainTableReload() {
     const Http = new XMLHttpRequest();
-    const urlSearchParams = new URLSearchParams(window.location.search);
-    urlSearchParams.set('search', ((document.getElementById("search")||{}).value)||"");
+    const urlSearchParams = new URLSearchParams();  // window.location.search
     urlSearchParams.set('dateFrom', ((document.getElementById("dateFrom")||{}).value)||"");
     urlSearchParams.set('dateTo', ((document.getElementById("dateTo")||{}).value)||"");
-    Http.open("GET", location.href + '?' + urlSearchParams.toString());
+    urlSearchParams.set('search', ((document.getElementById("search")||{}).value)||"");
+    urlSearchParams.set('sort', ((document.getElementById("sort")||{}).value)||"");
+    Http.open("GET", location.href.split('?')[0] + '?' + urlSearchParams.toString());
     Http.send();
     Http.onreadystatechange = (e) => {
         document.getElementById("main-table").innerHTML = Http.responseText
     }
+}
+
+function mainTableSort(querystring) {
+    const urlSearchParams = new URLSearchParams(querystring);
+    document.getElementById("sort").value = urlSearchParams.get("sort");
+    mainTableReload();
 }
 
 function deleteFile(csrftoken, lang, id) {

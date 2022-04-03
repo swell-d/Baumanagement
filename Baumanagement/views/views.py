@@ -24,10 +24,6 @@ class CommentFormClass(ModelForm):
 
 @login_required
 def myrender(request, context):
-    # params = request.GET.get('search') is None and \
-    #          request.GET.get('dateFrom') is None and \
-    #          request.GET.get('dateTo') is None
-
     template = 'tables.html' if not request.GET else 'maintable.html'
     return render(request, template, context)
 
@@ -66,7 +62,7 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
     new_object_form(request, context, formClass)
     queryset = baseClass.extra_fields(queryset)
     queryset = add_search_field(queryset, request, context)
-    table1 = tableClass(queryset, order_by="-created")  # , orderable=request.GET.get('search') is None)
+    table1 = tableClass(queryset, order_by="-created")
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 

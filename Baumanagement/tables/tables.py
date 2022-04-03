@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 class TableDesign:
     empty_text = _("No results found")
-    template_name = "django_tables2/bootstrap4.html"
+    template_name = "django_tables2_custom.html"
     attrs = {'class': 'table table-hover'}
     row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
