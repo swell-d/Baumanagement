@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-03 21:25+0200\n"
-"PO-Revision-Date: 2022-04-01 20:31+0200\n"
+"POT-Creation-Date: 2022-04-03 22:35+0200\n"
+"PO-Revision-Date: 2022-04-03 22:38+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -84,7 +84,7 @@ msgstr "Project name"
 msgid "Code"
 msgstr "Code"
 
-#: .\Baumanagement\models\models.py:14 .\Baumanagement\models\models.py:35
+#: .\Baumanagement\models\models.py:14 .\Baumanagement\models\models.py:43
 #: .\Baumanagement\models\models_company.py:36
 #: .\Baumanagement\models\models_company.py:71
 #: .\Baumanagement\models\models_company.py:93
@@ -93,7 +93,7 @@ msgstr "Code"
 msgid "Company"
 msgstr "Company"
 
-#: .\Baumanagement\models\models.py:18 .\Baumanagement\models\models.py:33
+#: .\Baumanagement\models\models.py:18 .\Baumanagement\models\models.py:41
 #: .\Baumanagement\tables\tables_bills.py:15
 #: .\Baumanagement\tables\tables_payments.py:15
 msgid "Project"
@@ -103,49 +103,57 @@ msgstr "Project"
 msgid "Projects"
 msgstr "Projects"
 
-#: .\Baumanagement\models\models.py:31
+#: .\Baumanagement\models\models.py:31 .\Baumanagement\models\models.py:39
 msgid "Contract name"
 msgstr "Contract name"
 
-#: .\Baumanagement\models\models.py:32 .\Baumanagement\models\models.py:56
-#: .\Baumanagement\models\models.py:75
+#: .\Baumanagement\models\models.py:34 .\Baumanagement\models\models.py:45
+msgid "Contract type"
+msgstr "Contract type"
+
+#: .\Baumanagement\models\models.py:35
+msgid "Contract types"
+msgstr "Contract types"
+
+#: .\Baumanagement\models\models.py:40 .\Baumanagement\models\models.py:77
+#: .\Baumanagement\models\models.py:96
 msgid "Date"
 msgstr "Date"
 
-#: .\Baumanagement\models\models.py:41 .\Baumanagement\models\models.py:57
-#: .\Baumanagement\models\models.py:76
+#: .\Baumanagement\models\models.py:49 .\Baumanagement\models\models.py:78
+#: .\Baumanagement\models\models.py:97
 msgid "Contract"
 msgstr "Contract"
 
-#: .\Baumanagement\models\models.py:42
+#: .\Baumanagement\models\models.py:50
 #: .\Baumanagement\tables\tables_projects.py:15
 #: .\Baumanagement\templates\navbar.html:45
 msgid "Contracts"
 msgstr "Contracts"
 
-#: .\Baumanagement\models\models.py:55
+#: .\Baumanagement\models\models.py:76
 msgid "Bill name"
 msgstr "Bill name"
 
-#: .\Baumanagement\models\models.py:61
+#: .\Baumanagement\models\models.py:82
 msgid "Bill"
 msgstr "Bill"
 
-#: .\Baumanagement\models\models.py:62
+#: .\Baumanagement\models\models.py:83
 #: .\Baumanagement\tables\tables_contracts.py:17
 #: .\Baumanagement\templates\navbar.html:48
 msgid "Bills"
 msgstr "Bills"
 
-#: .\Baumanagement\models\models.py:74
+#: .\Baumanagement\models\models.py:95
 msgid "Payment name"
 msgstr "Payment name"
 
-#: .\Baumanagement\models\models.py:80
+#: .\Baumanagement\models\models.py:101
 msgid "Payment"
 msgstr "Payment"
 
-#: .\Baumanagement\models\models.py:81
+#: .\Baumanagement\models\models.py:102
 #: .\Baumanagement\tables\tables_contracts.py:18
 #: .\Baumanagement\templates\navbar.html:51
 msgid "Payments"

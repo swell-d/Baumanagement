@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-03 21:25+0200\n"
-"PO-Revision-Date: 2022-04-01 18:35+0200\n"
+"POT-Creation-Date: 2022-04-03 22:35+0200\n"
+"PO-Revision-Date: 2022-04-03 22:37+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: en\n"
@@ -29,3 +29,11 @@ msgstr "English"
 #: .\first_run.py:26
 msgid "My company"
 msgstr "My company"
+
+#: .\first_run_.py:15
+msgid "Buy"
+msgstr "Buy"
+
+#: .\first_run_.py:16
+msgid "Sell"
+msgstr "Sell"

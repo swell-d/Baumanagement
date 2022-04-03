@@ -16,13 +16,15 @@ class TableDesign:
 class SummingColumnInt(tables.Column):
     def render_footer(self, bound_column, table):
         val = sum(bound_column.accessor.resolve(row) or 0 for row in table.data if row.open)
-        return f'{val: .0f}' if val != 0 else ''
+        return format_html(
+            f'''<span class="{'text-danger' if val < 0 else ''}">{val: .0f}</span>''' if val != 0 else '—')
 
 
 class SummingColumn2F(tables.Column):
     def render_footer(self, bound_column, table):
         val = sum(bound_column.accessor.resolve(row) or 0 for row in table.data if row.open)
-        return f'{val: .2f}' if val != 0 else ''
+        return format_html(
+            f'''<span class="{'text-danger' if val < 0 else ''}">{val: .2f}</span>''' if val != 0 else '—')
 
 
 class Files:

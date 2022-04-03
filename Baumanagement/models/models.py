@@ -54,6 +54,19 @@ class Contract(BaseModel, PriceModel, FileModel):
         return qs.annotate(payed=Sum(Case(When(payments__open=True, then='payments__amount_brutto')), distinct=True)) \
             .annotate(due=Sum(Case(When(bills__open=True, then='bills__amount_brutto')), distinct=True))
 
+    def save(self, *args, **kwargs):
+        if self.contract_type.id == 1:
+            if self.amount_netto > 0:
+                self.amount_netto = -self.amount_netto
+            if self.amount_brutto > 0:
+                self.amount_brutto = -self.amount_brutto
+        elif self.contract_type.id == 2:
+            if self.amount_netto < 0:
+                self.amount_netto = -self.amount_netto
+            if self.amount_brutto < 0:
+                self.amount_brutto = -self.amount_brutto
+        super().save(*args, **kwargs)
+
     table_fields = 'created', 'project', 'company', 'contract_type', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
     search_fields = 'project__name', 'company__name', 'contract_type__name', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
     form_fields = 'open', 'project', 'company', 'contract_type', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'

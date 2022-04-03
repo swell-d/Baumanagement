@@ -36,7 +36,7 @@ class ContractTable(tables.Table, Files):
 
     def render_amount_netto(self, record, value):
         link = reverse('contract_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value}</a>''')
 
     def render_vat(self, record, value):
         link = reverse('contract_id', args=[record.id])
@@ -44,12 +44,12 @@ class ContractTable(tables.Table, Files):
 
     def render_amount_brutto(self, record, value):
         link = reverse('contract_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value}</a>''')
 
     def render_due(self, record, value):
         link = reverse('contract_id_bills', args=[record.id])
-        return format_html(f'<a href="{link}">{value:.2f}</a>')
+        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f}</a>''')
 
     def render_payed(self, record, value):
         link = reverse('contract_id_payments', args=[record.id])
-        return format_html(f'<a href="{link}">{value:.2f}</a>')
+        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f}</a>''')
