@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
@@ -19,9 +20,15 @@ class BaseModel(models.Model):
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
     comment_ids = models.JSONField(default=list, null=False, blank=True, verbose_name=_('Comments'))
+    created_by = models.ForeignKey(User, on_delete=models.RESTRICT, null=True)
 
     class Meta:
         abstract = True
+
+    def save(self, *args, **kwargs):
+        if kwargs.get('user'):
+            self.created_by = kwargs.pop('user')
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name

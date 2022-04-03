@@ -23,8 +23,9 @@
                             {% for comment in tab.comments %}
                                 <div class="row mb-2">
                                     <div class="col">
+                                        <span class="h6">{{ comment.object.created_by }}</span>&nbsp;
                                         <span class="text-muted">{{ comment.object.created }}</span><br>
-                                        <span class="h6">Unknown user:</span>&nbsp;&nbsp;{{ comment.object.name }}<br>
+                                        {{ comment.object.name }}<br>
                                         {% for file in comment.files %}
                                             <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>&nbsp;
                                             &nbsp;

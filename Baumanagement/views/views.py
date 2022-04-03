@@ -32,7 +32,7 @@ def upload_files(request, new_object):
     for file in request.FILES.getlist('file'):
         file_instance = File.objects.create(name=file.name, file=file)
         new_object.file_ids.append(file_instance.id)
-        new_object.save()
+        new_object.save(user=request.user)
         messages.success(request, f'{file.name} {_("uploaded")}')
 
 
@@ -102,7 +102,7 @@ def new_object_form(request, context, cls):
                     many_to_many_fields[key] = value
                     formset.cleaned_data.pop(key)
             new_object = cls.Meta.model(**formset.cleaned_data)
-            new_object.save()
+            new_object.save(user=request.user)
             if many_to_many_fields:
                 new_object.role.set(many_to_many_fields['role'])
                 new_object.save()
