@@ -4,7 +4,7 @@ from pathlib import Path
 from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 
-from Baumanagement.models.models import Project, Contract, Payment, Bill
+from Baumanagement.models.models import Project, Contract, Payment, Bill, ContractType
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
 from Baumanagement.models.models_files import File
@@ -21,8 +21,10 @@ class UrlTests(TestCase):
         self.Account = Account.objects.create(name='test', company=self.Company, currency=self.Currency)
         self.Contact = Contact.objects.create(name='test', company=self.Company)
         self.Project = Project.objects.create(name='test', company=self.Company)
+        self.ContractType = ContractType.objects.create(name='test')
         self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,
-                                                amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
+                                                amount_netto=1, vat=1, amount_brutto=1, date=datetime.now(),
+                                                contract_type=self.ContractType)
         self.Payment = Payment.objects.create(name='test', contract=self.Contract,
                                               amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
         self.Bill = Bill.objects.create(name='test', contract=self.Contract,

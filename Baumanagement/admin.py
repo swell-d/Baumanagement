@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from Baumanagement.models.models import Project, Contract, Payment, Bill
+from Baumanagement.models.models import Project, Contract, Payment, Bill, ContractType
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
 from Baumanagement.models.models_files import File
@@ -16,3 +16,4 @@ admin.site.register(Bill)
 admin.site.register(Payment)
 admin.site.register(File)
 admin.site.register(Comment)
+admin.site.register(ContractType)
