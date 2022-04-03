@@ -1,4 +1,5 @@
 import inspect
+from datetime import datetime, timedelta
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -23,7 +24,11 @@ class CommentFormClass(ModelForm):
 
 @login_required
 def myrender(request, context):
-    template = 'tables.html' if request.GET.get('search') is None else 'maintable.html'
+    # params = request.GET.get('search') is None and \
+    #          request.GET.get('dateFrom') is None and \
+    #          request.GET.get('dateTo') is None
+
+    template = 'tables.html' if not request.GET else 'maintable.html'
     return render(request, template, context)
 
 
@@ -50,10 +55,18 @@ def add_comment_to_object(request, new_object):
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
     context.setdefault('titel1', f'{_("All")} {baseClass._meta.verbose_name_plural}')
     queryset = queryset or baseClass.objects
+
+    dateFrom = request.GET.get('dateFrom')
+    if dateFrom:
+        queryset = queryset.filter(created__gte=datetime.strptime(dateFrom, "%Y-%m-%d"))
+    dateTo = request.GET.get('dateTo')
+    if dateTo:
+        queryset = queryset.filter(created__lt=datetime.strptime(dateTo, "%Y-%m-%d") + timedelta(days=1))
+
     new_object_form(request, context, formClass)
     queryset = baseClass.extra_fields(queryset)
     queryset = add_search_field(queryset, request, context)
-    table1 = tableClass(queryset, order_by="-created", orderable=request.GET.get('search') is None)
+    table1 = tableClass(queryset, order_by="-created")  # , orderable=request.GET.get('search') is None)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 

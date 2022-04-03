@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 def add_search_field(queryset, request, context):
     search = request.GET.get('search')
-    if search is not None:
+    if search is not None and queryset:
         qs = Q()
         for query in [Q(**{f'{field}__icontains': search}) for field in queryset[0].__class__.search_fields]:
             qs = qs | query

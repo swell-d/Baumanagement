@@ -5,13 +5,16 @@
         <div class="col-7">
             <span class="h1">{{ titel1 }}</span>
         </div>
-        <div class="col-2 d-flex align-items-center">
+        <div class="col-1 d-flex align-items-center">
             {% if form %}{% include "form.html" %}{% endif %}
         </div>
-        <div class="col-3 d-flex align-items-center justify-content-end">
+        <div class="col-4 d-flex align-items-center justify-content-end">
+            <input class="form-control m-2" type="date" id="dateFrom" name="dateFrom" oninput="mainTableReload()">
+            —
+            <input class="form-control m-2" type="date" id="dateTo" name="dateTo" oninput="mainTableReload()">
             {% if search_field %}
-                <input placeholder="Suche" oninput="mainTableReload(&quot;{{ request.path }}&quot;, this.value)"
-                       type="text" name="search" style="width: 100%; max-width: 200px;">
+                <input class="form-control m-2" type="text" id="search"  name="search" oninput="mainTableReload()"
+                       placeholder="Suche" style="width: 100%; max-width: 200px;">
             {% endif %}
         </div>
     </div>
@@ -23,6 +26,6 @@
     </div>
 
     <div class="row" id="main-table">
-        {% include "maintable.html" %}
+<!--        {% include "maintable.html" %}-->
     </div>
 {% endif %}
