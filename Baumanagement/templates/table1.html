@@ -14,7 +14,7 @@
                 —
                 <input class="form-control m-2" type="date" id="dateTo" name="dateTo" oninput="mainTableReload()">
                 <input class="form-control m-2" type="text" id="search"  name="search" oninput="mainTableReload()"
-                       placeholder="Suche" style="width: 100%; max-width: 200px;">
+                       placeholder="{% blocktrans %}Search{% endblocktrans %}" style="width: 100%; max-width: 200px;">
             {% endif %}
             <input type="hidden" id="sort" name="sort">
         </div>
