@@ -33,6 +33,12 @@ def company_contacts(request, id):
     company = Company.objects.get(id=id)
     context = {'titel1': f'{_("Company")} "{company.name}" - {_("Contacts")}'}
     queryset = company.contacts.all()
+
+    form = FormClass()
+    form.fields["company"].initial = company
+    form.fields["company"].widget.attrs['disabled'] = True
+    context['form'] = form
+
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 

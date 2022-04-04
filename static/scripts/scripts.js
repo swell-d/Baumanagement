@@ -1,10 +1,16 @@
 function mainTableReload() {
     const Http = new XMLHttpRequest();
-    const urlSearchParams = new URLSearchParams();  // window.location.search
-    urlSearchParams.set('dateFrom', ((document.getElementById("dateFrom") || {}).value) || "");
-    urlSearchParams.set('dateTo', ((document.getElementById("dateTo") || {}).value) || "");
+    const urlSearchParams = new URLSearchParams();
     urlSearchParams.set('search', ((document.getElementById("search") || {}).value) || "");
-    urlSearchParams.set('sort', ((document.getElementById("sort") || {}).value) || "");
+    if ((document.getElementById("dateFrom") || {}).value) {
+        urlSearchParams.set('dateFrom', document.getElementById("dateFrom").value);
+    }
+    if ((document.getElementById("dateTo") || {}).value) {
+        urlSearchParams.set('dateTo', document.getElementById("dateTo").value);
+    }
+    if ((document.getElementById("sort") || {}).value) {
+        urlSearchParams.set('sort', document.getElementById("sort").value);
+    }
     Http.open("GET", location.href.split('?')[0] + '?' + urlSearchParams.toString());
     Http.send();
     Http.onreadystatechange = (e) => {
