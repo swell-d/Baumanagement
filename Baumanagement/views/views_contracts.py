@@ -68,6 +68,12 @@ def project_contracts(request, id):
     project = Project.objects.get(id=id)
     context = {'titel1': f'{_("Project")} "{project.name}" - {_("Contracts")}'}
     queryset = project.contracts.all()
+
+    form = FormClass()
+    form.fields["project"].initial = project
+    form.fields["project"].widget.attrs['disabled'] = True
+    context['form'] = form
+
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 

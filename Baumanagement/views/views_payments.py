@@ -42,6 +42,11 @@ def project_payments(request, id):
     project = Project.objects.get(id=id)
     context = {'titel1': f'{_("Project")} "{project.name}" - {_("Payments")}'}
     queryset = baseClass.objects.filter(contract__project=project)
+
+    form = FormClass()
+    form.fields["contract"].queryset = Contract.objects.filter(project=project)
+    context['form'] = form
+
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 

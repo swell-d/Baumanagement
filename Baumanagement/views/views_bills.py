@@ -42,6 +42,11 @@ def project_bills(request, id):
     project = Project.objects.get(id=id)
     context = {'titel1': f'{_("Project")} "{project.name}" - {_("Bills")}'}
     queryset = baseClass.objects.filter(contract__project=project)
+
+    form = FormClass()
+    form.fields["contract"].queryset = Contract.objects.filter(project=project)
+    context['form'] = form
+
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
@@ -50,6 +55,12 @@ def contract_bills(request, id):
     contract = Contract.objects.get(id=id)
     context = {'titel1': f'{_("Contract")} "{contract.name}" - {_("Bills")}'}
     queryset = baseClass.objects.filter(contract=contract)
+
+    form = FormClass()
+    form.fields["contract"].initial = contract
+    form.fields["contract"].widget.attrs['disabled'] = True
+    context['form'] = form
+
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
