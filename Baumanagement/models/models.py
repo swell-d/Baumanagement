@@ -43,7 +43,7 @@ class Contract(BaseModel, PriceModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
     contract_type = models.ForeignKey(ContractType, null=False, blank=False, verbose_name=_('Contract type'),
-                                      on_delete=models.RESTRICT, related_name='contracts', default=1)
+                                      on_delete=models.RESTRICT, related_name='contracts')
 
     class Meta:
         verbose_name = _('Contract')

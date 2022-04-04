@@ -71,8 +71,8 @@ class Account(BaseModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='accounts')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Account name'))
-    currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
-                                 on_delete=models.RESTRICT, related_name='accounts', default=1)
+    currency = models.ForeignKey(Currency, null=True, blank=False, verbose_name=_('Currency'),
+                                 on_delete=models.RESTRICT, related_name='accounts')
     IBAN = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('IBAN'))
     BIC = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('BIC'))
 
