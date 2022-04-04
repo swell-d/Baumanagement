@@ -31,5 +31,5 @@ class ProjectTable(tables.Table, Files):
         return get_google_maps_link(record)
 
     def render_count_contracts(self, record, value):
-        link = reverse('project_id', args=[record.id])
+        link = reverse('project_id_contracts', args=[record.id])
         return format_html(f'<a href="{link}">{value}</a>')

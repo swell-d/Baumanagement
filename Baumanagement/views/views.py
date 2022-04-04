@@ -107,7 +107,7 @@ def new_object_form(request, context, cls):
             messages.success(request, f'{new_object.name} {_("created")}')
             upload_files(request, new_object)
         add_comment_to_object(request, new_object)
-    context['form'] = cls()
+    context['form'] = context.get('form') or cls()
     if 'FileModel' in str(inspect.getmro(cls.Meta.model)):
         context['files_form'] = []
     context['buttons'] = ['New']

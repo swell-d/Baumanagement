@@ -50,6 +50,12 @@ def contract_payments(request, id):
     contract = Contract.objects.get(id=id)
     context = {'titel1': f'{_("Contract")} "{contract.name}" - {_("Payments")}'}
     queryset = baseClass.objects.filter(contract=contract)
+
+    form = FormClass()
+    form.fields["contract"].initial = contract
+    form.fields["contract"].widget.attrs['disabled'] = True
+    context['form'] = form
+
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
