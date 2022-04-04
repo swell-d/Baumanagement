@@ -47,7 +47,8 @@ class Company(BaseModel, AddressModel, FileModel):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.accounts.count() == 0:
-            Account.objects.create(name=_('Main account'), company=self)
+            eur = Currency.objects.get_or_create(name='Euro', code='EUR')
+            Account.objects.create(name=_('Main account'), company=self, currency=eur[0])
 
 
 class Currency(BaseModel):

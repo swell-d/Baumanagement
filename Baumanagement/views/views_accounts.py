@@ -1,6 +1,7 @@
 from django.forms import ModelForm
+from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Account
+from Baumanagement.models.models_company import Account, Company
 from Baumanagement.tables.tables_accounts import AccountTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
@@ -25,6 +26,14 @@ def object_table(request, id):
     context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
+    return myrender(request, context)
+
+
+def company_accounts(request, id):
+    company = Company.objects.get(id=id)
+    context = {'titel1': f'{_("Company")} "{company.name}" - {_("Accounts")}'}
+    queryset = company.accounts.all()
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
 
