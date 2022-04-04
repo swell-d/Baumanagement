@@ -67,7 +67,7 @@ def object_table(request, id):
 
 def companies_by_role(request, id):
     role = CompanyRole.objects.get(id=id)
-    context = {'titel1': f'{_("Companies")} - {role.name}'}
+    context = {'titel1': f'{_("Roles")} - {role.name}'}
     queryset = baseClass.objects.filter(role=id)
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     context['tags1'] = roles_tags()
