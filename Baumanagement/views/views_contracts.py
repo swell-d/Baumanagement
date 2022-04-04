@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models import Contract
+from Baumanagement.models.models import Contract, Project
 from Baumanagement.models.models_company import Company
 from Baumanagement.tables.tables_contracts import ContractTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
@@ -60,6 +60,14 @@ def company_contracts(request, id):
     company = Company.objects.get(id=id)
     context = {'titel1': f'{_("Company")} "{company.name}" - {_("Contracts")}'}
     queryset = company.contracts.all()
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
+    return myrender(request, context)
+
+
+def project_contracts(request, id):
+    project = Project.objects.get(id=id)
+    context = {'titel1': f'{_("Project")} "{project.name}" - {_("Contracts")}'}
+    queryset = project.contracts.all()
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 

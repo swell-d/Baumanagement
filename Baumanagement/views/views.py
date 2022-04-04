@@ -68,7 +68,7 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
 
 
 def generate_object_table(request, context, baseClass, tableClass, formClass, queryset):
-    context.setdefault('titel1', f'{baseClass._meta.verbose_name} - {queryset.first().name}')
+    context.setdefault('titel1', f'{baseClass._meta.verbose_name} "{queryset.first().name}"')
     edit_object_form(request, context, formClass, queryset.first())
     queryset = baseClass.extra_fields(queryset)
     table1 = tableClass(queryset)

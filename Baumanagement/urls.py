@@ -28,6 +28,7 @@ urlpatterns = [
 
     path("projects", views_projects.objects_table, name="projects"),
     path("project/<int:id>", views_projects.object_table, name="project_id"),
+    path("project/<int:id>/contracts", views_contracts.project_contracts, name="project_id_contracts"),
     path("project/<int:id>/payments", views_payments.project_payments, name="project_id_payments"),
     path("project/<int:id>/bills", views_bills.project_bills, name="project_id_bills"),
 
