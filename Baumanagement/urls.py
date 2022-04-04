@@ -12,6 +12,8 @@ urlpatterns = [
     path("companies", views_companies.objects_table, name="companies"),
     path("companies/<int:id>", views_companies.companies_by_role, name="companies_id"),
     path("company/<int:id>", views_companies.object_table, name="company_id"),
+    path("company/<int:id>/projects", views_projects.company_projects, name="company_id_projects"),
+    path("company/<int:id>/contracts", views_contracts.company_contracts, name="company_id_contracts"),
     path("company/<int:id>/payments", views_payments.company_payments, name="company_id_payments"),
     path("company/<int:id>/bills", views_bills.company_bills, name="company_id_bills"),
 

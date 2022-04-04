@@ -1,6 +1,8 @@
 from django.forms import ModelForm
+from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Project, Bill, Payment
+from Baumanagement.models.models_company import Company
 from Baumanagement.tables.tables_projects import ProjectTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
@@ -38,6 +40,14 @@ def object_table(request, id):
     payments = Payment.objects.filter(contract__project=queryset.first())
     generate_payments_by_queryset(request, context, payments)
 
+    return myrender(request, context)
+
+
+def company_projects(request, id):
+    company = Company.objects.get(id=id)
+    context = {'titel1': f'{_("Company")} "{company.name}" - {_("Projects")}'}
+    queryset = company.projects.all()
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
 

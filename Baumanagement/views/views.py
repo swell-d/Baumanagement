@@ -49,7 +49,8 @@ def add_comment_to_object(request, new_object):
 
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
     context.setdefault('titel1', f'{_("All")} {baseClass._meta.verbose_name_plural}')
-    queryset = queryset or baseClass.objects
+    if queryset is None:
+        queryset = baseClass.objects
 
     dateFrom = request.GET.get('dateFrom')
     if dateFrom:

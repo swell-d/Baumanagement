@@ -3,6 +3,7 @@ from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Contract
+from Baumanagement.models.models_company import Company
 from Baumanagement.tables.tables_contracts import ContractTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
@@ -53,6 +54,14 @@ def disable_children(request, contract):
                 payment.open = False
                 messages.warning(request, f'{payment.name} {_("disabled")}')
                 payment.save()
+
+
+def company_contracts(request, id):
+    company = Company.objects.get(id=id)
+    context = {'titel1': f'{_("Company")} "{company.name}" - {_("Contracts")}'}
+    queryset = company.contracts.all()
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
+    return myrender(request, context)
 
 
 def generate_contracts_by_queryset(request, context, queryset):
