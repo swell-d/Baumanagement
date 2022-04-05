@@ -12,6 +12,10 @@ tableClass = BillTable
 
 
 class FormClass(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['contract'].queryset = Contract.objects.filter(open=True)
+
     class Meta:
         model = baseClass
         fields = baseClass.form_fields

@@ -65,7 +65,7 @@ class Currency(BaseModel):
 
     table_fields = 'name', 'code'
     search_fields = 'name', 'code'
-    form_fields = 'name', 'code'
+    form_fields = 'open', 'name', 'code'
 
 
 class Account(BaseModel, FileModel):
@@ -108,4 +108,4 @@ class Contact(BaseModel, FileModel):
 
     table_fields = 'created', 'company', 'name', 'email', 'phone', 'position', 'files'
     search_fields = 'company__name', 'name', 'email', 'phone', 'position'
-    form_fields = 'company', 'name', 'email', 'phone', 'position'
+    form_fields = 'open', 'company', 'name', 'email', 'phone', 'position'

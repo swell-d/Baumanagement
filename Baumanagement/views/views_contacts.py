@@ -11,6 +11,10 @@ tableClass = ContactTable
 
 
 class FormClass(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['company'].queryset = Company.objects.filter(open=True)
+
     class Meta:
         model = baseClass
         fields = baseClass.form_fields

@@ -1,7 +1,7 @@
 from django.forms import ModelForm
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Account, Company
+from Baumanagement.models.models_company import Account, Company, Currency
 from Baumanagement.tables.tables_accounts import AccountTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
@@ -11,6 +11,11 @@ tableClass = AccountTable
 
 
 class FormClass(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['company'].queryset = Company.objects.filter(open=True)
+        self.fields['currency'].queryset = Currency.objects.filter(open=True)
+
     class Meta:
         model = baseClass
         fields = baseClass.form_fields
