@@ -96,23 +96,27 @@ def generate_next_objects_table(request, context, baseClass, tableClass, queryse
                               'link': f'{request.path}/{baseClass.__name__.lower()}s'})
 
 
+def create_new_object(request, cls):
+    formset = cls(request.POST, request.FILES)
+    if formset.is_valid():
+        many_to_many_fields = {}
+        for key, value in formset.cleaned_data.copy().items():
+            if isinstance(value, QuerySet):
+                many_to_many_fields[key] = value
+                formset.cleaned_data.pop(key)
+        new_object = cls.Meta.model(**formset.cleaned_data)
+        new_object.save(user=request.user)
+        if many_to_many_fields:
+            new_object.role.set(many_to_many_fields['role'])
+            new_object.save()
+        messages.success(request, f'{new_object.name} {_("created")}')
+        upload_files(request, new_object)
+    add_comment_to_object(request, new_object)
+
+
 def new_object_form(request, context, cls):
     if request.method == 'POST':
-        formset = cls(request.POST, request.FILES)
-        if formset.is_valid():
-            many_to_many_fields = {}
-            for key, value in formset.cleaned_data.copy().items():
-                if isinstance(value, QuerySet):
-                    many_to_many_fields[key] = value
-                    formset.cleaned_data.pop(key)
-            new_object = cls.Meta.model(**formset.cleaned_data)
-            new_object.save(user=request.user)
-            if many_to_many_fields:
-                new_object.role.set(many_to_many_fields['role'])
-                new_object.save()
-            messages.success(request, f'{new_object.name} {_("created")}')
-            upload_files(request, new_object)
-        add_comment_to_object(request, new_object)
+        create_new_object(request, cls)
     context['form'] = context.get('form') or cls()
     if 'FileModel' in str(inspect.getmro(cls.Meta.model)):
         context['files_form'] = []
@@ -121,11 +125,14 @@ def new_object_form(request, context, cls):
 
 def edit_object_form(request, context, cls, object):
     if request.method == 'POST':
-        formset = cls(request.POST, request.FILES, instance=object)
-        if formset.is_valid():
-            object.save()
-            messages.success(request, f'{object.name} {_("changed")}')
-            upload_files(request, object)
+        if request.POST.get('createCopy'):
+            create_new_object(request, cls)
+        else:
+            formset = cls(request.POST, request.FILES, instance=object)
+            if formset.is_valid():
+                object.save()
+                messages.success(request, f'{object.name} {_("changed")}')
+                upload_files(request, object)
     context['form'] = cls(instance=object)
     if 'FileModel' in str(inspect.getmro(object.__class__)):
         context['files_form'] = object.files
