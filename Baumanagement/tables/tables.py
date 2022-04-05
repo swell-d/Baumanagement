@@ -38,16 +38,17 @@ class MyTable(tables.Table):
 
 class SummingColumnInt(tables.Column):
     def render_footer(self, bound_column, table):
-        val = sum(bound_column.accessor.resolve(row) or 0 for row in table.data if row.open)
+        val = sum(bound_column.accessor.resolve(cell) or 0 for cell in table.data if cell.open)
         return format_html(
             f'''<span class="{'text-danger' if val < 0 else ''}">{val: .0f}</span>''' if val != 0 else '—')
 
 
 class SummingColumn2F(tables.Column):
     def render_footer(self, bound_column, table):
-        val = sum(bound_column.accessor.resolve(row) or 0 for row in table.data if row.open)
+        val = sum(
+            float(bound_column.accessor.resolve(cell) or 0) / cell.currency.rate for cell in table.data if cell.open)
         return format_html(
-            f'''<span class="{'text-danger' if val < 0 else ''}">{val: .2f}</span>''' if val != 0 else '—')
+            f'''<span class="{'text-danger' if val < 0 else ''}">{val: .2f} €</span>''' if val != 0 else '—')
 
 
 class Files:

@@ -6,3 +6,4 @@ django-filter
 django-crispy-forms
 python-gettext
 django_heroku
+requests

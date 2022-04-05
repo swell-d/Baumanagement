@@ -5,7 +5,7 @@ from django.db.models import Sum, F, Case, When
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel, PriceModel
-from Baumanagement.models.models_company import Company
+from Baumanagement.models.models_company import Company, Currency
 
 
 class Project(BaseModel, AddressModel, FileModel):
@@ -40,6 +40,8 @@ class Contract(BaseModel, PriceModel, FileModel):
     date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name=_('Project'),
                                 on_delete=models.RESTRICT, related_name='contracts')
+    currency = models.ForeignKey(Currency, null=True, blank=False, verbose_name=_('Currency'),
+                                 on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
     contract_type = models.ForeignKey(ContractType, null=False, blank=False, verbose_name=_('Contract type'),
@@ -67,9 +69,9 @@ class Contract(BaseModel, PriceModel, FileModel):
                 self.amount_brutto = -self.amount_brutto
         super().save(*args, **kwargs)
 
-    table_fields = 'created', 'project', 'company', 'contract_type', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
-    search_fields = 'project__name', 'company__name', 'contract_type__name', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
-    form_fields = 'open', 'project', 'company', 'contract_type', 'name', 'date', 'amount_netto', 'vat', 'amount_brutto'
+    table_fields = 'created', 'project', 'company', 'contract_type', 'name', 'date', 'files', 'currency', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    search_fields = 'project__name', 'company__name', 'contract_type__name', 'name', 'currency__code', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    form_fields = 'open', 'project', 'company', 'contract_type', 'name', 'date', 'currency', 'amount_netto', 'vat', 'amount_brutto'
 
 
 class Bill(BaseModel, PriceModel, FileModel):
@@ -81,6 +83,10 @@ class Bill(BaseModel, PriceModel, FileModel):
     class Meta:
         verbose_name = _('Bill')
         verbose_name_plural = _('Bills')
+
+    @property
+    def currency(self):
+        return self.contract.currency
 
     @staticmethod
     def extra_fields(qs):
@@ -100,6 +106,10 @@ class Payment(BaseModel, PriceModel, FileModel):
     class Meta:
         verbose_name = _('Payment')
         verbose_name_plural = _('Payments')
+
+    @property
+    def currency(self):
+        return self.contract.currency
 
     @staticmethod
     def extra_fields(qs):
