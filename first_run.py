@@ -21,8 +21,8 @@ def main():
         new_user.groups.set([group[0], ])
 
     Currency = apps.get_model("Baumanagement", "Currency")
-    eur = Currency.objects.get_or_create(name='Euro', code='EUR')[0]
-    usd = Currency.objects.get_or_create(name='US-Dollar', code='USD')[0]
+    eur = Currency.objects.get_or_create(name='Euro', code='EUR', symbol='€', rate=1)[0]
+    usd = Currency.objects.get_or_create(name='US-Dollar', code='USD', symbol='$', rate=1.09)[0]
 
     lang = 'de'  # ToDo for pipeline
     trans = {
