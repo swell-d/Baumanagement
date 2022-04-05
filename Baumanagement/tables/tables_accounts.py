@@ -4,11 +4,11 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Account
-from Baumanagement.tables.tables import Files, TableDesign, MyTable
+from Baumanagement.tables.tables import Files, MyTable
 
 
 class AccountTable(MyTable, Files):
-    class Meta(TableDesign):
+    class Meta(MyTable.Meta):
         model = Account
         fields = Account.table_fields
 

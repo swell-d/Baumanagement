@@ -9,6 +9,11 @@ from django.utils.translation import gettext_lazy as _
 
 
 class MyTable(tables.Table):
+    class Meta:
+        empty_text = _("No results found")
+        template_name = "django_tables2_custom.html"
+        attrs = {'class': 'table table-hover'}
+        row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
     def as_values(self, exclude_columns=None):
         if exclude_columns is None:
@@ -27,13 +32,6 @@ class MyTable(tables.Table):
                 re.sub('<[^<]+?>', '', (force_str(row.get_cell_value(column.name), strings_only=True)))
                 for column in columns
             ]
-
-
-class TableDesign:
-    empty_text = _("No results found")
-    template_name = "django_tables2_custom.html"
-    attrs = {'class': 'table table-hover'}
-    row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
 
 class SummingColumnInt(tables.Column):

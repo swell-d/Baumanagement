@@ -4,11 +4,11 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Contract
-from Baumanagement.tables.tables import Files, TableDesign, SummingColumn2F, MyTable
+from Baumanagement.tables.tables import Files, SummingColumn2F, MyTable
 
 
 class ContractTable(MyTable, Files):
-    class Meta(TableDesign):
+    class Meta(MyTable.Meta):
         model = Contract
         fields = Contract.table_fields
 

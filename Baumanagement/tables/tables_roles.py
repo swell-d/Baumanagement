@@ -2,11 +2,11 @@ from django.urls import reverse
 from django.utils.html import format_html
 
 from Baumanagement.models.models_company import CompanyRole
-from Baumanagement.tables.tables import TableDesign, MyTable
+from Baumanagement.tables.tables import MyTable
 
 
 class CompanyRoleTable(MyTable):
-    class Meta(TableDesign):
+    class Meta(MyTable.Meta):
         model = CompanyRole
         fields = CompanyRole.table_fields
 
