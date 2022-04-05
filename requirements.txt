@@ -1,5 +1,6 @@
 Django
 django-tables2
+tablib
 django-bootstrap-v5
 django-filter
 django-crispy-forms

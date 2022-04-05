@@ -8,6 +8,7 @@ from django.forms import ModelForm
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
+from django_tables2.export import TableExport
 
 from Baumanagement.models.abstract import add_search_field
 from Baumanagement.models.models_comments import Comment
@@ -23,6 +24,11 @@ class CommentFormClass(ModelForm):
 
 @login_required
 def myrender(request, context):
+    export_format = request.GET.get("_export", None)
+    if export_format and TableExport.is_valid_format(export_format):
+        exporter = TableExport(export_format, context['table1'])
+        return exporter.response("table.{}".format(export_format))
+
     template = 'tables.html' if not request.GET else 'maintable.html'
     return render(request, template, context)
 

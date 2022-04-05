@@ -1,10 +1,8 @@
-import django_tables2 as tables
-
 from Baumanagement.models.models_comments import Comment
-from Baumanagement.tables.tables import Files, TableDesign
+from Baumanagement.tables.tables import Files, TableDesign, MyTable
 
 
-class CommentTable(tables.Table, Files):
+class CommentTable(MyTable, Files):
     class Meta(TableDesign):
         model = Comment
         fields = Comment.table_fields

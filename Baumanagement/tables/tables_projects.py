@@ -4,10 +4,10 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Project
-from Baumanagement.tables.tables import Files, TableDesign, SummingColumnInt, get_google_maps_link
+from Baumanagement.tables.tables import Files, TableDesign, SummingColumnInt, get_google_maps_link, MyTable
 
 
-class ProjectTable(tables.Table, Files):
+class ProjectTable(MyTable, Files):
     class Meta(TableDesign):
         model = Project
         fields = Project.table_fields

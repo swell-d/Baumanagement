@@ -6,10 +6,10 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company
-from Baumanagement.tables.tables import Files, TableDesign, get_google_maps_link
+from Baumanagement.tables.tables import Files, TableDesign, get_google_maps_link, MyTable
 
 
-class CompanyTable(tables.Table, Files):
+class CompanyTable(MyTable, Files):
     class Meta(TableDesign):
         model = Company
         fields = Company.table_fields

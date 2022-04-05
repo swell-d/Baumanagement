@@ -4,10 +4,10 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Payment
-from Baumanagement.tables.tables import Files, TableDesign, SummingColumn2F
+from Baumanagement.tables.tables import Files, TableDesign, SummingColumn2F, MyTable
 
 
-class PaymentTable(tables.Table, Files):
+class PaymentTable(MyTable, Files):
     class Meta(TableDesign):
         model = Payment
         fields = Payment.table_fields

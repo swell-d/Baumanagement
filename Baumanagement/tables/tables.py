@@ -1,9 +1,32 @@
+import re
 import urllib.parse
 
 import django_tables2 as tables
 from django.db.models.functions import Length
+from django.utils.encoding import force_str
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
+
+
+class MyTable(tables.Table):
+
+    def as_values(self, exclude_columns=None):
+        if exclude_columns is None:
+            exclude_columns = ()
+
+        columns = [
+            column
+            for column in self.columns.iterall()
+            if not (column.column.exclude_from_export or column.name in exclude_columns)
+        ]
+
+        yield [force_str(column.header, strings_only=True) for column in columns]
+
+        for row in self.rows:
+            yield [
+                re.sub('<[^<]+?>', '', (force_str(row.get_cell_value(column.name), strings_only=True)))
+                for column in columns
+            ]
 
 
 class TableDesign:
