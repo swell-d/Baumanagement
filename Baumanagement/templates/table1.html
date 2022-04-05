@@ -2,19 +2,19 @@
 
 {% if table1 %}
     <div class="row">
-        <div class="col-7">
+        <div class="col d-flex align-items-center">
             <span class="h1">{{ titel1 }}</span>
         </div>
-        <div class="col-1 d-flex align-items-center">
+        <div class="col d-flex align-items-center justify-content-end">
             {% if form %}{% include "form.html" %}{% endif %}
         </div>
-        <div class="col-4 d-flex align-items-center justify-content-end">
+        <div class="col d-flex align-items-center justify-content-end">
             {% if search_field %}
                 <input class="form-control m-2" type="date" id="dateFrom" name="dateFrom" onchange="mainTableReload()">
                 —
                 <input class="form-control m-2" type="date" id="dateTo" name="dateTo" onchange="mainTableReload()">
                 <input class="form-control m-2" type="text" id="search" name="search" oninput="mainTableReload()"
-                       placeholder="{% blocktrans %}Search{% endblocktrans %}" style="width: 100%; max-width: 200px;">
+                       placeholder="{% blocktrans %}Search{% endblocktrans %}">
             {% endif %}
             <input type="hidden" id="sort" name="sort">
         </div>

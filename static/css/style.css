@@ -66,3 +66,8 @@ table.table tfoot {
   padding: 6px 12px;
   border: none;
 }
+
+input#dateFrom, input#dateTo, input#search {
+    max-width: 150px;
+    display:block;
+}

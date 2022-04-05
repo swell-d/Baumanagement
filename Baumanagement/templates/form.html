@@ -2,14 +2,13 @@
 {% load crispy_forms_tags %}
 {% get_current_language as lang %}
 
-<button type="button" class="btn btn-outline-secondary m-2" data-bs-toggle="modal"
-        data-bs-target="#ModalForm">
+<button type="button" class="btn btn-outline-secondary m-2" data-bs-toggle="modal" data-bs-target="#ModalForm">
     {% if "New" in buttons %}{% translate "New" %}{% endif %}{% if "Edit" in buttons %}{% translate "Edit" %}{% endif %}
 </button>
 
 {% with 'csv json latex ods tsv xls xlsx yaml' as list %}
     <div class="dropdown">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton"
+        <button class="btn btn-outline-secondary dropdown-toggle m-2" type="button" id="exportButton"
                 data-bs-toggle="dropdown" aria-expanded="false">
             {% translate "Export" %}
         </button>
