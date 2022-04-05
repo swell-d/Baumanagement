@@ -6,6 +6,23 @@
         data-bs-target="#ModalForm">
     {% if "New" in buttons %}{% translate "New" %}{% endif %}{% if "Edit" in buttons %}{% translate "Edit" %}{% endif %}
 </button>
+
+{% with 'csv json latex ods tsv xls xlsx yaml' as list %}
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="exportButton"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            {% translate "Export" %}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="exportButton">
+            {% for file_format in list.split %}
+                <li>
+                    <a class="dropdown-item" href="{{ request.path }}?_export={{ file_format }}">{{ file_format }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endwith %}
+
 <div class="modal fade" id="ModalForm" data-bs-backdrop="static" data-bs-keyboard="false"
      tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 

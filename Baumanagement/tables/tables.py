@@ -8,6 +8,10 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 
+def delete_none_values(value):
+    return str(value) if value is not None else ''
+
+
 class MyTable(tables.Table):
     class Meta:
         empty_text = _("No results found")
@@ -28,10 +32,8 @@ class MyTable(tables.Table):
         yield [force_str(column.header, strings_only=True) for column in columns]
 
         for row in self.rows:
-            yield [
-                re.sub('<[^<]+?>', '', (force_str(row.get_cell_value(column.name), strings_only=True)))
-                for column in columns
-            ]
+            yield [re.sub('<[^<]+?>', '', delete_none_values(force_str(row.get_cell_value(column.name),
+                                                                       strings_only=True))) for column in columns]
 
 
 class SummingColumnInt(tables.Column):
