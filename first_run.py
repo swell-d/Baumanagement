@@ -21,8 +21,8 @@ def main():
         new_user.groups.set([group[0], ])
 
     Currency = apps.get_model("Baumanagement", "Currency")
-    Currency.objects.get_or_create(name='Euro', code='EUR')
-    Currency.objects.get_or_create(name='US-Dollar', code='USD')
+    eur = Currency.objects.get_or_create(name='Euro', code='EUR')[0]
+    usd = Currency.objects.get_or_create(name='US-Dollar', code='USD')[0]
 
     lang = 'de'  # ToDo for pipeline
     trans = {
@@ -64,10 +64,10 @@ def main():
 
     Contract = apps.get_model("Baumanagement", "Contract")
     contract1 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #1", project=project[0],
-                                               company=company2[0], contract_type=buy[0],
+                                               company=company2[0], contract_type=buy[0], currency=eur,
                                                amount_netto=-100, vat=19, amount_brutto=-119)
     contract2 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #2", project=project[0],
-                                               company=company3[0], contract_type=sale[0],
+                                               company=company3[0], contract_type=sale[0], currency=usd,
                                                amount_netto=200, vat=19, amount_brutto=238)
 
     Bill = apps.get_model("Baumanagement", "Bill")

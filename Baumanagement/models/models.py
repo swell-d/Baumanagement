@@ -69,8 +69,8 @@ class Contract(BaseModel, PriceModel, FileModel):
                 self.amount_brutto = -self.amount_brutto
         super().save(*args, **kwargs)
 
-    table_fields = 'created', 'project', 'company', 'contract_type', 'name', 'date', 'files', 'currency', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
-    search_fields = 'project__name', 'company__name', 'contract_type__name', 'name', 'currency__code', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    table_fields = 'created', 'project', 'company', 'contract_type', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    search_fields = 'project__name', 'company__name', 'contract_type__name', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
     form_fields = 'open', 'project', 'company', 'contract_type', 'name', 'date', 'currency', 'amount_netto', 'vat', 'amount_brutto'
 
 

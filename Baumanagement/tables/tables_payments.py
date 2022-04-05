@@ -40,7 +40,8 @@ class PaymentTable(MyTable, Files):
 
     def render_amount_netto(self, record, value):
         link = reverse('payment_id', args=[record.id])
-        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value}</a>''')
+        symbol = record.currency.symbol
+        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value} {symbol}</a>''')
 
     def render_vat(self, record, value):
         link = reverse('payment_id', args=[record.id])
@@ -48,4 +49,5 @@ class PaymentTable(MyTable, Files):
 
     def render_amount_brutto(self, record, value):
         link = reverse('payment_id', args=[record.id])
-        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value}</a>''')
+        symbol = record.currency.symbol
+        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value} {symbol}</a>''')

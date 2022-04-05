@@ -54,22 +54,20 @@ class Company(BaseModel, AddressModel, FileModel):
 class Currency(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     code = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Code'))
+    symbol = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Symbol'), default='')
     rate = models.FloatField(verbose_name=_('Rate'), default=1)
 
     class Meta:
         verbose_name = _('Currency')
         verbose_name_plural = _('Currencies')
 
-    def __str__(self):
-        return self.code
-
     @staticmethod
     def extra_fields(qs):
         return qs.all()
 
-    table_fields = 'name', 'code', 'rate'
-    search_fields = 'name', 'code', 'rate'
-    form_fields = 'open', 'name', 'code', 'rate'
+    table_fields = 'name', 'code', 'symbol', 'rate'
+    search_fields = 'name', 'code', 'symbol', 'rate'
+    form_fields = 'open', 'name', 'code', 'symbol', 'rate'
 
 
 class Account(BaseModel, FileModel):
