@@ -65,13 +65,11 @@
                                                 <input type="hidden" name="newCommentNextURL" id="newCommentNextURL"
                                                        value="{{ request.path }}">
                                                 {{ tab.form|crispy }}
-                                                {% if files_form is not None %}
-                                                    <div class="mb-3">
-                                                        <label for="id_file">{% translate "Files" %}</label>
-                                                        <input name="file" class="form-control" type="file" id="id_file"
-                                                               multiple>
-                                                    </div>
-                                                {% endif %}
+                                                <div class="mb-3">
+                                                    <label for="id_file">{% translate "Files" %}</label>
+                                                    <input name="file" class="form-control" type="file" id="id_file"
+                                                           multiple>
+                                                </div>
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-outline-secondary"
