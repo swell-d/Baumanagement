@@ -12,4 +12,4 @@ class CompanyRoleTable(tables.Table):
         fields = CompanyRole.table_fields
 
     def render_name(self, record, value):
-        return format_html(f'''<a href="{reverse('companyrole_id', args=[record.id])}">{value}</a>''')
+        return format_html(f'''<strong><a href="{reverse('companyrole_id', args=[record.id])}">{value}</a></strong>''')

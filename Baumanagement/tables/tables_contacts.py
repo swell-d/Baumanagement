@@ -22,7 +22,7 @@ class ContactTable(tables.Table, Files):
 
     def render_name(self, record, value):
         link = reverse('contact_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'<strong><a href="{link}">{value}</a></strong>')
 
     def render_phone(self, record, value):
         return format_html(f'<a href="tel:{re.sub("[^0-9+]", "", value)}">{value}</a>')

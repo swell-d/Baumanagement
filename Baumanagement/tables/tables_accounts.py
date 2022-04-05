@@ -20,7 +20,7 @@ class AccountTable(tables.Table, Files):
 
     def render_name(self, record, value):
         link = reverse('account_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'<strong><a href="{link}">{value}</a></strong>')
 
     def render_currency(self, record, value):
         link = reverse('account_id', args=[record.id])

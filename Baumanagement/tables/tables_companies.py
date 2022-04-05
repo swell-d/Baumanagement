@@ -18,7 +18,7 @@ class CompanyTable(tables.Table, Files):
 
     def render_name(self, record, value):
         link = reverse('company_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'<strong><a href="{link}">{value}</a></strong>')
 
     def render_address(self, record, value):
         return get_google_maps_link(record)
