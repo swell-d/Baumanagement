@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django import forms
 
 from Baumanagement.models.models_company import CompanyRole
 from Baumanagement.tables.tables_roles import CompanyRoleTable
@@ -8,7 +8,7 @@ baseClass = CompanyRole
 tableClass = CompanyRoleTable
 
 
-class FormClass(ModelForm):
+class FormClass(forms.ModelForm):
     class Meta:
         model = baseClass
         fields = baseClass.form_fields

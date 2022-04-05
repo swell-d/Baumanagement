@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Contact, Company
@@ -10,7 +10,7 @@ baseClass = Contact
 tableClass = ContactTable
 
 
-class FormClass(ModelForm):
+class FormClass(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['company'].queryset = Company.objects.filter(open=True)

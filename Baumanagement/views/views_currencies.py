@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django import forms
 
 from Baumanagement.models.models_company import Currency
 from Baumanagement.tables.tables_currencies import CurrencyTable
@@ -8,7 +8,7 @@ baseClass = Currency
 tableClass = CurrencyTable
 
 
-class FormClass(ModelForm):
+class FormClass(forms.ModelForm):
     class Meta:
         model = baseClass
         fields = baseClass.form_fields

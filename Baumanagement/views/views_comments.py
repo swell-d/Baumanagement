@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django import forms
 from django.shortcuts import redirect
 
 from Baumanagement.models.models_comments import Comment
@@ -9,7 +9,7 @@ baseClass = Comment
 tableClass = CommentTable
 
 
-class FormClass(ModelForm):
+class FormClass(forms.ModelForm):
     class Meta:
         model = baseClass
         fields = baseClass.form_fields

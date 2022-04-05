@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django import forms
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -18,7 +18,7 @@ baseClass = Company
 tableClass = CompanyTable
 
 
-class FormClass(ModelForm):
+class FormClass(forms.ModelForm):
     class Meta:
         model = baseClass
         fields = baseClass.form_fields

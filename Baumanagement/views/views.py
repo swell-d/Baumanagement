@@ -112,6 +112,8 @@ def create_new_object(request, cls):
         messages.success(request, f'{new_object.name} {_("created")}')
         upload_files(request, new_object)
         add_comment_to_object(request, new_object)
+    else:
+        messages.warning(request, formset.errors)
 
 
 def new_object_form(request, context, cls):
@@ -133,6 +135,8 @@ def edit_object_form(request, context, cls, object):
                 object.save()
                 messages.success(request, f'{object.name} {_("changed")}')
                 upload_files(request, object)
+            else:
+                messages.warning(request, formset.errors)
     context['form'] = cls(instance=object)
     if 'FileModel' in str(inspect.getmro(object.__class__)):
         context['files_form'] = object.files

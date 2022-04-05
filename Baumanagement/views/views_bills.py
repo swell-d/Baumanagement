@@ -1,4 +1,4 @@
-from django.forms import ModelForm
+from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Bill, Contract, Project
@@ -11,7 +11,7 @@ baseClass = Bill
 tableClass = BillTable
 
 
-class FormClass(ModelForm):
+class FormClass(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['contract'].queryset = Contract.objects.filter(open=True)
@@ -19,6 +19,7 @@ class FormClass(ModelForm):
     class Meta:
         model = baseClass
         fields = baseClass.form_fields
+        widgets = {'date': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')}
 
 
 def objects_table(request):
