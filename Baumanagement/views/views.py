@@ -111,7 +111,7 @@ def create_new_object(request, cls):
             new_object.save()
         messages.success(request, f'{new_object.name} {_("created")}')
         upload_files(request, new_object)
-    add_comment_to_object(request, new_object)
+        add_comment_to_object(request, new_object)
 
 
 def new_object_form(request, context, cls):

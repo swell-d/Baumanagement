@@ -36,7 +36,7 @@ def company_payments(request, id):
     queryset = baseClass.objects.filter(contract__company=company)
 
     form = FormClass()
-    form.fields["contract"].queryset = Contract.objects.filter(company=company)
+    form.fields["contract"].queryset = Contract.objects.filter(company=company, open=True)
     context['form'] = form
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
@@ -49,7 +49,7 @@ def project_payments(request, id):
     queryset = baseClass.objects.filter(contract__project=project)
 
     form = FormClass()
-    form.fields["contract"].queryset = Contract.objects.filter(project=project)
+    form.fields["contract"].queryset = Contract.objects.filter(project=project, open=True)
     context['form'] = form
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
