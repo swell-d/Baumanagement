@@ -17,14 +17,14 @@ class UrlTests(TestCase):
         self.Company = Company.objects.create(name='test')
         self.Company.role.add(self.CompanyRole)
         self.Company.save()
-        self.Currency = Currency.objects.create(name='test', code='test')
+        self.Currency = Currency.objects.create(name='test', code='test', symbol='tes', rate=1)
         self.Account = Account.objects.create(name='test', company=self.Company, currency=self.Currency)
         self.Contact = Contact.objects.create(name='test', company=self.Company)
         self.Project = Project.objects.create(name='test', company=self.Company)
         self.ContractType = ContractType.objects.create(name='test')
         self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,
                                                 amount_netto=1, vat=1, amount_brutto=1, date=datetime.now(),
-                                                contract_type=self.ContractType)
+                                                contract_type=self.ContractType, currency=self.Currency)
         self.Payment = Payment.objects.create(name='test', contract=self.Contract,
                                               amount_netto=1, vat=1, amount_brutto=1, date=datetime.now())
         self.Bill = Bill.objects.create(name='test', contract=self.Contract,
