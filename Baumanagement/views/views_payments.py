@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -53,7 +54,7 @@ def object_table(request, id):
 def company_payments(request, id):
     company = Company.objects.get(id=id)
     context = {'titel1': f'{_("Company")} "{company.name}" - {_("Payments")}'}
-    queryset = baseClass.objects.filter(contract__company=company)
+    queryset = baseClass.objects.filter(Q(account_from__company=company) | Q(account_to__company=company))
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url),
                                'text': f'{_("All")} {baseClass._meta.verbose_name_plural}'},

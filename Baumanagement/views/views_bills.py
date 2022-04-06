@@ -1,4 +1,5 @@
 from django import forms
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Bill, Contract, Project
@@ -38,7 +39,9 @@ def object_table(request, id):
 def company_bills(request, id):
     company = Company.objects.get(id=id)
     context = {'titel1': f'{_("Company")} "{company.name}" - {_("Bills")}'}
-    queryset = baseClass.objects.filter(contract__company=company)
+    queryset = baseClass.objects.filter(
+        Q(contract__project__company=company, contract__type=Contract.SELL) |
+        Q(contract__company=company, contract__type=Contract.BUY))
 
     form = FormClass()
     form.fields["contract"].queryset = Contract.objects.filter(company=company, open=True)

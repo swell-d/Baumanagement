@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib import messages
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Contract, Project
@@ -65,7 +66,7 @@ def disable_children(request, contract):
 def company_contracts(request, id):
     company = Company.objects.get(id=id)
     context = {'titel1': f'{_("Company")} "{company.name}" - {_("Contracts")}'}
-    queryset = company.contracts.all()
+    queryset = baseClass.objects.filter(Q(project__company=company) | Q(company=company))
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
