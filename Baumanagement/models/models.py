@@ -27,25 +27,20 @@ class Project(BaseModel, AddressModel, FileModel):
     form_fields = 'open', 'company', 'name', 'code', 'address', 'city', 'land'
 
 
-class ContractType(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Contract name'))
-
-    class Meta:
-        verbose_name = _('Contract type')
-        verbose_name_plural = _('Contract types')
-
-
 class Contract(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Contract name'))
-    date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
+    date = models.DateField(null=True, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name=_('Project'),
                                 on_delete=models.RESTRICT, related_name='contracts')
-    currency = models.ForeignKey(Currency, null=True, blank=False, verbose_name=_('Currency'),
+    currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
                                  on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
-    contract_type = models.ForeignKey(ContractType, null=False, blank=False, verbose_name=_('Contract type'),
-                                      on_delete=models.RESTRICT, related_name='contracts')
+    BUY = PriceModel.BUY
+    SELL = PriceModel.SELL
+    TYPE_CHOISES = PriceModel.TYPE_CHOISES
+    type = models.CharField(max_length=4, choices=TYPE_CHOISES,
+                            default=PriceModel.BUY, verbose_name=_('Contract type'))
 
     class Meta:
         verbose_name = _('Contract')
@@ -56,14 +51,14 @@ class Contract(BaseModel, PriceModel, FileModel):
         return qs.annotate(payed=Sum(Case(When(payments__open=True, then='payments__amount_brutto')), distinct=True)) \
             .annotate(due=Sum(Case(When(bills__open=True, then='bills__amount_brutto')), distinct=True))
 
-    table_fields = 'created', 'project', 'company', 'contract_type', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
-    search_fields = 'project__name', 'company__name', 'contract_type__name', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
-    form_fields = 'open', 'project', 'company', 'contract_type', 'name', 'date', 'currency', 'amount_netto_positiv', 'vat'
+    table_fields = 'created', 'project', 'company', 'name', 'date', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    search_fields = 'project__name', 'company__name', 'type', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'currency', 'amount_netto_positiv', 'vat'
 
 
 class Bill(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Bill name'))
-    date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
+    date = models.DateField(null=True, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='bills')
 
@@ -72,8 +67,8 @@ class Bill(BaseModel, PriceModel, FileModel):
         verbose_name_plural = _('Bills')
 
     @property
-    def contract_type(self):
-        return self.contract.contract_type
+    def type(self):
+        return self.contract.type
 
     @property
     def currency(self):
@@ -82,21 +77,21 @@ class Bill(BaseModel, PriceModel, FileModel):
     @staticmethod
     def extra_fields(qs):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'),
-                           type=F('contract__contract_type__name'))
+                           type1=F('contract__type'))
 
-    table_fields = 'created', 'project', 'company', 'contract', 'type', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
+    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'type1', 'amount_netto', 'vat', 'amount_brutto'
     search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
     form_fields = 'open', 'contract', 'name', 'date', 'amount_netto_positiv', 'vat'
 
 
 class Payment(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Payment name'))
-    date = models.DateField(null=False, blank=True, verbose_name=_('Date'), default=datetime.date.today)
+    date = models.DateField(null=True, blank=True, verbose_name=_('Date'), default=datetime.date.today)
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='payments')
-    account_from = models.ForeignKey(Account, null=True, blank=False, verbose_name=_('Write-off account'),
+    account_from = models.ForeignKey(Account, null=False, blank=False, verbose_name=_('Write-off account'),
                                      on_delete=models.RESTRICT, related_name='bills_from')
-    account_to = models.ForeignKey(Account, null=True, blank=False, verbose_name=_('Top-up account'),
+    account_to = models.ForeignKey(Account, null=False, blank=False, verbose_name=_('Top-up account'),
                                    on_delete=models.RESTRICT, related_name='bills_to')
 
     class Meta:
@@ -104,8 +99,8 @@ class Payment(BaseModel, PriceModel, FileModel):
         verbose_name_plural = _('Payments')
 
     @property
-    def contract_type(self):
-        return self.contract.contract_type
+    def type(self):
+        return self.contract.type
 
     @property
     def currency(self):
@@ -114,8 +109,8 @@ class Payment(BaseModel, PriceModel, FileModel):
     @staticmethod
     def extra_fields(qs):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'),
-                           type=F('contract__contract_type__name'))
+                           type1=F('contract__type'))
 
-    table_fields = 'created', 'project', 'company', 'contract', 'type', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
+    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'type1', 'amount_netto', 'vat', 'amount_brutto'
     search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
     form_fields = 'open', 'contract', 'name', 'date', 'account_from', 'account_to', 'amount_netto_positiv', 'vat'

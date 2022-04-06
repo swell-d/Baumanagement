@@ -1,8 +1,8 @@
-from django.contrib import messages
 from django import forms
+from django.contrib import messages
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models import Contract, Project, ContractType
+from Baumanagement.models.models import Contract, Project
 from Baumanagement.models.models_company import Company
 from Baumanagement.tables.tables_contracts import ContractTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
@@ -19,7 +19,6 @@ class FormClass(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['project'].queryset = Project.objects.filter(open=True)
         self.fields['company'].queryset = Company.objects.filter(open=True)
-        self.fields['contract_type'].queryset = ContractType.objects.filter(open=True)
 
     class Meta:
         model = baseClass

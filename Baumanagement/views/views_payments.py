@@ -78,8 +78,9 @@ def contract_payments(request, id):
 
     accounts_from, accounts_to = accounts_querysets(form, contract)
     form.fields[
-        "account_from"].initial = accounts_from.last() if contract.contract_type.id == 1 else accounts_to.last()
-    form.fields["account_to"].initial = accounts_to.last() if contract.contract_type.id == 1 else accounts_from.last()
+        "account_from"].initial = accounts_from.last() if contract.type == Contract.BUY else accounts_to.last()
+    form.fields[
+        "account_to"].initial = accounts_to.last() if contract.type == Contract.BUY else accounts_from.last()
 
     context['form'] = form
 
@@ -90,8 +91,8 @@ def contract_payments(request, id):
 def accounts_querysets(form, contract):
     accounts_from = Account.objects.filter(company=contract.project.company, currency=contract.currency, open=True)
     accounts_to = Account.objects.filter(company=contract.company, currency=contract.currency, open=True)
-    form.fields['account_from'].queryset = accounts_from if contract.contract_type.id == 1 else accounts_to
-    form.fields['account_to'].queryset = accounts_to if contract.contract_type.id == 1 else accounts_from
+    form.fields['account_from'].queryset = accounts_from if contract.type == Contract.BUY else accounts_to
+    form.fields['account_to'].queryset = accounts_to if contract.type == Contract.BUY else accounts_from
     return accounts_from, accounts_to
 
 

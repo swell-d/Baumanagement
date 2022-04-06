@@ -57,6 +57,7 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
     if not request.GET:
         context.setdefault('titel1', f'{_("All")} {baseClass._meta.verbose_name_plural}')
         new_object_form(request, context, formClass)
+        context['search_field'] = True
     else:
         if queryset is None:
             queryset = baseClass.objects

@@ -17,6 +17,7 @@ class PaymentTable(MyTable, Files):
     amount_netto = SummingColumn2F()
     amount_brutto = SummingColumn2F()
     files = tables.Column(verbose_name=_('Files'))
+    type1 = tables.Column(verbose_name=_('Type'))
 
     def render_project(self, record, value):
         link = reverse('project_id', args=[record.contract.project.id])
@@ -37,6 +38,9 @@ class PaymentTable(MyTable, Files):
     def render_date(self, record, value):
         link = reverse('payment_id', args=[record.id])
         return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y")}</a>')
+
+    def render_type1(self, record, value):
+        return record.contract.get_type_display()
 
     def render_amount_netto(self, record, value):
         link = reverse('payment_id', args=[record.id])

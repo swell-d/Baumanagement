@@ -47,8 +47,8 @@ class Company(BaseModel, AddressModel, FileModel):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.accounts.count() == 0:
-            eur = Currency.objects.get_or_create(name='Euro', code='EUR')
-            Account.objects.create(name=_('Main account'), company=self, currency=eur[0])
+            eur = Currency.objects.get(id=1)
+            Account.objects.create(name=_('Main account'), company=self, currency=eur, created_by=self.created_by)
 
 
 class Currency(BaseModel):
@@ -74,7 +74,7 @@ class Account(BaseModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='accounts')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Account name'))
-    currency = models.ForeignKey(Currency, null=True, blank=False, verbose_name=_('Currency'),
+    currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
                                  on_delete=models.RESTRICT, related_name='accounts')
     IBAN = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('IBAN'))
     BIC = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('BIC'))

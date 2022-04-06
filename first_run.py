@@ -64,16 +64,12 @@ def main():
     Project = apps.get_model("Baumanagement", "Project")
     project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1, created_by=admin)[0]
 
-    ContractType = apps.get_model("Baumanagement", "ContractType")
-    buy = ContractType.objects.get_or_create(name=trans['Buy'][lang], created_by=admin)[0]
-    sale = ContractType.objects.get_or_create(name=trans['Sale'][lang], created_by=admin)[0]
-
     Contract = apps.get_model("Baumanagement", "Contract")
     contract1 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #1", project=project,
-                                               company=company2, contract_type=buy, currency=eur,
+                                               company=company2, type=Contract.BUY, currency=eur,
                                                amount_netto_positiv=100, vat=19, created_by=admin)[0]
     contract2 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #2", project=project,
-                                               company=company3, contract_type=sale, currency=usd,
+                                               company=company3, type=Contract.SELL, currency=usd,
                                                amount_netto_positiv=200, vat=19, created_by=admin)[0]
 
     Bill = apps.get_model("Baumanagement", "Bill")
