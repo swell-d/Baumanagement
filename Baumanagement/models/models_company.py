@@ -83,6 +83,9 @@ class Account(BaseModel, FileModel):
         verbose_name = _('Account')
         verbose_name_plural = _('Accounts')
 
+    def __str__(self):
+        return f'{self.company}: {self.name} ({self.currency.code})'
+
     @staticmethod
     def extra_fields(qs):
         return qs.all()

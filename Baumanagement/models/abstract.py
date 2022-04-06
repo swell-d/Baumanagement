@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import Q
@@ -44,6 +46,11 @@ class AddressModel(models.Model):
 
 
 class PriceModel(models.Model):
+    amount_netto_positiv = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
+                                       verbose_name=_('Amount netto'), default=0)
+    amount_brutto_positiv = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
+                                       verbose_name=_('Amount brutto'), default=0)
+
     amount_netto = models.DecimalField(max_digits=10, decimal_places=2, null=False, blank=False,
                                        verbose_name=_('Amount netto'))
     vat = models.FloatField(null=False, blank=False, verbose_name=_('VAT %'), default=19)
@@ -52,6 +59,11 @@ class PriceModel(models.Model):
 
     class Meta:
         abstract = True
+
+    def save(self, *args, **kwargs):
+        self.amount_netto = self.amount_netto_positiv if self.contract_type.id == 2 else -self.amount_netto_positiv
+        self.amount_brutto = Decimal(float(self.amount_netto) * (1 + self.vat / 100))
+        super().save(*args, **kwargs)
 
 
 class FileModel(models.Model):

@@ -31,6 +31,18 @@ def objects_table(request):
 def object_table(request, id):
     context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
+    payment = queryset.first()
+
+    form = FormClass(instance=payment)
+    form.fields['account_from'].queryset = Account.objects.filter(
+        company=payment.contract.project.company, currency=payment.contract.currency, open=True)
+    form.fields['account_to'].queryset = Account.objects.filter(
+        company=payment.contract.company, currency=payment.contract.currency, open=True)
+    if payment.contract_type.id == 2:
+        form.fields['account_from'].queryset, form.fields['account_to'].queryset = form.fields['account_to'].queryset, \
+                                                                                   form.fields['account_from'].queryset
+    context['form'] = form
+
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 

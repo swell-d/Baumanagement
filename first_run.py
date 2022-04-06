@@ -12,17 +12,17 @@ def main():
     execute_from_command_line(['manage.py', 'migrate'])
 
     from django.contrib.auth.models import Group
-    group = Group.objects.get_or_create(name='admins')
+    group = Group.objects.get_or_create(name='admins')[0]
 
     user = get_user_model()
     admin = user.objects.filter(username='admin')
     if not admin:
-        new_user = user.objects.create_superuser('admin', 'admin@myproject.com', 'admin')  # ToDo for pipeline
-        new_user.groups.set([group[0], ])
+        admin = user.objects.create_superuser('admin', 'admin@myproject.com', 'admin')  # ToDo for pipeline
+        admin.groups.set([group, ])
 
     Currency = apps.get_model("Baumanagement", "Currency")
-    eur = Currency.objects.get_or_create(name='Euro', code='EUR', symbol='€', rate=1)[0]
-    usd = Currency.objects.get_or_create(name='US-Dollar', code='USD', symbol='$', rate=1.09)[0]
+    eur = Currency.objects.get_or_create(name='Euro', code='EUR', symbol='€', rate=1, created_by=admin)[0]
+    usd = Currency.objects.get_or_create(name='US-Dollar', code='USD', symbol='$', rate=1.09, created_by=admin)[0]
 
     lang = 'de'  # ToDo for pipeline
     trans = {
@@ -39,55 +39,66 @@ def main():
     }
 
     CompanyRole = apps.get_model("Baumanagement", "CompanyRole")
-    role1 = CompanyRole.objects.get_or_create(name=trans['My company'][lang])
-    role2 = CompanyRole.objects.get_or_create(name=trans['Supplier'][lang])
-    role3 = CompanyRole.objects.get_or_create(name=trans['Client'][lang])
+    role1 = CompanyRole.objects.get_or_create(name=trans['My company'][lang], created_by=admin)[0]
+    role2 = CompanyRole.objects.get_or_create(name=trans['Supplier'][lang], created_by=admin)[0]
+    role3 = CompanyRole.objects.get_or_create(name=trans['Client'][lang], created_by=admin)[0]
 
     Company = apps.get_model("Baumanagement", "Company")
-    company1 = Company.objects.get_or_create(name=trans['My company'][lang])
+    company1 = Company.objects.get_or_create(name=trans['My company'][lang], created_by=admin)[0]
 
-    company1[0].role.set([role1[0], ])
-    company1[0].save()
-    company2 = Company.objects.get_or_create(name=f"{trans['Supplier'][lang]} #1")
-    company2[0].role.set([role2[0], ])
-    company2[0].save()
-    company3 = Company.objects.get_or_create(name=f"{trans['Client'][lang]} #1")
-    company3[0].role.set([role3[0], ])
-    company3[0].save()
+    company1.role.set([role1, ])
+    company1.save()
+    company2 = Company.objects.get_or_create(name=f"{trans['Supplier'][lang]} #1", created_by=admin)[0]
+    company2.role.set([role2, ])
+    company2.save()
+    company3 = Company.objects.get_or_create(name=f"{trans['Client'][lang]} #1", created_by=admin)[0]
+    company3.role.set([role3, ])
+    company3.save()
+
+    Account = apps.get_model("Baumanagement", "Account")
+    company1_account_usd = Account.objects.get_or_create(company=company1, name="USD", currency=usd,
+                                                         created_by=admin)[0]
+    company3_account_usd = Account.objects.get_or_create(company=company3, name="USD", currency=usd,
+                                                         created_by=admin)[0]
 
     Project = apps.get_model("Baumanagement", "Project")
-    project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1[0])
+    project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1, created_by=admin)[0]
 
     ContractType = apps.get_model("Baumanagement", "ContractType")
-    buy = ContractType.objects.get_or_create(name=trans['Buy'][lang])
-    sale = ContractType.objects.get_or_create(name=trans['Sale'][lang])
+    buy = ContractType.objects.get_or_create(name=trans['Buy'][lang], created_by=admin)[0]
+    sale = ContractType.objects.get_or_create(name=trans['Sale'][lang], created_by=admin)[0]
 
     Contract = apps.get_model("Baumanagement", "Contract")
-    contract1 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #1", project=project[0],
-                                               company=company2[0], contract_type=buy[0], currency=eur,
-                                               amount_netto=-100, vat=19, amount_brutto=-119)
-    contract2 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #2", project=project[0],
-                                               company=company3[0], contract_type=sale[0], currency=usd,
-                                               amount_netto=200, vat=19, amount_brutto=238)
+    contract1 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #1", project=project,
+                                               company=company2, contract_type=buy, currency=eur,
+                                               amount_netto_positiv=100, vat=19, created_by=admin)[0]
+    contract2 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #2", project=project,
+                                               company=company3, contract_type=sale, currency=usd,
+                                               amount_netto_positiv=200, vat=19, created_by=admin)[0]
 
     Bill = apps.get_model("Baumanagement", "Bill")
-    Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #1.1", contract=contract1[0],
-                               amount_netto=-50, vat=19, amount_brutto=-50 * 1.19)
-    Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #1.2", contract=contract1[0],
-                               amount_netto=-25, vat=19, amount_brutto=-25 * 1.19)
-    Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #2.1", contract=contract2[0],
-                               amount_netto=100, vat=19, amount_brutto=100 * 1.19)
-    Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #2.2", contract=contract2[0],
-                               amount_netto=50, vat=19, amount_brutto=50 * 1.19)
+    Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #1.1", contract=contract1,
+                               amount_netto_positiv=50, vat=19, created_by=admin)
+    Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #1.2", contract=contract1,
+                               amount_netto_positiv=25, vat=19, created_by=admin)
+    Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #2.1", contract=contract2,
+                               amount_netto_positiv=100, vat=19, created_by=admin)
+    Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #2.2", contract=contract2,
+                               amount_netto_positiv=50, vat=19, created_by=admin)
 
     Payment = apps.get_model("Baumanagement", "Payment")
-    Payment.objects.get_or_create(name=f"{trans['Payment'][lang]} #1.1", contract=contract1[0],
-                                  amount_netto=-25, vat=19, amount_brutto=-25 * 1.19)
-    Payment.objects.get_or_create(name=f"{trans['Payment'][lang]} #2.1", contract=contract2[0],
-                                  amount_netto=50, vat=19, amount_brutto=50 * 1.19)
+    Payment.objects.get_or_create(name=f"{trans['Payment'][lang]} #1.1", contract=contract1,
+                                  amount_netto_positiv=25, vat=19,
+                                  account_from=Account.objects.filter(company=company1).first(),
+                                  account_to=Account.objects.filter(company=company2).first(),
+                                  created_by=admin)
+    Payment.objects.get_or_create(name=f"{trans['Payment'][lang]} #2.1", contract=contract2,
+                                  amount_netto_positiv=50, vat=19,
+                                  account_from=company3_account_usd,
+                                  account_to=company1_account_usd,
+                                  created_by=admin)
 
     execute_from_command_line(['manage.py', 'collectstatic', '--noinput', '--clear'])
-    execute_from_command_line(['manage.py', 'test'])
 
 
 if __name__ == '__main__':
