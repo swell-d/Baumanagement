@@ -1,9 +1,10 @@
 from django import forms
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models import Bill, Payment
+from Baumanagement.models.models import Bill, Payment, Contract
 from Baumanagement.models.models_company import CompanyRole, Company
 from Baumanagement.tables.tables_companies import CompanyTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
@@ -42,24 +43,27 @@ def objects_table(request):
 def object_table(request, id):
     context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
+    company = queryset.first()
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
 
-    accounts = queryset.first().accounts.all()
+    accounts = company.accounts.all()
     generate_accounts_by_queryset(request, context, accounts)
 
-    contacts = queryset.first().contacts.all()
+    contacts = company.contacts.all()
     generate_contacts_by_queryset(request, context, contacts)
 
-    projects = queryset.first().projects.all()
+    projects = company.projects.all()
     generate_projects_by_queryset(request, context, projects)
 
-    contracts = queryset.first().contracts.all()
+    contracts = Contract.objects.filter(Q(project__company=company) | Q(company=company))
     generate_contracts_by_queryset(request, context, contracts)
 
-    bills = Bill.objects.filter(contract__company=queryset.first())
+    bills = Bill.objects.filter(
+        Q(contract__project__company=company, contract__type=Contract.SELL) |
+        Q(contract__company=company, contract__type=Contract.BUY))
     generate_bills_by_queryset(request, context, bills)
 
-    payments = Payment.objects.filter(contract__company=queryset.first())
+    payments = Payment.objects.filter(Q(account_from__company=company) | Q(account_to__company=company))
     generate_payments_by_queryset(request, context, payments)
 
     return myrender(request, context)

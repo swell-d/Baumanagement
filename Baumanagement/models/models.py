@@ -1,5 +1,3 @@
-import datetime
-
 from django.db import models
 from django.db.models import Sum, F, Case, When
 from django.utils.translation import gettext_lazy as _
@@ -30,7 +28,7 @@ class Project(BaseModel, AddressModel, FileModel):
 
 class Contract(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Contract name'))
-    date = models.DateField(null=True, blank=True, verbose_name=_('Date'), default=datetime.date.today)
+    date = models.DateField(null=True, blank=True, verbose_name=_('Date'))
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name=_('Project'),
                                 on_delete=models.RESTRICT, related_name='contracts')
     currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
@@ -60,7 +58,7 @@ class Contract(BaseModel, PriceModel, FileModel):
 
 class Bill(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Bill name'))
-    date = models.DateField(null=True, blank=True, verbose_name=_('Date'), default=datetime.date.today)
+    date = models.DateField(null=True, blank=True, verbose_name=_('Date'))
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='bills')
 
@@ -89,7 +87,7 @@ class Bill(BaseModel, PriceModel, FileModel):
 
 class Payment(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Payment name'))
-    date = models.DateField(null=True, blank=True, verbose_name=_('Date'), default=datetime.date.today)
+    date = models.DateField(null=True, blank=True, verbose_name=_('Date'))
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='payments')
     account_from = models.ForeignKey(Account, null=False, blank=False, verbose_name=_('Write-off account'),
