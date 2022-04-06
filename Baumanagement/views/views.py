@@ -54,38 +54,41 @@ def add_comment_to_object(request, new_object):
 
 
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
-    context.setdefault('titel1', f'{_("All")} {baseClass._meta.verbose_name_plural}')
-    if queryset is None:
-        queryset = baseClass.objects
-
-    dateFrom = request.GET.get('dateFrom')
-    if dateFrom:
-        queryset = queryset.filter(created__gte=datetime.strptime(dateFrom, "%Y-%m-%d"))
-    dateTo = request.GET.get('dateTo')
-    if dateTo:
-        queryset = queryset.filter(created__lt=datetime.strptime(dateTo, "%Y-%m-%d") + timedelta(days=1))
-
-    new_object_form(request, context, formClass)
-    queryset = baseClass.extra_fields(queryset)
-    queryset = add_search_field(queryset, request, context)
-    table1 = tableClass(queryset, order_by="-created")
-    RequestConfig(request).configure(table1)
-    context['table1'] = table1
+    if not request.GET:
+        context.setdefault('titel1', f'{_("All")} {baseClass._meta.verbose_name_plural}')
+        new_object_form(request, context, formClass)
+    else:
+        if queryset is None:
+            queryset = baseClass.objects
+        dateFrom = request.GET.get('dateFrom')
+        if dateFrom:
+            queryset = queryset.filter(created__gte=datetime.strptime(dateFrom, "%Y-%m-%d"))
+        dateTo = request.GET.get('dateTo')
+        if dateTo:
+            queryset = queryset.filter(created__lt=datetime.strptime(dateTo, "%Y-%m-%d") + timedelta(days=1))
+        queryset = baseClass.extra_fields(queryset)
+        queryset = add_search_field(queryset, request, context)
+        table1 = tableClass(queryset, order_by="-created")
+        RequestConfig(request).configure(table1)
+        context['table1'] = table1
 
 
 def generate_object_table(request, context, baseClass, tableClass, formClass, queryset):
-    context.setdefault('titel1', f'{baseClass._meta.verbose_name} "{queryset.first().name}"')
-    edit_object_form(request, context, formClass, queryset.first())
-    queryset = baseClass.extra_fields(queryset)
-    table1 = tableClass(queryset)
-    RequestConfig(request).configure(table1)
-    context['table1'] = table1
-    comment_ids = queryset.first().comment_ids
-    comments = [{'object': Comment.objects.get(id=id), 'files': None} for id in comment_ids]
-    for comment in comments:
-        comment['files'] = [File.objects.get(id=id) for id in comment['object'].file_ids]
-    context['tables'].append({'titel': _('Comments'), 'count': len(comment_ids),
-                              'comments': comments, 'form': CommentFormClass(), 'files_form': []})
+    if not request.GET:
+        context.setdefault('titel1', f'{baseClass._meta.verbose_name} "{queryset.first().name}"')
+        edit_object_form(request, context, formClass, queryset.first())
+
+        comment_ids = queryset.first().comment_ids
+        comments = [{'object': Comment.objects.get(id=id), 'files': None} for id in comment_ids]
+        for comment in comments:
+            comment['files'] = [File.objects.get(id=id) for id in comment['object'].file_ids]
+        context['tables'].append({'titel': _('Comments'), 'count': len(comment_ids),
+                                  'comments': comments, 'form': CommentFormClass(), 'files_form': []})
+    else:
+        queryset = baseClass.extra_fields(queryset)
+        table1 = tableClass(queryset)
+        RequestConfig(request).configure(table1)
+        context['table1'] = table1
 
 
 def generate_next_objects_table(request, context, baseClass, tableClass, queryset):
