@@ -1,4 +1,5 @@
 from django import forms
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Payment, Contract, Project
@@ -33,6 +34,14 @@ def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
     payment = queryset.first()
 
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url),
+                               'text': f'{_("All")} {baseClass._meta.verbose_name_plural}'},
+                              {'link': reverse('project_id_payments', args=[payment.contract.project.id]),
+                               'text': payment.contract.project.name},
+                              {'link': reverse('contract_id_payments', args=[payment.contract.id]),
+                               'text': payment.contract.name},
+                              {'text': payment.name}]
+
     form = FormClass(instance=payment)
     accounts_querysets(form, payment.contract)
     context['form'] = form
@@ -45,6 +54,10 @@ def company_payments(request, id):
     company = Company.objects.get(id=id)
     context = {'titel1': f'{_("Company")} "{company.name}" - {_("Payments")}'}
     queryset = baseClass.objects.filter(contract__company=company)
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url),
+                               'text': f'{_("All")} {baseClass._meta.verbose_name_plural}'},
+                              {'text': company.name}]
 
     form = FormClass()
     form.fields["contract"].queryset = Contract.objects.filter(company=company, open=True)
@@ -59,6 +72,10 @@ def project_payments(request, id):
     context = {'titel1': f'{_("Project")} "{project.name}" - {_("Payments")}'}
     queryset = baseClass.objects.filter(contract__project=project)
 
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url),
+                               'text': f'{_("All")} {baseClass._meta.verbose_name_plural}'},
+                              {'text': project.name}]
+
     form = FormClass()
     form.fields["contract"].queryset = Contract.objects.filter(project=project, open=True)
     context['form'] = form
@@ -71,6 +88,12 @@ def contract_payments(request, id):
     contract = Contract.objects.get(id=id)
     context = {'titel1': f'{_("Contract")} "{contract.name}" - {_("Payments")}'}
     queryset = baseClass.objects.filter(contract=contract)
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url),
+                               'text': f'{_("All")} {baseClass._meta.verbose_name_plural}'},
+                              {'link': reverse('project_id_payments', args=[contract.project.id]),
+                               'text': contract.project.name},
+                              {'text': contract.name}]
 
     form = FormClass()
     form.fields['contract'].queryset = Contract.objects.filter(id=id)

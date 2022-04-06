@@ -19,6 +19,7 @@ class CompanyRole(BaseModel):
     def count_companies(self):
         return self.companies.count()
 
+    url = 'companyroles'
     table_fields = 'name',
     search_fields = 'name',
     form_fields = 'name',
@@ -40,6 +41,7 @@ class Company(BaseModel, AddressModel, FileModel):
     def extra_fields(qs):
         return qs.all()
 
+    url = 'companies'
     table_fields = 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number', 'files'
     search_fields = 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
     form_fields = 'open', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number', 'role'
@@ -65,6 +67,7 @@ class Currency(BaseModel):
     def extra_fields(qs):
         return qs.all()
 
+    url = 'currencies'
     table_fields = 'name', 'code', 'symbol', 'rate'
     search_fields = 'name', 'code', 'symbol', 'rate'
     form_fields = 'open', 'name', 'code', 'symbol', 'rate'
@@ -90,6 +93,7 @@ class Account(BaseModel, FileModel):
     def extra_fields(qs):
         return qs.all()
 
+    url = 'accounts'
     table_fields = 'created', 'company', 'name', 'currency', 'IBAN', 'BIC', 'files'
     search_fields = 'company__name', 'name', 'currency__name', 'IBAN', 'BIC'
     form_fields = 'open', 'company', 'name', 'currency', 'IBAN', 'BIC'
@@ -111,6 +115,7 @@ class Contact(BaseModel, FileModel):
     def extra_fields(qs):
         return qs.all()
 
+    url = 'contacts'
     table_fields = 'created', 'company', 'name', 'email', 'phone', 'position', 'files'
     search_fields = 'company__name', 'name', 'email', 'phone', 'position'
     form_fields = 'open', 'company', 'name', 'email', 'phone', 'position'

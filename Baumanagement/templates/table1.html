@@ -1,5 +1,21 @@
 {% load i18n %}
 
+{% if breadcrumbs %}
+    <div class="row">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+                {% for each in breadcrumbs %}
+                    <li class="breadcrumb-item">
+                        {% if each.link %}<a class="" href="{{ each.link }}">{% endif %}
+                        {{ each.text }}
+                        {% if each.link %}</a>{% endif %}
+                    </li>
+                {% endfor %}
+            </ol>
+        </nav>
+    </div>
+{% endif %}
+
 <div class="row">
     <div class="col d-flex align-items-center">
         <span class="h1">{{ titel1 }}</span>

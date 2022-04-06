@@ -22,6 +22,7 @@ class Project(BaseModel, AddressModel, FileModel):
     def extra_fields(qs):
         return qs.annotate(count_contracts=Sum(Case(When(contracts__open=True, then=1))))
 
+    url = 'projects'
     table_fields = 'created', 'company', 'name', 'code', 'address', 'count_contracts', 'files'
     search_fields = 'company__name', 'name', 'code', 'address', 'city', 'land', 'count_contracts'
     form_fields = 'open', 'company', 'name', 'code', 'address', 'city', 'land'
@@ -51,6 +52,7 @@ class Contract(BaseModel, PriceModel, FileModel):
         return qs.annotate(payed=Sum(Case(When(payments__open=True, then='payments__amount_brutto')), distinct=True)) \
             .annotate(due=Sum(Case(When(bills__open=True, then='bills__amount_brutto')), distinct=True))
 
+    url = 'contracts'
     table_fields = 'created', 'project', 'company', 'name', 'date', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
     search_fields = 'project__name', 'company__name', 'type', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
     form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'currency', 'amount_netto_positiv', 'vat'
@@ -79,6 +81,7 @@ class Bill(BaseModel, PriceModel, FileModel):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'),
                            type1=F('contract__type'))
 
+    url = 'bills'
     table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'type1', 'amount_netto', 'vat', 'amount_brutto'
     search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
     form_fields = 'open', 'contract', 'name', 'date', 'amount_netto_positiv', 'vat'
@@ -111,6 +114,7 @@ class Payment(BaseModel, PriceModel, FileModel):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'),
                            type1=F('contract__type'))
 
+    url = 'payments'
     table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'type1', 'amount_netto', 'vat', 'amount_brutto'
     search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
     form_fields = 'open', 'contract', 'name', 'date', 'account_from', 'account_to', 'amount_netto_positiv', 'vat'
