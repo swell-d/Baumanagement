@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Contract, Project
-from Baumanagement.models.models_company import Company
+from Baumanagement.models.models_company import Company, Currency
 from Baumanagement.tables.tables_contracts import ContractTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
@@ -20,6 +20,8 @@ class FormClass(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['project'].queryset = Project.objects.filter(open=True)
         self.fields['company'].queryset = Company.objects.filter(open=True)
+        self.fields['currency'].queryset = Currency.objects.filter(open=True)
+        self.fields['currency'].initial = Currency.objects.get(code='EUR')
 
     class Meta:
         model = baseClass

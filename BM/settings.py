@@ -9,11 +9,12 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-import django_heroku
 import os
+from pathlib import Path
+
+import django_heroku
 from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _
-from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -33,6 +34,7 @@ ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'crispy_forms',
+    'crispy_bootstrap5',
     'django_filters',
     'bootstrap5',
     'django_tables2',
@@ -144,7 +146,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CSRF_TRUSTED_ORIGINS = ['https://*.herokuapp.com', 'http://127.0.0.1']
 # SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 # SECURE_SSL_REDIRECT = True
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MESSAGE_TAGS = {
     messages.DEBUG: 'alert-warning',

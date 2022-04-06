@@ -4,6 +4,7 @@ tablib
 django-bootstrap-v5
 django-filter
 django-crispy-forms
+crispy-bootstrap5
 python-gettext
 django_heroku
 requests

@@ -15,6 +15,7 @@ class FormClass(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['company'].queryset = Company.objects.filter(open=True)
         self.fields['currency'].queryset = Currency.objects.filter(open=True)
+        self.fields['currency'].initial = Currency.objects.get(code='EUR')
 
     class Meta:
         model = baseClass

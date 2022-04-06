@@ -21,7 +21,7 @@ class UrlTests(TestCase):
         self.client.force_login(user)
 
         self.CompanyRole = CompanyRole.objects.create(name='test', created_by=user)
-        self.Currency = Currency.objects.create(name='test', code='test', symbol='tes', rate=1, created_by=user)
+        self.Currency = Currency.objects.create(name='test', code='EUR', symbol='tes', rate=1, created_by=user)
         self.Company = Company.objects.create(name='test', created_by=user)
         self.Company.role.add(self.CompanyRole)
         self.Company.save()
