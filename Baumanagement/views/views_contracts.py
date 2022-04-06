@@ -78,7 +78,7 @@ def project_contracts(request, id):
 
     form = FormClass()
     form.fields["project"].initial = project
-    form.fields["project"].widget.attrs['disabled'] = True
+    form.fields['project'].queryset = Project.objects.filter(id=id)
     context['form'] = form
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)

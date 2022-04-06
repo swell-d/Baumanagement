@@ -41,7 +41,7 @@ def company_accounts(request, id):
 
     form = FormClass()
     form.fields["company"].initial = company
-    form.fields["company"].widget.attrs['disabled'] = True
+    form.fields['company'].queryset = Company.objects.filter(id=id)
     context['form'] = form
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)

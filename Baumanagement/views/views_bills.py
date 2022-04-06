@@ -68,7 +68,7 @@ def contract_bills(request, id):
 
     form = FormClass()
     form.fields["contract"].initial = contract
-    form.fields["contract"].widget.attrs['disabled'] = True
+    form.fields['contract'].queryset = Contract.objects.filter(id=id)
     context['form'] = form
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)

@@ -2,7 +2,7 @@ from django import forms
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Payment, Contract, Project
-from Baumanagement.models.models_company import Company
+from Baumanagement.models.models_company import Company, Account
 from Baumanagement.tables.tables_payments import PaymentTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
@@ -68,7 +68,7 @@ def contract_payments(request, id):
 
     form = FormClass()
     form.fields["contract"].initial = contract
-    form.fields["contract"].widget.attrs['disabled'] = True
+    form.fields['contract'].queryset = Contract.objects.filter(id=id)
     context['form'] = form
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
