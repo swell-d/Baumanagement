@@ -71,3 +71,13 @@ input#dateFrom, input#dateTo, input#search {
     max-width: 150px;
     display:block;
 }
+
+.form-label {
+    margin-bottom: 0;
+}
+.requiredField {
+    font-weight: 600;
+}
+.modal-body div.mb-3 {
+    margin-bottom: 0.5rem!important;
+}
