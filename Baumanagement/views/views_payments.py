@@ -34,13 +34,7 @@ def object_table(request, id):
     payment = queryset.first()
 
     form = FormClass(instance=payment)
-    form.fields['account_from'].queryset = Account.objects.filter(
-        company=payment.contract.project.company, currency=payment.contract.currency, open=True)
-    form.fields['account_to'].queryset = Account.objects.filter(
-        company=payment.contract.company, currency=payment.contract.currency, open=True)
-    if payment.contract_type.id == 2:
-        form.fields['account_from'].queryset, form.fields['account_to'].queryset = form.fields['account_to'].queryset, \
-                                                                                   form.fields['account_from'].queryset
+    accounts_querysets(form, payment.contract)
     context['form'] = form
 
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
@@ -79,12 +73,26 @@ def contract_payments(request, id):
     queryset = baseClass.objects.filter(contract=contract)
 
     form = FormClass()
-    form.fields["contract"].initial = contract
     form.fields['contract'].queryset = Contract.objects.filter(id=id)
+    form.fields["contract"].initial = contract
+
+    accounts_from, accounts_to = accounts_querysets(form, contract)
+    form.fields[
+        "account_from"].initial = accounts_from.last() if contract.contract_type.id == 1 else accounts_to.last()
+    form.fields["account_to"].initial = accounts_to.last() if contract.contract_type.id == 1 else accounts_from.last()
+
     context['form'] = form
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
+
+
+def accounts_querysets(form, contract):
+    accounts_from = Account.objects.filter(company=contract.project.company, currency=contract.currency, open=True)
+    accounts_to = Account.objects.filter(company=contract.company, currency=contract.currency, open=True)
+    form.fields['account_from'].queryset = accounts_from if contract.contract_type.id == 1 else accounts_to
+    form.fields['account_to'].queryset = accounts_to if contract.contract_type.id == 1 else accounts_from
+    return accounts_from, accounts_to
 
 
 def generate_payments_by_queryset(request, context, queryset):
