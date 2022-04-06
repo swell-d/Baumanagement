@@ -76,11 +76,10 @@ class Bill(BaseModel, PriceModel, FileModel):
 
     @staticmethod
     def extra_fields(qs):
-        return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'),
-                           type1=F('contract__type'))
+        return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
 
     url = 'bills'
-    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'type1', 'amount_netto', 'vat', 'amount_brutto'
+    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
     search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
     form_fields = 'open', 'contract', 'name', 'date', 'amount_netto_positiv', 'vat'
 
@@ -109,10 +108,9 @@ class Payment(BaseModel, PriceModel, FileModel):
 
     @staticmethod
     def extra_fields(qs):
-        return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'),
-                           type1=F('contract__type'))
+        return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
 
     url = 'payments'
-    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'type1', 'amount_netto', 'vat', 'amount_brutto'
+    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
     search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
     form_fields = 'open', 'contract', 'name', 'date', 'account_from', 'account_to', 'amount_netto_positiv', 'vat'
