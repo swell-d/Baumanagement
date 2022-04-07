@@ -71,7 +71,7 @@ def object_table(request, id):
     for each in contracts:
         partners_ids.add(each.company.id)
         partners_ids.add(each.project.company.id)
-    partners_ids.remove(company.id)
+    partners_ids.discard(company.id)
     partners = Company.objects.filter(id__in=partners_ids)
     generate_next_objects_table(request, context, baseClass, tableClass, partners, _('Partners'))
 
