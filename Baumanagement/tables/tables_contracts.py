@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Contract
-from Baumanagement.tables.tables import Files, SummingColumn2F, MyTable
+from Baumanagement.tables.tables import Files, SummingColumn2F, MyTable, modal
 
 
 class ContractTable(MyTable, Files):
@@ -28,7 +28,7 @@ class ContractTable(MyTable, Files):
 
     def render_name(self, record, value):
         link = reverse('contract_id', args=[record.id])
-        return format_html(f'<strong><a href="{link}">{value}</a></strong>')
+        return format_html(f'<strong><a href="{modal if self.object_table else link}">{value}</a></strong>')
 
     def render_date(self, record, value):
         link = reverse('contract_id', args=[record.id])

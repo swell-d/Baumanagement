@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Account
-from Baumanagement.tables.tables import Files, MyTable
+from Baumanagement.tables.tables import Files, MyTable, modal
 
 
 class AccountTable(MyTable, Files):
@@ -20,7 +20,7 @@ class AccountTable(MyTable, Files):
 
     def render_name(self, record, value):
         link = reverse('account_id', args=[record.id])
-        return format_html(f'<strong><a href="{link}">{value}</a></strong>')
+        return format_html(f'<strong><a href="{modal if self.object_table else link}">{value}</a></strong>')
 
     def render_currency(self, record, value):
         link = reverse('account_id', args=[record.id])

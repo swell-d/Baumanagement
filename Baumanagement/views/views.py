@@ -89,7 +89,7 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
                                   'comments': comments, 'form': CommentFormClass(), 'files_form': []})
     else:
         queryset = baseClass.extra_fields(queryset)
-        table1 = tableClass(queryset)
+        table1 = tableClass(queryset, orderable=False, object_table=True)
         RequestConfig(request).configure(table1)
         context['table1'] = table1
 

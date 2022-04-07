@@ -7,12 +7,18 @@ from django.utils.encoding import force_str
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+modal = '#ModalForm" data-bs-toggle="modal" data-bs-target="#ModalForm'
+
 
 def delete_none_values(value):
     return str(value) if value is not None else ''
 
 
 class MyTable(tables.Table):
+    def __init__(self, *args, **kwargs):
+        self.object_table = kwargs.pop('object_table', False)
+        super().__init__(*args, **kwargs)
+
     class Meta:
         empty_text = _("No results found")
         template_name = "django_tables2_custom.html"
