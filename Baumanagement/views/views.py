@@ -35,7 +35,7 @@ def myrender(request, context):
 
 def upload_files(request, new_object):
     for file in request.FILES.getlist('file'):
-        file_instance = File.objects.create(name=file.name, file=file)
+        file_instance = File.objects.create(name=file.name, file=file, created_by=request.user)
         new_object.file_ids.append(file_instance.id)
         new_object.save(user=request.user)
         messages.success(request, f'{file.name} {_("uploaded")}')
