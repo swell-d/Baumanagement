@@ -35,8 +35,7 @@ def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
     payment = queryset.first()
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url),
-                               'text': f'{_("All")} {baseClass._meta.verbose_name_plural}'},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'link': reverse('project_id_payments', args=[payment.contract.project.id]),
                                'text': payment.contract.project.name},
                               {'link': reverse('contract_id_payments', args=[payment.contract.id]),
@@ -56,8 +55,7 @@ def company_payments(request, id):
     context = {'titel1': f'{_("Company")} "{company.name}" - {_("Payments")}'}
     queryset = baseClass.objects.filter(Q(account_from__company=company) | Q(account_to__company=company))
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url),
-                               'text': f'{_("All")} {baseClass._meta.verbose_name_plural}'},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'text': company.name}]
 
     form = FormClass()
@@ -73,8 +71,7 @@ def project_payments(request, id):
     context = {'titel1': f'{_("Project")} "{project.name}" - {_("Payments")}'}
     queryset = baseClass.objects.filter(contract__project=project)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url),
-                               'text': f'{_("All")} {baseClass._meta.verbose_name_plural}'},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'text': project.name}]
 
     form = FormClass()
@@ -90,8 +87,7 @@ def contract_payments(request, id):
     context = {'titel1': f'{_("Contract")} "{contract.name}" - {_("Payments")}'}
     queryset = baseClass.objects.filter(contract=contract)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url),
-                               'text': f'{_("All")} {baseClass._meta.verbose_name_plural}'},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'link': reverse('project_id_payments', args=[contract.project.id]),
                                'text': contract.project.name},
                               {'text': contract.name}]

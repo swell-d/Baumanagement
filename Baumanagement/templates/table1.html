@@ -4,6 +4,7 @@
     <div class="row">
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb mb-0">
+                <strong>{{ breadcrumbs_titel }}:</strong>&nbsp;&nbsp;
                 {% for each in breadcrumbs %}
                     <li class="breadcrumb-item">
                         {% if each.link %}<a class="" href="{{ each.link }}">{% endif %}
