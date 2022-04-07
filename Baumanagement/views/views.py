@@ -94,12 +94,12 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
         context['table1'] = table1
 
 
-def generate_next_objects_table(request, context, baseClass, tableClass, queryset):
+def generate_next_objects_table(request, context, baseClass, tableClass, queryset, titel=None):
     queryset = baseClass.extra_fields(queryset)
     table = tableClass(queryset, order_by="-created", orderable=False)
     RequestConfig(request).configure(table)
-    context['tables'].append({'table': table, 'titel': baseClass._meta.verbose_name_plural, 'count': len(table.rows),
-                              'link': f'{request.path}/{baseClass.__name__.lower()}s'})
+    context['tables'].append({'table': table, 'titel': titel or baseClass._meta.verbose_name_plural,
+                              'count': len(table.rows), 'link': f'{request.path}/{baseClass.__name__.lower()}s'})
 
 
 def create_new_object(request, cls):

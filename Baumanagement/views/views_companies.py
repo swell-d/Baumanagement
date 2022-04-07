@@ -7,7 +7,8 @@ from django.utils.translation import gettext_lazy as _
 from Baumanagement.models.models import Bill, Payment, Contract
 from Baumanagement.models.models_company import CompanyRole, Company
 from Baumanagement.tables.tables_companies import CompanyTable
-from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
+from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
+    generate_next_objects_table
 from Baumanagement.views.views_accounts import generate_accounts_by_queryset
 from Baumanagement.views.views_bills import generate_bills_by_queryset
 from Baumanagement.views.views_contacts import generate_contacts_by_queryset
@@ -65,6 +66,14 @@ def object_table(request, id):
 
     payments = Payment.objects.filter(Q(account_from__company=company) | Q(account_to__company=company))
     generate_payments_by_queryset(request, context, payments)
+
+    partners_ids = set()
+    for each in contracts:
+        partners_ids.add(each.company.id)
+        partners_ids.add(each.project.company.id)
+    partners_ids.remove(company.id)
+    partners = Company.objects.filter(id__in=partners_ids)
+    generate_next_objects_table(request, context, baseClass, tableClass, partners, _('Partners'))
 
     return myrender(request, context)
 
