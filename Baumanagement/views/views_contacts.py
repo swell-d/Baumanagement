@@ -43,7 +43,7 @@ def object_table(request, id):
 
 def company_contacts(request, id):
     company = Company.objects.get(id=id)
-    context = {'titel1': f'{_("Company")} "{company.name}" - {_("Contacts")}'}
+    context = {}
     queryset = company.contacts.all()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},

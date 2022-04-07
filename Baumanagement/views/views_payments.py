@@ -54,7 +54,7 @@ def object_table(request, id):
 
 def company_payments(request, id):
     company = Company.objects.get(id=id)
-    context = {'titel1': f'{_("Company")} "{company.name}" - {_("Payments")}'}
+    context = {}
     queryset = baseClass.objects.filter(Q(account_from__company=company) | Q(account_to__company=company))
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
@@ -70,7 +70,7 @@ def company_payments(request, id):
 
 def project_payments(request, id):
     project = Project.objects.get(id=id)
-    context = {'titel1': f'{_("Project")} "{project.name}" - {_("Payments")}'}
+    context = {}
     queryset = baseClass.objects.filter(contract__project=project)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
@@ -88,7 +88,7 @@ def project_payments(request, id):
 
 def contract_payments(request, id):
     contract = Contract.objects.get(id=id)
-    context = {'titel1': f'{_("Contract")} "{contract.name}" - {_("Payments")}'}
+    context = {}
     queryset = baseClass.objects.filter(contract=contract)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},

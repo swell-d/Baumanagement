@@ -77,7 +77,7 @@ def disable_children(request, contract):
 
 def company_contracts(request, id):
     company = Company.objects.get(id=id)
-    context = {'titel1': f'{_("Company")} "{company.name}" - {_("Contracts")}'}
+    context = {}
     queryset = baseClass.objects.filter(Q(project__company=company) | Q(company=company))
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
@@ -89,7 +89,7 @@ def company_contracts(request, id):
 
 def project_contracts(request, id):
     project = Project.objects.get(id=id)
-    context = {'titel1': f'{_("Project")} "{project.name}" - {_("Contracts")}'}
+    context = {}
     queryset = project.contracts.all()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},

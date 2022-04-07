@@ -84,7 +84,7 @@ def object_table(request, id):
 
 def companies_by_role(request, id):
     role = CompanyRole.objects.get(id=id)
-    context = {'titel1': f'{_("Roles")} - {role.name}'}
+    context = {}
     queryset = baseClass.objects.filter(role=id)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},

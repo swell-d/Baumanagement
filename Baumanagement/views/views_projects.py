@@ -57,7 +57,7 @@ def object_table(request, id):
 
 def company_projects(request, id):
     company = Company.objects.get(id=id)
-    context = {'titel1': f'{_("Company")} "{company.name}" - {_("Projects")}'}
+    context = {}
     queryset = company.projects.all()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},

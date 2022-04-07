@@ -1,6 +1,9 @@
 {% extends "base.html" %}
 
-{% block title %}{{ titel1 }}{% endblock %}
+{% block title %}
+    {{ breadcrumbs_titel }} - {% with breadcrumbs|last as last %}{{ last.text }}{% endwith %}
+{% endblock %}
+
 
 {% block content %}
 
