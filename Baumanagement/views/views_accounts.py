@@ -1,4 +1,5 @@
 from django import forms
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Account, Company, Currency
@@ -31,6 +32,13 @@ def objects_table(request):
 def object_table(request, id):
     context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
+    account = queryset.first()
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'link': reverse('company_id_accounts', args=[account.company.id]),
+                               'text': account.company.name},
+                              {'text': account.name}]
+
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
@@ -39,6 +47,9 @@ def company_accounts(request, id):
     company = Company.objects.get(id=id)
     context = {'titel1': f'{_("Company")} "{company.name}" - {_("Accounts")}'}
     queryset = company.accounts.all()
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'text': company.name}]
 
     form = FormClass()
     form.fields["company"].initial = company

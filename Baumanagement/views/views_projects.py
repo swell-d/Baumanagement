@@ -1,4 +1,5 @@
 from django import forms
+from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models import Project, Bill, Payment
@@ -33,6 +34,13 @@ def objects_table(request):
 def object_table(request, id):
     context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
+    project = queryset.first()
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'link': reverse('company_id_projects', args=[project.company.id]),
+                               'text': project.company.name},
+                              {'text': queryset.first().name}]
+
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
 
     contracts = queryset.first().contracts.all()
@@ -51,6 +59,9 @@ def company_projects(request, id):
     company = Company.objects.get(id=id)
     context = {'titel1': f'{_("Company")} "{company.name}" - {_("Projects")}'}
     queryset = company.projects.all()
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'text': company.name}]
 
     form = FormClass()
     form.fields["company"].initial = company

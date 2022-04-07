@@ -45,6 +45,10 @@ def object_table(request, id):
     context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
     company = queryset.first()
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'text': company.name}]
+
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
 
     accounts = company.accounts.all()
@@ -82,6 +86,10 @@ def companies_by_role(request, id):
     role = CompanyRole.objects.get(id=id)
     context = {'titel1': f'{_("Roles")} - {role.name}'}
     queryset = baseClass.objects.filter(role=id)
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'text': role.name}]
+
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     context['tags1'] = roles_tags()
     return myrender(request, context)

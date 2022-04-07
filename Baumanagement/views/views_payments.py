@@ -36,6 +36,8 @@ def object_table(request, id):
     payment = queryset.first()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'link': reverse('company_id_payments', args=[payment.contract.project.company.id]),
+                               'text': payment.contract.project.company.name},
                               {'link': reverse('project_id_payments', args=[payment.contract.project.id]),
                                'text': payment.contract.project.name},
                               {'link': reverse('contract_id_payments', args=[payment.contract.id]),
@@ -72,6 +74,8 @@ def project_payments(request, id):
     queryset = baseClass.objects.filter(contract__project=project)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'link': reverse('company_id_payments', args=[project.company.id]),
+                               'text': project.company.name},
                               {'text': project.name}]
 
     form = FormClass()
@@ -88,6 +92,8 @@ def contract_payments(request, id):
     queryset = baseClass.objects.filter(contract=contract)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'link': reverse('company_id_payments', args=[contract.project.company.id]),
+                               'text': contract.project.company.name},
                               {'link': reverse('project_id_payments', args=[contract.project.id]),
                                'text': contract.project.name},
                               {'text': contract.name}]

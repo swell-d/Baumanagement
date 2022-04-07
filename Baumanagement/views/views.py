@@ -56,6 +56,7 @@ def add_comment_to_object(request, new_object):
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
     if not request.GET:
         context.setdefault('breadcrumbs_titel', baseClass._meta.verbose_name_plural)
+        context.setdefault('breadcrumbs', [{'text': _("All")}])
         context.setdefault('titel1', f'{_("All")} {baseClass._meta.verbose_name_plural}')
         new_object_form(request, context, formClass)
         context['search_field'] = True

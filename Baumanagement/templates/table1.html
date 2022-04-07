@@ -1,47 +1,41 @@
 {% load i18n %}
 
-{% if breadcrumbs %}
-    <div class="row">
+<div class="row">
+    <div class="col-md-auto d-flex align-items-center">
+        <h2>{{ breadcrumbs_titel }}:</h2>&nbsp;&nbsp;
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-            <ol class="breadcrumb mb-0">
-                <strong>{{ breadcrumbs_titel }}:</strong>&nbsp;&nbsp;
+            <ol class="breadcrumb mb-0 h5">
                 {% for each in breadcrumbs %}
-                    <li class="breadcrumb-item">
-                        {% if each.link %}<a class="" href="{{ each.link }}">{% endif %}
-                        {{ each.text }}
-                        {% if each.link %}</a>{% endif %}
-                    </li>
+                <li class="breadcrumb-item">
+                    {% if each.link %}<a class="" href="{{ each.link }}">{% endif %}
+                    {{ each.text }}
+                    {% if each.link %}</a>{% endif %}
+                </li>
                 {% endfor %}
             </ol>
         </nav>
-    </div>
-{% endif %}
-
-<div class="row">
-    <div class="col d-flex align-items-center">
-        <span class="h1">{{ titel1 }}</span>
     </div>
     <div class="col d-flex align-items-center justify-content-end">
         {% if form %}{% include "form.html" %}{% endif %}
     </div>
     <div class="col d-flex align-items-center justify-content-end">
         {% if search_field %}
-            <input class="form-control m-2" type="date" id="dateFrom" name="dateFrom" onchange="mainTableReload()">
-            —
-            <input class="form-control m-2" type="date" id="dateTo" name="dateTo" onchange="mainTableReload()">
-            <input class="form-control m-2" type="text" id="search" name="search" oninput="mainTableReload()"
-                   placeholder="{% blocktrans %}Search{% endblocktrans %}">
+        <input class="form-control m-2" type="date" id="dateFrom" name="dateFrom" onchange="mainTableReload()">
+        —
+        <input class="form-control m-2" type="date" id="dateTo" name="dateTo" onchange="mainTableReload()">
+        <input class="form-control m-2" type="text" id="search" name="search" oninput="mainTableReload()"
+               placeholder="{% blocktrans %}Search{% endblocktrans %}">
         {% endif %}
         <input type="hidden" id="sort" name="sort">
     </div>
 </div>
 
 {% if tags1 %}
-    <div class="row">
-        <div class="col">
-            {{ tags1 }}
-        </div>
+<div class="row">
+    <div class="col">
+        {{ tags1 }}
     </div>
+</div>
 {% endif %}
 
 <div class="row" id="main-table">
