@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-04 18:15+0200\n"
+"POT-Creation-Date: 2022-04-07 08:36+0200\n"
 "PO-Revision-Date: 2022-04-03 22:37+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,21 +18,10 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: .\BM\settings.py:120
+#: .\BM\settings.py:122
 msgid "Deutsch"
 msgstr "Deutsch"
 
-#: .\BM\settings.py:121
+#: .\BM\settings.py:123
 msgid "English"
 msgstr "English"
-
-#: .\tmp.py:15
-msgid "Buy"
-msgstr "Kauf"
-
-#: .\tmp.py:16
-msgid "Sell"
-msgstr "Verkauf"
-
-#~ msgid "My company"
-#~ msgstr "Meine Firma"
