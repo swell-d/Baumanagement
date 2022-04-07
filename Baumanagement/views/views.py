@@ -77,7 +77,7 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
 
 def generate_object_table(request, context, baseClass, tableClass, formClass, queryset):
     if not request.GET:
-        context.setdefault('breadcrumbs_titel', baseClass._meta.verbose_name_plural)
+        context.setdefault('breadcrumbs_titel', baseClass._meta.verbose_name)
         edit_object_form(request, context, formClass, queryset.first())
 
         comment_ids = queryset.first().comment_ids
