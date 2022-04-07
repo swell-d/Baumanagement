@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% get_current_language as lang %}
 
-<button type="button" class="btn btn-outline-secondary m-2" data-bs-toggle="modal" data-bs-target="#ModalForm">
+<button type="button" class="btn btn-secondary m-2" data-bs-toggle="modal" data-bs-target="#ModalForm">
     {% if "New" in buttons %}{% translate "New" %}{% endif %}{% if "Edit" in buttons %}{% translate "Edit" %}{% endif %}
 </button>
 
