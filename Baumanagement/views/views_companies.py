@@ -26,7 +26,7 @@ class FormClass(forms.ModelForm):
         fields = baseClass.form_fields
 
 
-def roles_tags():
+def tags():
     html = f'''<a href="{reverse('companies')}">{_('All')}</a> ({baseClass.objects.count()}), '''
     html += ', '.join(
         f'''<a href="{reverse('companies_id', args=[role.id])}">{role.name}</a> ({role.count_companies})'''
@@ -37,7 +37,7 @@ def roles_tags():
 def objects_table(request):
     context = {}
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
-    context['tags1'] = roles_tags()
+    context['tags1'] = tags()
     return myrender(request, context)
 
 
@@ -91,5 +91,5 @@ def companies_by_role(request, id):
                               {'text': role.name}]
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
-    context['tags1'] = roles_tags()
+    context['tags1'] = tags()
     return myrender(request, context)

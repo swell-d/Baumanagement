@@ -1,10 +1,11 @@
 from django import forms
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_contracts import Bill, Payment
-from Baumanagement.models.models_projects import Project
+from Baumanagement.models.models_projects import Project, ProjectTag
 from Baumanagement.tables.tables_projects import ProjectTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
@@ -26,8 +27,17 @@ class FormClass(forms.ModelForm):
         fields = baseClass.form_fields
 
 
+def tags():
+    html = f'''<a href="{reverse('projects')}">{_('All')}</a> ({baseClass.objects.count()}), '''
+    html += ', '.join(
+        f'''<a href="{reverse('projects_id', args=[tag.id])}">{tag.name}</a> ({tag.count_projects})'''
+        for tag in ProjectTag.objects.order_by('name') if tag.count_projects > 0)
+    return format_html(html)
+
+
 def objects_table(request):
     context = {}
+    context['tags1'] = tags()
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
@@ -75,3 +85,16 @@ def company_projects(request, id):
 
 def generate_projects_by_queryset(request, context, queryset):
     generate_next_objects_table(request, context, baseClass, tableClass, queryset)
+
+
+def projects_by_tag(request, id):
+    tag = ProjectTag.objects.get(id=id)
+    context = {}
+    queryset = baseClass.objects.filter(tag=id)
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'text': tag.name}]
+
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
+    context['tags1'] = tags()
+    return myrender(request, context)
