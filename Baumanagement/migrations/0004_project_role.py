@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='project',
             name='role',
-            field=models.ForeignKey(default=ProjectRole.objects.get_or_create(name='Sonstige', created_by_id=1)[0].id,
+            field=models.ForeignKey(default=None,
                                     on_delete=django.db.models.deletion.RESTRICT, related_name='projects',
                                     to='Baumanagement.projectrole', verbose_name='Role'),
             preserve_default=False,
