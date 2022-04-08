@@ -36,6 +36,7 @@ def main():
         'Contract': {'en': 'Contract', 'de': 'Auftrag'},
         'Bill': {'en': 'Bill', 'de': 'Rechnung'},
         'Payment': {'en': 'Payment', 'de': 'Zahlung'},
+        'Other': {'en': 'Other', 'de': 'Sonstige'},
     }
 
     CompanyRole = apps.get_model("Baumanagement", "CompanyRole")
@@ -61,8 +62,12 @@ def main():
     company3_account_usd = Account.objects.get_or_create(company=company3, name="USD", currency=usd,
                                                          created_by=admin)[0]
 
+    ProjectRole = apps.get_model("Baumanagement", "ProjectRole")
+    projectrole = ProjectRole.objects.get_or_create(name=trans['Other'][lang], created_by=admin)[0]
+
     Project = apps.get_model("Baumanagement", "Project")
-    project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1, created_by=admin)[0]
+    project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1,
+                                            projectrole=projectrole, created_by=admin)[0]
 
     Contract = apps.get_model("Baumanagement", "Contract")
     contract1 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #1", project=project,

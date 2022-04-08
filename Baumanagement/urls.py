@@ -1,13 +1,13 @@
 from django.urls import path
 
 from .views import views_bills, views_companies, views_delete, views_contracts, views_payments, views_projects, \
-    views_accounts, views_comments, views_roles, views_currencies, views_contacts
+    views_accounts, views_comments, views_companyroles, views_currencies, views_contacts, views_projectroles
 
 urlpatterns = [
     path("", views_projects.objects_table, name='index'),
 
-    path("companyroles", views_roles.objects_table, name="companyroles"),
-    path("companyrole/<int:id>", views_roles.object_table, name="companyrole_id"),
+    path("companyroles", views_companyroles.objects_table, name="companyroles"),
+    path("companyrole/<int:id>", views_companyroles.object_table, name="companyrole_id"),
 
     path("companies", views_companies.objects_table, name="companies"),
     path("companies/<int:id>", views_companies.companies_by_role, name="companies_id"),
@@ -27,6 +27,9 @@ urlpatterns = [
 
     path("contacts", views_contacts.objects_table, name="contacts"),
     path("contact/<int:id>", views_contacts.object_table, name="contact_id"),
+
+    path("projectroles", views_projectroles.objects_table, name="projectroles"),
+    path("projectrole/<int:id>", views_projectroles.object_table, name="projectrole_id"),
 
     path("projects", views_projects.objects_table, name="projects"),
     path("project/<int:id>", views_projects.object_table, name="project_id"),

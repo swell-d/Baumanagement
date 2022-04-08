@@ -1,11 +1,13 @@
 from django.contrib import admin
 
-from Baumanagement.models.models import Project, Contract, Payment, Bill
+from Baumanagement.models.models import Contract, Payment, Bill
+from Baumanagement.models.models_projects import Project, ProjectRole
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
 from Baumanagement.models.models_files import File
 
 admin.site.register(CompanyRole)
+admin.site.register(ProjectRole)
 admin.site.register(Company)
 admin.site.register(Currency)
 admin.site.register(Account)

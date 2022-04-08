@@ -40,8 +40,22 @@
                         </li>
                     </ul>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'projects' %}">{% translate "Projects" %}</a>
+                <li class="nav-item  dropdown">
+                     <a class="nav-link active dropdown-toggle" href="#" id="companyDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {% translate "Projects" %}
+                    </a>
+                    <ul class="dropdown-menu me-10" aria-labelledby="companyDropdown">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'projects' %}">{% translate "Projects" %}</a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="{% url 'projectroles' %}">{% translate "Roles" %}</a>
+                        </li>
+                    </ul>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link active dropdown-toggle" href="#" id="contractDropdown" role="button"

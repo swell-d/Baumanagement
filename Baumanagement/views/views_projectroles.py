@@ -2,12 +2,12 @@ from django import forms
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import CompanyRole
-from Baumanagement.tables.tables_roles import CompanyRoleTable
+from Baumanagement.models.models_projects import ProjectRole
+from Baumanagement.tables.tables_projectroles import ProjectRoleTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
 
-baseClass = CompanyRole
-tableClass = CompanyRoleTable
+baseClass = ProjectRole
+tableClass = ProjectRoleTable
 
 
 class FormClass(forms.ModelForm):
