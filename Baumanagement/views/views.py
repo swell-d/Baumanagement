@@ -33,6 +33,11 @@ def myrender(request, context):
     return render(request, template, context)
 
 
+@login_required
+def my404(request):
+    return render(request, '404.html')
+
+
 def upload_files(request, new_object):
     for file in request.FILES.getlist('file'):
         file_instance = File.objects.create(name=file.name, file=file, created_by=request.user)

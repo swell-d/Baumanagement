@@ -81,3 +81,14 @@ input#dateFrom, input#dateTo, input#search {
 .modal-body div.mb-3 {
     margin-bottom: 0.5rem!important;
 }
+
+div.center h1 {
+  text-align: center;
+  top: 50%;
+  left: 50%;
+  width: 450px;
+  height: 100px;
+  position: absolute;
+  margin-top: -50px;
+  margin-left: -225px;
+}
