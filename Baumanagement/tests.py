@@ -4,11 +4,11 @@ from pathlib import Path
 from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 
-from Baumanagement.models.models import Contract, Payment, Bill
-from Baumanagement.models.models_projects import Project, ProjectType
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
+from Baumanagement.models.models_contracts import Contract, Payment, Bill
 from Baumanagement.models.models_files import File
+from Baumanagement.models.models_projects import Project, ProjectType
 from Baumanagement.urls import get_urls
 
 
