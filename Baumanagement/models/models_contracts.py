@@ -7,6 +7,27 @@ from Baumanagement.models.models_company import Company, Currency, Account
 from Baumanagement.models.models_projects import Project
 
 
+class ContractType(BaseModel):
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Type'))
+
+    class Meta:
+        verbose_name = _('Type')
+        verbose_name_plural = _('Types')
+
+    @staticmethod
+    def extra_fields(qs):
+        return qs.all()
+
+    @property
+    def count_contracts(self):
+        return self.contracts.count()
+
+    url = 'contracttypes'
+    table_fields = 'name',
+    search_fields = 'name',
+    form_fields = 'name',
+
+
 class Contract(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Contract name'))
     date = models.DateField(null=True, blank=True, verbose_name=_('Date'))
@@ -16,6 +37,9 @@ class Contract(BaseModel, PriceModel, FileModel):
                                  on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
+    tag = models.ForeignKey(ContractType, blank=False, verbose_name=_('Type'),
+                             on_delete=models.RESTRICT, related_name='contracts')
+
     BUY = PriceModel.BUY
     SELL = PriceModel.SELL
     TYPE_CHOISES = PriceModel.TYPE_CHOISES
@@ -32,9 +56,9 @@ class Contract(BaseModel, PriceModel, FileModel):
             .annotate(due=Sum(Case(When(bills__open=True, then='bills__amount_brutto')), distinct=True))
 
     url = 'contracts'
-    table_fields = 'created', 'project', 'company', 'name', 'date', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
-    search_fields = 'project__name', 'company__name', 'type', 'name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
-    form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'currency', 'amount_netto_positiv', 'vat'
+    table_fields = 'created', 'project', 'company', 'name', 'date', 'tag', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    search_fields = 'project__name', 'company__name', 'type', 'name', 'tag__name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'tag', 'currency', 'amount_netto_positiv', 'vat'
 
 
 class Bill(BaseModel, PriceModel, FileModel):

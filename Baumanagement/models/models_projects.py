@@ -19,7 +19,7 @@ class ProjectType(BaseModel):
 
     @property
     def count_projects(self):
-        return self.companies.count()
+        return self.projects.count()
 
     url = 'projecttypes'
     table_fields = 'name',
@@ -32,8 +32,8 @@ class Project(BaseModel, AddressModel, FileModel):
     code = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')
-    type = models.ForeignKey(ProjectType, blank=False, verbose_name=_('Type'), on_delete=models.RESTRICT,
-                             related_name='projects')
+    type = models.ForeignKey(ProjectType, blank=False, verbose_name=_('Type'),
+                             on_delete=models.RESTRICT, related_name='projects')
 
     class Meta:
         verbose_name = _('Project')

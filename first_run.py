@@ -72,13 +72,19 @@ def main():
     project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1,
                                             type=projecttype, created_by=admin)[0]
 
+    ContractType = apps.get_model("Baumanagement", "ContractType")
+    if not ContractType.objects.filter(name=trans['Other'][lang]):
+        contracttype = ContractType.objects.get_or_create(name=trans['Other'][lang], created_by=admin)[0]
+    else:
+        contracttype = ContractType.objects.get(name=trans['Other'][lang])
+
     Contract = apps.get_model("Baumanagement", "Contract")
     contract1 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #1", project=project,
                                                company=company2, type=Contract.BUY, currency=eur,
-                                               amount_netto_positiv=100, vat=19, created_by=admin)[0]
+                                               amount_netto_positiv=100, vat=19, created_by=admin, tag=contracttype)[0]
     contract2 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #2", project=project,
                                                company=company3, type=Contract.SELL, currency=usd,
-                                               amount_netto_positiv=200, vat=19, created_by=admin)[0]
+                                               amount_netto_positiv=200, vat=19, created_by=admin, tag=contracttype)[0]
 
     Bill = apps.get_model("Baumanagement", "Bill")
     Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #1.1", contract=contract1,
