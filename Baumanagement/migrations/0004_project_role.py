@@ -3,8 +3,6 @@
 import django.db.models.deletion
 from django.db import migrations, models
 
-from Baumanagement.models.models_projects import ProjectRole
-
 
 class Migration(migrations.Migration):
     dependencies = [
