@@ -33,8 +33,7 @@ def myrender(request, context):
     return render(request, template, context)
 
 
-@login_required
-def my404(request):
+def my404(request, exception):
     return render(request, '404.html')
 
 
