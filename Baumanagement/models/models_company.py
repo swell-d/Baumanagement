@@ -5,7 +5,7 @@ from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel
 
 
 class CompanyRole(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Role'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Role'), unique=True)
 
     class Meta:
         verbose_name = _('Role')
@@ -26,7 +26,7 @@ class CompanyRole(BaseModel):
 
 
 class Company(BaseModel, AddressModel, FileModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Company name'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Company name'), unique=True)
     email = models.EmailField(null=False, blank=True, verbose_name=_('E-mail'))
     phone = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Phone'))
     role = models.ManyToManyField(CompanyRole, blank=False, verbose_name=_('Role'), related_name='companies')
@@ -54,9 +54,9 @@ class Company(BaseModel, AddressModel, FileModel):
 
 
 class Currency(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
-    code = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Code'))
-    symbol = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Symbol'), default='')
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'), unique=True)
+    code = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Code'), unique=True)
+    symbol = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Symbol'), default='', unique=True)
     rate = models.FloatField(verbose_name=_('Rate'), default=1)
 
     class Meta:

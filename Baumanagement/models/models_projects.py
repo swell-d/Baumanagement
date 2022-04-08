@@ -7,7 +7,7 @@ from Baumanagement.models.models_company import Company
 
 
 class ProjectTag(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Type'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Type'), unique=True)
 
     class Meta:
         verbose_name = _('Type')
@@ -28,7 +28,7 @@ class ProjectTag(BaseModel):
 
 
 class Project(BaseModel, AddressModel, FileModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Project name'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Project name'), unique=True)
     code = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')

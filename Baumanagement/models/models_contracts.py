@@ -8,7 +8,7 @@ from Baumanagement.models.models_projects import Project
 
 
 class ContractTag(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Type'))
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Type'), unique=True)
 
     class Meta:
         verbose_name = _('Type')
