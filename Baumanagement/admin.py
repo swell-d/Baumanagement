@@ -4,10 +4,10 @@ from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
 from Baumanagement.models.models_contracts import Contract, Payment, Bill, ContractType
 from Baumanagement.models.models_files import File
-from Baumanagement.models.models_projects import Project, ProjectType
+from Baumanagement.models.models_projects import Project, ProjectTag
 
 admin.site.register(CompanyRole)
-admin.site.register(ProjectType)
+admin.site.register(ProjectTag)
 admin.site.register(Company)
 admin.site.register(Currency)
 admin.site.register(Account)

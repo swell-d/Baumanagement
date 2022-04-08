@@ -6,7 +6,7 @@ from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel
 from Baumanagement.models.models_company import Company
 
 
-class ProjectType(BaseModel):
+class ProjectTag(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Type'))
 
     class Meta:
@@ -21,7 +21,7 @@ class ProjectType(BaseModel):
     def count_projects(self):
         return self.projects.count()
 
-    url = 'projecttypes'
+    url = 'projecttags'
     table_fields = 'name',
     search_fields = 'name',
     form_fields = 'name',
@@ -32,7 +32,7 @@ class Project(BaseModel, AddressModel, FileModel):
     code = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')
-    tag = models.ForeignKey(ProjectType, blank=False, verbose_name=_('Type'),
+    tag = models.ForeignKey(ProjectTag, blank=False, verbose_name=_('Type'),
                              on_delete=models.RESTRICT, related_name='projects')
 
     class Meta:

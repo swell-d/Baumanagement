@@ -62,15 +62,15 @@ def main():
     company3_account_usd = Account.objects.get_or_create(company=company3, name="USD", currency=usd,
                                                          created_by=admin)[0]
 
-    ProjectType = apps.get_model("Baumanagement", "ProjectType")
-    if not ProjectType.objects.filter(name=trans['Other'][lang]):
-        projecttype = ProjectType.objects.get_or_create(name=trans['Other'][lang], created_by=admin)[0]
+    ProjectTag = apps.get_model("Baumanagement", "ProjectTag")
+    if not ProjectTag.objects.filter(name=trans['Other'][lang]):
+        projecttag = ProjectTag.objects.get_or_create(name=trans['Other'][lang], created_by=admin)[0]
     else:
-        projecttype = ProjectType.objects.get(name=trans['Other'][lang])
+        projecttag = ProjectTag.objects.get(name=trans['Other'][lang])
 
     Project = apps.get_model("Baumanagement", "Project")
     project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1,
-                                            tag=projecttype, created_by=admin)[0]
+                                            tag=projecttag, created_by=admin)[0]
 
     ContractType = apps.get_model("Baumanagement", "ContractType")
     if not ContractType.objects.filter(name=trans['Other'][lang]):

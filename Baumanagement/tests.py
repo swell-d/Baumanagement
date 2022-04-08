@@ -8,7 +8,7 @@ from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
 from Baumanagement.models.models_contracts import Contract, Payment, Bill, ContractType
 from Baumanagement.models.models_files import File
-from Baumanagement.models.models_projects import Project, ProjectType
+from Baumanagement.models.models_projects import Project, ProjectTag
 from Baumanagement.urls import get_urls
 
 
@@ -30,8 +30,8 @@ class UrlTests(TestCase):
                                               created_by=user)
         self.Contact = Contact.objects.create(name='test', company=self.Company, created_by=user)
 
-        self.ProjectType = ProjectType.objects.create(name='test', created_by=user)
-        self.Project = Project.objects.create(name='test', company=self.Company, created_by=user, tag=self.ProjectType)
+        self.ProjectTag = ProjectTag.objects.create(name='test', created_by=user)
+        self.Project = Project.objects.create(name='test', company=self.Company, created_by=user, tag=self.ProjectTag)
 
         self.ContractType = ContractType.objects.create(name='test', created_by=user)
         self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,
