@@ -7,7 +7,7 @@ from Baumanagement.models.models_company import Company, Currency, Account
 from Baumanagement.models.models_projects import Project
 
 
-class ContractType(BaseModel):
+class ContractTag(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Type'))
 
     class Meta:
@@ -22,7 +22,7 @@ class ContractType(BaseModel):
     def count_contracts(self):
         return self.contracts.count()
 
-    url = 'contracttypes'
+    url = 'contracttags'
     table_fields = 'name',
     search_fields = 'name',
     form_fields = 'name',
@@ -37,7 +37,7 @@ class Contract(BaseModel, PriceModel, FileModel):
                                  on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
-    tag = models.ForeignKey(ContractType, blank=False, verbose_name=_('Type'),
+    tag = models.ForeignKey(ContractTag, blank=False, verbose_name=_('Type'),
                              on_delete=models.RESTRICT, related_name='contracts')
 
     BUY = PriceModel.BUY

@@ -6,7 +6,7 @@ from django.test import TestCase, Client
 
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
-from Baumanagement.models.models_contracts import Contract, Payment, Bill, ContractType
+from Baumanagement.models.models_contracts import Contract, Payment, Bill, ContractTag
 from Baumanagement.models.models_files import File
 from Baumanagement.models.models_projects import Project, ProjectTag
 from Baumanagement.urls import get_urls
@@ -33,11 +33,11 @@ class UrlTests(TestCase):
         self.ProjectTag = ProjectTag.objects.create(name='test', created_by=user)
         self.Project = Project.objects.create(name='test', company=self.Company, created_by=user, tag=self.ProjectTag)
 
-        self.ContractType = ContractType.objects.create(name='test', created_by=user)
+        self.ContractTag = ContractTag.objects.create(name='test', created_by=user)
         self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,
                                                 amount_netto=1, vat=1, date=datetime.now(),
                                                 type=Contract.BUY, currency=self.Currency, created_by=user,
-                                                tag=self.ContractType)
+                                                tag=self.ContractTag)
 
         self.Payment = Payment.objects.create(name='test', contract=self.Contract, amount_netto=1, vat=1,
                                               date=datetime.now(), created_by=user,
