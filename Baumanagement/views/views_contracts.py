@@ -2,10 +2,11 @@ from django import forms
 from django.contrib import messages
 from django.db.models import Q
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company, Currency
-from Baumanagement.models.models_contracts import Contract
+from Baumanagement.models.models_contracts import Contract, ContractTag
 from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_contracts import ContractTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
@@ -31,8 +32,17 @@ class FormClass(forms.ModelForm):
         widgets = {'date': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')}
 
 
+def tags():
+    html = f'''<a href="{reverse('contracts')}">{_('All')}</a> ({baseClass.objects.count()}), '''
+    html += ', '.join(
+        f'''<a href="{reverse('contracts_id', args=[tag.id])}">{tag.name}</a> ({tag.count_contracts})'''
+        for tag in ContractTag.objects.order_by('name') if tag.count_contracts > 0)
+    return format_html(html)
+
+
 def objects_table(request):
     context = {}
+    context['tags1'] = tags()
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
@@ -109,3 +119,16 @@ def project_contracts(request, id):
 
 def generate_contracts_by_queryset(request, context, queryset):
     generate_next_objects_table(request, context, baseClass, tableClass, queryset)
+
+
+def contracts_by_tag(request, id):
+    tag = ContractTag.objects.get(id=id)
+    context = {}
+    queryset = baseClass.objects.filter(tag=id)
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'text': tag.name}]
+
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
+    context['tags1'] = tags()
+    return myrender(request, context)

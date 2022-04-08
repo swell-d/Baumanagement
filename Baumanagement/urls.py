@@ -43,6 +43,7 @@ urlpatterns = [
     path("contracttag/<int:id>", views_contracttags.object_table, name="contracttag_id"),
 
     path("contracts", views_contracts.objects_table, name="contracts"),
+    path("contracts/<int:id>", views_contracts.contracts_by_tag, name="contracts_id"),
     path("contract/<int:id>", views_contracts.object_table, name="contract_id"),
     path("contract/<int:id>/payments", views_payments.contract_payments, name="contract_id_payments"),
     path("contract/<int:id>/bills", views_bills.contract_bills, name="contract_id_bills"),
