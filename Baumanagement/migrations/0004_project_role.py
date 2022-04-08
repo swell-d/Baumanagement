@@ -3,6 +3,11 @@
 import django.db.models.deletion
 from django.db import migrations, models
 
+def main(apps, schema_editor):
+    db_alias = schema_editor.connection.alias
+    ProjectRole = apps.get_model("Baumanagement", "ProjectRole")
+    ProjectRole.objects.using(db_alias).get_or_create(name="Sonstige", created_by_id=1)
+
 
 class Migration(migrations.Migration):
     dependencies = [
@@ -10,12 +15,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='project',
-            name='role',
-            field=models.ForeignKey(default=None,
-                                    on_delete=django.db.models.deletion.RESTRICT, related_name='projects',
-                                    to='Baumanagement.projectrole', verbose_name='Role'),
-            preserve_default=False,
-        ),
+        migrations.RunPython(main),
     ]
