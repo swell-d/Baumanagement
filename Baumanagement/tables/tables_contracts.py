@@ -32,7 +32,7 @@ class ContractTable(MyTable, Files):
 
     def render_date(self, record, value):
         link = reverse('contract_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y")}</a>')
+        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y") if value else "—"}</a>')
 
     def render_amount_netto(self, record, value):
         link = reverse('contract_id', args=[record.id])
