@@ -104,7 +104,9 @@ def generate_next_objects_table(request, context, baseClass, tableClass, queryse
                               'count': len(table.rows), 'link': f'{request.path}/{baseClass.url}'})
 
 
-def create_new_object(request, cls):
+def create_new_object_or_get_error(request, cls):
+    if request.method != 'POST':
+        return None
     formset = cls(request.POST, request.FILES)
     if formset.is_valid():
         many_to_many_fields = {}
@@ -120,23 +122,25 @@ def create_new_object(request, cls):
         messages.success(request, f'{new_object.name} {_("created")}')
         upload_files(request, new_object)
         add_comment_to_object(request, new_object)
+        return None
     else:
         messages.warning(request, formset.errors)
+        return formset
 
 
 def new_object_form(request, context, cls):
-    if request.method == 'POST':
-        create_new_object(request, cls)
-    context['form'] = context.get('form') or cls()
+    error_form = create_new_object_or_get_error(request, cls)
+    context['form'] = error_form or context.get('form') or cls()
     if 'FileModel' in str(inspect.getmro(cls.Meta.model)):
         context['files_form'] = []
     context['buttons'] = ['New']
 
 
 def edit_object_form(request, context, cls, object):
+    error_form = None
     if request.method == 'POST':
         if request.POST.get('createCopy'):
-            create_new_object(request, cls)
+            error_form = create_new_object_or_get_error(request, cls)
         else:
             formset = cls(request.POST, request.FILES, instance=object)
             if formset.is_valid():
@@ -145,7 +149,8 @@ def edit_object_form(request, context, cls, object):
                 upload_files(request, object)
             else:
                 messages.warning(request, formset.errors)
-    context['form'] = context.get('form') or cls(instance=object)
+                error_form = formset
+    context['form'] = error_form or context.get('form') or cls(instance=object)
     if 'FileModel' in str(inspect.getmro(object.__class__)):
         context['files_form'] = object.files
     context['buttons'] = ['Edit']
