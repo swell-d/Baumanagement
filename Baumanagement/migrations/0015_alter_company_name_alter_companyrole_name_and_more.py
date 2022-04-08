@@ -43,7 +43,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='project',
             name='code',
-            field=models.CharField(blank=True, max_length=256, unique=True, verbose_name='Code'),
+            field=models.CharField(blank=True, max_length=256, verbose_name='Code'),
         ),
         migrations.AlterField(
             model_name='project',
