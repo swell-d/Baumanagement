@@ -11,6 +11,9 @@ function mainTableReload() {
     if ((document.getElementById("sort") || {}).value) {
         urlSearchParams.set('sort', document.getElementById("sort").value);
     }
+    if ((document.getElementById("tag") || {}).value) {
+        urlSearchParams.set('tag', document.getElementById("tag").value);
+    }
     Http.open("GET", location.href.split('?')[0] + '?' + urlSearchParams.toString());
     Http.send();
     Http.onreadystatechange = (e) => {
@@ -21,6 +24,12 @@ function mainTableReload() {
 function mainTableSort(querystring) {
     const urlSearchParams = new URLSearchParams(querystring);
     document.getElementById("sort").value = urlSearchParams.get("sort");
+    mainTableReload();
+}
+
+function mainTableTag(querystring) {
+    const urlSearchParams = new URLSearchParams(querystring);
+    document.getElementById("tag").value = urlSearchParams.get("tag");
     mainTableReload();
 }
 

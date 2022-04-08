@@ -33,9 +33,9 @@ class FormClass(forms.ModelForm):
 
 
 def tags():
-    html = f'''<a href="{reverse('contracts')}">{_('All')}</a> ({baseClass.objects.count()}), '''
+    html = f'''<a href="{reverse('contracts')}">{_('All')}</a>, '''
     html += ', '.join(
-        f'''<a href="{reverse('contracts_id', args=[tag.id])}">{tag.name}</a> ({tag.count_contracts})'''
+        f'''<a onclick="mainTableTag(&quot;?tag={tag.id}&quot;)">#{tag.name}</a>'''
         for tag in ContractTag.objects.order_by('name') if tag.count_contracts > 0)
     return format_html(html)
 
@@ -89,6 +89,7 @@ def disable_children(request, contract):
 def company_contracts(request, id):
     company = Company.objects.get(id=id)
     context = {}
+    context['tags1'] = tags()
     queryset = baseClass.objects.filter(Q(project__company=company) | Q(company=company))
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
@@ -101,6 +102,7 @@ def company_contracts(request, id):
 def project_contracts(request, id):
     project = Project.objects.get(id=id)
     context = {}
+    context['tags1'] = tags()
     queryset = project.contracts.all()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
@@ -124,11 +126,11 @@ def generate_contracts_by_queryset(request, context, queryset):
 def contracts_by_tag(request, id):
     tag = ContractTag.objects.get(id=id)
     context = {}
+    context['tags1'] = tags()
     queryset = baseClass.objects.filter(tag=id)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'text': tag.name}]
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
-    context['tags1'] = tags()
     return myrender(request, context)

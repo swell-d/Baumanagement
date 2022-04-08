@@ -68,6 +68,9 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
         dateTo = request.GET.get('dateTo')
         if dateTo:
             queryset = queryset.filter(created__lt=datetime.strptime(dateTo, "%Y-%m-%d") + timedelta(days=1))
+        tag = request.GET.get('tag')
+        if tag:
+            queryset = queryset.filter(tag=int(tag))
         queryset = baseClass.extra_fields(queryset)
         queryset = add_search_field(queryset, request, context)
         table1 = tableClass(queryset, order_by="-created")
