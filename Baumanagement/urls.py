@@ -1,7 +1,7 @@
 from django.urls import path
 
 from .views import views_bills, views_companies, views_delete, views_contracts, views_payments, views_projects, \
-    views_accounts, views_comments, views_companyroles, views_currencies, views_contacts, views_projectroles
+    views_accounts, views_comments, views_companyroles, views_currencies, views_contacts, views_projecttypes
 
 urlpatterns = [
     path("", views_projects.objects_table, name='index'),
@@ -28,8 +28,8 @@ urlpatterns = [
     path("contacts", views_contacts.objects_table, name="contacts"),
     path("contact/<int:id>", views_contacts.object_table, name="contact_id"),
 
-    path("projectroles", views_projectroles.objects_table, name="projectroles"),
-    path("projectrole/<int:id>", views_projectroles.object_table, name="projectrole_id"),
+    path("projecttypes", views_projecttypes.objects_table, name="projecttypes"),
+    path("projecttype/<int:id>", views_projecttypes.object_table, name="projecttype_id"),
 
     path("projects", views_projects.objects_table, name="projects"),
     path("project/<int:id>", views_projects.object_table, name="project_id"),

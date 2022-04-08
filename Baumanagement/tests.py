@@ -5,7 +5,7 @@ from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 
 from Baumanagement.models.models import Contract, Payment, Bill
-from Baumanagement.models.models_projects import Project, ProjectRole
+from Baumanagement.models.models_projects import Project, ProjectType
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
 from Baumanagement.models.models_files import File
@@ -30,8 +30,8 @@ class UrlTests(TestCase):
                                               created_by=user)
         self.Contact = Contact.objects.create(name='test', company=self.Company, created_by=user)
 
-        self.ProjectRole = ProjectRole.objects.create(name='test', created_by=user)
-        self.Project = Project.objects.create(name='test', company=self.Company, created_by=user, role=self.ProjectRole)
+        self.ProjectType = ProjectType.objects.create(name='test', created_by=user)
+        self.Project = Project.objects.create(name='test', company=self.Company, created_by=user, type=self.ProjectType)
         self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,
                                                 amount_netto=1, vat=1, date=datetime.now(),
                                                 type=Contract.BUY, currency=self.Currency, created_by=user)
