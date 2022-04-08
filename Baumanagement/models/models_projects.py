@@ -32,7 +32,7 @@ class Project(BaseModel, AddressModel, FileModel):
     code = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')
-    type = models.ForeignKey(ProjectType, blank=False, verbose_name=_('Type'),
+    tag = models.ForeignKey(ProjectType, blank=False, verbose_name=_('Type'),
                              on_delete=models.RESTRICT, related_name='projects')
 
     class Meta:
@@ -44,6 +44,6 @@ class Project(BaseModel, AddressModel, FileModel):
         return qs.annotate(count_contracts=Sum(Case(When(contracts__open=True, then=1))))
 
     url = 'projects'
-    table_fields = 'created', 'company', 'name', 'code', 'type', 'address', 'count_contracts', 'files'
-    search_fields = 'company__name', 'name', 'code', 'type__name', 'address', 'city', 'land', 'count_contracts'
-    form_fields = 'open', 'company', 'name', 'code', 'type', 'address', 'city', 'land'
+    table_fields = 'created', 'company', 'name', 'code', 'tag', 'address', 'count_contracts', 'files'
+    search_fields = 'company__name', 'name', 'code', 'tag__name', 'address', 'city', 'land', 'count_contracts'
+    form_fields = 'open', 'company', 'name', 'code', 'tag', 'address', 'city', 'land'

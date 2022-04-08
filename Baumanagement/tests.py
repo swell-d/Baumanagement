@@ -31,7 +31,7 @@ class UrlTests(TestCase):
         self.Contact = Contact.objects.create(name='test', company=self.Company, created_by=user)
 
         self.ProjectType = ProjectType.objects.create(name='test', created_by=user)
-        self.Project = Project.objects.create(name='test', company=self.Company, created_by=user, type=self.ProjectType)
+        self.Project = Project.objects.create(name='test', company=self.Company, created_by=user, tag=self.ProjectType)
 
         self.ContractType = ContractType.objects.create(name='test', created_by=user)
         self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,

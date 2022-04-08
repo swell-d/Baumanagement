@@ -70,7 +70,7 @@ def main():
 
     Project = apps.get_model("Baumanagement", "Project")
     project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1,
-                                            type=projecttype, created_by=admin)[0]
+                                            tag=projecttype, created_by=admin)[0]
 
     ContractType = apps.get_model("Baumanagement", "ContractType")
     if not ContractType.objects.filter(name=trans['Other'][lang]):
