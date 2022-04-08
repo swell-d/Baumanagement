@@ -69,6 +69,19 @@ def company_payments(request, id):
     return myrender(request, context)
 
 
+def account_payments(request, id):
+    account = Account.objects.get(id=id)
+    context = {}
+    queryset = baseClass.objects.filter(Q(account_from=account) | Q(account_to=account))
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'link': reverse('company_id', args=[account.company.id]), 'text': account.company.name},
+                              {'text': account.name}]
+
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
+    return myrender(request, context)
+
+
 def project_payments(request, id):
     project = Project.objects.get(id=id)
     context = {}

@@ -1,11 +1,14 @@
 from django import forms
+from django.db.models import Q
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Account, Company, Currency
+from Baumanagement.models.models_contracts import Payment
 from Baumanagement.tables.tables_accounts import AccountTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
+from Baumanagement.views.views_payments import generate_payments_by_queryset
 
 baseClass = Account
 tableClass = AccountTable
@@ -40,6 +43,10 @@ def object_table(request, id):
                               {'text': account.name}]
 
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
+
+    payments = Payment.objects.filter(Q(account_from=account) | Q(account_to=account))
+    generate_payments_by_queryset(request, context, payments)
+
     return myrender(request, context)
 
 
