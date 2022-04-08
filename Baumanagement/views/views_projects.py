@@ -28,10 +28,10 @@ class FormClass(forms.ModelForm):
 
 
 def tags():
-    html = f'''<a href="{reverse('projects')}">{_('All')}</a> ({baseClass.objects.count()}), '''
+    html = f'<a href="" onclick="mainTableTag(&quot;?tag=&quot;);return false;">{_("All")}</a>, '
     html += ', '.join(
-        f'''<a href="{reverse('projects_id', args=[tag.id])}">{tag.name}</a> ({tag.count_projects})'''
-        for tag in ProjectTag.objects.order_by('name') if tag.count_projects > 0)
+        f'#<a href="" onclick="mainTableTag(&quot;?tag={tag.id}&quot;);return false;">{tag.name}</a>'
+        for tag in ProjectTag.objects.order_by('name') if tag.count > 0)
     return format_html(html)
 
 

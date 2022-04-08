@@ -19,7 +19,7 @@ class ContractTag(BaseModel):
         return qs.all()
 
     @property
-    def count_contracts(self):
+    def count(self):
         return self.contracts.count()
 
     url = 'contracttags'
@@ -37,7 +37,7 @@ class Contract(BaseModel, PriceModel, FileModel):
                                  on_delete=models.RESTRICT, related_name='contracts')
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
-    tag = models.ForeignKey(ContractTag, blank=False, verbose_name=_('Type'),
+    tag = models.ForeignKey(ContractTag, blank=False, verbose_name=_('Tag'),
                              on_delete=models.RESTRICT, related_name='contracts')
 
     BUY = PriceModel.BUY

@@ -18,7 +18,7 @@ class ProjectTag(BaseModel):
         return qs.all()
 
     @property
-    def count_projects(self):
+    def count(self):
         return self.projects.count()
 
     url = 'projecttags'
@@ -32,7 +32,7 @@ class Project(BaseModel, AddressModel, FileModel):
     code = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')
-    tag = models.ForeignKey(ProjectTag, blank=False, verbose_name=_('Type'),
+    tag = models.ForeignKey(ProjectTag, blank=False, verbose_name=_('Tag'),
                              on_delete=models.RESTRICT, related_name='projects')
 
     class Meta:

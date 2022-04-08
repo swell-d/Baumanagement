@@ -33,10 +33,10 @@ class FormClass(forms.ModelForm):
 
 
 def tags():
-    html = f'''<a href="{reverse('contracts')}">{_('All')}</a>, '''
+    html = f'<a href="" onclick="mainTableTag(&quot;?tag=&quot;);return false;">{_("All")}</a>, '
     html += ', '.join(
-        f'''<a onclick="mainTableTag(&quot;?tag={tag.id}&quot;)">#{tag.name}</a>'''
-        for tag in ContractTag.objects.order_by('name') if tag.count_contracts > 0)
+        f'#<a href="" onclick="mainTableTag(&quot;?tag={tag.id}&quot;);return false;">{tag.name}</a>'
+        for tag in ContractTag.objects.order_by('name') if tag.count > 0)
     return format_html(html)
 
 

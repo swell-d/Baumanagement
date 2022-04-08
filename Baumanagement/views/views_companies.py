@@ -29,8 +29,8 @@ class FormClass(forms.ModelForm):
 def tags():
     html = f'''<a href="{reverse('companies')}">{_('All')}</a> ({baseClass.objects.count()}), '''
     html += ', '.join(
-        f'''<a href="{reverse('companies_id', args=[role.id])}">{role.name}</a> ({role.count_companies})'''
-        for role in CompanyRole.objects.order_by('name') if role.count_companies > 0)
+        f'''<a href="{reverse('companies_id', args=[role.id])}">{role.name}</a> ({role.count})'''
+        for role in CompanyRole.objects.order_by('name') if role.count > 0)
     return format_html(html)
 
 
@@ -71,15 +71,34 @@ def object_table(request, id):
     payments = Payment.objects.filter(Q(account_from__company=company) | Q(account_to__company=company))
     generate_payments_by_queryset(request, context, payments)
 
+    partners = get_partners(company, contracts)
+    generate_next_objects_table(request, context, baseClass, tableClass, partners, _('Partners'))
+
+    return myrender(request, context)
+
+
+def company_companies(request, id):
+    company = Company.objects.get(id=id)
+    context = {}
+
+    contracts = Contract.objects.filter(Q(project__company=company) | Q(company=company))
+    queryset = get_partners(company, contracts)
+
+    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+                              {'link': reverse('company_id', args=[company.id]), 'text': company.name},
+                              {'text': _('Partners')}]
+
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
+    return myrender(request, context)
+
+
+def get_partners(company, contracts):
     partners_ids = set()
     for each in contracts:
         partners_ids.add(each.company.id)
         partners_ids.add(each.project.company.id)
     partners_ids.discard(company.id)
-    partners = Company.objects.filter(id__in=partners_ids)
-    generate_next_objects_table(request, context, baseClass, tableClass, partners, _('Partners'))
-
-    return myrender(request, context)
+    return Company.objects.filter(id__in=partners_ids)
 
 
 def companies_by_role(request, id):

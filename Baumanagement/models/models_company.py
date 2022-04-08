@@ -16,7 +16,7 @@ class CompanyRole(BaseModel):
         return qs.all()
 
     @property
-    def count_companies(self):
+    def count(self):
         return self.companies.count()
 
     url = 'companyroles'
