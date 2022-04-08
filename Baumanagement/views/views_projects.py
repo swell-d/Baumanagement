@@ -69,6 +69,7 @@ def object_table(request, id):
 def company_projects(request, id):
     company = Company.objects.get(id=id)
     context = {}
+    context['tags1'] = tags()
     queryset = company.projects.all()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
@@ -90,11 +91,11 @@ def generate_projects_by_queryset(request, context, queryset):
 def projects_by_tag(request, id):
     tag = ProjectTag.objects.get(id=id)
     context = {}
+    context['tags1'] = tags()
     queryset = baseClass.objects.filter(tag=id)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'text': tag.name}]
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
-    context['tags1'] = tags()
     return myrender(request, context)
