@@ -12,8 +12,8 @@ class ContractTable(MyTable, Files):
         model = Contract
         fields = Contract.table_fields
 
-    amount_netto = SummingColumn2F()
-    amount_brutto = SummingColumn2F()
+    amount_netto = SummingColumn2F(verbose_name=_('Amount netto'))
+    amount_brutto = SummingColumn2F(verbose_name=_('Amount brutto'))
     due = SummingColumn2F(verbose_name=_('Bills'))
     payed = SummingColumn2F(verbose_name=_('Payments'))
     files = tables.Column(verbose_name=_('Files'))
@@ -37,7 +37,7 @@ class ContractTable(MyTable, Files):
     def render_amount_netto(self, record, value):
         link = reverse('contract_id', args=[record.id])
         symbol = record.currency.symbol
-        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value} {symbol}</a>''')
+        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
 
     def render_vat(self, record, value):
         link = reverse('contract_id', args=[record.id])
@@ -46,7 +46,7 @@ class ContractTable(MyTable, Files):
     def render_amount_brutto(self, record, value):
         link = reverse('contract_id', args=[record.id])
         symbol = record.currency.symbol
-        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value} {symbol}</a>''')
+        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
 
     def render_due(self, record, value):
         link = reverse('contract_id_bills', args=[record.id])

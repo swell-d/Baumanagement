@@ -14,8 +14,8 @@ class PaymentTable(MyTable, Files):
 
     project = tables.Column(verbose_name=_('Project'))
     company = tables.Column(verbose_name=_('Company'))
-    amount_netto = SummingColumn2F()
-    amount_brutto = SummingColumn2F()
+    amount_netto = SummingColumn2F(verbose_name=_('Amount netto'))
+    amount_brutto = SummingColumn2F(verbose_name=_('Amount brutto'))
     files = tables.Column(verbose_name=_('Files'))
 
     def render_project(self, record, value):
@@ -41,7 +41,8 @@ class PaymentTable(MyTable, Files):
     def render_amount_netto(self, record, value):
         link = reverse('payment_id', args=[record.id])
         symbol = record.currency.symbol
-        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value} {symbol}</a>''')
+        return format_html(
+            f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
 
     def render_vat(self, record, value):
         link = reverse('payment_id', args=[record.id])
@@ -50,4 +51,5 @@ class PaymentTable(MyTable, Files):
     def render_amount_brutto(self, record, value):
         link = reverse('payment_id', args=[record.id])
         symbol = record.currency.symbol
-        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value} {symbol}</a>''')
+        return format_html(
+            f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
