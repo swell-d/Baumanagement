@@ -80,7 +80,7 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
         if tag:
             queryset = queryset.filter(tag=int(tag))
         queryset = baseClass.extra_fields(queryset)
-        queryset = add_search_field(queryset, request, context)
+        queryset = add_search_field(queryset, request)
         table1 = tableClass(queryset, order_by="-created")
         RequestConfig(request).configure(table1)
         context['table1'] = table1
