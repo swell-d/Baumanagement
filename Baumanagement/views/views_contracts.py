@@ -1,6 +1,8 @@
+from decimal import Decimal
+
 from django import forms
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Q, F, Case, When
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -11,8 +13,8 @@ from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_contracts import ContractTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
-from Baumanagement.views.views_bills import generate_bills_by_queryset
-from Baumanagement.views.views_payments import generate_payments_by_queryset
+from Baumanagement.views.views_bills import generate_bills_by_queryset, contract_bills_qs
+from Baumanagement.views.views_payments import generate_payments_by_queryset, contract_payments_qs
 
 baseClass = Contract
 tableClass = ContractTable
@@ -43,13 +45,15 @@ def tags():
 def objects_table(request):
     context = {}
     context['tags1'] = tags()
-    generate_objects_table(request, context, baseClass, tableClass, FormClass)
+    queryset = qs_annotate(baseClass.objects)
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
 
 def object_table(request, id):
     context = {'tables': []}
-    queryset = baseClass.objects.filter(id=id)
+    queryset = baseClass.objects.filter(id=id).annotate(amount_netto=F('amount_netto_positiv'),
+                                                        amount_brutto=F('amount_brutto_positiv'))
     contract = queryset.first()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
@@ -63,10 +67,10 @@ def object_table(request, id):
 
     disable_children(request, queryset.first())
 
-    bills = queryset.first().bills.all()
+    bills = contract_bills_qs(contract)
     generate_bills_by_queryset(request, context, bills)
 
-    payments = queryset.first().payments.all()
+    payments = contract_payments_qs(contract)
     generate_payments_by_queryset(request, context, payments)
 
     return myrender(request, context)
@@ -90,7 +94,7 @@ def company_contracts(request, id):
     company = Company.objects.get(id=id)
     context = {}
     context['tags1'] = tags()
-    queryset = baseClass.objects.filter(Q(project__company=company) | Q(company=company))
+    queryset = company_contracts_qs(company)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'text': company.name}]
@@ -99,11 +103,15 @@ def company_contracts(request, id):
     return myrender(request, context)
 
 
+def company_contracts_qs(company):
+    return qs_annotate(baseClass.objects.filter(Q(project__company=company) | Q(company=company)))
+
+
 def project_contracts(request, id):
     project = Project.objects.get(id=id)
     context = {}
     context['tags1'] = tags()
-    queryset = project.contracts.all()
+    queryset = project_contracts_qs(project)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'link': reverse('company_id_contracts', args=[project.company.id]),
@@ -119,5 +127,19 @@ def project_contracts(request, id):
     return myrender(request, context)
 
 
+def project_contracts_qs(project):
+    return qs_annotate(project.contracts)
+
+
 def generate_contracts_by_queryset(request, context, queryset):
     generate_next_objects_table(request, context, baseClass, tableClass, queryset)
+
+
+def qs_annotate(queryset):
+    return queryset.annotate(
+        amount_netto=Case(When(type=Contract.BUY, then=-F('amount_netto_positiv')),
+                          When(type=Contract.SELL, then='amount_netto_positiv'),
+                          default=Decimal(0))).annotate(
+        amount_brutto=Case(When(type=Contract.BUY, then=-F('amount_brutto_positiv')),
+                           When(type=Contract.SELL, then='amount_brutto_positiv'),
+                           default=Decimal(0)))

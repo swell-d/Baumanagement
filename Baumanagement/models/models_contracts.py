@@ -38,7 +38,7 @@ class Contract(BaseModel, PriceModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
     tag = models.ForeignKey(ContractTag, blank=False, verbose_name=_('Tag'),
-                             on_delete=models.RESTRICT, related_name='contracts')
+                            on_delete=models.RESTRICT, related_name='contracts')
 
     BUY = PriceModel.BUY
     SELL = PriceModel.SELL
@@ -52,8 +52,13 @@ class Contract(BaseModel, PriceModel, FileModel):
 
     @staticmethod
     def extra_fields(qs):
-        return qs.annotate(payed=Sum(Case(When(payments__open=True, then='payments__amount_brutto')), distinct=True)) \
-            .annotate(due=Sum(Case(When(bills__open=True, then='bills__amount_brutto')), distinct=True))
+        return qs.annotate(payed=Sum(Case(
+            When(payments__open=True, type=PriceModel.BUY, then=-F('payments__amount_brutto_positiv')),
+            When(payments__open=True, type=PriceModel.SELL, then=F('payments__amount_brutto_positiv'))),
+            distinct=True)).annotate(due=Sum(Case(
+            When(bills__open=True, type=PriceModel.BUY, then=-F('bills__amount_brutto_positiv')),
+            When(bills__open=True, type=PriceModel.SELL, then=F('bills__amount_brutto_positiv'))),
+            distinct=True))
 
     url = 'contracts'
     table_fields = 'created', 'project', 'company', 'name', 'date', 'tag', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'

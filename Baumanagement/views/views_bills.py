@@ -1,5 +1,7 @@
+from decimal import Decimal
+
 from django import forms
-from django.db.models import Q
+from django.db.models import Q, F, Case, When
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -27,13 +29,15 @@ class FormClass(forms.ModelForm):
 
 def objects_table(request):
     context = {}
-    generate_objects_table(request, context, baseClass, tableClass, FormClass)
+    queryset = qs_annotate(baseClass.objects)
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
 
 def object_table(request, id):
     context = {'tables': []}
-    queryset = baseClass.objects.filter(id=id)
+    queryset = baseClass.objects.filter(id=id).annotate(amount_netto=F('amount_netto_positiv'),
+                                                        amount_brutto=F('amount_brutto_positiv'))
     bill = queryset.first()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
@@ -52,9 +56,7 @@ def object_table(request, id):
 def company_bills(request, id):
     company = Company.objects.get(id=id)
     context = {}
-    queryset = baseClass.objects.filter(
-        Q(contract__project__company=company, contract__type=Contract.SELL) |
-        Q(contract__company=company, contract__type=Contract.BUY))
+    queryset = company_bills_qs(company)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'text': company.name}]
@@ -67,10 +69,18 @@ def company_bills(request, id):
     return myrender(request, context)
 
 
+def company_bills_qs(company):
+    return baseClass.objects.filter(
+        Q(contract__project__company=company, contract__type=Contract.SELL) |
+        Q(contract__company=company, contract__type=Contract.BUY)).annotate(
+        amount_netto=F('amount_netto_positiv'),
+        amount_brutto=F('amount_brutto_positiv'))
+
+
 def project_bills(request, id):
     project = Project.objects.get(id=id)
     context = {}
-    queryset = baseClass.objects.filter(contract__project=project)
+    queryset = project_bills_qs(project)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'link': reverse('company_id_bills', args=[project.company.id]),
@@ -85,10 +95,14 @@ def project_bills(request, id):
     return myrender(request, context)
 
 
+def project_bills_qs(project):
+    return qs_annotate(baseClass.objects.filter(contract__project=project))
+
+
 def contract_bills(request, id):
     contract = Contract.objects.get(id=id)
     context = {}
-    queryset = baseClass.objects.filter(contract=contract)
+    queryset = contract_bills_qs(contract)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'link': reverse('company_id_bills', args=[contract.project.company.id]),
@@ -106,5 +120,19 @@ def contract_bills(request, id):
     return myrender(request, context)
 
 
+def contract_bills_qs(contract):
+    return qs_annotate(baseClass.objects.filter(contract=contract))
+
+
 def generate_bills_by_queryset(request, context, queryset):
     generate_next_objects_table(request, context, baseClass, tableClass, queryset)
+
+
+def qs_annotate(queryset):
+    return queryset.annotate(
+        amount_netto=Case(When(contract__type=Contract.BUY, then=-F('amount_netto_positiv')),
+                          When(contract__type=Contract.SELL, then='amount_netto_positiv'),
+                          default=Decimal(0))).annotate(
+        amount_brutto=Case(When(contract__type=Contract.BUY, then=-F('amount_brutto_positiv')),
+                           When(contract__type=Contract.SELL, then='amount_brutto_positiv'),
+                           default=Decimal(0)))

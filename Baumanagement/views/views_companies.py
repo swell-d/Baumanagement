@@ -5,15 +5,15 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import CompanyRole, Company
-from Baumanagement.models.models_contracts import Bill, Payment, Contract
+from Baumanagement.models.models_contracts import Contract
 from Baumanagement.tables.tables_companies import CompanyTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
 from Baumanagement.views.views_accounts import generate_accounts_by_queryset
-from Baumanagement.views.views_bills import generate_bills_by_queryset
+from Baumanagement.views.views_bills import generate_bills_by_queryset, company_bills_qs
 from Baumanagement.views.views_contacts import generate_contacts_by_queryset
-from Baumanagement.views.views_contracts import generate_contracts_by_queryset
-from Baumanagement.views.views_payments import generate_payments_by_queryset
+from Baumanagement.views.views_contracts import generate_contracts_by_queryset, company_contracts_qs
+from Baumanagement.views.views_payments import generate_payments_by_queryset, company_payments_qs
 from Baumanagement.views.views_projects import generate_projects_by_queryset
 
 baseClass = Company
@@ -60,15 +60,13 @@ def object_table(request, id):
     projects = company.projects.all()
     generate_projects_by_queryset(request, context, projects)
 
-    contracts = Contract.objects.filter(Q(project__company=company) | Q(company=company))
+    contracts = company_contracts_qs(company)
     generate_contracts_by_queryset(request, context, contracts)
 
-    bills = Bill.objects.filter(
-        Q(contract__project__company=company, contract__type=Contract.SELL) |
-        Q(contract__company=company, contract__type=Contract.BUY))
+    bills = company_bills_qs(company)
     generate_bills_by_queryset(request, context, bills)
 
-    payments = Payment.objects.filter(Q(account_from__company=company) | Q(account_to__company=company))
+    payments = company_payments_qs(company)
     generate_payments_by_queryset(request, context, payments)
 
     partners = get_partners(company, contracts)

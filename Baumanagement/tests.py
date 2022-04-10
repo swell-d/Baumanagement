@@ -35,14 +35,14 @@ class UrlTests(TestCase):
 
         self.ContractTag = ContractTag.objects.create(name='test', created_by=user)
         self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,
-                                                amount_netto=1, vat=1, date=datetime.now(),
+                                                amount_netto_positiv=1, vat=1, date=datetime.now(),
                                                 type=Contract.BUY, currency=self.Currency, created_by=user,
                                                 tag=self.ContractTag)
 
-        self.Payment = Payment.objects.create(name='test', contract=self.Contract, amount_netto=1, vat=1,
+        self.Payment = Payment.objects.create(name='test', contract=self.Contract, amount_netto_positiv=1, vat=1,
                                               date=datetime.now(), created_by=user,
                                               account_from=self.Account, account_to=self.Account)
-        self.Bill = Bill.objects.create(name='test', contract=self.Contract, amount_netto=1, vat=1,
+        self.Bill = Bill.objects.create(name='test', contract=self.Contract, amount_netto_positiv=1, vat=1,
                                         date=datetime.now(), created_by=user)
         self.Comment = Comment.objects.create(name='test', created_by=user)
 

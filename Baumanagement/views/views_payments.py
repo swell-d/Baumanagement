@@ -1,5 +1,5 @@
 from django import forms
-from django.db.models import Q
+from django.db.models import Q, F, Case, When
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -9,6 +9,7 @@ from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_payments import PaymentTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table
+from Baumanagement.views.views_bills import qs_annotate
 
 baseClass = Payment
 tableClass = PaymentTable
@@ -27,13 +28,15 @@ class FormClass(forms.ModelForm):
 
 def objects_table(request):
     context = {}
-    generate_objects_table(request, context, baseClass, tableClass, FormClass)
+    queryset = qs_annotate(baseClass.objects)
+    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
 
 def object_table(request, id):
     context = {'tables': []}
-    queryset = baseClass.objects.filter(id=id)
+    queryset = baseClass.objects.filter(id=id).annotate(amount_netto=F('amount_netto_positiv'),
+                                                        amount_brutto=F('amount_brutto_positiv'))
     payment = queryset.first()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
@@ -56,7 +59,7 @@ def object_table(request, id):
 def company_payments(request, id):
     company = Company.objects.get(id=id)
     context = {}
-    queryset = baseClass.objects.filter(Q(account_from__company=company) | Q(account_to__company=company))
+    queryset = company_payments_qs(company)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'text': company.name}]
@@ -69,10 +72,18 @@ def company_payments(request, id):
     return myrender(request, context)
 
 
+def company_payments_qs(company):
+    return baseClass.objects.filter(Q(account_from__company=company) | Q(account_to__company=company)).annotate(
+        amount_netto=Case(When(account_from__company=company, then=-F('amount_netto_positiv')),
+                          When(account_to__company=company, then='amount_netto_positiv'))).annotate(
+        amount_brutto=Case(When(account_from__company=company, then=-F('amount_brutto_positiv')),
+                           When(account_to__company=company, then='amount_brutto_positiv')))
+
+
 def account_payments(request, id):
     account = Account.objects.get(id=id)
     context = {}
-    queryset = baseClass.objects.filter(Q(account_from=account) | Q(account_to=account))
+    queryset = account_payments_qs(account)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'link': reverse('company_id', args=[account.company.id]), 'text': account.company.name},
@@ -82,10 +93,18 @@ def account_payments(request, id):
     return myrender(request, context)
 
 
+def account_payments_qs(account):
+    return baseClass.objects.filter(Q(account_from=account) | Q(account_to=account)).annotate(
+        amount_netto=Case(When(account_from=account, then=-F('amount_netto_positiv')),
+                          When(account_to=account, then='amount_netto_positiv'))).annotate(
+        amount_brutto=Case(When(account_from=account, then=-F('amount_brutto_positiv')),
+                           When(account_to=account, then='amount_brutto_positiv')))
+
+
 def project_payments(request, id):
     project = Project.objects.get(id=id)
     context = {}
-    queryset = baseClass.objects.filter(contract__project=project)
+    queryset = project_payments_qs(project)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'link': reverse('company_id_payments', args=[project.company.id]),
@@ -100,10 +119,14 @@ def project_payments(request, id):
     return myrender(request, context)
 
 
+def project_payments_qs(project):
+    return qs_annotate(baseClass.objects.filter(contract__project=project))
+
+
 def contract_payments(request, id):
     contract = Contract.objects.get(id=id)
     context = {}
-    queryset = baseClass.objects.filter(contract=contract)
+    queryset = contract_payments_qs(contract)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
                               {'link': reverse('company_id_payments', args=[contract.project.company.id]),
@@ -126,6 +149,10 @@ def contract_payments(request, id):
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
+
+
+def contract_payments_qs(contract):
+    return qs_annotate(baseClass.objects.filter(contract=contract))
 
 
 def accounts_querysets(form, contract):
