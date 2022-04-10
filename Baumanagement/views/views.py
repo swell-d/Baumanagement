@@ -22,6 +22,10 @@ class CommentFormClass(ModelForm):
         fields = Comment.form_fields
 
 
+def structure(request):
+    return render(request, 'structure.html')
+
+
 @login_required
 def myrender(request, context):
     export_format = request.GET.get("_export", None)

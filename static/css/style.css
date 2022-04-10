@@ -38,7 +38,6 @@ table.table tfoot {
   border: 1px solid #ccc;
   background-color: #f1f1f1;
 }
-
 /* Style the buttons that are used to open the tab content */
 .tab button {
   background-color: inherit;
@@ -49,17 +48,14 @@ table.table tfoot {
   padding: 14px 16px;
   transition: 0.3s;
 }
-
 /* Change background color of buttons on hover */
 .tab button:hover {
   background-color: #ddd;
 }
-
 /* Create an active/current tablink class */
 .tab button.active {
   background-color: #ccc;
 }
-
 /* Style the tab content */
 .tabcontent {
   display: none;
@@ -67,11 +63,13 @@ table.table tfoot {
   border: none;
 }
 
+/* Filter and search fields */
 input#dateFrom, input#dateTo, input#search {
     max-width: 150px;
     display:block;
 }
 
+/* Form */
 .form-label {
     margin-bottom: 0;
 }
@@ -82,13 +80,19 @@ input#dateFrom, input#dateTo, input#search {
     margin-bottom: 0.5rem!important;
 }
 
+/* 404 page */
 div.center h1 {
-  text-align: center;
-  top: 50%;
-  left: 50%;
-  width: 450px;
-  height: 100px;
-  position: absolute;
-  margin-top: -50px;
-  margin-left: -225px;
+    text-align: center;
+    top: 50%;
+    left: 50%;
+    width: 450px;
+    height: 100px;
+    position: absolute;
+    margin-top: -50px;
+    margin-left: -225px;
+}
+
+/* Navbar */
+.dropdown-menu-right[data-bs-popper] {
+    left: -80px;
 }
