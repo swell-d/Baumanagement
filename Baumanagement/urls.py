@@ -36,7 +36,6 @@ urlpatterns = [
     path("projecttag/<int:id>", views_projecttags.object_table, name="projecttag_id"),
 
     path("projects", views_projects.objects_table, name="projects"),
-    path("projects/<int:id>", views_projects.projects_by_tag, name="projects_id"),
     path("project/<int:id>", views_projects.object_table, name="project_id"),
     path("project/<int:id>/contracts", views_contracts.project_contracts, name="project_id_contracts"),
     path("project/<int:id>/payments", views_payments.project_payments, name="project_id_payments"),
@@ -46,7 +45,6 @@ urlpatterns = [
     path("contracttag/<int:id>", views_contracttags.object_table, name="contracttag_id"),
 
     path("contracts", views_contracts.objects_table, name="contracts"),
-    path("contracts/<int:id>", views_contracts.contracts_by_tag, name="contracts_id"),
     path("contract/<int:id>", views_contracts.object_table, name="contract_id"),
     path("contract/<int:id>/payments", views_payments.contract_payments, name="contract_id_payments"),
     path("contract/<int:id>/bills", views_bills.contract_bills, name="contract_id_bills"),

@@ -121,16 +121,3 @@ def project_contracts(request, id):
 
 def generate_contracts_by_queryset(request, context, queryset):
     generate_next_objects_table(request, context, baseClass, tableClass, queryset)
-
-
-def contracts_by_tag(request, id):
-    tag = ContractTag.objects.get(id=id)
-    context = {}
-    context['tags1'] = tags()
-    queryset = baseClass.objects.filter(tag=id)
-
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
-                              {'text': tag.name}]
-
-    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
-    return myrender(request, context)
