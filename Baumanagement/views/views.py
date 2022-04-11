@@ -125,7 +125,10 @@ def create_new_object_or_get_error(request, cls):
         new_object = cls.Meta.model(**formset.cleaned_data)
         new_object.save(user=request.user)
         if many_to_many_fields:
-            new_object.role.set(many_to_many_fields['role'])
+            if many_to_many_fields.get('role'):
+                new_object.role.set(many_to_many_fields['role'])
+            if many_to_many_fields.get('categories'):
+                new_object.categories.set(many_to_many_fields['categories'])
             new_object.save()
         messages.success(request, f'{new_object.name} {_("created")}')
         upload_files(request, new_object)
