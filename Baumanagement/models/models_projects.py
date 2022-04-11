@@ -8,7 +8,7 @@ from Baumanagement.models.models_company import Company
 
 class ProjectTag(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
-    parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True, verbose_name=_('Classify label under'))  # 'Label einordnen unter'
+    parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True, verbose_name=_('Classify label under'))
 
     class Meta:
         verbose_name = _('Tag')
