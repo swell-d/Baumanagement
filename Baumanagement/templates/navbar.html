@@ -15,6 +15,17 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item dropdown">
+                    <a class="nav-link active dropdown-toggle" href="#" id="productDropdown" role="button"
+                       data-bs-toggle="dropdown" aria-expanded="false">
+                        {% translate "Products" %}
+                    </a>
+                    <ul class="dropdown-menu me-10" aria-labelledby="productDropdown">
+                        <li>
+                            <a class="dropdown-item" href="{% url 'products' %}">{% translate "Products" %}</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="nav-item dropdown">
                     <a class="nav-link active dropdown-toggle" href="#" id="companyDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         {% translate "Companies" %}
@@ -77,6 +88,8 @@
                         </li>
                     </ul>
                 </li>
+            </ul>
+            <ul class="navbar-nav">
                 <li class="nav-item dropdown">
                     <a class="nav-link active dropdown-toggle" href="#" id="settingsDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
@@ -88,10 +101,8 @@
                         </li>
                     </ul>
                 </li>
-            </ul>
-            <ul class="navbar-nav">
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="helpDropdown" role="button"
+                    <a class="nav-link active dropdown-toggle" href="#" id="helpDropdown" role="button"
                        data-bs-toggle="dropdown" aria-expanded="false">
                         {% translate "Help" %}
                     </a>
@@ -103,7 +114,7 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                        <a class="nav-link active dropdown-toggle" href="#" id="userDropdown" role="button"
                            data-bs-toggle="dropdown" aria-expanded="false">
                             {{ user.get_username }}
                         </a>

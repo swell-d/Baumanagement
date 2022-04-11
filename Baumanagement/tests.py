@@ -8,6 +8,7 @@ from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
 from Baumanagement.models.models_contracts import Contract, Payment, Bill, ContractTag
 from Baumanagement.models.models_files import File
+from Baumanagement.models.models_products import Product
 from Baumanagement.models.models_projects import Project, ProjectTag
 from Baumanagement.urls import get_urls
 
@@ -20,6 +21,8 @@ class UrlTests(TestCase):
         group = Group.objects.create(name="admins")
         group.save()
         self.client.force_login(user)
+
+        self.Product = Product.objects.create(name='test', created_by=user)
 
         self.CompanyRole = CompanyRole.objects.create(name='test', created_by=user)
         self.Currency = Currency.objects.create(name='test', code='EUR', symbol='tes', rate=1, created_by=user)
