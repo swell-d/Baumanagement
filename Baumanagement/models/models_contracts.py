@@ -9,7 +9,8 @@ from Baumanagement.models.models_projects import Project
 
 class ContractTag(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
-    parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True, verbose_name=_('Classify label under'))
+    parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True,
+                               verbose_name=_('Classify label under'))
 
     class Meta:
         verbose_name = _('Tag')
@@ -104,9 +105,9 @@ class Payment(BaseModel, PriceModel, FileModel):
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='payments')
     account_from = models.ForeignKey(Account, null=False, blank=False, verbose_name=_('Write-off account'),
-                                     on_delete=models.RESTRICT, related_name='bills_from')
+                                     on_delete=models.RESTRICT, related_name='payments_from')
     account_to = models.ForeignKey(Account, null=False, blank=False, verbose_name=_('Top-up account'),
-                                   on_delete=models.RESTRICT, related_name='bills_to')
+                                   on_delete=models.RESTRICT, related_name='payments_to')
 
     class Meta:
         verbose_name = _('Payment')
