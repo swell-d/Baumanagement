@@ -157,7 +157,7 @@ def edit_object_form(request, context, cls, object):
                 upload_files(request, object)
             else:
                 messages.warning(request, formset.errors)
-                error_form = formset
+            error_form = formset
     context['form'] = error_form or context.get('form') or cls(instance=object)
     if 'FileModel' in str(inspect.getmro(object.__class__)):
         context['files_form'] = object.files
