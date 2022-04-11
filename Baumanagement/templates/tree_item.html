@@ -1,0 +1,17 @@
+{% load i18n %}
+{% get_current_language as lang %}
+
+{% for node in nodes.all %}
+    <li>
+        <a href="/{{ lang }}/{{ nodes_link }}/{{ node.id }}">{{ node.name }}</a>
+        {% if node.children.all %}
+            {% with "tree_item.html" as filename %}
+                {% with node.children as nodes %}
+                    <ul>
+                        {% include filename %}
+                    </ul>
+                {% endwith %}
+            {% endwith %}
+        {% endif %}
+    </li>
+{% endfor %}

@@ -9,7 +9,7 @@ from Baumanagement.models.models_company import Currency
 class ProductCategory(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True,
-                               verbose_name=_('Classify category under'), related_name='categories')
+                               verbose_name=_('Classify category under'), related_name='children')
 
     class Meta:
         verbose_name = _('Category')

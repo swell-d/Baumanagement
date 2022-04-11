@@ -1,0 +1,10 @@
+{% if nodes %}
+    <div class="row">
+        <div class="col">
+            <h2>Tree view:</h2>
+            <ul class="list-group treeCSS ms-3">
+                {% include 'tree_item.html' %}
+            </ul>
+        </div>
+    </div>
+{% endif %}

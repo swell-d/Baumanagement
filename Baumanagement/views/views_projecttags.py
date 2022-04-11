@@ -18,6 +18,8 @@ class FormClass(forms.ModelForm):
 
 def objects_table(request):
     context = {}
+    context['nodes'] = ProjectTag.objects.filter(parent__isnull=True)
+    context['nodes_link'] = 'projecttag'
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
