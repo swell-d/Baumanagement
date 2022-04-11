@@ -3,7 +3,6 @@ from datetime import datetime, timedelta
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from django.db.models import QuerySet
 from django.forms import ModelForm
 from django.shortcuts import render
 from django.utils.translation import gettext_lazy as _
@@ -117,19 +116,10 @@ def create_new_object_or_get_error(request, cls):
         return None
     formset = cls(request.POST, request.FILES)
     if formset.is_valid():
-        many_to_many_fields = {}
-        for key, value in formset.cleaned_data.copy().items():
-            if isinstance(value, QuerySet):
-                many_to_many_fields[key] = value
-                formset.cleaned_data.pop(key)
-        new_object = cls.Meta.model(**formset.cleaned_data)
-        new_object.save(user=request.user)
-        if many_to_many_fields:
-            if many_to_many_fields.get('role'):
-                new_object.role.set(many_to_many_fields['role'])
-            if many_to_many_fields.get('categories'):
-                new_object.categories.set(many_to_many_fields['categories'])
-            new_object.save()
+        new_object = formset.save(commit=False)
+        new_object.created_by = request.user
+        new_object.save()
+        formset.save_m2m()
         messages.success(request, f'{new_object.name} {_("created")}')
         upload_files(request, new_object)
         add_comment_to_object(request, new_object)
@@ -155,7 +145,9 @@ def edit_object_form(request, context, cls, object):
         else:
             formset = cls(request.POST, request.FILES, instance=object)
             if formset.is_valid():
+                object = formset.save(commit=False)
                 object.save()
+                formset.save_m2m()
                 messages.success(request, f'{object.name} {_("changed")}')
                 upload_files(request, object)
             else:
