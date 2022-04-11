@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
+    'treenode',
     'crispy_forms',
     'crispy_bootstrap5',
     'django_filters',

@@ -2,11 +2,14 @@ from django.urls import path
 
 from .views import views_bills, views_companies, views_delete, views_contracts, views_payments, views_projects, \
     views_accounts, views_comments, views_companyroles, views_currencies, views_contacts, views_projecttags, \
-    views_contracttags, views, views_products
+    views_contracttags, views, views_products, views_productcategories
 
 urlpatterns = [
     path("", views_projects.objects_table, name='index'),
     path("structure", views.structure, name='structure'),
+
+    path("productcategories", views_productcategories.objects_table, name="productcategories"),
+    path("productcategory/<int:id>", views_productcategories.object_table, name="productcategory_id"),
 
     path("products", views_products.objects_table, name="products"),
     path("product/<int:id>", views_products.object_table, name="product_id"),

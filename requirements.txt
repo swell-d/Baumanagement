@@ -8,3 +8,4 @@ crispy-bootstrap5
 python-gettext
 django_heroku
 requests
+django-treenode
