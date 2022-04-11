@@ -13,4 +13,4 @@ class ContractTagTable(MyTable):
     def render_name(self, record, value):
         return format_html(
             f'''<strong><a href="{modal if self.object_table else reverse('contracttag_id', args=[record.id])}">
-            {value}</a></strong>''')
+            {record}</a></strong>''')

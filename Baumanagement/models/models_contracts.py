@@ -8,11 +8,15 @@ from Baumanagement.models.models_projects import Project
 
 
 class ContractTag(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Type'), unique=True)
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
+    parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True, verbose_name=_('Classify label under'))  # 'Label einordnen unter'
 
     class Meta:
-        verbose_name = _('Type')
-        verbose_name_plural = _('Types')
+        verbose_name = _('Tag')
+        verbose_name_plural = _('Tags')
+
+    def __str__(self):
+        return f'{self.parent}/{self.name}' if self.parent else self.name
 
     @staticmethod
     def extra_fields(qs):
@@ -25,7 +29,7 @@ class ContractTag(BaseModel):
     url = 'contracttags'
     table_fields = 'name',
     search_fields = 'name',
-    form_fields = 'name',
+    form_fields = 'name', 'parent'
 
 
 class Contract(BaseModel, PriceModel, FileModel):

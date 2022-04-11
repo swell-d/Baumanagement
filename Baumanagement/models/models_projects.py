@@ -7,11 +7,15 @@ from Baumanagement.models.models_company import Company
 
 
 class ProjectTag(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Type'), unique=True)
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
+    parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True, verbose_name=_('Classify label under'))  # 'Label einordnen unter'
 
     class Meta:
-        verbose_name = _('Type')
-        verbose_name_plural = _('Types')
+        verbose_name = _('Tag')
+        verbose_name_plural = _('Tags')
+
+    def __str__(self):
+        return f'{self.parent}/{self.name}' if self.parent else self.name
 
     @staticmethod
     def extra_fields(qs):
@@ -24,7 +28,7 @@ class ProjectTag(BaseModel):
     url = 'projecttags'
     table_fields = 'name',
     search_fields = 'name',
-    form_fields = 'name',
+    form_fields = 'name', 'parent'
 
 
 class Project(BaseModel, AddressModel, FileModel):
@@ -33,7 +37,7 @@ class Project(BaseModel, AddressModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')
     tag = models.ForeignKey(ProjectTag, blank=False, verbose_name=_('Tag'),
-                             on_delete=models.RESTRICT, related_name='projects')
+                            on_delete=models.RESTRICT, related_name='projects')
 
     class Meta:
         verbose_name = _('Project')
