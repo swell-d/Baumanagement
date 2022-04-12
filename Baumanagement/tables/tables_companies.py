@@ -14,8 +14,7 @@ class CompanyTable(MyTable, Files):
         model = Company
         fields = Company.table_fields
 
-    name = tables.Column(attrs={'td': {'class': 'fw-bold table-secondary'}})
-    files = tables.Column(verbose_name=_('Files'), footer="")
+    files = tables.Column(verbose_name=_('Files'))
 
     def render_name(self, record, value):
         link = reverse('company_id', args=[record.id])

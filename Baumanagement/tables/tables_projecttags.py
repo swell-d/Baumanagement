@@ -12,5 +12,4 @@ class ProjectTagTable(MyTable):
 
     def render_name(self, record, value):
         return format_html(
-            f'''<strong><a href="{modal if self.object_table else reverse('projecttag_id', args=[record.id])}">
-            {record}</a></strong>''')
+            f'''<a href="{modal if self.object_table else reverse('projecttag_id', args=[record.id])}">{record}</a>''')

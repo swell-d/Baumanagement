@@ -14,8 +14,7 @@ class AccountTable(MyTable, Files):
         model = Account
         fields = Account.table_fields
 
-    name = tables.Column(attrs={'td': {'class': 'fw-bold table-secondary'}})
-    files = tables.Column(verbose_name=_('Files'), footer="")
+    files = tables.Column(verbose_name=_('Files'))
     balance = tables.Column(accessor=tables.A("pk"), verbose_name=_('Balance'))  # Kontostand
 
     def render_company(self, record, value):

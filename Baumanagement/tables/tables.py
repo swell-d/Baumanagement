@@ -16,6 +16,7 @@ def delete_none_values(value):
 
 class MyTable(tables.Table):
     id = tables.Column(visible=False)
+    name = tables.Column(attrs={'td': {'class': 'fw-bold table-secondary'}}, footer="")
 
     def __init__(self, *args, **kwargs):
         self.object_table = kwargs.pop('object_table', False)

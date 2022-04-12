@@ -14,7 +14,7 @@ class ContactTable(MyTable, Files):
         model = Contact
         fields = Contact.table_fields
 
-    files = tables.Column(verbose_name=_('Files'), footer="")
+    files = tables.Column(verbose_name=_('Files'))
 
     def render_company(self, record, value):
         link = reverse('company_id', args=[record.company.id])
@@ -22,7 +22,7 @@ class ContactTable(MyTable, Files):
 
     def render_name(self, record, value):
         link = reverse('contact_id', args=[record.id])
-        return format_html(f'<strong><a href="{modal if self.object_table else link}">{value}</a></strong>')
+        return format_html(f'<a href="{modal if self.object_table else link}">{value}</a>')
 
     def render_phone(self, record, value):
         return format_html(f'<a href="tel:{re.sub("[^0-9+]", "", value)}">{value}</a>')

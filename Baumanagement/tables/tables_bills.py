@@ -32,7 +32,7 @@ class BillTable(MyTable, Files):
 
     def render_name(self, record, value):
         link = reverse('bill_id', args=[record.id])
-        return format_html(f'<strong><a href="{modal if self.object_table else link}">{value}</a></strong>')
+        return format_html(f'<a href="{modal if self.object_table else link}">{value}</a>')
 
     def render_date(self, record, value):
         link = reverse('bill_id', args=[record.id])
@@ -41,7 +41,8 @@ class BillTable(MyTable, Files):
     def render_amount_netto(self, record, value):
         link = reverse('bill_id', args=[record.id])
         symbol = record.currency.symbol
-        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
+        return format_html(
+            f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
 
     def render_vat(self, record, value):
         link = reverse('bill_id', args=[record.id])
@@ -50,4 +51,5 @@ class BillTable(MyTable, Files):
     def render_amount_brutto(self, record, value):
         link = reverse('bill_id', args=[record.id])
         symbol = record.currency.symbol
-        return format_html(f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
+        return format_html(
+            f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')

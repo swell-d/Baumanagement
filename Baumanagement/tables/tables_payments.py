@@ -32,7 +32,7 @@ class PaymentTable(MyTable, Files):
 
     def render_name(self, record, value):
         link = reverse('payment_id', args=[record.id])
-        return format_html(f'<strong><a href="{modal if self.object_table else link}">{value}</a></strong>')
+        return format_html(f'<a href="{modal if self.object_table else link}">{value}</a>')
 
     def render_date(self, record, value):
         link = reverse('payment_id', args=[record.id])
