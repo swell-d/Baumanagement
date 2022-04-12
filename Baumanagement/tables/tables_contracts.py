@@ -15,8 +15,8 @@ class ContractTable(MyTable, Files):
 
     amount_netto = SummingColumn2F(verbose_name=_('Amount netto'))
     amount_brutto = SummingColumn2F(verbose_name=_('Amount brutto'))
-    due = SummingColumn2F(verbose_name=_('Bills'))
-    payed = SummingColumn2F(verbose_name=_('Payments'))
+    bills_amount = SummingColumn2F(verbose_name=_('Bills'))
+    payments_amount = SummingColumn2F(verbose_name=_('Payments'))
     files = tables.Column(verbose_name=_('Files'), orderable=False)
 
     def render_project(self, record, value):
@@ -39,10 +39,10 @@ class ContractTable(MyTable, Files):
     def render_amount_brutto(self, record, value):
         return format_amount(value, get_link(record), record.currency.symbol)
 
-    def render_due(self, record, value):
+    def render_bills_amount(self, record, value):
         link = reverse('contract_id_bills', args=[record.id])
         return format_amount(value, link, record.currency.symbol)
 
-    def render_payed(self, record, value):
+    def render_payments_amount(self, record, value):
         link = reverse('contract_id_payments', args=[record.id])
         return format_amount(value, link, record.currency.symbol)

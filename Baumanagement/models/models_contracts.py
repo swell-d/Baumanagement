@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import F, Case, When, Sum, DecimalField, Q, Value, OuterRef, Subquery
+from django.db.models import F, Sum, DecimalField, OuterRef, Subquery, Case, When
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel, FileModel, PriceModel
@@ -58,18 +58,20 @@ class Contract(BaseModel, PriceModel, FileModel):
 
     @staticmethod
     def extra_fields(qs):
-        bills1 = Bill.objects.filter(contract=OuterRef('pk'), open=True, contract__type=PriceModel.BUY)
-        # bills2 = Bill.objects.filter(contract=OuterRef('pk'), open=True, contract__type=PriceModel.SELL)
+        bills = Bill.objects.filter(contract_id=OuterRef('pk'), open=True).values(
+            'contract__pk').annotate(sum=Sum('amount_brutto_positiv')).values('sum')
+        payments = Payment.objects.filter(contract_id=OuterRef('pk'), open=True).values(
+            'contract__pk').annotate(sum=Sum('amount_brutto_positiv')).values('sum')
         return qs.annotate(
-            due=Subquery(bills1.values('amount_brutto_positiv'), output_field=DecimalField())).annotate(payed=Value(1))
-            # payed=Sum(Case(When(Q(payments__open=True) & Q(payments__contract__type=PriceModel.BUY), then=-F('payments__amount_brutto_positiv')),
-            #                When(Q(payments__open=True) & Q(payments__contract__type=PriceModel.SELL), then=F('payments__amount_brutto_positiv'))),
-            #           output_field=DecimalField(), default=0))  # ToDo
+            bills_amount=Subquery(bills, output_field=DecimalField()) * Case(When(type=PriceModel.BUY, then=-1),
+                                                                             default=1),
+            payments_amount=Subquery(payments, output_field=DecimalField()) * Case(When(type=PriceModel.BUY, then=-1),
+                                                                                   default=1))
 
     urls = 'contracts'
     url_id = 'contract_id'
-    table_fields = 'created', 'project', 'company', 'name', 'date', 'tag', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
-    search_fields = 'project__name', 'company__name', 'type', 'name', 'tag__name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
+    table_fields = 'created', 'project', 'company', 'name', 'date', 'tag', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
+    search_fields = 'project__name', 'company__name', 'type', 'name', 'tag__name', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
     form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'tag', 'currency', 'amount_netto_positiv', 'vat'
 
 
