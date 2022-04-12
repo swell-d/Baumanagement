@@ -1,7 +1,6 @@
 import inspect
 from datetime import datetime, timedelta
 
-from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.forms import ModelForm
 from django.shortcuts import render
@@ -13,6 +12,7 @@ from Baumanagement.models.abstract import add_search_field
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_files import File
 from Baumanagement.models.models_map import get_base_models
+from Baumanagement.models.models_messages import MyMessage
 
 
 class CommentFormClass(ModelForm):
@@ -45,7 +45,7 @@ def upload_files(request, new_object):
         file_instance = File.objects.create(name=file.name, file=file, created_by=request.user)
         new_object.file_ids.append(file_instance.id)
         new_object.save(user=request.user)
-        messages.success(request, f'{file.name} {_("uploaded")}')
+        MyMessage.message(request, f'{file.name} {_("uploaded")}', 'SUCCESS')
 
 
 def add_comment_to_object(request, new_object):
@@ -120,12 +120,12 @@ def create_new_object_or_get_error(request, cls):
         new_object.created_by = request.user
         new_object.save()
         formset.save_m2m()
-        messages.success(request, f'{new_object.name} {_("created")}')
+        MyMessage.message(request, f'{new_object.name} {_("created")}', 'SUCCESS')
         upload_files(request, new_object)
         add_comment_to_object(request, new_object)
         return None
     else:
-        messages.warning(request, formset.errors)
+        MyMessage.message(request, formset.errors, 'WARNING')
         return formset
 
 
@@ -148,10 +148,10 @@ def edit_object_form(request, context, cls, object):
                 object = formset.save(commit=False)
                 object.save()
                 formset.save_m2m()
-                messages.success(request, f'{object.name} {_("changed")}')
+                MyMessage.message(request, f'{object.name} {_("changed")}', 'SUCCESS')
                 upload_files(request, object)
             else:
-                messages.warning(request, formset.errors)
+                MyMessage.message(request, formset.errors, 'WARNING')
             error_form = formset
     context['form'] = error_form or context.get('form') or cls(instance=object)
     if 'FileModel' in str(inspect.getmro(object.__class__)):

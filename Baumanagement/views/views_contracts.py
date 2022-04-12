@@ -1,7 +1,6 @@
 from decimal import Decimal
 
 from django import forms
-from django.contrib import messages
 from django.db.models import Q, F, Case, When
 from django.urls import reverse
 from django.utils.html import format_html
@@ -9,6 +8,7 @@ from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company, Currency
 from Baumanagement.models.models_contracts import Contract, ContractTag
+from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_contracts import ContractTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
@@ -81,12 +81,12 @@ def disable_children(request, contract):
         for bill in contract.bills.all():
             if bill.open:
                 bill.open = False
-                messages.warning(request, f'{bill.name} {_("disabled")}')
+                MyMessage.message(request, f'{bill.name} {_("disabled")}', 'WARNING')
                 bill.save()
         for payment in contract.payments.all():
             if payment.open:
                 payment.open = False
-                messages.warning(request, f'{payment.name} {_("disabled")}')
+                MyMessage.message(request, f'{payment.name} {_("disabled")}', 'WARNING')
                 payment.save()
 
 
