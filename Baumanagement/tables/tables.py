@@ -29,8 +29,7 @@ class MyTable(tables.Table):
         row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
     def render_name(self, record, value):
-        return format_html(
-            f'<a href="{modal if self.object_table else reverse(record.url_id, args=[record.id])}">{value}</a>')
+        return base_render(self, record, value)
 
     def as_values(self, exclude_columns=None):
         if exclude_columns is None:
@@ -94,3 +93,21 @@ def get_google_maps_link(record):
     text = f'{record.address}, {record.city}'
     text += f', {record.land}' if record.land != 'Deutschland' else ''
     return format_html(f'<a href="https://www.google.de/maps/search/{link}" target="_blank">{text}</a>')
+
+
+def get_link(record):
+    return reverse(record.url_id, args=[record.id])
+
+
+def format_amount(value, link, symbol):
+    return format_html(
+        f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
+
+
+def base_render(table, record, value):
+    return format_html(f'<a href="{modal if table.object_table else get_link(record)}">{value}</a>')
+
+
+def date_render(table, record, value):
+    return format_html(f'<a href="{modal if table.object_table else get_link(record)}">'
+                       f'{value.strftime("%d.%m.%Y") if value else "—"}</a>')

@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Contact
-from Baumanagement.tables.tables import Files, MyTable
+from Baumanagement.tables.tables import Files, MyTable, base_render
 
 
 class ContactTable(MyTable, Files):
@@ -24,5 +24,4 @@ class ContactTable(MyTable, Files):
         return format_html(f'<a href="tel:{re.sub("[^0-9+]", "", value)}">{value}</a>')
 
     def render_position(self, record, value):
-        link = reverse('contact_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return base_render(self, record, value)

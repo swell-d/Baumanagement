@@ -1,10 +1,8 @@
 import django_tables2 as tables
-from django.urls import reverse
-from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_products import Product
-from Baumanagement.tables.tables import Files, MyTable
+from Baumanagement.tables.tables import Files, MyTable, format_amount, get_link, base_render
 
 
 class ProductTable(MyTable, Files):
@@ -15,21 +13,13 @@ class ProductTable(MyTable, Files):
     files = tables.Column(verbose_name=_('Files'), orderable=False)
 
     def render_code(self, record, value):
-        link = reverse('product_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return base_render(self, record, value)
 
     def render_amount_netto_positiv(self, record, value):
-        link = reverse('product_id', args=[record.id])
-        symbol = record.currency.symbol
-        return format_html(
-            f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
+        return format_amount(value, get_link(record), record.currency.symbol)
 
     def render_vat(self, record, value):
-        link = reverse('product_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return base_render(self, record, value)
 
     def render_amount_brutto_positiv(self, record, value):
-        link = reverse('product_id', args=[record.id])
-        symbol = record.currency.symbol
-        return format_html(
-            f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
+        return format_amount(value, get_link(record), record.currency.symbol)

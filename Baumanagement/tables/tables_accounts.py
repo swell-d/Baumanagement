@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Account
-from Baumanagement.tables.tables import Files, MyTable
+from Baumanagement.tables.tables import Files, MyTable, format_amount, base_render
 
 
 class AccountTable(MyTable, Files):
@@ -22,20 +22,15 @@ class AccountTable(MyTable, Files):
         return format_html(f'<a href="{link}">{value}</a>')
 
     def render_currency(self, record, value):
-        link = reverse('account_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return base_render(self, record, value)
 
     def render_IBAN(self, record, value):
-        link = reverse('account_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return base_render(self, record, value)
 
     def render_BIC(self, record, value):
-        link = reverse('account_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return base_render(self, record, value)
 
     def render_balance(self, record):
-        link = reverse('account_id_payments', args=[record.id])
         value = -(record.sum1 or Decimal(0)) + (record.sum2 or Decimal(0))
-        symbol = record.currency.symbol
-        return format_html(
-            f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
+        link = reverse('account_id_payments', args=[record.id])
+        return format_amount(value, link, record.currency.symbol)

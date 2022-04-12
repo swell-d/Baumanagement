@@ -4,7 +4,8 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_contracts import Bill
-from Baumanagement.tables.tables import Files, SummingColumn2F, MyTable
+from Baumanagement.tables.tables import Files, SummingColumn2F, MyTable, format_amount, get_link, base_render, \
+    date_render
 
 
 class BillTable(MyTable, Files):
@@ -31,21 +32,13 @@ class BillTable(MyTable, Files):
         return format_html(f'<a href="{link}">{value}</a>')
 
     def render_date(self, record, value):
-        link = reverse('bill_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value.strftime("%d.%m.%Y") if value else "—"}</a>')
+        return date_render(self, record, value)
 
     def render_amount_netto(self, record, value):
-        link = reverse('bill_id', args=[record.id])
-        symbol = record.currency.symbol
-        return format_html(
-            f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
+        return format_amount(value, get_link(record), record.currency.symbol)
 
     def render_vat(self, record, value):
-        link = reverse('bill_id', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return base_render(self, record, value)
 
     def render_amount_brutto(self, record, value):
-        link = reverse('bill_id', args=[record.id])
-        symbol = record.currency.symbol
-        return format_html(
-            f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
+        return format_amount(value, get_link(record), record.currency.symbol)
