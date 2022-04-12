@@ -14,11 +14,12 @@ class CompanyTable(MyTable, Files):
         model = Company
         fields = Company.table_fields
 
+    name = tables.Column(attrs={'td': {'class': 'fw-bold table-secondary'}})
     files = tables.Column(verbose_name=_('Files'), footer="")
 
     def render_name(self, record, value):
         link = reverse('company_id', args=[record.id])
-        return format_html(f'<strong><a href="{modal if self.object_table else link}">{value}</a></strong>')
+        return format_html(f'<a href="{modal if self.object_table else link}">{value}</a>')
 
     def render_address(self, record, value):
         return get_google_maps_link(record)
@@ -27,7 +28,5 @@ class CompanyTable(MyTable, Files):
         return format_html(f'<a href="tel:{re.sub("[^0-9+]", "", value)}">{value}</a>')
 
     def render_role(self, record, value):
-        def role_link(role):
-            return reverse('companies_id', args=[role.id])
-
-        return format_html(", ".join([f'<a href="{role_link(role)}">{role}</a>' for role in value.all()]))
+        return format_html(
+            ", ".join([f'<a href="{reverse("companies_id", args=[role.id])}">{role}</a>' for role in value.all()]))
