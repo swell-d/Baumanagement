@@ -93,7 +93,7 @@ class Account(BaseModel, FileModel):
     @staticmethod
     def extra_fields(qs):
         return qs.annotate(
-            sum1=-F('payments_from__amount_brutto_positiv')).annotate(
+            sum1=F('payments_from__amount_brutto_positiv')).annotate(
             sum2=F('payments_to__amount_brutto_positiv'))
 
     url = 'accounts'

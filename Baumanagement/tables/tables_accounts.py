@@ -40,7 +40,7 @@ class AccountTable(MyTable, Files):
 
     def render_balance(self, record):
         link = reverse('account_id_payments', args=[record.id])
-        value = (record.sum1 or Decimal(0)) + (record.sum2 or Decimal(0))
+        value = -(record.sum1 or Decimal(0)) + (record.sum2 or Decimal(0))
         symbol = record.currency.symbol
         return format_html(
             f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
