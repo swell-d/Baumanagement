@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_products import Product
-from Baumanagement.tables.tables import Files, MyTable, modal
+from Baumanagement.tables.tables import Files, MyTable
 
 
 class ProductTable(MyTable, Files):
@@ -13,10 +13,6 @@ class ProductTable(MyTable, Files):
         fields = Product.table_fields
 
     files = tables.Column(verbose_name=_('Files'), orderable=False)
-
-    def render_name(self, record, value):
-        link = reverse('product_id', args=[record.id])
-        return format_html(f'<a href="{modal if self.object_table else link}">{value}</a>')
 
     def render_code(self, record, value):
         link = reverse('product_id', args=[record.id])

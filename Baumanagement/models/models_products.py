@@ -26,7 +26,8 @@ class ProductCategory(BaseModel):
     def count(self):
         return self.products.count()
 
-    url = 'productcategories'
+    urls = 'productcategories'
+    url_id = 'productcategory_id'
     table_fields = 'name',
     search_fields = 'name',
     form_fields = 'name', 'parent'
@@ -58,7 +59,8 @@ class Product(BaseModel, FileModel, PriceModel):
     def extra_fields(qs):
         return qs.all()
 
-    url = 'products'
+    urls = 'products'
+    url_id = 'product_id'
     table_fields = 'created', 'type', 'name', 'code', 'files', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'
     search_fields = 'name', 'type', 'code', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'
     form_fields = 'open', 'type', 'name', 'code', 'description', 'categories', 'currency', 'amount_netto_positiv', 'vat'

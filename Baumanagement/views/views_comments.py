@@ -29,7 +29,7 @@ def object_table(request, id):
     context = {'tables': []}
     queryset = baseClass.objects.filter(id=id)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': queryset.first().id}]
 
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)

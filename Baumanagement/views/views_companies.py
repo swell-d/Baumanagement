@@ -46,7 +46,7 @@ def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
     company = queryset.first()
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': company.name}]
 
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
@@ -82,7 +82,7 @@ def company_companies(request, id):
     contracts = Contract.objects.filter(Q(project__company=company) | Q(company=company))
     queryset = get_partners(company, contracts)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id', args=[company.id]), 'text': company.name},
                               {'text': _('Partners')}]
 
@@ -104,7 +104,7 @@ def companies_by_role(request, id):
     context = {}
     queryset = baseClass.objects.filter(role=id)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': role.name}]
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)

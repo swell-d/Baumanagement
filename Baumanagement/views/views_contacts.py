@@ -32,7 +32,7 @@ def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
     contact = queryset.first()
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id_contacts', args=[contact.company.id]),
                                'text': contact.company.name},
                               {'text': contact.name}]
@@ -46,7 +46,7 @@ def company_contacts(request, id):
     context = {}
     queryset = company.contacts.all()
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': company.name}]
 
     form = FormClass()

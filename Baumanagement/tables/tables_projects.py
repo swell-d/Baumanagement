@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_projects import Project
-from Baumanagement.tables.tables import Files, SummingColumnInt, get_google_maps_link, MyTable, modal
+from Baumanagement.tables.tables import Files, SummingColumnInt, get_google_maps_link, MyTable
 
 
 class ProjectTable(MyTable, Files):
@@ -14,10 +14,6 @@ class ProjectTable(MyTable, Files):
 
     count_contracts = SummingColumnInt(verbose_name=_('Contracts'))
     files = tables.Column(verbose_name=_('Files'), orderable=False)
-
-    def render_name(self, record, value):
-        link = reverse('project_id', args=[record.id])
-        return format_html(f'<a href="{modal if self.object_table else link}">{value}</a>')
 
     def render_code(self, record, value):
         link = reverse('project_id', args=[record.id])

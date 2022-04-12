@@ -27,7 +27,8 @@ class ContractTag(BaseModel):
     def count(self):
         return self.contracts.count()
 
-    url = 'contracttags'
+    urls = 'contracttags'
+    url_id = 'contracttag_id'
     table_fields = 'name',
     search_fields = 'name',
     form_fields = 'name', 'parent'
@@ -65,7 +66,8 @@ class Contract(BaseModel, PriceModel, FileModel):
             When(bills__open=True, type=PriceModel.SELL, then=F('bills__amount_brutto_positiv'))),
             distinct=True))
 
-    url = 'contracts'
+    urls = 'contracts'
+    url_id = 'contract_id'
     table_fields = 'created', 'project', 'company', 'name', 'date', 'tag', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
     search_fields = 'project__name', 'company__name', 'type', 'name', 'tag__name', 'amount_netto', 'vat', 'amount_brutto', 'due', 'payed'
     form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'tag', 'currency', 'amount_netto_positiv', 'vat'
@@ -93,7 +95,8 @@ class Bill(BaseModel, PriceModel, FileModel):
     def extra_fields(qs):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
 
-    url = 'bills'
+    urls = 'bills'
+    url_id = 'bill_id'
     table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
     search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
     form_fields = 'open', 'contract', 'name', 'date', 'amount_netto_positiv', 'vat'
@@ -125,7 +128,8 @@ class Payment(BaseModel, PriceModel, FileModel):
     def extra_fields(qs):
         return qs.annotate(project=F('contract__project__name'), company=F('contract__company__name'))
 
-    url = 'payments'
+    urls = 'payments'
+    url_id = 'payment_id'
     table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
     search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
     form_fields = 'open', 'contract', 'name', 'date', 'account_from', 'account_to', 'amount_netto_positiv', 'vat'

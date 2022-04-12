@@ -39,7 +39,7 @@ def object_table(request, id):
                                                         amount_brutto=F('amount_brutto_positiv'))
     payment = queryset.first()
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id_payments', args=[payment.contract.project.company.id]),
                                'text': payment.contract.project.company.name},
                               {'link': reverse('project_id_payments', args=[payment.contract.project.id]),
@@ -61,7 +61,7 @@ def company_payments(request, id):
     context = {}
     queryset = company_payments_qs(company)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': company.name}]
 
     form = FormClass()
@@ -85,7 +85,7 @@ def account_payments(request, id):
     context = {}
     queryset = account_payments_qs(account)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id', args=[account.company.id]), 'text': account.company.name},
                               {'text': account.name}]
 
@@ -106,7 +106,7 @@ def project_payments(request, id):
     context = {}
     queryset = project_payments_qs(project)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id_payments', args=[project.company.id]),
                                'text': project.company.name},
                               {'text': project.name}]
@@ -128,7 +128,7 @@ def contract_payments(request, id):
     context = {}
     queryset = contract_payments_qs(contract)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id_payments', args=[contract.project.company.id]),
                                'text': contract.project.company.name},
                               {'link': reverse('project_id_payments', args=[contract.project.id]),

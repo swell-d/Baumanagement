@@ -40,7 +40,7 @@ def object_table(request, id):
                                                         amount_brutto=F('amount_brutto_positiv'))
     bill = queryset.first()
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id_bills', args=[bill.contract.project.company.id]),
                                'text': bill.contract.project.company.name},
                               {'link': reverse('project_id_bills', args=[bill.contract.project.id]),
@@ -58,7 +58,7 @@ def company_bills(request, id):
     context = {}
     queryset = company_bills_qs(company)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': company.name}]
 
     form = FormClass()
@@ -82,7 +82,7 @@ def project_bills(request, id):
     context = {}
     queryset = project_bills_qs(project)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id_bills', args=[project.company.id]),
                                'text': project.company.name},
                               {'text': project.name}]
@@ -104,7 +104,7 @@ def contract_bills(request, id):
     context = {}
     queryset = contract_bills_qs(contract)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id_bills', args=[contract.project.company.id]),
                                'text': contract.project.company.name},
                               {'link': reverse('project_id_bills', args=[contract.project.id]),

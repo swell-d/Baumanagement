@@ -46,7 +46,7 @@ def object_table(request, id):
     queryset = baseClass.objects.filter(id=id)
     project = queryset.first()
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id_projects', args=[project.company.id]),
                                'text': project.company.name},
                               {'text': queryset.first().name}]
@@ -71,7 +71,7 @@ def company_projects(request, id):
     context['tags1'] = tags()
     queryset = company.projects.all()
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': company.name}]
 
     form = FormClass()

@@ -2,6 +2,7 @@ import re
 import urllib.parse
 
 import django_tables2 as tables
+from django.urls import reverse
 from django.utils.encoding import force_str
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -26,6 +27,10 @@ class MyTable(tables.Table):
         template_name = "django_tables2_custom.html"
         attrs = {'class': 'table table-hover', "thead": {"class": "table-secondary"}}  # table-sm
         row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
+
+    def render_name(self, record, value):
+        return format_html(
+            f'<a href="{modal if self.object_table else reverse(record.url_id, args=[record.id])}">{value}</a>')
 
     def as_values(self, exclude_columns=None):
         if exclude_columns is None:

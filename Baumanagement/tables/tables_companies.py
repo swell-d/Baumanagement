@@ -6,7 +6,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company
-from Baumanagement.tables.tables import Files, get_google_maps_link, MyTable, modal
+from Baumanagement.tables.tables import Files, get_google_maps_link, MyTable
 
 
 class CompanyTable(MyTable, Files):
@@ -15,10 +15,6 @@ class CompanyTable(MyTable, Files):
         fields = Company.table_fields
 
     files = tables.Column(verbose_name=_('Files'), orderable=False)
-
-    def render_name(self, record, value):
-        link = reverse('company_id', args=[record.id])
-        return format_html(f'<a href="{modal if self.object_table else link}">{value}</a>')
 
     def render_address(self, record, value):
         return get_google_maps_link(record)

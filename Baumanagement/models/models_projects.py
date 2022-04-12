@@ -26,7 +26,8 @@ class ProjectTag(BaseModel):
     def count(self):
         return self.projects.count()
 
-    url = 'projecttags'
+    urls = 'projecttags'
+    url_id = 'projecttag_id'
     table_fields = 'name',
     search_fields = 'name',
     form_fields = 'name', 'parent'
@@ -48,7 +49,8 @@ class Project(BaseModel, AddressModel, FileModel):
     def extra_fields(qs):
         return qs.annotate(count_contracts=Sum(Case(When(contracts__open=True, then=1))))
 
-    url = 'projects'
+    urls = 'projects'
+    url_id = 'project_id'
     table_fields = 'created', 'company', 'name', 'code', 'tag', 'address', 'count_contracts', 'files'
     search_fields = 'company__name', 'name', 'code', 'tag__name', 'address', 'city', 'land', 'count_contracts'
     form_fields = 'open', 'company', 'name', 'code', 'tag', 'address', 'city', 'land'

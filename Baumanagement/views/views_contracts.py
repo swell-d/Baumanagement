@@ -56,7 +56,7 @@ def object_table(request, id):
                                                         amount_brutto=F('amount_brutto_positiv'))
     contract = queryset.first()
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id_contracts', args=[contract.project.company.id]),
                                'text': contract.project.company.name},
                               {'link': reverse('project_id_contracts', args=[contract.project.id]),
@@ -96,7 +96,7 @@ def company_contracts(request, id):
     context['tags1'] = tags()
     queryset = company_contracts_qs(company)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': company.name}]
 
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
@@ -113,7 +113,7 @@ def project_contracts(request, id):
     context['tags1'] = tags()
     queryset = project_contracts_qs(project)
 
-    context['breadcrumbs'] = [{'link': reverse(baseClass.url), 'text': _("All")},
+    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'link': reverse('company_id_contracts', args=[project.company.id]),
                                'text': project.company.name},
                               {'text': project.name}]

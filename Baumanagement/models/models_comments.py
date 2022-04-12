@@ -15,7 +15,8 @@ class Comment(BaseModel, FileModel):
     def extra_fields(qs):
         return qs.all()
 
-    url = 'comments'
+    urls = 'comments'
+    url_id = 'comment_id'
     table_fields = 'created', 'name'
     search_fields = 'name',
     form_fields = 'name',
