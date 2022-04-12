@@ -15,7 +15,7 @@ def delete_none_values(value):
 
 
 class MyTable(tables.Table):
-    id = tables.Column(visible=True)
+    id = tables.Column(visible=False)
 
     def __init__(self, *args, **kwargs):
         self.object_table = kwargs.pop('object_table', False)
