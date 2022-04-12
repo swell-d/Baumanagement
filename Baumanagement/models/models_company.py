@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import F
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel
@@ -91,10 +92,12 @@ class Account(BaseModel, FileModel):
 
     @staticmethod
     def extra_fields(qs):
-        return qs.all()
+        return qs.annotate(
+            sum1=-F('payments_from__amount_brutto_positiv')).annotate(
+            sum2=F('payments_to__amount_brutto_positiv'))
 
     url = 'accounts'
-    table_fields = 'created', 'company', 'name', 'currency', 'IBAN', 'BIC', 'files'
+    table_fields = 'created', 'company', 'name', 'currency', 'IBAN', 'BIC', 'files', 'balance'
     search_fields = 'company__name', 'name', 'currency__name', 'IBAN', 'BIC'
     form_fields = 'open', 'company', 'name', 'currency', 'IBAN', 'BIC'
 

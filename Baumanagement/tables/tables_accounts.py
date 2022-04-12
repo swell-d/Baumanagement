@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import django_tables2 as tables
 from django.urls import reverse
 from django.utils.html import format_html
@@ -12,7 +14,9 @@ class AccountTable(MyTable, Files):
         model = Account
         fields = Account.table_fields
 
+    name = tables.Column(attrs={'td': {'class': 'table-secondary'}})
     files = tables.Column(verbose_name=_('Files'))
+    balance = tables.Column(accessor=tables.A("pk"), verbose_name=_('Balance'))  # Kontostand
 
     def render_company(self, record, value):
         link = reverse('company_id', args=[record.company.id])
@@ -33,3 +37,10 @@ class AccountTable(MyTable, Files):
     def render_BIC(self, record, value):
         link = reverse('account_id', args=[record.id])
         return format_html(f'<a href="{link}">{value}</a>')
+
+    def render_balance(self, record):
+        link = reverse('account_id_payments', args=[record.id])
+        value = (record.sum1 or Decimal(0)) + (record.sum2 or Decimal(0))
+        symbol = record.currency.symbol
+        return format_html(
+            f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
