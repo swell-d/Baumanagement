@@ -2,7 +2,6 @@ import re
 import urllib.parse
 
 import django_tables2 as tables
-from django.db.models.functions import Length
 from django.utils.encoding import force_str
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -79,10 +78,10 @@ class Files:
 </div>'''
         return format_html(text or '—')
 
-    def order_files(self, queryset, is_descending):
-        queryset = queryset.annotate(countfiles=Length('file_ids')).order_by(
-            ("-" if is_descending else "") + "countfiles")
-        return (queryset, True)
+    # def order_files(self, queryset, is_descending):
+    #     queryset = queryset.annotate(countfiles=Length('file_ids')).order_by(
+    #         ("-" if is_descending else "") + "countfiles")
+    #     return (queryset, True)
 
 
 def get_google_maps_link(record):

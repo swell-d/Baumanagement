@@ -14,7 +14,7 @@ class ContactTable(MyTable, Files):
         model = Contact
         fields = Contact.table_fields
 
-    files = tables.Column(verbose_name=_('Files'))
+    files = tables.Column(verbose_name=_('Files'), orderable=False)
 
     def render_company(self, record, value):
         link = reverse('company_id', args=[record.company.id])

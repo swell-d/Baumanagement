@@ -13,7 +13,7 @@ class ProjectTable(MyTable, Files):
         fields = Project.table_fields
 
     count_contracts = SummingColumnInt(verbose_name=_('Contracts'))
-    files = tables.Column(verbose_name=_('Files'))
+    files = tables.Column(verbose_name=_('Files'), orderable=False)
 
     def render_name(self, record, value):
         link = reverse('project_id', args=[record.id])

@@ -14,7 +14,7 @@ class CompanyTable(MyTable, Files):
         model = Company
         fields = Company.table_fields
 
-    files = tables.Column(verbose_name=_('Files'))
+    files = tables.Column(verbose_name=_('Files'), orderable=False)
 
     def render_name(self, record, value):
         link = reverse('company_id', args=[record.id])

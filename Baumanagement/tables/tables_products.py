@@ -12,7 +12,7 @@ class ProductTable(MyTable, Files):
         model = Product
         fields = Product.table_fields
 
-    files = tables.Column(verbose_name=_('Files'))
+    files = tables.Column(verbose_name=_('Files'), orderable=False)
 
     def render_name(self, record, value):
         link = reverse('product_id', args=[record.id])

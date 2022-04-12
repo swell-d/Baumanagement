@@ -16,7 +16,7 @@ class ContractTable(MyTable, Files):
     amount_brutto = SummingColumn2F(verbose_name=_('Amount brutto'))
     due = SummingColumn2F(verbose_name=_('Bills'))
     payed = SummingColumn2F(verbose_name=_('Payments'))
-    files = tables.Column(verbose_name=_('Files'))
+    files = tables.Column(verbose_name=_('Files'), orderable=False)
 
     def render_project(self, record, value):
         link = reverse('project_id', args=[record.project.id])

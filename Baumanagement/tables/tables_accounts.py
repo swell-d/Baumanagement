@@ -14,7 +14,7 @@ class AccountTable(MyTable, Files):
         model = Account
         fields = Account.table_fields
 
-    files = tables.Column(verbose_name=_('Files'))
+    files = tables.Column(verbose_name=_('Files'), orderable=False)
     balance = tables.Column(accessor=tables.A("pk"), verbose_name=_('Balance'))  # Kontostand
 
     def render_company(self, record, value):
