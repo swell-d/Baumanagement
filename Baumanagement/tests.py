@@ -8,6 +8,7 @@ from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company, Account, Currency, Contact
 from Baumanagement.models.models_contracts import Contract, Payment, Bill, ContractTag
 from Baumanagement.models.models_files import File
+from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_products import Product, ProductCategory
 from Baumanagement.models.models_projects import Project, ProjectTag
 from Baumanagement.urls import get_urls
@@ -50,6 +51,8 @@ class UrlTests(TestCase):
         self.Bill = Bill.objects.create(name='test', contract=self.Contract, amount_netto_positiv=1, vat=1,
                                         date=datetime.now(), created_by=user)
         self.Comment = Comment.objects.create(name='test', created_by=user)
+
+        self.Message = MyMessage.objects.create(name='test', created_by=user, level=25)
 
         Path("files").mkdir(parents=True, exist_ok=True)
         with open('files/test.txt', 'w') as file:
