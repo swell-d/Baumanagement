@@ -17,7 +17,7 @@ class ProductTable(MyTable, Files):
     def render_name(self, record, value):
         link = reverse('product_id', args=[record.id])
         return format_html(f'<strong><a href="{modal if self.object_table else link}">{value}</a></strong>')
-    
+
     def render_code(self, record, value):
         link = reverse('product_id', args=[record.id])
         return format_html(f'<a href="{link}">{value}</a>')
@@ -37,4 +37,3 @@ class ProductTable(MyTable, Files):
         symbol = record.currency.symbol
         return format_html(
             f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
-
