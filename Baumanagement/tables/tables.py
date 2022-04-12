@@ -22,7 +22,7 @@ class MyTable(tables.Table):
     class Meta:
         empty_text = _("No results found")
         template_name = "django_tables2_custom.html"
-        attrs = {'class': 'table table-hover'}
+        attrs = {'class': 'table table-hover', "thead": {"class": "table-secondary"}}  # table-sm
         row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
     def as_values(self, exclude_columns=None):
