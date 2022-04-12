@@ -1,5 +1,5 @@
 from django.db import models
-from django.db.models import Sum, F, Case, When
+from django.db.models import F, Case, When, Sum, DecimalField, Q, Value, OuterRef, Subquery
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel, FileModel, PriceModel
@@ -58,13 +58,13 @@ class Contract(BaseModel, PriceModel, FileModel):
 
     @staticmethod
     def extra_fields(qs):
-        return qs.annotate(payed=Sum(Case(
-            When(payments__open=True, type=PriceModel.BUY, then=-F('payments__amount_brutto_positiv')),
-            When(payments__open=True, type=PriceModel.SELL, then=F('payments__amount_brutto_positiv'))),
-            distinct=True)).annotate(due=Sum(Case(
-            When(bills__open=True, type=PriceModel.BUY, then=-F('bills__amount_brutto_positiv')),
-            When(bills__open=True, type=PriceModel.SELL, then=F('bills__amount_brutto_positiv'))),
-            distinct=True))
+        bills1 = Bill.objects.filter(contract=OuterRef('pk'), open=True, contract__type=PriceModel.BUY)
+        # bills2 = Bill.objects.filter(contract=OuterRef('pk'), open=True, contract__type=PriceModel.SELL)
+        return qs.annotate(
+            due=Subquery(bills1.values('amount_brutto_positiv'), output_field=DecimalField())).annotate(payed=Value(1))
+            # payed=Sum(Case(When(Q(payments__open=True) & Q(payments__contract__type=PriceModel.BUY), then=-F('payments__amount_brutto_positiv')),
+            #                When(Q(payments__open=True) & Q(payments__contract__type=PriceModel.SELL), then=F('payments__amount_brutto_positiv'))),
+            #           output_field=DecimalField(), default=0))  # ToDo
 
     urls = 'contracts'
     url_id = 'contract_id'
