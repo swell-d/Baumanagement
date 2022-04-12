@@ -1,6 +1,7 @@
 {% load i18n %}
 {% load static %}
 
+{% if messages %}
 <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1031">
     {% for message in messages %}
     <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
@@ -18,7 +19,6 @@
     {% endfor %}
 </div>
 
-{% if messages %}
 <script>
         var toastElList = [].slice.call(document.querySelectorAll('.toast'))
         var toastList = toastElList.map(function (toastEl) {
