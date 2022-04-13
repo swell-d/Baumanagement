@@ -4,8 +4,6 @@
     {{ breadcrumbs_titel }} - {% with breadcrumbs|last as last %}{{ last.text }}{% endwith %}
 {% endblock %}
 
-{% block body_onload %} onload="mainTableReload()"{% endblock %}
-
 {% block content %}
 
     {% include 'tree.html' %}
