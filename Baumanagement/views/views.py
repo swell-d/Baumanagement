@@ -78,7 +78,7 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
     if queryset is None:
         queryset = baseClass.objects
 
-    queryset = date_filter(request, queryset, settings)
+    queryset = date_filter(request, queryset, baseClass, settings)
     queryset = tag_filter(request, queryset)
     queryset = project_filter(request, baseClass, queryset, settings)
 
@@ -170,7 +170,7 @@ def tag_filter(request, queryset):
     return queryset
 
 
-def date_filter(request, queryset, settings):
+def date_filter(request, queryset, baseClass, settings):
     settings_df = settings.date_from
     if request.GET:
         date_from = request.GET.get('dateFrom')
@@ -180,7 +180,7 @@ def date_filter(request, queryset, settings):
     if settings_df != date_from:
         settings.date_from = date_from
         settings.save()
-    if date_from:
+    if date_from and 'created' in baseClass.table_fields:
         queryset = queryset.filter(created__gte=date_from)
 
     settings_dt = settings.date_to
@@ -192,7 +192,7 @@ def date_filter(request, queryset, settings):
     if settings_dt != date_to:
         settings.date_to = date_to
         settings.save()
-    if date_to:
+    if date_to and 'created' in baseClass.table_fields:
         queryset = queryset.filter(created__lt=date_to + timedelta(days=1))
 
     return queryset

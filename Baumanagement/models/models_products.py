@@ -61,6 +61,6 @@ class Product(BaseModel, FileModel, PriceModel):
 
     urls = 'products'
     url_id = 'product_id'
-    table_fields = 'created', 'type', 'name', 'code', 'files', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'
-    search_fields = 'name', 'type', 'code', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'
+    table_fields = 'type', 'name', 'code', 'files', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'
+    search_fields = 'type', 'name', 'code', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'
     form_fields = 'open', 'type', 'name', 'code', 'description', 'categories', 'currency', 'amount_netto_positiv', 'vat'

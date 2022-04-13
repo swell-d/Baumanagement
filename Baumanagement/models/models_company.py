@@ -103,7 +103,7 @@ class Account(BaseModel, FileModel):
 
     urls = 'accounts'
     url_id = 'account_id'
-    table_fields = 'created', 'company', 'name', 'currency', 'IBAN', 'BIC', 'files', 'balance'
+    table_fields = 'company', 'name', 'currency', 'IBAN', 'BIC', 'files', 'balance'
     search_fields = 'company__name', 'name', 'currency__name', 'IBAN', 'BIC'
     form_fields = 'open', 'company', 'name', 'currency', 'IBAN', 'BIC'
 
@@ -126,6 +126,6 @@ class Contact(BaseModel, FileModel):
 
     urls = 'contacts'
     url_id = 'contact_id'
-    table_fields = 'created', 'company', 'name', 'email', 'phone', 'position', 'files'
+    table_fields = 'company', 'name', 'email', 'phone', 'position', 'files'
     search_fields = 'company__name', 'name', 'email', 'phone', 'position'
     form_fields = 'open', 'company', 'name', 'email', 'phone', 'position'
