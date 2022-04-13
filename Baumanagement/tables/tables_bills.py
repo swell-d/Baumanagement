@@ -21,15 +21,15 @@ class BillTable(MyTable, Files):
 
     def render_project(self, record, value):
         link = reverse('project_id', args=[record.contract.project.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'<a href="{link}">{value}🔗</a>')
 
     def render_contract(self, record, value):
         link = reverse('contract_id', args=[record.contract.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'<a href="{link}">{value}🔗</a>')
 
     def render_company(self, record, value):
         link = reverse('company_id', args=[record.contract.company.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'<a href="{link}">{value}🔗</a>')
 
     def render_date(self, record, value):
         return date_render(self, record, value)

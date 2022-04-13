@@ -24,4 +24,4 @@ class CompanyTable(MyTable, Files):
 
     def render_role(self, record, value):
         return format_html(
-            ", ".join([f'<a href="{reverse("companies_id", args=[role.id])}">{role}</a>' for role in value.all()]))
+            ", ".join([f'<a href="{reverse("company_id", args=[record.id])}">{role}</a>' for role in value.all()]))

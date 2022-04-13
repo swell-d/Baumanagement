@@ -21,14 +21,17 @@ class ContractTable(MyTable, Files):
 
     def render_project(self, record, value):
         link = reverse('project_id', args=[record.project.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'<a href="{link}">{value}🔗</a>')
 
     def render_company(self, record, value):
         link = reverse('company_id', args=[record.company.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'<a href="{link}">{value}🔗</a>')
 
     def render_date(self, record, value):
         return date_render(self, record, value)
+
+    def render_tag(self, record, value):
+        return base_render(self, record, value)
 
     def render_amount_netto(self, record, value):
         return format_amount(value, get_link(record), record.currency.symbol)

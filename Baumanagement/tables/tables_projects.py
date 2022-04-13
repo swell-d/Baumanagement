@@ -15,12 +15,15 @@ class ProjectTable(MyTable, Files):
     count_contracts = SummingColumnInt(verbose_name=_('Contracts'))
     files = tables.Column(verbose_name=_('Files'), orderable=False)
 
+    def render_company(self, record, value):
+        link = reverse('company_id', args=[record.company.id])
+        return format_html(f'<a href="{link}">{value}🔗</a>')
+
     def render_code(self, record, value):
         return base_render(self, record, value)
 
-    def render_company(self, record, value):
-        link = reverse('company_id', args=[record.company.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+    def render_tag(self, record, value):
+        return base_render(self, record, value)
 
     def render_address(self, record, value):
         return get_google_maps_link(record)
