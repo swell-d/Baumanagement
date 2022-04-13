@@ -13,6 +13,8 @@ from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_files import File
 from Baumanagement.models.models_map import get_base_models
 from Baumanagement.models.models_messages import MyMessage
+from Baumanagement.models.models_projects import Project
+from Baumanagement.models.models_settings import Settings
 
 
 class CommentFormClass(ModelForm):
@@ -31,6 +33,9 @@ def myrender(request, context):
     if export_format and TableExport.is_valid_format(export_format):
         exporter = TableExport(export_format, context['table1'])
         return exporter.response("table.{}".format(export_format))
+
+    context['projects'] = Project.objects.all()
+    context['settings'] = Settings.objects.get_or_create(user=request.user)[0]
 
     template = 'tables.html' if not request.GET else 'maintable.html'
     return render(request, template, context)
@@ -78,6 +83,19 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
         tag = request.GET.get('tag')
         if tag:
             queryset = queryset.filter(tag=int(tag))
+
+        project_id_str = request.GET.get('project')
+        project_id = int(project_id_str) if project_id_str else None
+        settings = Settings.objects.get_or_create(user=request.user)[0]
+        settings_ap_id = settings.active_project.id if settings.active_project else None
+        if project_id != settings_ap_id:
+            settings.active_project = Project.objects.get(id=project_id) if project_id else None
+            settings.save()
+        if project_id and baseClass.__name__ == 'Contract':
+            queryset = queryset.filter(project_id=project_id)
+        elif project_id and baseClass.__name__ in ['Bill', 'Payment']:
+            queryset = queryset.filter(contract__project_id=project_id)
+
         queryset = baseClass.extra_fields(queryset)
         queryset = add_search_field(queryset, request)
         table1 = tableClass(queryset, order_by="-created")

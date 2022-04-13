@@ -7,9 +7,11 @@ from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_products import Product, ProductCategory
 from Baumanagement.models.models_projects import Project, ProjectTag
+from Baumanagement.models.models_settings import Settings
 
 admin.site.register(Currency)
 admin.site.register(MyMessage)
+admin.site.register(Settings)
 
 admin.site.register(ProductCategory)
 admin.site.register(Product)

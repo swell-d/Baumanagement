@@ -6,11 +6,11 @@
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb mb-0 h5">
                 {% for each in breadcrumbs %}
-                <li class="breadcrumb-item">
-                    {% if each.link %}<a class="" href="{{ each.link }}">{% endif %}
-                    {{ each.text }}
-                    {% if each.link %}</a>{% endif %}
-                </li>
+                    <li class="breadcrumb-item">
+                        {% if each.link %}<a class="" href="{{ each.link }}">{% endif %}
+                        {{ each.text }}
+                        {% if each.link %}</a>{% endif %}
+                    </li>
                 {% endfor %}
             </ol>
         </nav>
@@ -20,22 +20,34 @@
     </div>
     <div class="col d-flex align-items-center justify-content-end">
         {% if search_field %}
-        <input class="form-control m-2" type="date" id="dateFrom" name="dateFrom" onchange="mainTableReload()">
-        —
-        <input class="form-control m-2" type="date" id="dateTo" name="dateTo" onchange="mainTableReload()">
-        <input class="form-control m-2" type="text" id="search" name="search" oninput="mainTableReload()"
-               placeholder="{% blocktrans %}Search{% endblocktrans %}">
+            {% if 'contracts' in request.path or 'bills' in request.path or 'payments' in request.path %}
+                <select name="project" id="project" class="select form-select" oninput="mainTableReload()">
+                    <option value="">{% translate "All" %}</option>
+                    {% for project in projects %}
+                        <option value="{{ project.id }}"{% if project == settings.active_project %}
+                                selected="selected"{% endif %}>
+                            {{ project.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            {% endif %}
+
+            <input class="form-control m-2" type="date" id="dateFrom" name="dateFrom" onchange="mainTableReload()">
+            —
+            <input class="form-control m-2" type="date" id="dateTo" name="dateTo" onchange="mainTableReload()">
+            <input class="form-control m-2" type="text" id="search" name="search" oninput="mainTableReload()"
+                   placeholder="{% blocktrans %}Search{% endblocktrans %}">
         {% endif %}
         <input type="hidden" id="sort" name="sort"><input type="hidden" id="tag" name="tag">
     </div>
 </div>
 
 {% if tags1 %}
-<div class="row tags">
-    <div class="col">
-        {{ tags1 }}
+    <div class="row tags">
+        <div class="col">
+            {{ tags1 }}
+        </div>
     </div>
-</div>
 {% endif %}
 
 <div class="row" id="main-table">

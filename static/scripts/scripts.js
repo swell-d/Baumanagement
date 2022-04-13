@@ -14,6 +14,9 @@ function mainTableReload() {
     if ((document.getElementById("tag") || {}).value) {
         urlSearchParams.set('tag', document.getElementById("tag").value);
     }
+    if ((document.getElementById("project") || {}).value) {
+        urlSearchParams.set('project', document.getElementById("project").value);
+    }
     Http.open("GET", location.href.split('?')[0] + '?' + urlSearchParams.toString());
     Http.send();
     Http.onreadystatechange = (e) => {
