@@ -12,5 +12,5 @@ def delete_file(request, id):
     file = File.objects.get(id=id)
     filename = file.name
     file.delete()
-    MyMessage.message(request, f'{filename} {_("deleted")}', 'SUCCESS')
+    MyMessage.message(request, filename + ' ' + _("deleted"), 'SUCCESS')
     return HttpResponse('')

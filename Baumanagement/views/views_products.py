@@ -36,5 +36,5 @@ def object_table(request, id):
 
 
 def tags():
-    html = f'''&#9881;<a href="{reverse('productcategories')}">{_('Manage categories')}</a>'''
+    html = '&#9881;<a href="' + reverse('productcategories') + '">' + _('Manage categories') + '</a>'
     return format_html(html)

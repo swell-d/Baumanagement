@@ -51,7 +51,7 @@ def upload_files(request, new_object):
         file_instance = File.objects.create(name=file.name, file=file, created_by=request.user)
         new_object.file_ids.append(file_instance.id)
         new_object.save(user=request.user)
-        MyMessage.message(request, f'{file.name} {_("uploaded")}', 'SUCCESS')
+        MyMessage.message(request, file.name + ' ' + _("uploaded"), 'SUCCESS')
 
 
 def add_comment_to_object(request, new_object):
@@ -126,7 +126,7 @@ def create_new_object_or_get_error(request, cls):
         new_object.created_by = request.user
         new_object.save()
         formset.save_m2m()
-        MyMessage.message(request, f'{new_object.name} {_("created")}', 'SUCCESS')
+        MyMessage.message(request, new_object.name + ' ' + _("created"), 'SUCCESS')
         upload_files(request, new_object)
         add_comment_to_object(request, new_object)
         return None
@@ -154,7 +154,7 @@ def edit_object_form(request, context, cls, object):
                 object = formset.save(commit=False)
                 object.save()
                 formset.save_m2m()
-                MyMessage.message(request, f'{object.name} {_("changed")}', 'SUCCESS')
+                MyMessage.message(request, object.name + ' ' + _("changed"), 'SUCCESS')
                 upload_files(request, object)
             else:
                 MyMessage.message(request, formset.errors, 'WARNING')

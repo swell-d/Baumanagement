@@ -31,7 +31,7 @@ def tags():
     html += ', '.join(
         f'''#<a href="{reverse('companies_id', args=[role.id])}">{role.name}</a> ({role.count})'''
         for role in CompanyRole.objects.order_by('name') if role.count > 0)
-    html += f''' &#9881;<a href="{reverse('companyroles')}">{_('Manage roles')}</a>'''
+    html += ' &#9881;<a href="' + reverse('companyroles') + '">' + _('Manage roles') + '</a>'
     return format_html(html)
 
 
