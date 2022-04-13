@@ -66,6 +66,8 @@ def add_comment_to_object(request, new_object):
 
 
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
+    settings = Settings.objects.get_or_create(user=request.user)[0]
+
     if not request.GET:
         context.setdefault('breadcrumbs_titel', baseClass._meta.verbose_name_plural)
         context.setdefault('breadcrumbs', [{'text': _("All")}])
@@ -74,27 +76,10 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
     # else:
     if queryset is None:
         queryset = baseClass.objects
-    dateFrom = request.GET.get('dateFrom')
-    if dateFrom:
-        queryset = queryset.filter(created__gte=datetime.strptime(dateFrom, "%Y-%m-%d"))
-    dateTo = request.GET.get('dateTo')
-    if dateTo:
-        queryset = queryset.filter(created__lt=datetime.strptime(dateTo, "%Y-%m-%d") + timedelta(days=1))
-    tag = request.GET.get('tag')
-    if tag:
-        queryset = queryset.filter(tag=int(tag))
 
-    project_id_str = request.GET.get('project')
-    project_id = int(project_id_str) if project_id_str else None
-    settings = Settings.objects.get_or_create(user=request.user)[0]
-    settings_ap_id = settings.active_project.id if settings.active_project else None
-    if project_id != settings_ap_id:
-        settings.active_project = Project.objects.get(id=project_id) if project_id else None
-        settings.save()
-    if project_id and baseClass.__name__ == 'Contract':
-        queryset = queryset.filter(project_id=project_id)
-    elif project_id and baseClass.__name__ in ['Bill', 'Payment']:
-        queryset = queryset.filter(contract__project_id=project_id)
+    queryset = date_filter(request, queryset)
+    queryset = tag_filter(request, queryset)
+    queryset = project_filter(request, baseClass, queryset, settings)
 
     queryset = baseClass.extra_fields(queryset)
     queryset = add_search_field(queryset, request)
@@ -175,3 +160,34 @@ def edit_object_form(request, context, cls, object):
     if 'FileModel' in str(inspect.getmro(object.__class__)):
         context['files_form'] = object.files
     context['buttons'] = ['Edit']
+
+
+def tag_filter(request, queryset):
+    tag = request.GET.get('tag')
+    if tag:
+        queryset = queryset.filter(tag=int(tag))
+    return queryset
+
+
+def date_filter(request, queryset):
+    dateFrom = request.GET.get('dateFrom')
+    if dateFrom:
+        queryset = queryset.filter(created__gte=datetime.strptime(dateFrom, "%Y-%m-%d"))
+    dateTo = request.GET.get('dateTo')
+    if dateTo:
+        queryset = queryset.filter(created__lt=datetime.strptime(dateTo, "%Y-%m-%d") + timedelta(days=1))
+    return queryset
+
+
+def project_filter(request, baseClass, queryset, settings):
+    project_id_str = request.GET.get('project')
+    project_id = int(project_id_str) if project_id_str else None
+    settings_ap_id = settings.active_project.id if settings.active_project else None
+    if project_id != settings_ap_id:
+        settings.active_project = Project.objects.get(id=project_id) if project_id else None
+        settings.save()
+    if project_id and baseClass.__name__ == 'Contract':
+        queryset = queryset.filter(project_id=project_id)
+    elif project_id and baseClass.__name__ in ['Bill', 'Payment']:
+        queryset = queryset.filter(contract__project_id=project_id)
+    return queryset
