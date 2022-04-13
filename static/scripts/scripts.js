@@ -1,3 +1,9 @@
+function onLoad() {
+    document.getElementById("dateFrom").addEventListener('focusin', setInputBackground);
+    document.getElementById("dateTo").addEventListener('focusin', setInputBackground);
+    document.getElementById("search").addEventListener('focusout', setInputBackground);
+}
+
 function mainTableReload() {
     const Http = new XMLHttpRequest();
     const urlSearchParams = new URLSearchParams();
@@ -56,4 +62,8 @@ function openTab(evt, cityName) {
     }
     document.getElementById(cityName).style.display = "block";
     evt.currentTarget.className += " active";
+}
+
+function setInputBackground() {
+    this.style.backgroundColor = !!this.value ? "#FFFCC8" : "white";
 }

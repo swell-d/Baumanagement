@@ -68,6 +68,8 @@ def add_comment_to_object(request, new_object):
 
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
     settings = Settings.objects.get_or_create(user=request.user)[0]
+    if 'created' in baseClass.table_fields:
+        context['date_fields'] = True
 
     if not request.GET:
         context.setdefault('breadcrumbs_titel', baseClass._meta.verbose_name_plural)

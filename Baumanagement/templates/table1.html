@@ -19,25 +19,29 @@
         {% if form %}{% include "form.html" %}{% endif %}
     </div>
     <div class="col d-flex align-items-center justify-content-end">
-        {% if search_field %}
-            {% if 'contracts' in request.path or 'bills' in request.path or 'payments' in request.path %}
-                <select name="project" id="project" class="select form-select" oninput="mainTableReload()">
-                    <option value="">{% translate "All" %}</option>
-                    {% for project in projects %}
-                        <option value="{{ project.id }}"{% if project == settings.active_project %}
-                                selected="selected"{% endif %}>
-                            {{ project.name }}
-                        </option>
-                    {% endfor %}
-                </select>
-            {% endif %}
 
+        {% if 'contracts' in request.path or 'bills' in request.path or 'payments' in request.path %}
+            <select name="project" id="project" class="select form-select" oninput="mainTableReload()">
+                <option value="">{% translate "All" %}</option>
+                {% for project in projects %}
+                    <option value="{{ project.id }}"{% if project == settings.active_project %}
+                            selected="selected"{% endif %}>
+                        {{ project.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        {% endif %}
+
+        {% if date_fields %}
             <input class="form-control m-2" type="date" id="dateFrom" name="dateFrom" onchange="mainTableReload()"
-            {% if settings.date_from %} value="{{ settings.date_from|date:"Y-m-d" }}"{% endif %}>
-            —
+                    {% if settings.date_from %} value="{{ settings.date_from|date:"Y-m-d" }}"
+                   style="background-color: #FFFCC8;"{% endif %}>—
             <input class="form-control m-2" type="date" id="dateTo" name="dateTo" onchange="mainTableReload()"
-            {% if settings.date_to %} value="{{ settings.date_to|date:"Y-m-d" }}"{% endif %}>
+                    {% if settings.date_to %} value="{{ settings.date_to|date:"Y-m-d" }}"
+                   style="background-color: #FFFCC8;"{% endif %}>
+        {% endif %}
 
+        {% if search_field %}
             <input class="form-control m-2" type="text" id="search" name="search" oninput="mainTableReload()"
                    placeholder="{% blocktrans %}Search{% endblocktrans %}">
         {% endif %}
