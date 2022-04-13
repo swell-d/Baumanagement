@@ -1,4 +1,6 @@
 import django_tables2 as tables
+from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_products import Product
@@ -12,8 +14,15 @@ class ProductTable(MyTable, Files):
 
     files = tables.Column(verbose_name=_('Files'), orderable=False)
 
+    def render_type(self, record, value):
+        return base_render(self, record, value)
+
     def render_code(self, record, value):
         return base_render(self, record, value)
+
+    def render_categories(self, record, value):
+        return format_html(
+            "<br>".join([f'<a href="{reverse("product_id", args=[record.id])}">{cat}</a>' for cat in value.all()]))
 
     def render_amount_netto_positiv(self, record, value):
         return format_amount(value, get_link(record), record.currency.symbol)
