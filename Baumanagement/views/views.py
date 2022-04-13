@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.forms import ModelForm
 from django.shortcuts import render
+from django.utils.timezone import make_aware
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 from django_tables2.export import TableExport
@@ -77,7 +78,7 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
     if queryset is None:
         queryset = baseClass.objects
 
-    queryset = date_filter(request, queryset)
+    queryset = date_filter(request, queryset, settings)
     queryset = tag_filter(request, queryset)
     queryset = project_filter(request, baseClass, queryset, settings)
 
@@ -169,20 +170,41 @@ def tag_filter(request, queryset):
     return queryset
 
 
-def date_filter(request, queryset):
-    dateFrom = request.GET.get('dateFrom')
-    if dateFrom:
-        queryset = queryset.filter(created__gte=datetime.strptime(dateFrom, "%Y-%m-%d"))
-    dateTo = request.GET.get('dateTo')
-    if dateTo:
-        queryset = queryset.filter(created__lt=datetime.strptime(dateTo, "%Y-%m-%d") + timedelta(days=1))
+def date_filter(request, queryset, settings):
+    settings_df = settings.date_from
+    if request.GET:
+        date_from = request.GET.get('dateFrom')
+        date_from = make_aware(datetime.strptime(date_from, "%Y-%m-%d")) if date_from else None
+    else:
+        date_from = settings_df
+    if settings_df != date_from:
+        settings.date_from = date_from
+        settings.save()
+    if date_from:
+        queryset = queryset.filter(created__gte=date_from)
+
+    settings_dt = settings.date_to
+    if request.GET:
+        date_to = request.GET.get('dateTo')
+        date_to = make_aware(datetime.strptime(date_to, "%Y-%m-%d")) if date_to else None
+    else:
+        date_to = settings_dt
+    if settings_dt != date_to:
+        settings.date_to = date_to
+        settings.save()
+    if date_to:
+        queryset = queryset.filter(created__lt=date_to + timedelta(days=1))
+
     return queryset
 
 
 def project_filter(request, baseClass, queryset, settings):
-    project_id_str = request.GET.get('project')
-    project_id = int(project_id_str) if project_id_str else None
     settings_ap_id = settings.active_project.id if settings.active_project else None
+    if request.GET:
+        project_id_str = request.GET.get('project')
+        project_id = int(project_id_str) if project_id_str else None
+    else:
+        project_id = settings_ap_id
     if project_id != settings_ap_id:
         settings.active_project = Project.objects.get(id=project_id) if project_id else None
         settings.save()

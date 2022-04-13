@@ -32,9 +32,12 @@
                 </select>
             {% endif %}
 
-            <input class="form-control m-2" type="date" id="dateFrom" name="dateFrom" onchange="mainTableReload()">
+            <input class="form-control m-2" type="date" id="dateFrom" name="dateFrom" onchange="mainTableReload()"
+            {% if settings.date_from %} value="{{ settings.date_from|date:"Y-m-d" }}"{% endif %}>
             —
-            <input class="form-control m-2" type="date" id="dateTo" name="dateTo" onchange="mainTableReload()">
+            <input class="form-control m-2" type="date" id="dateTo" name="dateTo" onchange="mainTableReload()"
+            {% if settings.date_to %} value="{{ settings.date_to|date:"Y-m-d" }}"{% endif %}>
+
             <input class="form-control m-2" type="text" id="search" name="search" oninput="mainTableReload()"
                    placeholder="{% blocktrans %}Search{% endblocktrans %}">
         {% endif %}
