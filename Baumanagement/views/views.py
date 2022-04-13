@@ -66,6 +66,7 @@ def add_comment_to_object(request, new_object):
         obj.save()
 
 
+@login_required
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
     settings = Settings.objects.get_or_create(user=request.user)[0]
     if 'created' in baseClass.table_fields:
