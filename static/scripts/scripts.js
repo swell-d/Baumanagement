@@ -1,7 +1,5 @@
 function onLoad() {
-    document.getElementById("dateFrom").addEventListener('focusin', setInputBackground);
-    document.getElementById("dateTo").addEventListener('focusin', setInputBackground);
-    document.getElementById("search").addEventListener('focusout', setInputBackground);
+
 }
 
 function mainTableReload() {

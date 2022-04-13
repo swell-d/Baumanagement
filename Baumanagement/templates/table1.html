@@ -39,11 +39,18 @@
             <input class="form-control m-2" type="date" id="dateTo" name="dateTo" onchange="mainTableReload()"
                     {% if settings.date_to %} value="{{ settings.date_to|date:"Y-m-d" }}"
                    style="background-color: #FFFCC8;"{% endif %}>
+            <script>
+                document.getElementById("dateFrom").addEventListener('focusin', setInputBackground);
+                document.getElementById("dateTo").addEventListener('focusin', setInputBackground);
+            </script>
         {% endif %}
 
         {% if search_field %}
             <input class="form-control m-2" type="text" id="search" name="search" oninput="mainTableReload()"
                    placeholder="{% blocktrans %}Search{% endblocktrans %}">
+            <script>
+                document.getElementById("search").addEventListener('focusout', setInputBackground);
+            </script>
         {% endif %}
         <input type="hidden" id="sort" name="sort"><input type="hidden" id="tag" name="tag">
     </div>
