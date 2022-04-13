@@ -31,6 +31,7 @@ def tags():
     html += ', '.join(
         f'#<a href="" onclick="mainTableTag(&quot;?tag={tag.id}&quot;);return false;">{tag.name}</a>'
         for tag in ProjectTag.objects.order_by('name') if tag.count > 0)
+    html += f''' &#9881;<a href="{reverse('projecttags')}">{_('Manage labels')}</a>'''
     return format_html(html)
 
 

@@ -1,5 +1,6 @@
 from django import forms
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_products import Product
@@ -18,6 +19,7 @@ class FormClass(forms.ModelForm):
 
 def objects_table(request):
     context = {}
+    context['tags1'] = tags()
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
@@ -31,3 +33,8 @@ def object_table(request, id):
 
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
+
+
+def tags():
+    html = f'''&#9881;<a href="{reverse('productcategories')}">{_('Manage categories')}</a>'''
+    return format_html(html)
