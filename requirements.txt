@@ -12,3 +12,4 @@ odfpy
 xlrd
 xlwt
 pyyaml
+schwifty

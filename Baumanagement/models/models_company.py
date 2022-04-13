@@ -1,6 +1,10 @@
+import re
+
 from django.db import models
 from django.db.models import F, Sum, Case, When, DecimalField
 from django.utils.translation import gettext_lazy as _
+from schwifty import IBAN
+from schwifty.exceptions import SchwiftyException
 
 from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel
 
@@ -85,10 +89,22 @@ class Account(BaseModel, FileModel):
                                  on_delete=models.RESTRICT, related_name='accounts')
     IBAN = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('IBAN'))
     BIC = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('BIC'))
+    bank = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Bank'))
 
     class Meta:
         verbose_name = _('Account')
         verbose_name_plural = _('Accounts')
+
+    def save(self, *args, **kwargs):
+        if self.IBAN:
+            try:
+                iban = IBAN(self.IBAN)
+                self.IBAN = iban.compact
+                self.BIC = iban.bic.compact
+                self.bank = iban.bic.bank_names[0]
+            except SchwiftyException:
+                self.IBAN = re.sub(r'\s+', '', str(self.IBAN))
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'{self.company}: {self.name} ({self.currency.code})'
@@ -105,7 +121,7 @@ class Account(BaseModel, FileModel):
     url_id = 'account_id'
     table_fields = 'company', 'name', 'currency', 'IBAN', 'BIC', 'files', 'balance'
     search_fields = 'company__name', 'name', 'currency__name', 'IBAN', 'BIC'
-    form_fields = 'open', 'company', 'name', 'currency', 'IBAN', 'BIC'
+    form_fields = 'open', 'company', 'name', 'currency', 'IBAN'
 
 
 class Contact(BaseModel, FileModel):
