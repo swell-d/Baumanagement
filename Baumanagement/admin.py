@@ -1,8 +1,9 @@
 from django.contrib import admin
 
-from Baumanagement.models.abstract import BaseModel
-from Baumanagement.models.models_messages import MyMessage
-from Baumanagement.models.models_settings import Settings
+from .models import *
+from .models.abstract import BaseModel
+from .models.models_messages import MyMessage
+from .models.models_settings import Settings
 
 admin.site.register(MyMessage)
 admin.site.register(Settings)
