@@ -61,11 +61,17 @@ class MyTable(tables.Table):
     def render_amount_netto(self, record, value):
         return format_amount(value, get_link(record), record.currency.symbol)
 
+    def render_amount_netto_positiv(self, record, value):
+        return self.render_amount_netto(record, value)
+
     def render_vat(self, record, value):
         return base_render(self, record, value)
 
     def render_amount_brutto(self, record, value):
         return format_amount(value, get_link(record), record.currency.symbol)
+
+    def render_amount_brutto_positiv(self, record, value):
+        return self.render_amount_brutto(record, value)
 
     def render_phone(self, record, value):
         return format_html(f'<a href="tel:{re.sub("[^0-9+]", "", value)}">{value}</a>')
