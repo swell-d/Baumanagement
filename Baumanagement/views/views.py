@@ -86,12 +86,12 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
     queryset = project_filter(request, baseClass, queryset, settings)
 
     if request.GET.get('sort'):
-        settings.sort[request.path] = request.GET.get('sort')
+        settings.sort[baseClass.urls] = request.GET.get('sort')
         settings.save()
 
     queryset = baseClass.extra_fields(queryset)
     queryset = add_search_field(queryset, request)
-    table1 = tableClass(queryset, order_by=settings.sort.get(request.path, '-created'))
+    table1 = tableClass(queryset, order_by=settings.sort.get(baseClass.urls, '-created'))
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 
@@ -117,7 +117,8 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
 def generate_next_objects_table(request, context, baseClass, tableClass, queryset, titel=None):
     settings = context['settings']
     queryset = baseClass.extra_fields(queryset)
-    table = tableClass(queryset, order_by=settings.sort.get(request.path, '-created'), orderable=False)
+    table = tableClass(queryset, order_by=settings.sort.get(baseClass.urls, '-created'),
+                       orderable=1)  # hack. ordered, but without a links in header
     RequestConfig(request).configure(table)
     context['tables'].append({'table': table, 'titel': titel or baseClass._meta.verbose_name_plural,
                               'count': len(table.rows), 'link': f'{request.path}/{baseClass.urls}'})

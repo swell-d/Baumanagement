@@ -3,19 +3,19 @@
 {% load django_tables2 %}
 
 {% block table.thead %}
-            {% if table.show_header %}
-                <thead {{ table.attrs.thead.as_html }}>
-                <tr>
-                {% for column in table.columns %}
-                    <th {{ column.attrs.th.as_html }}>
-                        {% if column.orderable %}
-                            <a onclick="mainTableSort(&quot;{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}&quot;)">{{ column.header }}</a>
-                        {% else %}
-                            {{ column.header }}
-                        {% endif %}
-                    </th>
-                {% endfor %}
-                </tr>
-                </thead>
-            {% endif %}
+    {% if table.show_header %}
+        <thead {{ table.attrs.thead.as_html }}>
+        <tr>
+            {% for column in table.columns %}
+                <th {{ column.attrs.th.as_html }}>
+                    {% if column.orderable and column.orderable != 1 %}
+                        <a onclick="mainTableSort(&quot;{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}&quot;)">{{ column.header }}</a>
+                    {% else %}
+                        {{ column.header }}
+                    {% endif %}
+                </th>
+            {% endfor %}
+        </tr>
+        </thead>
+    {% endif %}
 {% endblock table.thead %}
