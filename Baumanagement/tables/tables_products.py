@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_products import Product
-from Baumanagement.tables.tables import Files, MyTable, format_amount, get_link, base_render
+from Baumanagement.tables.tables import Files, MyTable, base_render
 
 
 class ProductTable(MyTable, Files):
@@ -17,18 +17,6 @@ class ProductTable(MyTable, Files):
     def render_type(self, record, value):
         return base_render(self, record, value)
 
-    def render_code(self, record, value):
-        return base_render(self, record, value)
-
     def render_categories(self, record, value):
         return format_html(
             "<br>".join([f'<a href="{reverse("product_id", args=[record.id])}">{cat}</a>' for cat in value.all()]))
-
-    def render_amount_netto_positiv(self, record, value):
-        return format_amount(value, get_link(record), record.currency.symbol)
-
-    def render_vat(self, record, value):
-        return base_render(self, record, value)
-
-    def render_amount_brutto_positiv(self, record, value):
-        return format_amount(value, get_link(record), record.currency.symbol)

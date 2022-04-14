@@ -7,9 +7,6 @@ class CurrencyTable(MyTable):
         model = Currency
         fields = Currency.table_fields
 
-    def render_code(self, record, value):
-        return base_render(self, record, value)
-
     def render_symbol(self, record, value):
         return base_render(self, record, value)
 

@@ -13,3 +13,4 @@ xlrd
 xlwt
 pyyaml
 schwifty
+Pillow

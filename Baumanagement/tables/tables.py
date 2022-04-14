@@ -28,8 +28,50 @@ class MyTable(tables.Table):
         attrs = {'class': 'table table-hover', "thead": {"class": "table-secondary"}}  # table-sm
         row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
+    def render_created_by__settings__img(self, record, value):
+        return format_html(f'''<img src={value.url} width=24 height=24/>''')
+
     def render_name(self, record, value):
         return base_render(self, record, value)
+
+    def render_code(self, record, value):
+        return base_render(self, record, value)
+
+    def render_date(self, record, value):
+        return date_render(self, record, value)
+
+    def render_tag(self, record, value):
+        return base_render(self, record, value)
+
+    def render_company(self, record, value):
+        link = reverse('company_id', args=[record.company.id])
+        return format_html(f'<a href="{link}">{value}🔗</a>')
+
+    def render_project(self, record, value):
+        link = reverse('project_id', args=[record.project.id])
+        return format_html(f'<a href="{link}">{value}🔗</a>')
+
+    def render_contract(self, record, value):
+        link = reverse('contract_id', args=[record.contract.id])
+        return format_html(f'<a href="{link}">{value}🔗</a>')
+
+    def render_currency(self, record, value):
+        return base_render(self, record, value)
+
+    def render_amount_netto(self, record, value):
+        return format_amount(value, get_link(record), record.currency.symbol)
+
+    def render_vat(self, record, value):
+        return base_render(self, record, value)
+
+    def render_amount_brutto(self, record, value):
+        return format_amount(value, get_link(record), record.currency.symbol)
+
+    def render_phone(self, record, value):
+        return format_html(f'<a href="tel:{re.sub("[^0-9+]", "", value)}">{value}</a>')
+
+    def render_address(self, record, value):
+        return get_google_maps_link(record)
 
     def as_values(self, exclude_columns=None):
         if exclude_columns is None:
