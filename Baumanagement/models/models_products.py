@@ -3,7 +3,7 @@ from django.db.models import TextField
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel, FileModel, PriceModel
-from Baumanagement.models.models_company import Currency
+from Baumanagement.models.models_currency import Currency
 
 
 class ProductCategory(BaseModel):
@@ -38,7 +38,7 @@ class Product(BaseModel, FileModel, PriceModel):
     code = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Code'))
     description = TextField(null=False, blank=True, verbose_name=_('Description'))
     currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
-                                 on_delete=models.RESTRICT, related_name='products')
+                                 on_delete=models.RESTRICT, related_name='products', default=Currency.get_EUR_id)
     categories = models.ManyToManyField(ProductCategory, blank=True, verbose_name=_('Categories'),
                                         related_name='products')
 

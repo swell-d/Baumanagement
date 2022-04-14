@@ -1,4 +1,4 @@
-from Baumanagement.models.models_company import Currency
+from Baumanagement.models.models_currency import Currency
 from Baumanagement.tables.tables import MyTable, base_render
 
 

@@ -7,6 +7,7 @@ from schwifty import IBAN
 from schwifty.exceptions import SchwiftyException
 
 from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel
+from Baumanagement.models.models_currency import Currency
 
 
 class CompanyRole(BaseModel):
@@ -60,33 +61,12 @@ class Company(BaseModel, AddressModel, FileModel):
             Account.objects.create(name=_('Main account'), company=self, currency=eur, created_by=self.created_by)
 
 
-class Currency(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'), unique=True)
-    code = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Code'), unique=True)
-    symbol = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Symbol'), default='', unique=True)
-    rate = models.FloatField(verbose_name=_('Rate'), default=1)
-
-    class Meta:
-        verbose_name = _('Currency')
-        verbose_name_plural = _('Currencies')
-
-    @staticmethod
-    def extra_fields(qs):
-        return qs.all()
-
-    urls = 'currencies'
-    url_id = 'currency_id'
-    table_fields = 'name', 'code', 'symbol', 'rate'
-    search_fields = 'name', 'code', 'symbol', 'rate'
-    form_fields = 'open', 'name', 'code', 'symbol', 'rate'
-
-
 class Account(BaseModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='accounts')
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Account name'))
     currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
-                                 on_delete=models.RESTRICT, related_name='accounts')
+                                 on_delete=models.RESTRICT, related_name='accounts', default=Currency.get_EUR_id)
     IBAN = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('IBAN'))
     BIC = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('BIC'))
     bank = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Bank'))

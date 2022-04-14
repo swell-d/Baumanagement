@@ -3,7 +3,8 @@ from django.db.models import F, Sum, DecimalField, OuterRef, Subquery, Case, Whe
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel, FileModel, PriceModel
-from Baumanagement.models.models_company import Company, Currency, Account
+from Baumanagement.models.models_company import Company, Account
+from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_projects import Project
 
 
@@ -40,7 +41,7 @@ class Contract(BaseModel, PriceModel, FileModel):
     project = models.ForeignKey(Project, null=False, blank=False, verbose_name=_('Project'),
                                 on_delete=models.RESTRICT, related_name='contracts')
     currency = models.ForeignKey(Currency, null=False, blank=False, verbose_name=_('Currency'),
-                                 on_delete=models.RESTRICT, related_name='contracts')
+                                 on_delete=models.RESTRICT, related_name='contracts', default=Currency.get_EUR_id)
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
     tag = models.ForeignKey(ContractTag, blank=False, verbose_name=_('Tag'),

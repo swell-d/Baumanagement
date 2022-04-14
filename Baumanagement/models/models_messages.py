@@ -4,10 +4,12 @@ from django.contrib.messages import DEFAULT_TAGS, DEFAULT_LEVELS
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from Baumanagement.models.abstract import get_system_user_id
+
 
 class MyMessage(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT, null=False)
+    created_by = models.ForeignKey(User, on_delete=models.RESTRICT, null=False, default=get_system_user_id)
     name = models.TextField(null=False, blank=False, verbose_name=_('Message'))
     level = models.IntegerField(null=False, blank=False, verbose_name=_('Level'))
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))

@@ -6,8 +6,9 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Company, Currency
+from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_contracts import Contract, ContractTag
+from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_contracts import ContractTable
@@ -82,12 +83,12 @@ def disable_children(request, contract):
         for bill in contract.bills.all():
             if bill.open:
                 bill.open = False
-                MyMessage.message(request, bill.name + ' ' +_("disabled"), 'WARNING')
+                MyMessage.message(request, bill.name + ' ' + _("disabled"), 'WARNING')
                 bill.save()
         for payment in contract.payments.all():
             if payment.open:
                 payment.open = False
-                MyMessage.message(request, payment.name + ' ' +_("disabled"), 'WARNING')
+                MyMessage.message(request, payment.name + ' ' + _("disabled"), 'WARNING')
                 payment.save()
 
 

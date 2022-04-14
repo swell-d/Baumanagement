@@ -2,7 +2,8 @@ from django import forms
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Account, Company, Currency
+from Baumanagement.models.models_company import Account, Company
+from Baumanagement.models.models_currency import Currency
 from Baumanagement.tables.tables_accounts import AccountTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table, get_base_context
