@@ -118,7 +118,7 @@ def generate_next_objects_table(request, context, baseClass, tableClass, queryse
     settings = context['settings']
     queryset = baseClass.extra_fields(queryset)
     table = tableClass(queryset, order_by=settings.sort.get(baseClass.urls, '-created'),
-                       orderable=1)  # hack. ordered, but without a links in header
+                       orderable=2)  # hack. ordered, but without a links in header
     RequestConfig(request).configure(table)
     context['tables'].append({'table': table, 'titel': titel or baseClass._meta.verbose_name_plural,
                               'count': len(table.rows), 'link': f'{request.path}/{baseClass.urls}'})

@@ -8,7 +8,7 @@
         <tr>
             {% for column in table.columns %}
                 <th {{ column.attrs.th.as_html }}>
-                    {% if column.orderable and column.orderable != 1 %}
+                    {% if column.orderable and column.orderable != 2 %}
                         <a onclick="mainTableSort(&quot;{% querystring table.prefixed_order_by_field=column.order_by_alias.next %}&quot;)">{{ column.header }}</a>
                     {% else %}
                         {{ column.header }}
