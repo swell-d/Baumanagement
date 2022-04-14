@@ -8,7 +8,7 @@ from Baumanagement.models.models_contracts import Payment, Contract
 from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_payments import PaymentTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table
+    generate_next_objects_table, get_base_context
 from Baumanagement.views.views_bills import qs_annotate
 
 baseClass = Payment
@@ -27,14 +27,14 @@ class FormClass(forms.ModelForm):
 
 
 def objects_table(request):
-    context = {}
+    context = get_base_context(request)
     queryset = qs_annotate(baseClass.objects)
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
 
 def object_table(request, id):
-    context = {'tables': []}
+    context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id).annotate(amount_netto=F('amount_netto_positiv'),
                                                         amount_brutto=F('amount_brutto_positiv'))
     payment = queryset.first()
@@ -57,8 +57,8 @@ def object_table(request, id):
 
 
 def company_payments(request, id):
+    context = get_base_context(request)
     company = Company.objects.get(id=id)
-    context = {}
     queryset = company_payments_qs(company)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
@@ -81,8 +81,8 @@ def company_payments_qs(company):
 
 
 def account_payments(request, id):
+    context = get_base_context(request)
     account = Account.objects.get(id=id)
-    context = {}
     queryset = account_payments_qs(account)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
@@ -102,8 +102,8 @@ def account_payments_qs(account):
 
 
 def project_payments(request, id):
+    context = get_base_context(request)
     project = Project.objects.get(id=id)
-    context = {}
     queryset = project_payments_qs(project)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
@@ -124,8 +124,8 @@ def project_payments_qs(project):
 
 
 def contract_payments(request, id):
+    context = get_base_context(request)
     contract = Contract.objects.get(id=id)
-    context = {}
     queryset = contract_payments_qs(contract)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

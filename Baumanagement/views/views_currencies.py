@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Currency
 from Baumanagement.tables.tables_currencies import CurrencyTable
-from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
+from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, get_base_context
 
 baseClass = Currency
 tableClass = CurrencyTable
@@ -17,13 +17,13 @@ class FormClass(forms.ModelForm):
 
 
 def objects_table(request):
-    context = {}
+    context = get_base_context(request)
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
 
 def object_table(request, id):
-    context = {'tables': []}
+    context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

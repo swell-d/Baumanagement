@@ -10,7 +10,7 @@ from Baumanagement.models.models_contracts import Bill, Contract
 from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_bills import BillTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table
+    generate_next_objects_table, get_base_context
 
 baseClass = Bill
 tableClass = BillTable
@@ -28,14 +28,14 @@ class FormClass(forms.ModelForm):
 
 
 def objects_table(request):
-    context = {}
+    context = get_base_context(request)
     queryset = qs_annotate(baseClass.objects)
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
 
 
 def object_table(request, id):
-    context = {'tables': []}
+    context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id).annotate(amount_netto=F('amount_netto_positiv'),
                                                         amount_brutto=F('amount_brutto_positiv'))
     bill = queryset.first()
@@ -54,8 +54,8 @@ def object_table(request, id):
 
 
 def company_bills(request, id):
+    context = get_base_context(request)
     company = Company.objects.get(id=id)
-    context = {}
     queryset = company_bills_qs(company)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
@@ -78,8 +78,8 @@ def company_bills_qs(company):
 
 
 def project_bills(request, id):
+    context = get_base_context(request)
     project = Project.objects.get(id=id)
-    context = {}
     queryset = project_bills_qs(project)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
@@ -100,8 +100,8 @@ def project_bills_qs(project):
 
 
 def contract_bills(request, id):
+    context = get_base_context(request)
     contract = Contract.objects.get(id=id)
-    context = {}
     queryset = contract_bills_qs(contract)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

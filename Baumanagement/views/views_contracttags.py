@@ -4,7 +4,7 @@ from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_contracts import ContractTag
 from Baumanagement.tables.tables import MyTable
-from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table
+from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, get_base_context
 
 baseClass = ContractTag
 
@@ -22,7 +22,7 @@ class FormClass(forms.ModelForm):
 
 
 def objects_table(request):
-    context = {}
+    context = get_base_context(request)
     context['nodes'] = ContractTag.objects.filter(parent__isnull=True)
     context['nodes_link'] = 'contracttag'
     generate_objects_table(request, context, baseClass, TableClass, FormClass)
@@ -30,7 +30,7 @@ def objects_table(request):
 
 
 def object_table(request, id):
-    context = {'tables': []}
+    context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.tables.tables import MyTable, Files
-from Baumanagement.views.views import myrender, generate_object_table, generate_objects_table
+from Baumanagement.views.views import myrender, generate_object_table, generate_objects_table, get_base_context
 
 baseClass = Comment
 
@@ -26,7 +26,7 @@ class FormClass(forms.ModelForm):
 
 
 def objects_table(request):
-    context = {}
+    context = get_base_context(request)
     generate_objects_table(request, context, baseClass, TableClass, FormClass)
     if request.method == 'POST' and request.POST.get('newCommentNextURL'):
         return redirect(request.POST.get('newCommentNextURL'))
@@ -34,7 +34,7 @@ def objects_table(request):
 
 
 def object_table(request, id):
-    context = {'tables': []}
+    context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

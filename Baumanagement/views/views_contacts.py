@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from Baumanagement.models.models_company import Contact, Company
 from Baumanagement.tables.tables_contacts import ContactTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table
+    generate_next_objects_table, get_base_context
 
 baseClass = Contact
 tableClass = ContactTable
@@ -22,13 +22,13 @@ class FormClass(forms.ModelForm):
 
 
 def objects_table(request):
-    context = {}
+    context = get_base_context(request)
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
 
 def object_table(request, id):
-    context = {'tables': []}
+    context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
     contact = queryset.first()
 
@@ -42,8 +42,8 @@ def object_table(request, id):
 
 
 def company_contacts(request, id):
+    context = get_base_context(request)
     company = Company.objects.get(id=id)
-    context = {}
     queryset = company.contacts.all()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

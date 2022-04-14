@@ -2,7 +2,7 @@ from django import forms
 
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.tables.tables import MyTable
-from Baumanagement.views.views import myrender, generate_objects_table
+from Baumanagement.views.views import myrender, generate_objects_table, get_base_context
 
 baseClass = MyMessage
 
@@ -23,7 +23,7 @@ class FormClass(forms.ModelForm):
 
 
 def objects_table(request):
-    context = {}
+    context = get_base_context(request)
     queryset = MyMessage.objects.filter(created_by=request.user)
     generate_objects_table(request, context, baseClass, TableClass, FormClass, queryset)
     return myrender(request, context)

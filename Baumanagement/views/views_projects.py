@@ -7,7 +7,7 @@ from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_projects import Project, ProjectTag
 from Baumanagement.tables.tables_projects import ProjectTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table
+    generate_next_objects_table, get_base_context
 from Baumanagement.views.views_bills import generate_bills_by_queryset, project_bills_qs
 from Baumanagement.views.views_contracts import generate_contracts_by_queryset, project_contracts_qs
 from Baumanagement.views.views_payments import generate_payments_by_queryset, project_payments_qs
@@ -36,14 +36,14 @@ def tags():
 
 
 def objects_table(request):
-    context = {}
+    context = get_base_context(request)
     context['tags1'] = tags()
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
 
 def object_table(request, id):
-    context = {'tables': []}
+    context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
     project = queryset.first()
 
@@ -67,8 +67,8 @@ def object_table(request, id):
 
 
 def company_projects(request, id):
+    context = get_base_context(request)
     company = Company.objects.get(id=id)
-    context = {}
     context['tags1'] = tags()
     queryset = company.projects.all()
 

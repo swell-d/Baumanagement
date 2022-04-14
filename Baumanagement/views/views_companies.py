@@ -8,7 +8,7 @@ from Baumanagement.models.models_company import CompanyRole, Company
 from Baumanagement.models.models_contracts import Contract
 from Baumanagement.tables.tables_companies import CompanyTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table
+    generate_next_objects_table, get_base_context
 from Baumanagement.views.views_accounts import generate_accounts_by_queryset
 from Baumanagement.views.views_bills import generate_bills_by_queryset, company_bills_qs
 from Baumanagement.views.views_contacts import generate_contacts_by_queryset
@@ -36,14 +36,14 @@ def tags():
 
 
 def objects_table(request):
-    context = {}
+    context = get_base_context(request)
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     context['tags1'] = tags()
     return myrender(request, context)
 
 
 def object_table(request, id):
-    context = {'tables': []}
+    context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
     company = queryset.first()
 
@@ -77,8 +77,8 @@ def object_table(request, id):
 
 
 def company_companies(request, id):
+    context = get_base_context(request)
     company = Company.objects.get(id=id)
-    context = {}
 
     contracts = Contract.objects.filter(Q(project__company=company) | Q(company=company))
     queryset = get_partners(company, contracts)
@@ -101,8 +101,8 @@ def get_partners(company, contracts):
 
 
 def companies_by_role(request, id):
+    context = get_base_context(request)
     role = CompanyRole.objects.get(id=id)
-    context = {}
     queryset = baseClass.objects.filter(role=id)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

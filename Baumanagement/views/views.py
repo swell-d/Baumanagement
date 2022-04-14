@@ -68,7 +68,7 @@ def add_comment_to_object(request, new_object):
 
 @login_required
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
-    settings = Settings.objects.get_or_create(user=request.user)[0]
+    settings = context['settings']
     if 'created' in baseClass.table_fields:
         context['date_fields'] = True
 
@@ -85,9 +85,13 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
     queryset = tag_filter(request, queryset)
     queryset = project_filter(request, baseClass, queryset, settings)
 
+    if request.GET.get('sort'):
+        settings.sort[request.path] = request.GET.get('sort')
+        settings.save()
+
     queryset = baseClass.extra_fields(queryset)
     queryset = add_search_field(queryset, request)
-    table1 = tableClass(queryset, order_by="-created")
+    table1 = tableClass(queryset, order_by=settings.sort.get(request.path, '-created'))
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 
@@ -111,8 +115,9 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
 
 
 def generate_next_objects_table(request, context, baseClass, tableClass, queryset, titel=None):
+    settings = context['settings']
     queryset = baseClass.extra_fields(queryset)
-    table = tableClass(queryset, order_by="-created", orderable=False)
+    table = tableClass(queryset, order_by=settings.sort.get(request.path, '-created'), orderable=False)
     RequestConfig(request).configure(table)
     context['tables'].append({'table': table, 'titel': titel or baseClass._meta.verbose_name_plural,
                               'count': len(table.rows), 'link': f'{request.path}/{baseClass.urls}'})
@@ -216,3 +221,8 @@ def project_filter(request, baseClass, queryset, settings):
     elif project_id and baseClass.__name__ in ['Bill', 'Payment']:
         queryset = queryset.filter(contract__project_id=project_id)
     return queryset
+
+
+def get_base_context(request):
+    return {'settings': Settings.objects.get_or_create(user=request.user)[0],
+            'tables': []}
