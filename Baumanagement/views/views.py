@@ -15,7 +15,7 @@ from Baumanagement.models.models_files import File
 from Baumanagement.models.models_map import get_base_models
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
-from Baumanagement.models.models_settings import Settings
+from Baumanagement.models.models_settings import Settings, Visits, SearchQueries
 
 
 class CommentFormClass(ModelForm):
@@ -226,5 +226,14 @@ def project_filter(request, baseClass, queryset, settings):
 
 @login_required
 def get_base_context(request):
+    visits = Visits.objects.get_or_create(page=request.path)[0]
+    visits.count += 1
+    visits.save()
+
+    if request.GET.get("search"):
+        searchquery = SearchQueries.objects.get_or_create(page=request.path, query=request.GET.get("search"))[0]
+        searchquery.count += 1
+        searchquery.save()
+
     return {'settings': Settings.objects.get_or_create(user=request.user)[0],
             'tables': []}
