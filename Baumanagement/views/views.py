@@ -224,6 +224,7 @@ def project_filter(request, baseClass, queryset, settings):
     return queryset
 
 
+@login_required
 def get_base_context(request):
     return {'settings': Settings.objects.get_or_create(user=request.user)[0],
             'tables': []}
