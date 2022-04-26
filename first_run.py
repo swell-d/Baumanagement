@@ -8,7 +8,6 @@ from django.core.management import execute_from_command_line
 def main():
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BM.settings')
 
-    execute_from_command_line(['manage.py', 'makemigrations', 'Baumanagement'])
     execute_from_command_line(['manage.py', 'migrate'])
 
     from django.contrib.auth.models import Group
@@ -103,8 +102,6 @@ def main():
                                   amount_netto_positiv=50, vat=19,
                                   account_from=company3_account_usd,
                                   account_to=company1_account_usd)
-
-    execute_from_command_line(['manage.py', 'collectstatic', '--noinput', '--clear'])
 
 
 if __name__ == '__main__':
