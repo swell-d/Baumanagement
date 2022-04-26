@@ -31,6 +31,7 @@ jobs:
     - name: Run Tests
       run: |
         python manage.py test
+
     - uses: akhileshns/heroku-deploy@v3.12.12
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY}}
@@ -38,6 +39,15 @@ jobs:
         heroku_email: "3952800@gmail.com"
       env:
         HD_HEROKU_APP: ${{ true }}
+
+    - uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+        heroku_app_name: "baumanagement2"
+        heroku_email: "3952800@gmail.com"
+      env:
+        HD_HEROKU_APP: ${{ true }}
+
     - uses: akhileshns/heroku-deploy@v3.12.12
       with:
         heroku_api_key: ${{secrets.HEROKU_API_KEY_ORSHANSKIY}}
