@@ -80,15 +80,15 @@ WSGI_APPLICATION = 'BM.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-if 'HEROKU_APP' in os.environ:
+if 'HD_HEROKU_APP' in os.environ:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': os.environ['DB_NAME'],
-            'USER': os.environ['DB_USER'],
-            'PASSWORD': os.environ['DB_PASSWORD'],
-            'HOST': os.environ['DB_HOST'],
-            'PORT': os.environ['DB_PORT']
+            'NAME': os.environ['HD_DB_NAME'],
+            'USER': os.environ['HD_DB_USER'],
+            'PASSWORD': os.environ['HD_DB_PASSWORD'],
+            'HOST': os.environ['HD_DB_HOST'],
+            'PORT': os.environ['HD_DB_PORT']
         }
     }
 else:
