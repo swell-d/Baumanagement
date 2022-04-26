@@ -47,6 +47,7 @@ jobs:
         heroku_email: "3952800@gmail.com"
       env:
         HD_HEROKU_APP: ${{ true }}
+        HD_DISABLE_COLLECTSTATIC: 1
 
     - uses: akhileshns/heroku-deploy@v3.12.12
       with:
