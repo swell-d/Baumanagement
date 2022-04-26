@@ -158,7 +158,7 @@ MESSAGE_TAGS = {
 MEDIA_URL = '/files/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
 
-if 'HEROKU_APP' in os.environ:
-    import django_heroku
-
-    django_heroku.settings(locals())
+# if 'HEROKU_APP' in os.environ:
+#     import django_heroku
+#
+#     django_heroku.settings(locals())
