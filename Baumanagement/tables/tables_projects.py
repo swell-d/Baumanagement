@@ -17,4 +17,4 @@ class ProjectTable(MyTable, Files):
 
     def render_count_contracts(self, record, value):
         link = reverse('project_id_contracts', args=[record.id])
-        return format_html(f'<a href="{link}">{value}</a>')
+        return format_html(f'<a href="{link}">{value} ➡</a>')

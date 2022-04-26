@@ -147,9 +147,9 @@ def get_link(record):
     return reverse(record.url_id, args=[record.id])
 
 
-def format_amount(value, link, symbol):
+def format_amount(value, link, symbol, arrow=False):
     return format_html(
-        f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol}</a>''')
+        f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol} {'➡' if arrow else ''}</a> ️''')
 
 
 def base_render(table, record, value):

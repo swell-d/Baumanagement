@@ -19,8 +19,8 @@ class ContractTable(MyTable, Files):
 
     def render_bills_amount(self, record, value):
         link = reverse('contract_id_bills', args=[record.id])
-        return format_amount(value, link, record.currency.symbol)
+        return format_amount(value, link, record.currency.symbol, arrow=True)
 
     def render_payments_amount(self, record, value):
         link = reverse('contract_id_payments', args=[record.id])
-        return format_amount(value, link, record.currency.symbol)
+        return format_amount(value, link, record.currency.symbol, arrow=True)

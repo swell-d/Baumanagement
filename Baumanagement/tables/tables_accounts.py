@@ -25,4 +25,4 @@ class AccountTable(MyTable, Files):
     def render_balance(self, record):
         value = -(record.sum1 or Decimal(0)) + (record.sum2 or Decimal(0))
         link = reverse('account_id_payments', args=[record.id])
-        return format_amount(value, link, record.currency.symbol)
+        return format_amount(value, link, record.currency.symbol, arrow=True)
