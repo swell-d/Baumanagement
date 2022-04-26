@@ -38,15 +38,10 @@ jobs:
         heroku_email: "3952800@gmail.com"
       env:
         HD_HEROKU_APP: ${{ true }}
-        HD_DB_NAME: ${{secrets.DB_NAME}}
-        HD_DB_USER: ${{secrets.DB_USER}}
-        HD_DB_PASSWORD: ${{secrets.DB_PASSWORD}}
-        HD_DB_HOST: ${{secrets.DB_HOST}}
-        HD_DB_PORT: ${{secrets.DB_PORT}}
-#    - uses: akhileshns/heroku-deploy@v3.12.12
-#      with:
-#        heroku_api_key: ${{secrets.HEROKU_API_KEY_ORSHANSKIY}}
-#        heroku_app_name: "orshanskiy"
-#        heroku_email: "igor.orshanskiy@gmail.com"
-#      env:
-#        HEROKU_APP: ${{ true }}
+    - uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+        heroku_api_key: ${{secrets.HEROKU_API_KEY_ORSHANSKIY}}
+        heroku_app_name: "orshanskiy"
+        heroku_email: "igor.orshanskiy@gmail.com"
+      env:
+        HD_HEROKU_APP: ${{ true }}
