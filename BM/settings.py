@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 import os
 from pathlib import Path
 
-import django_heroku
 from django.contrib.messages import constants as messages
 from django.utils.translation import gettext_lazy as _
 
@@ -159,4 +158,7 @@ MESSAGE_TAGS = {
 MEDIA_URL = '/files/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
 
-django_heroku.settings(locals())
+if 'HEROKU' in os.environ:
+    import django_heroku
+
+    django_heroku.settings(locals())
