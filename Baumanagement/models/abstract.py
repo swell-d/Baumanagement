@@ -1,3 +1,4 @@
+from datetime import datetime
 from decimal import Decimal
 
 from django.contrib.auth.models import User
@@ -18,7 +19,10 @@ def add_search_field(queryset, request):
 
 
 def get_system_user_id():
-    return User.objects.get_or_create(username='system')[0].id
+    system_user = User.objects.filter(username='system')
+    if system_user:
+        return system_user.first().id
+    return User.objects.create(username='system', last_login=datetime.now()).id
 
 
 class BaseModel(models.Model):
