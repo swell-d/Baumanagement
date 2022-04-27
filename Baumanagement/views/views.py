@@ -131,7 +131,8 @@ def create_new_object_or_get_error(request, cls):
         new_object = formset.save(commit=False)
         new_object.save()
         formset.save_m2m()
-        MyMessage.message(request, new_object.name + ' ' + _("created"), 'SUCCESS')
+        MyMessage.message(request, f'{cls._meta.model._meta.verbose_name} "{new_object.name}" ' + _("created"),
+                          'SUCCESS')
         upload_files(request, new_object)
         add_comment_to_object(request, new_object)
         return None
@@ -159,7 +160,8 @@ def edit_object_form(request, context, cls, object):
                 object = formset.save(commit=False)
                 object.save()
                 formset.save_m2m()
-                MyMessage.message(request, object.name + ' ' + _("changed"), 'SUCCESS')
+                MyMessage.message(request, f'{cls._meta.model._meta.verbose_name} "{object.name}" ' + _("changed"),
+                                  'SUCCESS')
                 upload_files(request, object)
             else:
                 MyMessage.message(request, formset.errors, 'WARNING')

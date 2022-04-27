@@ -28,6 +28,10 @@ class BaseModel(models.Model):
     def __str__(self):
         return self.name
 
+    @classmethod
+    def verbose_name(cls):
+        return cls._meta.verbose_name
+
 
 class AddressModel(models.Model):
     address = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Address'))
