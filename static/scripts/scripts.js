@@ -1,7 +1,3 @@
-function onLoad() {
-
-}
-
 function mainTableReload() {
     const Http = new XMLHttpRequest();
     const urlSearchParams = new URLSearchParams();
