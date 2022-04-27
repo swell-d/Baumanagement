@@ -38,8 +38,8 @@ jobs:
         heroku_app_name: "baumanagement"
         heroku_email: "3952800@gmail.com"
       env:
-        HD_RUN_IN_HEROKU: ${{ true }}
-        HD_DEBUG: ${{ false }}
+        HD_RUN_IN_HEROKU: true
+        HD_DEBUG: false
         HD_DISABLE_COLLECTSTATIC: 1
 
     - uses: akhileshns/heroku-deploy@v3.12.12
@@ -48,6 +48,6 @@ jobs:
         heroku_app_name: "orshanskiy"
         heroku_email: "igor.orshanskiy@gmail.com"
       env:
-        HD_RUN_IN_HEROKU: ${{ true }}
-        HD_DEBUG: ${{ true }}
+        HD_RUN_IN_HEROKU: true
+        HD_DEBUG: true
         HD_DISABLE_COLLECTSTATIC: 1
