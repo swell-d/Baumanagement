@@ -1,3 +1,4 @@
+from author.decorators import with_author
 from django.db import models
 from django.db.models import Sum, Case, When
 from django.utils.translation import gettext_lazy as _
@@ -6,6 +7,7 @@ from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel
 from Baumanagement.models.models_company import Company
 
 
+@with_author
 class ProjectTag(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True,
@@ -33,6 +35,7 @@ class ProjectTag(BaseModel):
     form_fields = 'name', 'parent'
 
 
+@with_author
 class Project(BaseModel, AddressModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Project name'), unique=True)
     code = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Code'))

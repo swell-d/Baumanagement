@@ -28,7 +28,7 @@ class MyTable(tables.Table):
         attrs = {'class': 'table table-hover', "thead": {"class": "table-secondary"}}  # table-sm
         row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
-    def render_created_by__settings__img(self, record, value):
+    def render_author__settings__img(self, record, value):
         return format_html(f'''<img src={value.url} width=24 height=24/>''')
 
     def render_name(self, record, value):

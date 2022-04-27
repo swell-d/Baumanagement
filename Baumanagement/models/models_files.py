@@ -1,11 +1,13 @@
 import os
 
+from author.decorators import with_author
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel
 
 
+@with_author
 class File(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     file = models.FileField(blank=False, upload_to="%Y/%m/%d", verbose_name=_('Files'))

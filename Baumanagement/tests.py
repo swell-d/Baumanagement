@@ -29,8 +29,7 @@ class UrlTests(TestCase):
         self.Company = Company.objects.create(name='test')
         self.Company.role.add(self.CompanyRole)
         self.Company.save()
-        self.Account = Account.objects.create(name='test', company=self.Company,
-                                              created_by=user)
+        self.Account = Account.objects.create(name='test', company=self.Company)
         self.Contact = Contact.objects.create(name='test', company=self.Company)
 
         self.ProjectTag = ProjectTag.objects.create(name='test')

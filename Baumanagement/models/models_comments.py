@@ -1,9 +1,11 @@
+from author.decorators import with_author
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel, FileModel
 
 
+@with_author
 class Comment(BaseModel, FileModel):
     name = models.TextField(null=False, blank=False, verbose_name=_('Comment'))
 

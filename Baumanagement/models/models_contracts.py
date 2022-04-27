@@ -1,3 +1,4 @@
+from author.decorators import with_author
 from django.db import models
 from django.db.models import F, Sum, DecimalField, OuterRef, Subquery, Case, When
 from django.utils.translation import gettext_lazy as _
@@ -8,6 +9,7 @@ from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_projects import Project
 
 
+@with_author
 class ContractTag(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True,
@@ -35,6 +37,7 @@ class ContractTag(BaseModel):
     form_fields = 'name', 'parent'
 
 
+@with_author
 class Contract(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Contract name'))
     date = models.DateField(null=True, blank=True, verbose_name=_('Date'))
@@ -76,6 +79,7 @@ class Contract(BaseModel, PriceModel, FileModel):
     form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'tag', 'currency', 'amount_netto_positiv', 'vat'
 
 
+@with_author
 class Bill(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Bill name'))
     date = models.DateField(null=True, blank=True, verbose_name=_('Date'))
@@ -105,6 +109,7 @@ class Bill(BaseModel, PriceModel, FileModel):
     form_fields = 'open', 'contract', 'name', 'date', 'amount_netto_positiv', 'vat'
 
 
+@with_author
 class Payment(BaseModel, PriceModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Payment name'))
     date = models.DateField(null=True, blank=True, verbose_name=_('Date'))

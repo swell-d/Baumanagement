@@ -1,3 +1,4 @@
+from author.decorators import with_author
 from django.db import models
 from django.db.models import TextField
 from django.utils.translation import gettext_lazy as _
@@ -6,6 +7,7 @@ from Baumanagement.models.abstract import BaseModel, FileModel, PriceModel
 from Baumanagement.models.models_currency import Currency
 
 
+@with_author
 class ProductCategory(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True,
@@ -33,6 +35,7 @@ class ProductCategory(BaseModel):
     form_fields = 'name', 'parent'
 
 
+@with_author
 class Product(BaseModel, FileModel, PriceModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     code = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Code'))

@@ -1,5 +1,6 @@
 import re
 
+from author.decorators import with_author
 from django.db import models
 from django.db.models import F, Sum, Case, When, DecimalField
 from django.utils.translation import gettext_lazy as _
@@ -10,6 +11,7 @@ from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel
 from Baumanagement.models.models_currency import Currency
 
 
+@with_author
 class CompanyRole(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Role'), unique=True)
 
@@ -32,6 +34,7 @@ class CompanyRole(BaseModel):
     form_fields = 'name',
 
 
+@with_author
 class Company(BaseModel, AddressModel, FileModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Company name'), unique=True)
     email = models.EmailField(null=False, blank=True, verbose_name=_('E-mail'))
@@ -58,9 +61,10 @@ class Company(BaseModel, AddressModel, FileModel):
         super().save(*args, **kwargs)
         if self.accounts.count() == 0:
             eur = Currency.objects.get(id=1)
-            Account.objects.create(name=_('Main account'), company=self, currency=eur, created_by=self.created_by)
+            Account.objects.create(name=_('Main account'), company=self, currency=eur)
 
 
+@with_author
 class Account(BaseModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='accounts')
@@ -104,6 +108,7 @@ class Account(BaseModel, FileModel):
     form_fields = 'open', 'company', 'name', 'currency', 'IBAN'
 
 
+@with_author
 class Contact(BaseModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contacts')

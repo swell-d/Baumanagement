@@ -32,7 +32,7 @@
                             {% for comment in tab.comments %}
                                 <div class="row mb-2">
                                     <div class="col">
-                                        <span class="h6">{{ comment.object.created_by }}</span>&nbsp;
+                                        <span class="h6">{{ comment.object.author }}</span>&nbsp;
                                         <span class="text-muted">{{ comment.object.created }}</span><br>
                                         {{ comment.object.name }}<br>
                                         {% for file in comment.files %}

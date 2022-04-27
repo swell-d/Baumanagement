@@ -24,6 +24,6 @@ class FormClass(forms.ModelForm):
 
 def objects_table(request):
     context = get_base_context(request)
-    queryset = MyMessage.objects.filter(created_by=request.user)
+    queryset = MyMessage.objects.filter(author=request.user)
     generate_objects_table(request, context, baseClass, TableClass, FormClass, queryset)
     return myrender(request, context)

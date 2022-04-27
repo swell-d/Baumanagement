@@ -14,3 +14,4 @@ xlwt
 pyyaml
 schwifty
 Pillow
+django-author

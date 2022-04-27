@@ -1,7 +1,5 @@
-from datetime import datetime
 from decimal import Decimal
 
-from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Q
@@ -18,27 +16,14 @@ def add_search_field(queryset, request):
     return queryset
 
 
-def get_system_user_id():
-    system_user = User.objects.filter(username='system')
-    if system_user:
-        return system_user.first().id
-    return User.objects.create(username='system', last_login=datetime.now()).id
-
-
 class BaseModel(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
     updated = models.DateTimeField(auto_now=True, verbose_name=_('Updated'))
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
     comment_ids = models.JSONField(default=list, null=False, blank=True, verbose_name=_('Comments'))
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT, null=False, default=get_system_user_id)
 
     class Meta:
         abstract = True
-
-    def save(self, *args, **kwargs):
-        if kwargs.get('user'):
-            self.created_by = kwargs.pop('user')
-        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -88,3 +73,10 @@ class FileModel(models.Model):
     def files(self):
         from Baumanagement.models.models_files import File
         return [File.objects.get(id=id) for id in self.file_ids]
+
+
+def get_base_models():
+    result = {}
+    for cls in BaseModel.__subclasses__():
+        result[cls.__name__.lower()] = cls
+    return result

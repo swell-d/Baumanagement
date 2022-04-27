@@ -1,13 +1,15 @@
-from django.db import models
+from author.decorators import with_author
+from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel
 
 
+@with_author
 class Currency(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'), unique=True)
     code = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Code'), unique=True)
-    symbol = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Symbol'), default='', unique=True)
+    symbol = models.CharField(max_length=3, null=False, blank=False, verbose_name=_('Symbol'), unique=True)
     rate = models.FloatField(verbose_name=_('Rate'), default=1)
 
     class Meta:
@@ -26,6 +28,9 @@ class Currency(BaseModel):
 
     @classmethod
     def get_EUR_id(cls):
-        if cls.objects.filter(name='Euro'):
-            return cls.objects.get(name='Euro').id
-        return cls.objects.create(name='Euro', code='EUR', symbol='€', rate=1).id
+        eur = cls.objects.filter(name='Euro')
+        if eur:
+            return eur.first().id
+        with transaction.atomic():
+            eur = cls.objects.create(name='Euro', code='EUR', symbol='€', rate=1)
+        return eur.id

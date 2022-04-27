@@ -1,15 +1,13 @@
+from author.decorators import with_author
 from django.contrib import messages
-from django.contrib.auth.models import User
 from django.contrib.messages import DEFAULT_TAGS, DEFAULT_LEVELS
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.abstract import get_system_user_id
 
-
+@with_author
 class MyMessage(models.Model):
     created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
-    created_by = models.ForeignKey(User, on_delete=models.RESTRICT, null=False, default=get_system_user_id)
     name = models.TextField(null=False, blank=False, verbose_name=_('Message'))
     level = models.IntegerField(null=False, blank=False, verbose_name=_('Level'))
     open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
@@ -19,7 +17,7 @@ class MyMessage(models.Model):
         verbose_name_plural = _('Notifications')
 
     def __str__(self):
-        return f'{self.created.strftime("%Y-%m-%d %H:%M")}  [{self.created_by}]  ' \
+        return f'{self.created.strftime("%Y-%m-%d %H:%M")}  [{self.author}]  ' \
                f'{self.name}  ({DEFAULT_TAGS.get(self.level, "error").upper()})'
 
     @staticmethod
@@ -28,7 +26,7 @@ class MyMessage(models.Model):
 
     @classmethod
     def message(cls, request, error, level='ERROR'):
-        MyMessage.objects.create(created_by=request.user, name=error, level=DEFAULT_LEVELS.get(level, 40))
+        MyMessage.objects.create(author=request.user, name=error, level=DEFAULT_LEVELS.get(level, 40))
         if level == 'DEBUG':
             messages.debug(request, error)
         elif level == 'INFO':
@@ -41,6 +39,6 @@ class MyMessage(models.Model):
             messages.error(request, error)
 
     urls = 'messages'
-    table_fields = 'created', 'created_by', 'name', 'level'
-    search_fields = 'created_by__username', 'name', 'level'
+    table_fields = 'created', 'author', 'name', 'level'
+    search_fields = 'author__username', 'name', 'level'
     form_fields = 'name', 'level'

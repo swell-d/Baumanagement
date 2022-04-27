@@ -9,10 +9,9 @@ from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 from django_tables2.export import TableExport
 
-from Baumanagement.models.abstract import add_search_field
+from Baumanagement.models.abstract import add_search_field, get_base_models
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_files import File
-from Baumanagement.models.models_map import get_base_models
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
 from Baumanagement.models.models_settings import Settings, Visits, SearchQueries
@@ -48,7 +47,7 @@ def my404(request, exception):
 
 def upload_files(request, new_object):
     for file in request.FILES.getlist('file'):
-        file_instance = File.objects.create(name=file.name, file=file, created_by=request.user)
+        file_instance = File.objects.create(name=file.name, file=file)
         new_object.file_ids.append(file_instance.id)
         new_object.save(user=request.user)
         MyMessage.message(request, file.name + ' ' + _("uploaded"), 'SUCCESS')
@@ -130,7 +129,6 @@ def create_new_object_or_get_error(request, cls):
     formset = cls(request.POST, request.FILES)
     if formset.is_valid():
         new_object = formset.save(commit=False)
-        new_object.created_by = request.user
         new_object.save()
         formset.save_m2m()
         MyMessage.message(request, new_object.name + ' ' + _("created"), 'SUCCESS')
