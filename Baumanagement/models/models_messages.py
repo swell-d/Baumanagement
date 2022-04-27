@@ -5,13 +5,13 @@ from django.db import models
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
+from Baumanagement.models.abstract import BaseModel
+
 
 @with_author
-class MyMessage(models.Model):
-    created = models.DateTimeField(auto_now_add=True, verbose_name=_('Created'))
+class MyMessage(BaseModel):
     name = models.TextField(null=False, blank=False, verbose_name=_('Message'))
     level = models.IntegerField(null=False, blank=False, verbose_name=_('Level'))
-    open = models.BooleanField(default=True, null=False, blank=False, verbose_name=_('Open'))
 
     BOOTSTRAP_CLASSES = {
         10: 'text-warning',

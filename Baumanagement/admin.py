@@ -5,7 +5,6 @@ from .models.abstract import BaseModel
 from .models.models_messages import MyMessage
 from .models.models_settings import Settings, Visits, SearchQueries
 
-admin.site.register(MyMessage)
 admin.site.register(Settings)
 admin.site.register(Visits)
 admin.site.register(SearchQueries)
