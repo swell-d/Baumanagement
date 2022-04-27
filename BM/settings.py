@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-*-(p%h@%zw*p$m(&fytg5gyv3q5-&qdo$jb0jkwch=cx(!cbwm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', True)
 
 ALLOWED_HOSTS = ['*']
 
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'BM.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-if 'HEROKU_APP' in os.environ:
+if 'RUN_IN_HEROKU' in os.environ:
     import django_heroku
 
     django_heroku.settings(locals())
