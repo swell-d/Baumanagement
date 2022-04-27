@@ -56,6 +56,7 @@ class MyMessage(BaseModel):
             messages.error(request, error)
 
     urls = 'messages'
+    url_id = 'message_id'
     table_fields = 'created', 'name', 'level'
     search_fields = 'name', 'level'
     form_fields = 'name', 'level'

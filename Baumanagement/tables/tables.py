@@ -22,6 +22,7 @@ class MyTable(tables.Table):
 
     def __init__(self, *args, **kwargs):
         self.object_table = kwargs.pop('object_table', False)
+        self.settings = kwargs.pop('settings', None)
         super().__init__(*args, **kwargs)
 
     class Meta:
@@ -31,16 +32,30 @@ class MyTable(tables.Table):
         row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
     def render_created(self, record, value):
-
+        df = self.settings.datetime_format if self.settings else "%Y-%m-%d %H:%M"
         text = f'''
-<div class="mytooltip">{record.created.astimezone(default_timezone).strftime("%Y-%m-%d %H:%M")}
-  <span class="mytooltiptext">
-    {_("Created by")}: <br> {record.author} <br> {record.created.astimezone(default_timezone).strftime("%Y-%m-%d %H:%M")}<br><br>
-    {_("Last updated by")}: <br> {record.updated_by} <br> {record.updated.astimezone(default_timezone).strftime("%Y-%m-%d %H:%M")}
-  </span>
+<a href="{modal if self.object_table else get_link(record)}">
+    {record.created.astimezone(default_timezone).strftime(df)} 
+</a>
+<div class="mytooltip">
+    🛈
+    <span class="mytooltiptext">
+        {_("Created")}:<br> 
+        {record.created.astimezone(default_timezone).strftime(df)}<br>
+        {_("by")} {record.author}<br> 
+        
+'''
+        if record.created != record.updated:
+            text += f'''
+        <br>
+        {_("Updated")}:<br>
+        {record.updated.astimezone(default_timezone).strftime(df)}<br>
+        {_("by")} {record.updated_by}
+'''
+        text += f'''
+    </span>
 </div>
 '''
-
         return format_html(text)
 
     def render_author__settings__img(self, record, value):

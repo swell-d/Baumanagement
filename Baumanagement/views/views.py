@@ -96,12 +96,13 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
 
     queryset = baseClass.extra_fields(queryset)
     queryset = add_search_field(queryset, request)
-    table1 = tableClass(queryset, order_by=settings.sort.get(baseClass.urls, '-created'))
+    table1 = tableClass(queryset, order_by=settings.sort.get(baseClass.urls, '-created'), settings=settings)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 
 
 def generate_object_table(request, context, baseClass, tableClass, formClass, queryset):
+    settings = context['settings']
     if not request.GET:
         context.setdefault('breadcrumbs_titel', baseClass._meta.verbose_name)
         edit_object_form(request, context, formClass, queryset.first())
@@ -114,7 +115,7 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
                                   'comments': comments, 'form': CommentFormClass(), 'files_form': []})
     # else:
     queryset = baseClass.extra_fields(queryset)
-    table1 = tableClass(queryset, orderable=False, object_table=True)
+    table1 = tableClass(queryset, orderable=False, object_table=True, settings=settings)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
 
@@ -122,7 +123,7 @@ def generate_object_table(request, context, baseClass, tableClass, formClass, qu
 def generate_next_objects_table(request, context, baseClass, tableClass, queryset, titel=None):
     settings = context['settings']
     queryset = baseClass.extra_fields(queryset)
-    table = tableClass(queryset, order_by=settings.sort.get(baseClass.urls, '-created'),
+    table = tableClass(queryset, order_by=settings.sort.get(baseClass.urls, '-created'), settings=settings,
                        orderable=2)  # hack. ordered, but without a links in header
     RequestConfig(request).configure(table)
     context['tables'].append({'table': table, 'titel': titel or baseClass._meta.verbose_name_plural,

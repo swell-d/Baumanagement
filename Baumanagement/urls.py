@@ -67,6 +67,7 @@ urlpatterns = [
     path("delete_file/<int:id>", views_delete.delete_file, name="delete_file_id"),
 
     path("messages", views_messages.objects_table, name="messages"),
+    path("message/<int:id>", views_messages.object_table, name="message_id"),
 
 ]
 
