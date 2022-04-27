@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-*-(p%h@%zw*p$m(&fytg5gyv3q5-&qdo$jb0jkwch=cx(!cbwm
 # SWELL
 if os.environ.get('DEBUG') == 'false':
     DEBUG = False
-    ALLOWED_HOSTS = ['baumanagement.herokuapp.com']
+    ALLOWED_HOSTS = ['.herokuapp.com']
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     SECRET_KEY = '@xahLmB+g_^gVDbxKSR^njDT7=Y=+NKuK9BE^^a4T$M67Ec8Nu'
     SESSION_COOKIE_SECURE = True
@@ -104,7 +104,7 @@ ROOT_URLCONF = 'BM.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates', 'Baumanagement/templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), 'Baumanagement/templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
