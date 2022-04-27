@@ -30,8 +30,10 @@ if os.environ.get('DEBUG') == 'false':
     DEBUG = False
     ALLOWED_HOSTS = ['.herokuapp.com']
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    SECURE_HSTS_SECONDS = True
-    SECURE_SSL_REDIRECT = True
+    SECURE_HSTS_SECONDS = False
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+    SECURE_HSTS_PRELOAD = False
+    SECURE_SSL_REDIRECT = False
     SECRET_KEY = '@xahLmB+g_^gVDbxKSR^njDT7=Y=+NKuK9BE^^a4T$M67Ec8Nu'
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
