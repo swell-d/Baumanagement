@@ -33,7 +33,7 @@ if os.environ.get('DEBUG') == 'false':
     SECURE_HSTS_SECONDS = False
     SECURE_HSTS_INCLUDE_SUBDOMAINS = False
     SECURE_HSTS_PRELOAD = False
-    SECURE_SSL_REDIRECT = False
+    SECURE_SSL_REDIRECT = True
     SECRET_KEY = '@xahLmB+g_^gVDbxKSR^njDT7=Y=+NKuK9BE^^a4T$M67Ec8Nu'
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
