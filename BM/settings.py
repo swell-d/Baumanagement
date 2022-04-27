@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-*-(p%h@%zw*p$m(&fytg5gyv3q5-&qdo$jb0jkwch=cx(!cbwm
 # SWELL
 if os.environ.get('DEBUG') == 'false':
     DEBUG = False
-    ALLOWED_HOSTS = ['https://*.herokuapp.com']
+    ALLOWED_HOSTS = ['.herokuapp.com']
 else:
     DEBUG = True
     ALLOWED_HOSTS = ['*']
