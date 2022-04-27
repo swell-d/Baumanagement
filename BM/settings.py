@@ -28,7 +28,6 @@ SECRET_KEY = 'django-insecure-*-(p%h@%zw*p$m(&fytg5gyv3q5-&qdo$jb0jkwch=cx(!cbwm
 # SWELL
 if os.environ.get('DEBUG') == 'false':
     DEBUG = False
-    ALLOWED_HOSTS = ['.herokuapp.com']
     # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
     SECRET_KEY = '@xahLmB+g_^gVDbxKSR^njDT7=Y=+NKuK9BE^^a4T$M67Ec8Nu'
@@ -67,11 +66,8 @@ if os.environ.get('DEBUG') == 'false':
         }
     }
     DEBUG_PROPAGATE_EXCEPTIONS = True
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 else:
     DEBUG = True
-    ALLOWED_HOSTS = ['*']
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Application definition
 
@@ -131,12 +127,14 @@ if 'RUN_IN_HEROKU' in os.environ:
     import django_heroku
 
     django_heroku.settings(locals())
+    ALLOWED_HOSTS = ['.herokuapp.com']
     SECURE_HSTS_SECONDS = True
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
 else:
+    ALLOWED_HOSTS = ['*']
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -190,6 +188,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
