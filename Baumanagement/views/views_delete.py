@@ -11,6 +11,10 @@ def delete_file(request, id):
         return HttpResponseNotFound(my404(request, None))
     file = File.objects.get(id=id)
     filename = file.name
+    verbose_name = file.verbose_name()
     file.delete()
-    MyMessage.message(request, filename + ' ' + _("deleted"), 'SUCCESS')
+
+    MyMessage.message(
+        request, f'{verbose_name} "{filename}" ' + _("deleted"), 'SUCCESS'
+    )
     return HttpResponse('')

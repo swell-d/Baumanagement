@@ -1,4 +1,5 @@
 from django import forms
+from django.utils.html import format_html
 
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.tables.tables import MyTable
@@ -13,7 +14,10 @@ class TableClass(MyTable):
         fields = baseClass.table_fields
 
     def render_name(self, record, value):
-        return value
+        return format_html(value)
+
+    def render_level(self, record, value):
+        return format_html(f'<div class="{record.bootstrap_class()}">{record.level_tag()}</div>')
 
 
 class FormClass(forms.ModelForm):

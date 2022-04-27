@@ -130,3 +130,8 @@ div.center h1 {
   width: calc(1.1em - 1px);
   border-left: 1px solid #ccc;
 }
+
+/* error messages in table */
+ul.errorlist {
+  text-align: start;
+}

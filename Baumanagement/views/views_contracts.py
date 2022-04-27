@@ -83,13 +83,24 @@ def disable_children(request, contract):
         for bill in contract.bills.all():
             if bill.open:
                 bill.open = False
-                MyMessage.message(request, f'{bill.verbose_name()} "{bill.name}" ' + _("disabled"), 'WARNING')
                 bill.save()
+
+                verbose_name = bill.verbose_name()
+                link = reverse(bill.url_id, args=[bill.id])
+                MyMessage.message(
+                    request, f'{verbose_name} "<a href="{link}">{bill.name}</a>" ' + _("disabled"), 'WARNING'
+                )
+
         for payment in contract.payments.all():
             if payment.open:
                 payment.open = False
-                MyMessage.message(request, f'{payment.verbose_name()} "{payment.name}" ' + _("disabled"), 'WARNING')
                 payment.save()
+
+                verbose_name = payment.verbose_name()
+                link = reverse(payment.url_id, args=[payment.id])
+                MyMessage.message(
+                    request, f'{verbose_name} "<a href="{link}">{payment.name}</a>" ' + _("disabled"), 'WARNING'
+                )
 
 
 def company_contracts(request, id):

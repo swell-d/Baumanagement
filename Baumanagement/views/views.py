@@ -4,6 +4,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.decorators import login_required
 from django.forms import ModelForm
 from django.shortcuts import render
+from django.urls import reverse
 from django.utils.timezone import make_aware
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
@@ -49,8 +50,13 @@ def upload_files(request, new_object):
     for file in request.FILES.getlist('file'):
         file_instance = File.objects.create(name=file.name, file=file)
         new_object.file_ids.append(file_instance.id)
-        new_object.save(user=request.user)
-        MyMessage.message(request, file.name + ' ' + _("uploaded"), 'SUCCESS')
+        new_object.save()
+
+        verbose_name = file_instance.verbose_name()
+        link = file_instance.file.url
+        MyMessage.message(
+            request, f'{verbose_name} "<a href="{link}">{file_instance.name}</a>" ' + _("uploaded"), 'SUCCESS'
+        )
 
 
 def add_comment_to_object(request, new_object):
@@ -131,13 +137,16 @@ def create_new_object_or_get_error(request, cls):
         new_object = formset.save(commit=False)
         new_object.save()
         formset.save_m2m()
-        MyMessage.message(request, f'{cls._meta.model._meta.verbose_name} "{new_object.name}" ' + _("created"),
-                          'SUCCESS')
+        verbose_name = new_object.verbose_name()
+        link = reverse(new_object.url_id, args=[new_object.id])
+        MyMessage.message(
+            request, f'{verbose_name} "<a href="{link}">{new_object.name}</a>" ' + _("created"), 'SUCCESS'
+        )
         upload_files(request, new_object)
         add_comment_to_object(request, new_object)
         return None
     else:
-        MyMessage.message(request, formset.errors, 'WARNING')
+        MyMessage.message(request, formset.errors, 'ERROR')
         return formset
 
 
@@ -160,11 +169,14 @@ def edit_object_form(request, context, cls, object):
                 object = formset.save(commit=False)
                 object.save()
                 formset.save_m2m()
-                MyMessage.message(request, f'{cls._meta.model._meta.verbose_name} "{object.name}" ' + _("changed"),
-                                  'SUCCESS')
+                verbose_name = object.verbose_name()
+                link = reverse(object.url_id, args=[object.id])
+                MyMessage.message(
+                    request, f'{verbose_name} "<a href="{link}">{object.name}</a>" ' + _("changed"), 'SUCCESS'
+                )
                 upload_files(request, object)
             else:
-                MyMessage.message(request, formset.errors, 'WARNING')
+                MyMessage.message(request, formset.errors, 'ERROR')
             error_form = formset
     context['form'] = error_form or context.get('form') or cls(instance=object)
     if 'FileModel' in str(inspect.getmro(object.__class__)):
