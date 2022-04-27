@@ -29,6 +29,7 @@ SECRET_KEY = 'django-insecure-*-(p%h@%zw*p$m(&fytg5gyv3q5-&qdo$jb0jkwch=cx(!cbwm
 if os.environ.get('DEBUG') == 'false':
     DEBUG = False
     ALLOWED_HOSTS = ['.herokuapp.com']
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 else:
     DEBUG = True
     ALLOWED_HOSTS = ['*']
@@ -166,5 +167,5 @@ MESSAGE_TAGS = {
     messages.ERROR: 'alert-danger',
 }
 
-MEDIA_URL = '/files/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'files')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
