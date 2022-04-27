@@ -66,9 +66,11 @@ if os.environ.get('DEBUG') == 'false':
         }
     }
     DEBUG_PROPAGATE_EXCEPTIONS = True
+    STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 else:
     DEBUG = True
     ALLOWED_HOSTS = ['*']
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Application definition
 
@@ -187,7 +189,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
