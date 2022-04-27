@@ -30,6 +30,11 @@ if os.environ.get('DEBUG') == 'false':
     DEBUG = False
     ALLOWED_HOSTS = ['.herokuapp.com']
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    SECURE_HSTS_SECONDS = True
+    SECURE_SSL_REDIRECT = True
+    SECRET_KEY = '@xahLmB+g_^gVDbxKSR^njDT7=Y=+NKuK9BE^^a4T$M67Ec8Nu'
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 else:
     DEBUG = True
     ALLOWED_HOSTS = ['*']
@@ -52,6 +57,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
