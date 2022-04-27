@@ -3,11 +3,13 @@ import urllib.parse
 
 import django_tables2 as tables
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.encoding import force_str
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 modal = '#ModalForm" data-bs-toggle="modal" data-bs-target="#ModalForm'
+default_timezone = timezone.get_default_timezone()
 
 
 def delete_none_values(value):
@@ -27,6 +29,19 @@ class MyTable(tables.Table):
         template_name = "django_tables2_custom.html"
         attrs = {'class': 'table table-hover', "thead": {"class": "table-secondary"}}  # table-sm
         row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
+
+    def render_created(self, record, value):
+
+        text = f'''
+<div class="mytooltip">{record.created.astimezone(default_timezone).strftime("%Y-%m-%d %H:%M")}
+  <span class="mytooltiptext">
+    {_("Created by")}: <br> {record.author} <br> {record.created.astimezone(default_timezone).strftime("%Y-%m-%d %H:%M")}<br><br>
+    {_("Last updated by")}: <br> {record.updated_by} <br> {record.updated.astimezone(default_timezone).strftime("%Y-%m-%d %H:%M")}
+  </span>
+</div>
+'''
+
+        return format_html(text)
 
     def render_author__settings__img(self, record, value):
         return format_html(f'''<img src={value.url} width=24 height=24/>''')

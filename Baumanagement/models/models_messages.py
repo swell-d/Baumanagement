@@ -43,7 +43,7 @@ class MyMessage(models.Model):
     def message(cls, request, error, level='ERROR'):
         MyMessage.objects.create(author=request.user, name=error, level=DEFAULT_LEVELS.get(level, 40))
 
-        error = format_html(error)
+        error = format_html(str(error))
         if level == 'DEBUG':
             messages.debug(request, error)
         elif level == 'INFO':
