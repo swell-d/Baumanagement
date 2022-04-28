@@ -5,7 +5,7 @@ from .views import views_bills, views_companies, views_delete, views_contracts, 
     views_contracttags, views, views_products, views_productcategories, views_messages
 
 urlpatterns = [
-    path("", views_projects.objects_table),
+    path("", views_projects.objects_table, name='index'),
     path("structure", views.structure, name='structure'),
 
     path("productcategories", views_productcategories.objects_table, name="productcategories"),
