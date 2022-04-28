@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.decorators import login_required
 from django.forms import ModelForm
+from django.http import HttpResponseNotFound
 from django.shortcuts import render
 from django.urls import reverse
 from django.utils.timezone import make_aware
@@ -40,6 +41,10 @@ def myrender(request, context):
 
     template = 'tables.html' if not request.GET else 'maintable.html'
     return render(request, template, context)
+
+
+def my404(request, exception):
+    return HttpResponseNotFound(render(request, '404.html'))
 
 
 def upload_files(request, new_object):
