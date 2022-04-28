@@ -110,10 +110,10 @@ TIME_ZONE = 'Europe/Berlin'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-LANGUAGES = (
-    ('de', _('Deutsch')),
+LANGUAGES = [
+    ('de', _('German')),
     ('en', _('English')),
-)
+]
 LOCALE_PATHS = [
     os.path.join(BASE_DIR, "locale"),
     os.path.join(BASE_DIR, "Baumanagement/locale"),
