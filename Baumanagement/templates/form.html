@@ -1,6 +1,5 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
-{% get_current_language as lang %}
 
 <button type="button" class="btn btn-secondary m-2" data-bs-toggle="modal" data-bs-target="#ModalForm">
     {% if "New" in buttons %}{% translate "New" %}{% endif %}{% if "Edit" in buttons %}{% translate "Edit" %}{% endif %}
@@ -51,8 +50,7 @@
                             <div class="alert alert-light alert-dismissible fade show mb-0" role="alert">
                                 <a href="{{ file.file.url }}" target="_blank">{{ file.name }}</a>
                                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-                                        onclick="deleteFile(&quot;{{ csrf_token }}&quot;, &quot;{{ lang }}&quot;,
-                                                {{ file.id }})"></button>
+                                        onclick="deleteFile(&quot;{{ csrf_token }}&quot;, {{ file.id }})"></button>
                             </div>
                         {% endfor %}
                     {% endif %}

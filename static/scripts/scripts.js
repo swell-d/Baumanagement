@@ -36,9 +36,9 @@ function mainTableTag(querystring) {
     mainTableReload();
 }
 
-function deleteFile(csrftoken, lang, id) {
+function deleteFile(csrftoken, id) {
     const Http = new XMLHttpRequest();
-    const url = "/" + lang + "/delete_file/" + id;
+    const url = "/delete_file/" + id;
     Http.open("POST", url);
     Http.setRequestHeader("X-CSRFToken", csrftoken);
     Http.send();

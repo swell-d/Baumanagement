@@ -56,8 +56,6 @@ class UrlTests(TestCase):
 
     def test_pages(self):
         client = Client()
-        response = client.get('http://127.0.0.1:8000/', follow=True)
-        self.assertEqual(response.status_code, 200)
 
         client.login(username='test', password='test')
 
@@ -71,7 +69,5 @@ class UrlTests(TestCase):
                 response = client.get(f'{url}?search=1', follow=True)
                 self.assertEqual(response.status_code, 200)
             else:
-                if '/de/' not in url:
-                    continue
                 response = client.post(url)
                 self.assertEqual(response.status_code, 200)

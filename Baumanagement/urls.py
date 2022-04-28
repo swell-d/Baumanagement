@@ -73,6 +73,4 @@ urlpatterns = [
 
 
 def get_urls():
-    urls = [f'/de/{each.pattern}'.replace('<int:id>', '1') for each in urlpatterns]
-    urls += [f'/en/{each.pattern}'.replace('<int:id>', '1') for each in urlpatterns]
-    return urls
+    return [f'/{each.pattern}'.replace('<int:id>', '1') for each in urlpatterns]

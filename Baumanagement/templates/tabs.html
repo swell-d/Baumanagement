@@ -2,7 +2,6 @@
 {% load static %}
 {% load crispy_forms_tags %}
 {% load render_table from django_tables2 %}
-{% get_current_language as lang %}
 
 {% if tables %}
     <div class="tab">
@@ -59,7 +58,7 @@
                                                     aria-label="Close"
                                                     onClick="location.href=location.href"></button>
                                         </div>
-                                        <form method="POST" enctype="multipart/form-data" action="/{{ lang }}/comments">
+                                        <form method="POST" enctype="multipart/form-data" action="/comments">
                                             <div class="modal-body">
                                                 {% csrf_token %}
                                                 <input type="hidden" name="newCommentNextURL" id="newCommentNextURL"
