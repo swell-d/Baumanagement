@@ -8,7 +8,7 @@ from Baumanagement.views.views import my404
 
 def delete_file(request, id):
     if request.method != 'POST':
-        return HttpResponseNotFound(my404(request, None))
+        return my404(request, None)
     file = File.objects.get(id=id)
     filename = file.name
     verbose_name = file.verbose_name()

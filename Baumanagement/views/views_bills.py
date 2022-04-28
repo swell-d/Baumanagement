@@ -10,7 +10,7 @@ from Baumanagement.models.models_contracts import Bill, Contract
 from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_bills import BillTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table, get_base_context
+    generate_next_objects_table, get_base_context, my404
 
 baseClass = Bill
 tableClass = BillTable
@@ -36,8 +36,11 @@ def objects_table(request):
 
 def object_table(request, id):
     context = get_base_context(request)
-    queryset = baseClass.objects.filter(id=id).annotate(amount_netto=F('amount_netto_positiv'),
-                                                        amount_brutto=F('amount_brutto_positiv'))
+    queryset = baseClass.objects.filter(id=id)
+    if queryset.first() is None:
+        return my404(request, None)
+    queryset = queryset.annotate(amount_netto=F('amount_netto_positiv'),
+                                 amount_brutto=F('amount_brutto_positiv'))
     bill = queryset.first()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

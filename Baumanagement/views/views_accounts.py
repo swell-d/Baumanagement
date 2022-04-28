@@ -6,7 +6,7 @@ from Baumanagement.models.models_company import Account, Company
 from Baumanagement.models.models_currency import Currency
 from Baumanagement.tables.tables_accounts import AccountTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table, get_base_context
+    generate_next_objects_table, get_base_context, my404
 from Baumanagement.views.views_payments import generate_payments_by_queryset, account_payments_qs
 
 baseClass = Account
@@ -34,6 +34,8 @@ def objects_table(request):
 def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
+    if queryset.first() is None:
+        return my404(request, None)
     account = queryset.first()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

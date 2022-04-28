@@ -5,7 +5,7 @@ from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.tables.tables import MyTable
-from Baumanagement.views.views import myrender, generate_objects_table, get_base_context, generate_object_table
+from Baumanagement.views.views import myrender, generate_objects_table, get_base_context, generate_object_table, my404
 
 baseClass = MyMessage
 
@@ -38,6 +38,8 @@ def objects_table(request):
 def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
+    if queryset.first() is None:
+        return my404(request, None)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': queryset.first().id}]
