@@ -1,6 +1,7 @@
 import os
 from pathlib import Path
 
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -117,6 +118,7 @@ LOCALE_PATHS = [
     os.path.join(BASE_DIR, "locale"),
     os.path.join(BASE_DIR, "Baumanagement/locale"),
 ]
+LOGIN_URL = reverse_lazy('login')
 
 # Static files (CSS, JavaScript, Images)  https://docs.djangoproject.com/en/4.0/howto/static-files/
 STATIC_URL = 'static/'
