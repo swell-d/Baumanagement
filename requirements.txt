@@ -16,3 +16,4 @@ schwifty
 Pillow
 django-author
 whitenoise
+pandas
