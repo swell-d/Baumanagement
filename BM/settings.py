@@ -8,8 +8,8 @@ SECRET_KEY = 'django-insecure-*-(p%h@%zw*p$m(&fytg5gyv3q5-&qdo$jb0jkwch=cx(!cbwm
 
 if os.environ.get('DEBUG') == 'false':
     DEBUG = False
-    # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
     SECRET_KEY = '@xahLmB+g_^gVDbxKSR^njDT7=Y=+NKuK9BE^^a4T$M67Ec8Nu'
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -50,23 +50,24 @@ else:
     DEBUG = True
 
 INSTALLED_APPS = [
-    'author',
-    'crispy_forms',
-    'crispy_bootstrap5',
-    'bootstrap5',
-    'django_tables2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
     'Baumanagement.apps.BaumanagementConfig',
+    'author',
+    'crispy_forms',
+    'crispy_bootstrap5',
+    'bootstrap5',
+    'django_tables2',
 ]
 
 MIDDLEWARE = [
-    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -124,7 +125,7 @@ LOCALE_PATHS = [
 # Static files (CSS, JavaScript, Images)  https://docs.djangoproject.com/en/4.0/howto/static-files/
 STATIC_URL = 'static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
