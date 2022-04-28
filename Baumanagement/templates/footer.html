@@ -19,10 +19,15 @@
                         {{ CURRENT_LANGUAGE }}
                     </a>
                     <ul class="dropdown-menu me-10" aria-labelledby="langDropdown">
-                        {% for language in languages %}
-                            <li><a href="/{{ language.code }}{{ request.path|slice:"3:" }}"
-                                   class="dropdown-item">{{ language.code }}</a></li>
-                        {% endfor %}
+                        <form action="{% url 'set_language' %}" method="post">{% csrf_token %}
+                            {% for language in languages %}
+                            <li>
+                                <button class="btn text-nowrap" type="submit" name="language" value="{{ language.code }}">
+                                    {{ language.name }}
+                                </button>
+                            </li>
+                            {% endfor %}
+                        </form>
                     </ul>
                 </li>
             </ul>
