@@ -63,7 +63,7 @@ def upload_files(request, new_object):
 def add_comment_to_object(request, new_object):
     path = request.POST.get('newCommentNextURL')
     if path:
-        object_name, id = path[4:].split('/')
+        object_name, id = path.strip('/').split('/')
         if '?' in id:
             id = id[:id.find('?')]
         base_models = get_base_models()
