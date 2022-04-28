@@ -1,10 +1,11 @@
 from django import forms
+from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_contracts import ContractTag
 from Baumanagement.tables.tables import MyTable
-from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, get_base_context, my404
+from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, get_base_context
 
 baseClass = ContractTag
 
@@ -33,7 +34,7 @@ def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
     if queryset.first() is None:
-        return my404(request, None)
+        raise Http404
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': queryset.first().name}]

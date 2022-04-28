@@ -1,4 +1,5 @@
 from django import forms
+from django.http import Http404
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -7,7 +8,7 @@ from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_projects import Project, ProjectTag
 from Baumanagement.tables.tables_projects import ProjectTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table, get_base_context, my404
+    generate_next_objects_table, get_base_context
 from Baumanagement.views.views_bills import generate_bills_by_queryset, project_bills_qs
 from Baumanagement.views.views_contracts import generate_contracts_by_queryset, project_contracts_qs
 from Baumanagement.views.views_payments import generate_payments_by_queryset, project_payments_qs
@@ -46,7 +47,7 @@ def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
     if queryset.first() is None:
-        return my404(request, None)
+        raise Http404
     project = queryset.first()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

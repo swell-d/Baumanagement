@@ -1,11 +1,12 @@
 from django import forms
+from django.http import Http404
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_products import Product
 from Baumanagement.tables.tables_products import ProductTable
-from Baumanagement.views.views import myrender, generate_object_table, generate_objects_table, get_base_context, my404
+from Baumanagement.views.views import myrender, generate_object_table, generate_objects_table, get_base_context
 
 baseClass = Product
 tableClass = ProductTable
@@ -28,7 +29,7 @@ def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
     if queryset.first() is None:
-        return my404(request, None)
+        raise Http404
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
                               {'text': queryset.first()}]

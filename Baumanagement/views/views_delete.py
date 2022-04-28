@@ -1,15 +1,15 @@
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, Http404
+from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage
-from Baumanagement.views.views import my404
 
 
 def delete_file(request, id):
     if request.method != 'POST':
-        return my404(request, None)
-    file = File.objects.get(id=id)
+        raise Http404
+    file = get_object_or_404(File, id=id)
     filename = file.name
     verbose_name = file.verbose_name()
     file.delete()
