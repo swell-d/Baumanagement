@@ -40,7 +40,7 @@ jobs:
       env:
         HD_RUN_IN_HEROKU: true
         HD_DEBUG: false
-        HD_DEBUG_COLLECTSTATIC: 1
+        HD_DEBUG_COLLECTSTATIC: 0
         HD_DISABLE_COLLECTSTATIC: 0
 
     - uses: akhileshns/heroku-deploy@v3.12.12
@@ -51,5 +51,5 @@ jobs:
       env:
         HD_RUN_IN_HEROKU: true
         HD_DEBUG: true
-        HD_DEBUG_COLLECTSTATIC: 1
+        HD_DEBUG_COLLECTSTATIC: 0
         HD_DISABLE_COLLECTSTATIC: 0
