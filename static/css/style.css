@@ -145,16 +145,17 @@ ul.errorlist {
 /* mytooltip text */
 .mytooltip .mytooltiptext {
   visibility: hidden;
-  width: 300px;
-  background-color: gray;
-  color: #fff;
+  background-color: white;
   text-align: center;
   padding: 5px 0;
   border-radius: 6px;
+  border: 1px solid gray;
 
   top: 100%;
   left: 50%;
-  margin-left: -150px; /* Use half of the width (120/2 = 60), to center the mytooltip */
+
+  width: 200px;
+  margin-left: -100px; /* Use half of the width (120/2 = 60), to center the mytooltip */
 
   /* Position the mytooltip text - see examples below! */
   position: absolute;

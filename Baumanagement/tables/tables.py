@@ -39,18 +39,18 @@ class MyTable(tables.Table):
 </a>
 <div class="mytooltip">
     🛈
-    <span class="mytooltiptext">
-        {_("Created")}:<br> 
+    <span class="mytooltiptext small">
+        <strong>{_("Created")}</strong>:<br> 
         {record.created.astimezone(default_timezone).strftime(df)}<br>
-        {_("by")} {record.author}<br> 
+        {_("by")} <em>{record.author}</em><br> 
         
 '''
         if record.created != record.updated:
             text += f'''
         <br>
-        {_("Updated")}:<br>
+        <strong>{_("Updated")}</strong>:<br>
         {record.updated.astimezone(default_timezone).strftime(df)}<br>
-        {_("by")} {record.updated_by}
+        {_("by")} <em>{record.updated_by}</em>
 '''
         text += f'''
     </span>
