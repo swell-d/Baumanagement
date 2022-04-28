@@ -23,9 +23,11 @@ urlpatterns = i18n_patterns(
     path('', include('Baumanagement.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
-    path('i18n/', include('django.conf.urls.i18n')),
 )
 
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += [path('i18n/', include('django.conf.urls.i18n'))]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = 'Baumanagement.views.views.my404'
