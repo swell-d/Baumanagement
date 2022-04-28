@@ -49,8 +49,8 @@ class UrlTests(TestCase):
 
         self.Message = MyMessage.objects.create(name='test', level=25)
 
-        Path("files").mkdir(parents=True, exist_ok=True)
-        with open('files/test.txt', 'w') as file:
+        Path("media").mkdir(parents=True, exist_ok=True)
+        with open('media/test.txt', 'w') as file:
             file.write('')
         self.File = File.objects.create(name='test', file='test.txt')
 
