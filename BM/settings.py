@@ -4,7 +4,6 @@ from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-*-(p%h@%zw*p$m(&fytg5gyv3q5-&qdo$jb0jkwch=cx(!cbwm'
 
 if os.environ.get('DEBUG') == 'false':
     DEBUG = False
@@ -44,6 +43,7 @@ if os.environ.get('DEBUG') == 'false':
     DEBUG_PROPAGATE_EXCEPTIONS = True
 else:
     DEBUG = True
+    SECRET_KEY = 'django-insecure-*-(p%h@%zw*p$m(&fytg5gyv3q5-&qdo$jb0jkwch=cx(!cbwm'
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -124,7 +124,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-WHITENOISE_MANIFEST_STRICT = False
+WHITENOISE_MANIFEST_STRICT = True
 
 MEDIA_URL = 'media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
@@ -136,7 +136,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
-# Database
+# Database & Security
 if 'RUN_IN_HEROKU' in os.environ:
     import django_heroku
 
