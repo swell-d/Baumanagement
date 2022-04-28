@@ -1,6 +1,7 @@
 from django import forms
 from django.db.models import Q
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -81,7 +82,7 @@ def object_table(request, id):
 
 def company_companies(request, id):
     context = get_base_context(request)
-    company = Company.objects.get(id=id)
+    company = get_object_or_404(Company, id=id)
 
     contracts = Contract.objects.filter(Q(project__company=company) | Q(company=company))
     queryset = get_partners(company, contracts)
@@ -105,7 +106,7 @@ def get_partners(company, contracts):
 
 def companies_by_role(request, id):
     context = get_base_context(request)
-    role = CompanyRole.objects.get(id=id)
+    role = get_object_or_404(CompanyRole, id=id)
     queryset = baseClass.objects.filter(role=id)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

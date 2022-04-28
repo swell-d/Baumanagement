@@ -1,5 +1,6 @@
 from django import forms
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -54,7 +55,7 @@ def object_table(request, id):
 
 def company_accounts(request, id):
     context = get_base_context(request)
-    company = Company.objects.get(id=id)
+    company = get_object_or_404(Company, id=id)
     queryset = company.accounts.all()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

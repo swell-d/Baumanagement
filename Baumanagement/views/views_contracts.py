@@ -3,6 +3,7 @@ from decimal import Decimal
 from django import forms
 from django.db.models import Q, F, Case, When
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -109,7 +110,7 @@ def disable_children(request, contract):
 
 def company_contracts(request, id):
     context = get_base_context(request)
-    company = Company.objects.get(id=id)
+    company = get_object_or_404(Company, id=id)
     context['tags1'] = tags()
     queryset = company_contracts_qs(company)
 
@@ -126,7 +127,7 @@ def company_contracts_qs(company):
 
 def project_contracts(request, id):
     context = get_base_context(request)
-    project = Project.objects.get(id=id)
+    project = get_object_or_404(Project, id=id)
     context['tags1'] = tags()
     queryset = project_contracts_qs(project)
 

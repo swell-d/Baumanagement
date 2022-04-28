@@ -97,17 +97,27 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
     context['table1'] = table1
 
 
+def get_or_none(cls, **kwargs):
+    try:
+        return cls.objects.get(**kwargs)
+    except cls.DoesNotExist:
+        return None
+
+
 def generate_object_table(request, context, baseClass, tableClass, formClass, queryset):
     settings = context['settings']
     if not request.GET:
         context.setdefault('breadcrumbs_titel', baseClass._meta.verbose_name)
         edit_object_form(request, context, formClass, queryset.first())
 
-        comment_ids = queryset.first().comment_ids
-        comments = [{'object': Comment.objects.get(id=id), 'files': None} for id in comment_ids]
-        for comment in comments:
-            comment['files'] = [File.objects.get(id=id) for id in comment['object'].file_ids]
-        context['tables'].append({'titel': _('Comments'), 'count': len(comment_ids),
+        comments = []
+        for comment in [get_or_none(Comment, id=id) for id in queryset.first().comment_ids]:
+            if comment:
+                comments.append({
+                    'object': comment,
+                    'files': list(filter(None, [get_or_none(File, id=id) for id in comment.file_ids]))
+                })
+        context['tables'].append({'titel': _('Comments'), 'count': len(comments),
                                   'comments': comments, 'form': CommentFormClass(), 'files_form': []})
     # else:
     queryset = baseClass.extra_fields(queryset)

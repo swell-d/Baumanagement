@@ -3,6 +3,7 @@ from decimal import Decimal
 from django import forms
 from django.db.models import Q, F, Case, When
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -59,7 +60,7 @@ def object_table(request, id):
 
 def company_bills(request, id):
     context = get_base_context(request)
-    company = Company.objects.get(id=id)
+    company = get_object_or_404(Company, id=id)
     queryset = company_bills_qs(company)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
@@ -83,7 +84,7 @@ def company_bills_qs(company):
 
 def project_bills(request, id):
     context = get_base_context(request)
-    project = Project.objects.get(id=id)
+    project = get_object_or_404(Project, id=id)
     queryset = project_bills_qs(project)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
@@ -105,7 +106,7 @@ def project_bills_qs(project):
 
 def contract_bills(request, id):
     context = get_base_context(request)
-    contract = Contract.objects.get(id=id)
+    contract = get_object_or_404(Contract, id=id)
     queryset = contract_bills_qs(contract)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
