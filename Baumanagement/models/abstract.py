@@ -76,7 +76,7 @@ class FileModel(models.Model):
     @property
     def files(self):
         from Baumanagement.models.models_files import File
-        return [File.objects.get(id=id) for id in self.file_ids]
+        return list(filter(None, [get_or_none(File, id=id) for id in self.file_ids]))
 
 
 def get_base_models():
@@ -84,3 +84,10 @@ def get_base_models():
     for cls in BaseModel.__subclasses__():
         result[cls.__name__.lower()] = cls
     return result
+
+
+def get_or_none(cls, **kwargs):
+    try:
+        return cls.objects.get(**kwargs)
+    except cls.DoesNotExist:
+        return None

@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 from django_tables2.export import TableExport
 
-from Baumanagement.models.abstract import add_search_field, get_base_models
+from Baumanagement.models.abstract import add_search_field, get_base_models, get_or_none
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage
@@ -100,13 +100,6 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
     table1 = tableClass(queryset, order_by=settings.sort.get(baseClass.urls, '-created'), settings=settings)
     RequestConfig(request).configure(table1)
     context['table1'] = table1
-
-
-def get_or_none(cls, **kwargs):
-    try:
-        return cls.objects.get(**kwargs)
-    except cls.DoesNotExist:
-        return None
 
 
 def generate_object_table(request, context, baseClass, tableClass, formClass, queryset):

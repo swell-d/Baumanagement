@@ -1,14 +1,16 @@
 import openpyxl
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 from xlsx2html import xlsx2html
 
 from Baumanagement.models.models_contracts import Bill
 
 
-def tmp(request):
-    template = r"C:\Users\WestfaliaBPE\PycharmProjects\Baumanagement\Baumanagement\print_forms\bill.xlsx"
-    newfilename = 'test.xlsx'
+def tmp(request, id):
+    template = r"Baumanagement/print_forms/bill.xlsx"
+    newfilename = 'tmp/test.xlsx'
 
-    obj = Bill.objects.get(id=1)
+    obj = get_object_or_404(Bill, id=id)
     company = obj.contract.company
     replace_dict = {
         'sender': f'{obj.contract.project.company.name} {obj.contract.project.company.address} {obj.contract.project.company.city}',
@@ -35,4 +37,8 @@ def tmp(request):
 
     wb.save(newfilename)
 
-    xlsx2html(newfilename, 'test.html')
+    xlsx2html(newfilename, 'tmp/test.html')
+    with open('tmp/test.html', 'r') as file:
+        html = file.read()
+
+    return HttpResponse(html)
