@@ -1,3 +1,5 @@
+from pathlib import Path
+
 import openpyxl
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -8,6 +10,7 @@ from Baumanagement.models.models_contracts import Bill
 
 def tmp(request, id):
     template = r"Baumanagement/print_forms/bill.xlsx"
+    Path("tmp").mkdir(parents=True, exist_ok=True)
     newfilename = 'tmp/test.xlsx'
 
     obj = get_object_or_404(Bill, id=id)
