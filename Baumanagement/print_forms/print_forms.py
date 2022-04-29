@@ -25,7 +25,7 @@ def tmp(request, id):
     def fill_fields(cell):
         for key, value in replace_dict.items():
             if key:
-                cell = cell.replace('{' + key + '}', value or '')
+                cell = cell.replace('{' + key + '}', str(value) or '')
         return cell.strip()
 
     wb = openpyxl.load_workbook(template)
