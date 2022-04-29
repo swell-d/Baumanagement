@@ -16,4 +16,4 @@ schwifty
 Pillow
 django-author
 whitenoise
-pandas
+xlsx2html

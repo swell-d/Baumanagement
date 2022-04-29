@@ -1,20 +1,16 @@
 import openpyxl
-import pandas
+from xlsx2html import xlsx2html
 
-template = r"C:\Users\39528\Documents\bill.xlsx"
+template = r"bill.xlsx"
 newfilename = 'test.xlsx'
-wb = openpyxl.Workbook()
-ws = wb.active
 
-sheet = openpyxl.load_workbook(template).active
+wb = openpyxl.load_workbook(template)
+sheet = wb.active
 for row in range(1, sheet.max_row + 1):
-    line = []
     for col in range(1, sheet.max_column + 1):
-        value = sheet.cell(row=row, column=col).value or ''
-        line.append(value.replace('{name}', 'dmitry'))
-    ws.append(line)
+        if sheet.cell(row=row, column=col).value:
+            sheet.cell(row=row, column=col).value = sheet.cell(row=row, column=col).value.replace('{name}', 'dmitry')
 
 wb.save(newfilename)
 
-excel = pandas.read_excel(newfilename)
-excel.to_html('test.html')
+xlsx2html(newfilename, 'test.html')
