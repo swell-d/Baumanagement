@@ -53,8 +53,8 @@ class Company(BaseModel, AddressModel, FileModel):
 
     urls = 'companies'
     url_id = 'company_id'
-    table_fields = 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number', 'files'
-    search_fields = 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
+    table_fields = 'id', 'name', 'address', 'email', 'phone', 'role', 'ceo', 'vat_number', 'files'
+    search_fields = 'id', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number'
     form_fields = 'open', 'name', 'address', 'city', 'land', 'email', 'phone', 'ceo', 'vat_number', 'role'
 
     def save(self, *args, **kwargs):

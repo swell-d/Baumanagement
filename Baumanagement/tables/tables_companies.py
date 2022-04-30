@@ -12,6 +12,7 @@ class CompanyTable(MyTable, Files):
         model = Company
         fields = Company.table_fields
 
+    id = tables.Column(visible=True, verbose_name=_('ID'))
     files = tables.Column(verbose_name=_('Files'), orderable=False)
 
     def render_role(self, record, value):
