@@ -86,7 +86,7 @@ class Account(BaseModel, FileModel):
                 self.IBAN = iban.compact
                 self.BIC = iban.bic.compact
                 self.bank = iban.bic.bank_names[0]
-            except SchwiftyException:
+            except (SchwiftyException, AttributeError):
                 self.IBAN = re.sub(r'\s+', '', str(self.IBAN))
         super().save(*args, **kwargs)
 
