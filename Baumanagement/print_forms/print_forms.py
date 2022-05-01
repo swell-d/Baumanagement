@@ -2,22 +2,24 @@ from pathlib import Path
 
 import openpyxl
 from bs4 import BeautifulSoup
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, FileResponse
 from django.shortcuts import get_object_or_404
 from xlsx2html import xlsx2html
 
 from Baumanagement.models.models_contracts import Bill, Contract
 
 
-def tmp(request, id):
+def generate_excel(id):
     bill = get_object_or_404(Bill, id=id)
 
     template = r"Baumanagement/print_forms/bill.xlsx"
     Path("tmp").mkdir(parents=True, exist_ok=True)
-    newfilename = f'tmp/bill-{bill.id}.xlsx'
+    newfilename = f'tmp/bill-{id}.xlsx'
 
     seller = bill.contract.project.company if bill.contract.type == Contract.SELL else bill.contract.company
-    company = bill.contract.company if bill.contract.type == Contract.SELL else bill.contract.project.company
+    company = bill.contract.company if bill.contract.type == Contract.BUY else bill.contract.project.company
+
     replace_dict = {
         'seller.name': seller.name,
         'seller.address': seller.address,
@@ -31,17 +33,26 @@ def tmp(request, id):
         'bill.name': bill.name,
         'bill.date': bill.date.strftime("%d.%m.%Y") if bill.date else '',
         'company.id': company.id,
-        'company.contact': seller.contacts.first(),
 
-        'pos': '1',
-        'item': 'Musterposition',
-        'count': '1',
+        'item.pos': '1',
+        'item.name': 'Musterposition',
         'item.amount_netto_positiv': bill.amount_netto_positiv,
+        'count': '1',
+        'item.sum': bill.amount_netto_positiv,
 
         'bill.amount_netto_positiv': bill.amount_netto_positiv,
         'vat': bill.vat,
         'bill.amount_brutto_positiv': bill.amount_brutto_positiv,
+        'bill.currency.symbol': bill.currency.symbol,
 
+        'seller.phone': seller.phone,
+        'seller.email': seller.email,
+
+        'bill.account_to.IBAN': seller.accounts.first().IBAN,
+        'bill.account_to.BIC': seller.accounts.first().BIC,
+        'bill.account_to.bank': seller.accounts.first().bank,
+
+        'seller.vat_number': seller.vat_number,
         'seller.ceo': seller.ceo,
     }
 
@@ -60,14 +71,34 @@ def tmp(request, id):
             sheet.cell(row=row, column=col).value = fill_fields(sheet.cell(row=row, column=col).value)
 
     wb.save(newfilename)
+    return newfilename
 
-    xlsx2html(newfilename, f'tmp/bill-{bill.id}.html')
-    with open(f'tmp/bill-{bill.id}.html', 'r') as file:
+
+@login_required
+def xlsx(request, id):
+    newfilename = generate_excel(id)
+    return FileResponse(open(newfilename, 'rb'))
+
+
+@login_required
+def html(request, id):
+    newfilename = generate_excel(id)
+    xlsx2html(newfilename, f'tmp/bill-{id}.html')
+    with open(f'tmp/bill-{id}.html', 'r') as file:
         html = file.read()
 
     soup = BeautifulSoup(html, 'html.parser')
-    soup.body['style'] = 'background-color: gray; font-family: sans-serif;'
+    soup.body['style'] = 'width: 210mm; height: 290mm; background-color: gray; font-family: sans-serif;'
     soup.body['onload'] = 'window.print();'
-    soup.body.table['style'] = 'background-color: white;'
+    soup.table['border-collapse'] = 'collapse'
+    soup.body.table['style'] = 'width: 210mm; height: 290mm; background-color: white; border-collapse: collapse;'
+
+    for i, each in enumerate(soup.table.colgroup.findAll('col')):
+        each['style'] = f'width: {210 / 12}mm'
+        if i > 11:
+            each.extract()
+
+    soup.body.table.findAll('tr')[-1].extract()
+    soup.body.table.findAll('tr')[-1].extract()
 
     return HttpResponse(soup.prettify())

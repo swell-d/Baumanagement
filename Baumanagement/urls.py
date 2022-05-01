@@ -61,7 +61,8 @@ urlpatterns = [
 
     path("bills", views_bills.objects_table, name="bills"),
     path("bill/<int:id>", views_bills.object_table, name="bill_id"),
-    path("bill/<int:id>/html", print_forms.tmp, name="bill_id_html"),
+    path("bill/<int:id>/html", print_forms.html, name="bill_id_html"),
+    path("bill/<int:id>/xlsx", print_forms.xlsx, name="bill_id_xlsx"),
 
     path("comments", views_comments.objects_table, name="comments"),
     path("comment/<int:id>", views_comments.object_table, name="comment_id"),

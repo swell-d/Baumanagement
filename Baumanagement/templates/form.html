@@ -5,6 +5,23 @@
     {% if "New" in buttons %}{% translate "New" %}{% endif %}{% if "Edit" in buttons %}{% translate "Edit" %}{% endif %}
 </button>
 
+{% if "Print" in buttons %}
+    <div class="dropdown">
+        <button class="btn btn-outline-secondary dropdown-toggle m-2" type="button" id="printButton"
+                data-bs-toggle="dropdown" aria-expanded="false">
+            {% translate "Print" %}
+        </button>
+        <ul class="dropdown-menu" aria-labelledby="printButton">
+            <li>
+                <a class="dropdown-item" href="{{ request.path }}/xlsx" target="_blank">xlsx</a>
+            </li>
+            <li>
+                <a class="dropdown-item" href="{{ request.path }}/html" target="_blank">html</a>
+            </li>
+        </ul>
+    </div>
+{% endif %}
+
 {% with 'csv json latex ods tsv xls xlsx yaml' as list %}
     <div class="dropdown">
         <button class="btn btn-outline-secondary dropdown-toggle m-2" type="button" id="exportButton"

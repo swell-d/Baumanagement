@@ -55,6 +55,7 @@ def object_table(request, id):
                               {'text': bill.name}]
 
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
+    context['buttons'].append('Print')
     return myrender(request, context)
 
 
