@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-13 17:20+0200\n"
+"POT-Creation-Date: 2022-05-02 15:42+0200\n"
 "PO-Revision-Date: 2022-04-03 22:37+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -18,10 +18,56 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 3.0.1\n"
 
-#: .\BM\settings.py:121
-msgid "Deutsch"
-msgstr "Deutsch"
+#: .\BM\settings.py:113
+msgid "German"
+msgstr "German"
 
-#: .\BM\settings.py:122
+#: .\BM\settings.py:114
 msgid "English"
 msgstr "English"
+
+#: .\templates\first_run.html:33
+msgid "Choose your language"
+msgstr "Choose your language"
+
+#: .\templates\first_run.html:47
+msgid "Username"
+msgstr "Username"
+
+#: .\templates\first_run.html:51
+msgid "It will used for login"
+msgstr "It will used for login"
+
+#: .\templates\first_run.html:55
+msgid "Email address"
+msgstr "Email address"
+
+#: .\templates\first_run.html:58
+msgid "We'll never share your email with anyone else."
+msgstr "We'll never share your email with anyone else."
+
+#: .\templates\first_run.html:62
+msgid "Password"
+msgstr "Password"
+
+#: .\templates\first_run.html:66
+msgid ""
+"\n"
+"                        Your password must be min. 8 characters long, "
+"contain letters and numbers, and must not contain\n"
+"                        spaces, special characters, or emoji.\n"
+"                        "
+msgstr ""
+"\n"
+"                        Your password must be min. 8 characters long, "
+"contain letters and numbers, and must not contain\n"
+"                        spaces, special characters, or emoji.\n"
+"                        "
+
+#: .\templates\first_run.html:75
+msgid "Create demo data"
+msgstr "Create demo data"
+
+#: .\templates\first_run.html:78
+msgid "Create account"
+msgstr "Create account"
