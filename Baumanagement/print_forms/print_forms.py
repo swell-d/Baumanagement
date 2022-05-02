@@ -3,8 +3,8 @@ from pathlib import Path
 import openpyxl
 from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, FileResponse
-from django.shortcuts import get_object_or_404
+from django.http import FileResponse
+from django.shortcuts import get_object_or_404, render
 from xlsx2html import xlsx2html
 
 from Baumanagement.models.models_contracts import Bill, Contract
@@ -88,17 +88,16 @@ def html(request, id):
         html = file.read()
 
     soup = BeautifulSoup(html, 'html.parser')
-    soup.body['style'] = 'width: 210mm; height: 290mm; background-color: gray; font-family: sans-serif;'
-    soup.body['onload'] = 'window.print();'
-    soup.table['border-collapse'] = 'collapse'
-    soup.body.table['style'] = 'width: 210mm; height: 290mm; background-color: white; border-collapse: collapse;'
-
     for i, each in enumerate(soup.table.colgroup.findAll('col')):
         each['style'] = f'width: {210 / 12}mm'
         if i > 11:
             each.extract()
-
     soup.body.table.findAll('tr')[-1].extract()
     soup.body.table.findAll('tr')[-1].extract()
+    soup.body.table['style'] = 'width: 210mm; height: 297mm; border-collapse: collapse; background-color: white;'
 
-    return HttpResponse(soup.prettify())
+    context = {
+        'title': f'bill-{id}',
+        'html': str(soup.body.table)
+    }
+    return render(request, 'print_form.html', context)
