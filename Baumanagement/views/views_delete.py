@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
@@ -6,6 +7,7 @@ from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage
 
 
+@login_required
 def delete_file(request, id):
     if request.method != 'POST':
         raise Http404
