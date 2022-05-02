@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
 from django.forms import ModelForm
-from django.http import HttpResponseNotFound, Http404
+from django.http import HttpResponseNotFound
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.timezone import make_aware
@@ -21,9 +21,9 @@ from Baumanagement.models.models_settings import Settings, Visits, SearchQueries
 
 def superuser_required(function):
     def wrapper(*args, **kwargs):
-        if User.objects.exclude(username='system').count() == 0:
-            return redirect(reverse('first_run'))
-        return function(*args, **kwargs)
+        if User.objects.all():
+            return function(*args, **kwargs)
+        return redirect(reverse('first_run'))
 
     return wrapper
 
@@ -249,9 +249,6 @@ def project_filter(request, baseClass, queryset, settings):
 
 
 def get_base_context(request):
-    if User.objects.exclude(username='system').count() == 0:
-        raise Http404
-
     visits = Visits.objects.get_or_create(page=request.path)[0]
     visits.count += 1
     visits.save()

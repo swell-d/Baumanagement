@@ -1,0 +1,88 @@
+{% load bootstrap5 %}
+{% load static %}
+{% load i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_language_info for LANGUAGE_CODE as CURRENT_LANGUAGE %}
+{% get_available_languages as AVAILABLE_LANGUAGES %}
+{% get_language_info_list for AVAILABLE_LANGUAGES as languages %}
+
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+    <link rel="icon" type="image/png" href="{% static 'favicon-48x48.png' %}" sizes="48x48"/>
+
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    <title>{% block title %}Baumanagement{% endblock %}</title>
+
+</head>
+
+<body>
+
+<div class="container-fluid">
+    <div class="col">
+        <div class="row">
+            <h1 class="mt-3 mb-3">
+                {% translate "Create a new administrator account" %}
+            </h1>
+
+            <form action="{% url 'set_language' %}" method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="langDropdown" class="form-label">{% translate "Choose your language" %}</label>
+                    <select id="langDropdown" class="form-select" onchange="this.form.submit()" name="language">
+                        {% for language in languages %}
+                        <option value="{{language.code}}" {% if LANGUAGE_CODE == language.code %}selected{% endif %}>
+                            {{ language.name_local }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </form>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="myInputUsername1" class="form-label">{% translate "Username" %}</label>
+                    <input type="text" class="form-control" id="myInputUsername1" aria-describedby="usernameHelp"
+                           name="myInputUsername1" required>
+                    <div id="usernameHelp" class="form-text">
+                        {% translate "It will used for login" %}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="myInputEmail1" class="form-label">{% translate "Email address" %}</label>
+                    <input type="email" class="form-control" id="myInputEmail1" aria-describedby="emailHelp"
+                           name="myInputEmail1" required>
+                    <div id="emailHelp" class="form-text">
+                        {% translate "We'll never share your email with anyone else." %}
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="myInputPassword1" class="form-label">{% translate "Password" %}</label>
+                    <input type="password" class="form-control" id="myInputPassword1" aria-describedby="passwordHelp"
+                           name="myInputPassword1" required>
+                    <div id="passwordHelp" class="form-text">
+                        {% blocktranslate %}
+                        Your password must be min. 8 characters long, contain letters and numbers, and must not contain
+                        spaces, special characters, or emoji.
+                        {% endblocktranslate %}
+                    </div>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="myCreateDemoData" name="myCreateDemoData">
+                    <label class="form-check-label" for="myCreateDemoData">
+                        {% translate "Create demo data" %}
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">{% translate "Create account" %}</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
