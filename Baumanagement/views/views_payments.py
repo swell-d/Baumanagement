@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q, F, Case, When
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -28,6 +29,7 @@ class FormClass(forms.ModelForm):
         widgets = {'date': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')}
 
 
+@login_required
 def objects_table(request):
     context = get_base_context(request)
     queryset = qs_annotate(baseClass.objects)
@@ -35,6 +37,7 @@ def objects_table(request):
     return myrender(request, context)
 
 
+@login_required
 def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
@@ -61,6 +64,7 @@ def object_table(request, id):
     return myrender(request, context)
 
 
+@login_required
 def company_payments(request, id):
     context = get_base_context(request)
     company = get_object_or_404(Company, id=id)
@@ -85,6 +89,7 @@ def company_payments_qs(company):
                            When(account_to__company=company, then='amount_brutto_positiv')))
 
 
+@login_required
 def account_payments(request, id):
     context = get_base_context(request)
     account = get_object_or_404(Account, id=id)
@@ -106,6 +111,7 @@ def account_payments_qs(account):
                            When(account_to=account, then='amount_brutto_positiv')))
 
 
+@login_required
 def project_payments(request, id):
     context = get_base_context(request)
     project = get_object_or_404(Project, id=id)
@@ -128,6 +134,7 @@ def project_payments_qs(project):
     return qs_annotate(baseClass.objects.filter(contract__project=project))
 
 
+@login_required
 def contract_payments(request, id):
     context = get_base_context(request)
     contract = get_object_or_404(Contract, id=id)

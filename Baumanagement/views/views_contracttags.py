@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -22,6 +23,7 @@ class FormClass(forms.ModelForm):
         fields = baseClass.form_fields
 
 
+@login_required
 def objects_table(request):
     context = get_base_context(request)
     context['nodes'] = ContractTag.objects.filter(parent__isnull=True)
@@ -30,6 +32,7 @@ def objects_table(request):
     return myrender(request, context)
 
 
+@login_required
 def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)

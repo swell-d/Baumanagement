@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -9,7 +10,7 @@ from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_projects import Project, ProjectTag
 from Baumanagement.tables.tables_projects import ProjectTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table, get_base_context
+    generate_next_objects_table, get_base_context, superuser_required
 from Baumanagement.views.views_bills import generate_bills_by_queryset, project_bills_qs
 from Baumanagement.views.views_contracts import generate_contracts_by_queryset, project_contracts_qs
 from Baumanagement.views.views_payments import generate_payments_by_queryset, project_payments_qs
@@ -37,6 +38,8 @@ def tags():
     return format_html(html)
 
 
+@superuser_required
+@login_required
 def objects_table(request):
     context = get_base_context(request)
     context['tags1'] = tags()
@@ -44,6 +47,7 @@ def objects_table(request):
     return myrender(request, context)
 
 
+@login_required
 def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
@@ -70,6 +74,7 @@ def object_table(request, id):
     return myrender(request, context)
 
 
+@login_required
 def company_projects(request, id):
     context = get_base_context(request)
     company = get_object_or_404(Company, id=id)

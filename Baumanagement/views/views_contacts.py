@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -23,12 +24,14 @@ class FormClass(forms.ModelForm):
         fields = baseClass.form_fields
 
 
+@login_required
 def objects_table(request):
     context = get_base_context(request)
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
 
+@login_required
 def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
@@ -45,6 +48,7 @@ def object_table(request, id):
     return myrender(request, context)
 
 
+@login_required
 def company_contacts(request, id):
     context = get_base_context(request)
     company = get_object_or_404(Company, id=id)

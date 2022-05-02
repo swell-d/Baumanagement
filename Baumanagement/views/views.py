@@ -1,10 +1,10 @@
 import inspect
 from datetime import datetime, timedelta
 
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.forms import ModelForm
-from django.http import HttpResponseNotFound
-from django.shortcuts import render
+from django.http import HttpResponseNotFound, Http404
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.timezone import make_aware
 from django.utils.translation import gettext_lazy as _
@@ -19,6 +19,15 @@ from Baumanagement.models.models_projects import Project
 from Baumanagement.models.models_settings import Settings, Visits, SearchQueries
 
 
+def superuser_required(function):
+    def wrapper(*args, **kwargs):
+        if User.objects.exclude(username='system').count() == 0:
+            return redirect(reverse('first_run'))
+        return function(*args, **kwargs)
+
+    return wrapper
+
+
 class CommentFormClass(ModelForm):
     class Meta:
         model = Comment
@@ -29,7 +38,6 @@ def structure(request):
     return render(request, 'structure.html')
 
 
-@login_required
 def myrender(request, context):
     export_format = request.GET.get("_export", None)
     if export_format and TableExport.is_valid_format(export_format):
@@ -72,7 +80,6 @@ def add_comment_to_object(request, new_object):
         obj.save()
 
 
-@login_required
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
     settings = context['settings']
     if 'created' in baseClass.table_fields:
@@ -241,8 +248,10 @@ def project_filter(request, baseClass, queryset, settings):
     return queryset
 
 
-@login_required
 def get_base_context(request):
+    if User.objects.exclude(username='system').count() == 0:
+        raise Http404
+
     visits = Visits.objects.get_or_create(page=request.path)[0]
     visits.count += 1
     visits.save()

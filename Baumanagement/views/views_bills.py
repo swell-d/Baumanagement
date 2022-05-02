@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q, F, Case, When
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -29,6 +30,7 @@ class FormClass(forms.ModelForm):
         widgets = {'date': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')}
 
 
+@login_required
 def objects_table(request):
     context = get_base_context(request)
     queryset = qs_annotate(baseClass.objects)
@@ -36,6 +38,7 @@ def objects_table(request):
     return myrender(request, context)
 
 
+@login_required
 def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
@@ -60,6 +63,7 @@ def object_table(request, id):
     return myrender(request, context)
 
 
+@login_required
 def company_bills(request, id):
     context = get_base_context(request)
     company = get_object_or_404(Company, id=id)
@@ -84,6 +88,7 @@ def company_bills_qs(company):
         amount_brutto=F('amount_brutto_positiv'))
 
 
+@login_required
 def project_bills(request, id):
     context = get_base_context(request)
     project = get_object_or_404(Project, id=id)
@@ -106,6 +111,7 @@ def project_bills_qs(project):
     return qs_annotate(baseClass.objects.filter(contract__project=project))
 
 
+@login_required
 def contract_bills(request, id):
     context = get_base_context(request)
     contract = get_object_or_404(Contract, id=id)

@@ -1,6 +1,7 @@
 from decimal import Decimal
 
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q, F, Case, When
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -46,6 +47,7 @@ def tags():
     return format_html(html)
 
 
+@login_required
 def objects_table(request):
     context = get_base_context(request)
     context['tags1'] = tags()
@@ -54,6 +56,7 @@ def objects_table(request):
     return myrender(request, context)
 
 
+@login_required
 def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
@@ -108,6 +111,7 @@ def disable_children(request, contract):
                 )
 
 
+@login_required
 def company_contracts(request, id):
     context = get_base_context(request)
     company = get_object_or_404(Company, id=id)
@@ -125,6 +129,7 @@ def company_contracts_qs(company):
     return qs_annotate(baseClass.objects.filter(Q(project__company=company) | Q(company=company)))
 
 
+@login_required
 def project_contracts(request, id):
     context = get_base_context(request)
     project = get_object_or_404(Project, id=id)

@@ -1,4 +1,5 @@
 from django import forms
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
@@ -37,6 +38,7 @@ def tags():
     return format_html(html)
 
 
+@login_required
 def objects_table(request):
     context = get_base_context(request)
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
@@ -44,6 +46,7 @@ def objects_table(request):
     return myrender(request, context)
 
 
+@login_required
 def object_table(request, id):
     context = get_base_context(request)
     queryset = baseClass.objects.filter(id=id)
@@ -80,6 +83,7 @@ def object_table(request, id):
     return myrender(request, context)
 
 
+@login_required
 def company_companies(request, id):
     context = get_base_context(request)
     company = get_object_or_404(Company, id=id)
@@ -104,6 +108,7 @@ def get_partners(company, contracts):
     return Company.objects.filter(id__in=partners_ids)
 
 
+@login_required
 def companies_by_role(request, id):
     context = get_base_context(request)
     role = get_object_or_404(CompanyRole, id=id)
