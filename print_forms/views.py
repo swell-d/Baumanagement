@@ -4,17 +4,17 @@ import openpyxl
 from bs4 import BeautifulSoup
 from django.contrib.auth.decorators import login_required
 from django.http import FileResponse
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render, get_object_or_404
 from xlsx2html import xlsx2html
 
-from Baumanagement.models.models_contracts import Contract
 from Baumanagement.models.models_bills import Bill
+from Baumanagement.models.models_contracts import Contract
 
 
 def generate_excel(id):
     bill = get_object_or_404(Bill, id=id)
 
-    template = r"Baumanagement/print_forms/bill.xlsx"
+    template = r"print_forms/templates/bill.xlsx"
     Path("tmp").mkdir(parents=True, exist_ok=True)
     newfilename = f'tmp/bill-{id}.xlsx'
 
