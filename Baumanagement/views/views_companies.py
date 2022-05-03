@@ -11,11 +11,11 @@ from Baumanagement.models.models_company import CompanyRole, Company
 from Baumanagement.models.models_contracts import Contract
 from Baumanagement.tables.tables_companies import CompanyTable
 from Baumanagement.views.views_bills import generate_bills_by_queryset, company_bills_qs
-from Baumanagement.views.views_contacts import generate_contacts_by_queryset
 from Baumanagement.views.views_contracts import generate_contracts_by_queryset, company_contracts_qs
 from Baumanagement.views.views_payments import generate_payments_by_queryset, company_payments_qs
 from Baumanagement.views.views_projects import generate_projects_by_queryset
 from bank_accounts.views import generate_accounts_by_queryset
+from contacts.views import generate_contacts_by_queryset
 from main.views import myrender, generate_objects_table, generate_object_table, generate_next_objects_table, \
     get_base_context
 

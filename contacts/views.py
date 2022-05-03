@@ -5,10 +5,11 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Contact, Company
-from Baumanagement.tables.tables_contacts import ContactTable
-from main.views import myrender, generate_objects_table, generate_object_table, generate_next_objects_table, \
-    get_base_context
+from Baumanagement.models.models_company import Company
+from contacts.models import Contact
+from contacts.tables import ContactTable
+from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
+    generate_next_objects_table
 
 baseClass = Contact
 tableClass = ContactTable

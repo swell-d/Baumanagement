@@ -1,8 +1,9 @@
 from django.urls import path
 
 import bank_accounts.views
+import contacts.views
 from .views import views_bills, views_companies, views_delete, views_contracts, views_payments, views_projects, \
-    views_comments, views_companyroles, views_currencies, views_contacts, views_projecttags, \
+    views_comments, views_companyroles, views_currencies, views_projecttags, \
     views_contracttags, views_products, views_productcategories, views_messages
 
 urlpatterns = [
@@ -19,7 +20,7 @@ urlpatterns = [
     path("companies/<int:id>", views_companies.companies_by_role, name="companies_id"),
     path("company/<int:id>", views_companies.object_table, name="company_id"),
     path("company/<int:id>/accounts", bank_accounts.views.company_accounts, name="company_id_accounts"),
-    path("company/<int:id>/contacts", views_contacts.company_contacts, name="company_id_contacts"),
+    path("company/<int:id>/contacts", contacts.views.company_contacts, name="company_id_contacts"),
     path("company/<int:id>/projects", views_projects.company_projects, name="company_id_projects"),
     path("company/<int:id>/contracts", views_contracts.company_contracts, name="company_id_contracts"),
     path("company/<int:id>/payments", views_payments.company_payments, name="company_id_payments"),
@@ -28,9 +29,6 @@ urlpatterns = [
 
     path("currencies", views_currencies.objects_table, name="currencies"),
     path("currency/<int:id>", views_currencies.object_table, name="currency_id"),
-
-    path("contacts", views_contacts.objects_table, name="contacts"),
-    path("contact/<int:id>", views_contacts.object_table, name="contact_id"),
 
     path("projecttags", views_projecttags.objects_table, name="projecttags"),
     path("projecttag/<int:id>", views_projecttags.object_table, name="projecttag_id"),

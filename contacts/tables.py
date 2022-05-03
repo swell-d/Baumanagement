@@ -1,7 +1,7 @@
 import django_tables2 as tables
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Contact
+from contacts.models import Contact
 from main.tables import Files, MyTable, base_render
 
 
