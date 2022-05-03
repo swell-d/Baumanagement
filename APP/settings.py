@@ -63,6 +63,7 @@ INSTALLED_APPS = [
 
 MY_APPS = [
     'Baumanagement.apps.BaumanagementConfig',
+    'main.apps.MainConfig',
     'settings.apps.SettingsConfig',
     'statistic.apps.StatisticConfig',
     'structure.apps.StructureConfig',
