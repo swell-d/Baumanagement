@@ -4,7 +4,7 @@
     <li>
         <a href="/{{ nodes_link }}/{{ node.id }}">{{ node.name }}</a>
         {% if node.children.all %}
-            {% with "tree_item.html" as filename %}
+            {% with "tree/tree_item.html" as filename %}
                 {% with node.children as nodes %}
                     <ul>
                         {% include filename %}
