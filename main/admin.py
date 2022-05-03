@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from main.models import BaseModel
+
+for cls in BaseModel.__subclasses__():
+    admin.site.register(cls)
