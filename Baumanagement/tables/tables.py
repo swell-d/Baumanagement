@@ -32,7 +32,8 @@ class MyTable(tables.Table):
         row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
     def render_created(self, record, value):
-        df = self.settings.datetime_format if self.settings else "%Y-%m-%d %H:%M"
+        dtf = self.settings.datetime_format if self.settings else "%d.%m.%Y %H:%M"
+        df = self.settings.date_format if self.settings else "%d.%m.%y"
         text = f'''
 <a href="{modal if self.object_table else get_link(record)}">
     {record.created.astimezone(default_timezone).strftime(df)} 
@@ -41,7 +42,7 @@ class MyTable(tables.Table):
     🛈
     <span class="mytooltiptext small">
         <strong>{_("Created")}</strong>:<br> 
-        {record.created.astimezone(default_timezone).strftime(df)}<br>
+        {record.created.astimezone(default_timezone).strftime(dtf)}<br>
         {_("by")} <em>{record.author}</em><br> 
         
 '''
@@ -49,7 +50,7 @@ class MyTable(tables.Table):
             text += f'''
         <br>
         <strong>{_("Updated")}</strong>:<br>
-        {record.updated.astimezone(default_timezone).strftime(df)}<br>
+        {record.updated.astimezone(default_timezone).strftime(dtf)}<br>
         {_("by")} <em>{record.updated_by}</em>
 '''
         text += f'''

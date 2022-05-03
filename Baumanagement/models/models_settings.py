@@ -16,7 +16,9 @@ class Settings(models.Model):
     default_currency = models.ForeignKey(Currency, on_delete=models.RESTRICT, default=Currency.get_EUR_id)
     img = models.ImageField(verbose_name=_('Image'), null=True)
     datetime_format = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Datetime format'),
-                                       default="%Y-%m-%d %H:%M")
+                                       default="%d.%m.%Y %H:%M")
+    date_format = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Date format'),
+                                       default="%d.%m.%y")
 
     class Meta:
         verbose_name = _('Settings')
