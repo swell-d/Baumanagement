@@ -119,10 +119,7 @@ LANGUAGES = [
     ('de', _('German')),
     ('en', _('English')),
 ]
-LOCALE_PATHS = [
-    os.path.join(BASE_DIR, "locale"),
-    os.path.join(BASE_DIR, "Baumanagement/locale"),
-]
+LOCALE_PATHS = [os.path.join(BASE_DIR, "locale"), ]
 
 # Static files (CSS, JavaScript, Images)  https://docs.djangoproject.com/en/4.0/howto/static-files/
 STATIC_URL = 'static/'
