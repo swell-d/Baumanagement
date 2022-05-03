@@ -18,5 +18,5 @@ if __name__ == '__main__':
 #  Poedit
 #  https://mlocati.github.io/articles/gettext-iconv-windows.html
 
-#  python manage.py makemessages -l en -l de --ignore venv
+#  python manage.py makemessages -l de --ignore venv
 #  python manage.py compilemessages --ignore venv
