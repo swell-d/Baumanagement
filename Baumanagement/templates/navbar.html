@@ -63,7 +63,7 @@
                         <li>
                             <hr class="dropdown-divider">
                         </li>
-                        {% if request.user|has_group:"admins" %}
+                        {% if request.user|is_admin %}
                         <li><a class="dropdown-item" href="{% url 'admin:index' %}"
                                target="_blank">{% translate "Expert settings" %}</a>
                         </li>
