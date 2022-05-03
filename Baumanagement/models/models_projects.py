@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import Sum, Case, When
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel
+from main.models import BaseModel, AddressModel, FileModel
 from Baumanagement.models.models_company import Company
 
 

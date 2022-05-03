@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 from schwifty import IBAN
 from schwifty.exceptions import SchwiftyException
 
-from Baumanagement.models.abstract import BaseModel, AddressModel, FileModel
+from main.models import BaseModel, AddressModel, FileModel
 from Baumanagement.models.models_currency import Currency
 
 

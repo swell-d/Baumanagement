@@ -11,7 +11,7 @@ from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 from django_tables2.export import TableExport
 
-from Baumanagement.models.abstract import add_search_field, get_base_models, get_or_none
+from main.models import add_search_field, get_base_models, get_or_none
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage

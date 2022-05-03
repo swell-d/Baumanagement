@@ -2,7 +2,7 @@ from author.decorators import with_author
 from django.db import models, transaction
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.abstract import BaseModel
+from main.models import BaseModel
 
 
 @with_author

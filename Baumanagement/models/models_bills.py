@@ -3,7 +3,7 @@ from django.db import models
 from django.db.models import F
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.abstract import BaseModel, PriceModel, FileModel
+from main.models import BaseModel, PriceModel, FileModel
 from Baumanagement.models.models_contracts import Contract
 
 
