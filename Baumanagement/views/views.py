@@ -36,7 +36,7 @@ class CommentFormClass(ModelForm):
 
 
 def structure(request):
-    return render(request, 'structure.html')
+    return render(request, 'structure/structure.html')
 
 
 def myrender(request, context):
@@ -48,12 +48,12 @@ def myrender(request, context):
     context['projects'] = Project.objects.all()
     context['settings'] = Settings.objects.get_or_create(user=request.user)[0]
 
-    template = 'tables.html' if not request.GET else 'maintable.html'
+    template = 'tables/tables.html' if not request.GET else 'tables/maintable.html'
     return render(request, template, context)
 
 
 def my404(request, exception):
-    return HttpResponseNotFound(render(request, r'errors/404.html'))
+    return HttpResponseNotFound(render(request, 'errors/404.html'))
 
 
 def upload_files(request, new_object):

@@ -101,4 +101,4 @@ def html(request, id):
         'title': f'bill-{id}',
         'html': str(soup.body.table)
     }
-    return render(request, 'print_form.html', context)
+    return render(request, 'print_forms/print_form.html', context)

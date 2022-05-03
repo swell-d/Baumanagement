@@ -1,0 +1,17 @@
+{% extends "base/base.html" %}
+
+{% block title %}
+    {{ breadcrumbs_titel }} - {% with breadcrumbs|last as last %}{{ last.text }}{% endwith %}
+{% endblock %}
+
+{% block content %}
+
+    {% include 'tables/tree.html' %}
+
+    {% include 'tables/first_table.html' %}
+
+    {% include 'tables/tabs.html' %}
+
+    {% include 'tables/messages.html' %}
+
+{% endblock %}
