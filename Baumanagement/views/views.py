@@ -35,10 +35,6 @@ class CommentFormClass(ModelForm):
         fields = Comment.form_fields
 
 
-def structure(request):
-    return render(request, 'structure/structure.html')
-
-
 def myrender(request, context):
     export_format = request.GET.get("_export", None)
     if export_format and TableExport.is_valid_format(export_format):
