@@ -1,4 +1,6 @@
+import glob
 import os
+from os.path import join
 from pathlib import Path
 
 from django.utils.translation import gettext_lazy as _
@@ -61,15 +63,9 @@ INSTALLED_APPS = [
     'django_tables2',
 ]
 
-MY_APPS = [
-    'Baumanagement.apps.BaumanagementConfig',
-    'main.apps.MainConfig',
-    'print_forms.apps.PrintFormsConfig',
-    'settings.apps.SettingsConfig',
-    'statistic.apps.StatisticConfig',
-    'structure.apps.StructureConfig',
-]
-INSTALLED_APPS += MY_APPS
+for each in glob.glob(join(BASE_DIR / '*', "apps.py")):
+    app = each.split('\\')[-2]
+    INSTALLED_APPS += [f'{app}.apps.{app.replace("_", " ").title().replace(" ", "")}Config']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
