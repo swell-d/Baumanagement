@@ -28,7 +28,7 @@ def first_run(request):
 
         return redirect('/')
 
-    return render(request, 'first_run.html')
+    return render(request, r'registration/first_run.html')
 
 
 def create_demo_data(lang):
