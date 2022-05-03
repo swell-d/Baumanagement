@@ -4,7 +4,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_projects import Project
-from Baumanagement.tables.tables import Files, SummingColumnInt, MyTable
+from main.tables import Files, SummingColumnInt, MyTable
 
 
 class ProjectTable(MyTable, Files):

@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Account
-from Baumanagement.tables.tables import Files, MyTable, format_amount, base_render
+from main.tables import Files, MyTable, format_amount, base_render
 
 
 class AccountTable(MyTable, Files):

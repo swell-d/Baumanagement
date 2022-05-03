@@ -7,8 +7,8 @@ from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Contact, Company
 from Baumanagement.tables.tables_contacts import ContactTable
-from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table, get_base_context
+from main.views import myrender, generate_objects_table, generate_object_table, generate_next_objects_table, \
+    get_base_context
 
 baseClass = Contact
 tableClass = ContactTable

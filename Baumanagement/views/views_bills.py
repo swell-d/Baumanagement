@@ -13,8 +13,8 @@ from Baumanagement.models.models_contracts import Contract
 from Baumanagement.models.models_bills import Bill
 from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_bills import BillTable
-from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table, get_base_context
+from main.views import myrender, generate_objects_table, generate_object_table, generate_next_objects_table, \
+    get_base_context
 
 baseClass = Bill
 tableClass = BillTable

@@ -7,7 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_products import Product
 from Baumanagement.tables.tables_products import ProductTable
-from Baumanagement.views.views import myrender, generate_object_table, generate_objects_table, get_base_context
+from main.views import myrender, generate_objects_table, generate_object_table, get_base_context
 
 baseClass = Product
 tableClass = ProductTable

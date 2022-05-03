@@ -1,5 +1,5 @@
 from Baumanagement.models.models_currency import Currency
-from Baumanagement.tables.tables import MyTable, base_render
+from main.tables import MyTable, base_render
 
 
 class CurrencyTable(MyTable):

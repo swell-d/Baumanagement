@@ -8,8 +8,8 @@ from django.utils.translation import gettext_lazy as _
 from Baumanagement.models.models_company import Account, Company
 from Baumanagement.models.models_currency import Currency
 from Baumanagement.tables.tables_accounts import AccountTable
-from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table, get_base_context
+from main.views import myrender, generate_objects_table, generate_object_table, generate_next_objects_table, \
+    get_base_context
 from Baumanagement.views.views_payments import generate_payments_by_queryset, account_payments_qs
 
 baseClass = Account

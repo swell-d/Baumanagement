@@ -15,8 +15,8 @@ from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_contracts import ContractTable
-from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
-    generate_next_objects_table, get_base_context
+from main.views import myrender, generate_objects_table, generate_object_table, generate_next_objects_table, \
+    get_base_context
 from Baumanagement.views.views_bills import generate_bills_by_queryset, contract_bills_qs
 from Baumanagement.views.views_payments import generate_payments_by_queryset, contract_payments_qs
 
