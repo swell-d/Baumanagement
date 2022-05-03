@@ -74,7 +74,7 @@ MIDDLEWARE = [
     'author.middlewares.AuthorDefaultBackendMiddleware',
 ]
 
-ROOT_URLCONF = 'BM.urls'
+ROOT_URLCONF = 'APP.urls'
 
 TEMPLATES = [
     {
@@ -93,7 +93,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'BM.wsgi.application'
+WSGI_APPLICATION = 'APP.wsgi.application'
 
 # Password validation  https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
 AUTH_PASSWORD_VALIDATORS = [

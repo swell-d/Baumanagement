@@ -2,7 +2,7 @@ import os
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'BM.settings')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'APP.settings')
     os.system('python manage.py runserver')
 
 
