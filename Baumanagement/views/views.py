@@ -52,7 +52,7 @@ def myrender(request, context):
 
 
 def my404(request, exception):
-    return HttpResponseNotFound(render(request, '404.html'))
+    return HttpResponseNotFound(render(request, r'errors/404.html'))
 
 
 def upload_files(request, new_object):
