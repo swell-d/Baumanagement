@@ -1,11 +1,12 @@
 from author.decorators import with_author
 from django.db import models
-from django.db.models import F, Sum, DecimalField, OuterRef, Subquery, Case, When
+from django.db.models import Sum, DecimalField, OuterRef, Subquery, Case, When
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.abstract import BaseModel, FileModel, PriceModel
-from Baumanagement.models.models_company import Company, Account
+from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_currency import Currency
+from Baumanagement.models.models_products import Product
 from Baumanagement.models.models_projects import Project
 
 
@@ -62,6 +63,8 @@ class Contract(BaseModel, PriceModel, FileModel):
 
     @staticmethod
     def extra_fields(qs):
+        from Baumanagement.models.models_bills import Bill
+        from Baumanagement.models.models_payments import Payment
         bills = Bill.objects.filter(contract_id=OuterRef('pk'), open=True).values(
             'contract__pk').annotate(sum=Sum('amount_brutto_positiv')).values('sum')
         payments = Payment.objects.filter(contract_id=OuterRef('pk'), open=True).values(

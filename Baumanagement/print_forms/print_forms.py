@@ -7,7 +7,8 @@ from django.http import FileResponse
 from django.shortcuts import get_object_or_404, render
 from xlsx2html import xlsx2html
 
-from Baumanagement.models.models_contracts import Bill, Contract
+from Baumanagement.models.models_contracts import Contract
+from Baumanagement.models.models_bills import Bill
 
 
 def generate_excel(id):

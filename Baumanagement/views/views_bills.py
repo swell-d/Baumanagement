@@ -9,7 +9,8 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company
-from Baumanagement.models.models_contracts import Bill, Contract
+from Baumanagement.models.models_contracts import Contract
+from Baumanagement.models.models_bills import Bill
 from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_bills import BillTable
 from Baumanagement.views.views import myrender, generate_objects_table, generate_object_table, \
