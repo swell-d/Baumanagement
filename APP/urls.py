@@ -1,3 +1,6 @@
+import glob
+from os.path import join
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -9,15 +12,17 @@ from django.views.static import serve
 from Baumanagement.views import views_projects
 
 urlpatterns = [
-    path("", views_projects.objects_table, name='index'),
+    path('', views_projects.objects_table, name='index'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),
-
-    path('', include('Baumanagement.urls')),
-    path('', include('first_run.urls')),
-    path('', include('structure.urls')),
 ]
+
+for each in glob.glob(join(settings.BASE_DIR / '*', "urls.py")):
+    if 'APP' in each:
+        continue
+    app = each.split('\\')[-2]
+    urlpatterns += [path('', include(f'{app}.urls'))]
 
 
 @login_required
