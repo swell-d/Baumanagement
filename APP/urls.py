@@ -28,7 +28,7 @@ def protected_serve(request, path, document_root=None, show_indexes=False):
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, protected_serve, document_root=settings.MEDIA_ROOT)
 
-handler404 = 'Baumanagement.views.views.my404'
+handler404 = 'main.views.my404'
 
 
 def get_urls():
