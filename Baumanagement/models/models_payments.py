@@ -3,9 +3,9 @@ from django.db import models
 from django.db.models import F
 from django.utils.translation import gettext_lazy as _
 
-from main.models import BaseModel, PriceModel, FileModel
-from Baumanagement.models.models_company import Account
 from Baumanagement.models.models_contracts import Contract
+from bank_accounts.models import Account
+from main.models import BaseModel, PriceModel, FileModel
 
 
 @with_author

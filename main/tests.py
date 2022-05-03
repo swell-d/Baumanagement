@@ -7,13 +7,14 @@ from django.test import TestCase, Client
 from APP.urls import get_urls
 from Baumanagement.models.models_bills import Bill
 from Baumanagement.models.models_comments import Comment
-from Baumanagement.models.models_company import CompanyRole, Company, Account, Contact
+from Baumanagement.models.models_company import CompanyRole, Company, Contact
 from Baumanagement.models.models_contracts import Contract, ContractTag
 from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_payments import Payment
 from Baumanagement.models.models_products import Product, ProductCategory
 from Baumanagement.models.models_projects import Project, ProjectTag
+from bank_accounts.models import Account
 
 
 class UrlTests(TestCase):

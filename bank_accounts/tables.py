@@ -4,7 +4,7 @@ import django_tables2 as tables
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Account
+from bank_accounts.models import Account
 from main.tables import Files, MyTable, format_amount, base_render
 
 

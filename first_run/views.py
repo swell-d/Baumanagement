@@ -2,11 +2,12 @@ from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 
 from Baumanagement.models.models_bills import Bill
-from Baumanagement.models.models_company import CompanyRole, Company, Account
+from Baumanagement.models.models_company import CompanyRole, Company
 from Baumanagement.models.models_contracts import ContractTag, Contract
 from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_payments import Payment
 from Baumanagement.models.models_projects import ProjectTag, Project
+from bank_accounts.models import Account
 
 
 def first_run(request):
