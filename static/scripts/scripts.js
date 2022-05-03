@@ -11,8 +11,8 @@ function mainTableReload() {
     if ((document.getElementById("sort") || {}).value) {
         urlSearchParams.set('sort', document.getElementById("sort").value);
     }
-    if ((document.getElementById("tag") || {}).value) {
-        urlSearchParams.set('tag', document.getElementById("tag").value);
+    if ((document.getElementById("label") || {}).value) {
+        urlSearchParams.set('label', document.getElementById("label").value);
     }
     if ((document.getElementById("project") || {}).value) {
         urlSearchParams.set('project', document.getElementById("project").value);
@@ -30,9 +30,8 @@ function mainTableSort(querystring) {
     mainTableReload();
 }
 
-function mainTableTag(querystring) {
-    const urlSearchParams = new URLSearchParams(querystring);
-    document.getElementById("tag").value = urlSearchParams.get("tag");
+function mainTableLabel(value) {
+    document.getElementById("label").value = value;
     mainTableReload();
 }
 

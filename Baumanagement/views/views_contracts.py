@@ -10,7 +10,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company
-from Baumanagement.models.models_contracts import Contract, ContractTag
+from Baumanagement.models.models_contracts import Contract, ContractLabel
 from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
@@ -39,11 +39,11 @@ class FormClass(forms.ModelForm):
 
 
 def tags():
-    html = f'<a href="" onclick="mainTableTag(&quot;?tag=&quot;);return false;">{_("All")}</a>, '
+    html = f'<a href="" onclick="mainTableLabel(&quot;&quot;);return false;">{_("All")}</a>, '
     html += ', '.join(
-        f'#<a href="" onclick="mainTableTag(&quot;?tag={tag.id}&quot;);return false;">{tag.name}</a>'
-        for tag in ContractTag.objects.order_by('name') if tag.count > 0)
-    html += ' &#9881;<a href="' + reverse('contracttags') + '">' + _('Manage labels') + '</a>'
+        f'#<a href="" onclick="mainTableLabel(&quot;{tag.id}&quot;);return false;">{tag.name}</a>'
+        for tag in ContractLabel.objects.order_by('name') if tag.count > 0)
+    html += ' &#9881;<a href="' + reverse('contractlabels') + '">' + _('Manage labels') + '</a>'
     return format_html(html)
 
 

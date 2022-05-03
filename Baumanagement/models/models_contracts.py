@@ -11,14 +11,14 @@ from Baumanagement.models.models_projects import Project
 
 
 @with_author
-class ContractTag(BaseModel):
+class ContractLabel(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True,
                                verbose_name=_('Classify label under'), related_name='children')
 
     class Meta:
-        verbose_name = _('Tag')
-        verbose_name_plural = _('Tags')
+        verbose_name = _('Label')
+        verbose_name_plural = _('Labels')
 
     def __str__(self):
         return f'{self.parent}/{self.name}' if self.parent else self.name
@@ -31,8 +31,8 @@ class ContractTag(BaseModel):
     def count(self):
         return self.contracts.count()
 
-    urls = 'contracttags'
-    url_id = 'contracttag_id'
+    urls = 'contractlabels'
+    url_id = 'contractlabel_id'
     table_fields = 'name',
     search_fields = 'name',
     form_fields = 'name', 'parent'
@@ -48,7 +48,7 @@ class Contract(BaseModel, PriceModel, FileModel):
                                  on_delete=models.RESTRICT, related_name='contracts', default=Currency.get_EUR_id)
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
-    tag = models.ForeignKey(ContractTag, blank=False, verbose_name=_('Tag'),
+    label = models.ForeignKey(ContractLabel, blank=False, verbose_name=_('Label'),
                             on_delete=models.RESTRICT, related_name='contracts')
 
     BUY = PriceModel.BUY
@@ -77,9 +77,9 @@ class Contract(BaseModel, PriceModel, FileModel):
 
     urls = 'contracts'
     url_id = 'contract_id'
-    table_fields = 'created', 'project', 'company', 'name', 'date', 'tag', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
-    search_fields = 'project__name', 'company__name', 'type', 'name', 'tag__name', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
-    form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'tag', 'currency', 'amount_netto_positiv', 'vat'
+    table_fields = 'created', 'project', 'company', 'name', 'date', 'label', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
+    search_fields = 'project__name', 'company__name', 'type', 'name', 'label__name', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
+    form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'label', 'currency', 'amount_netto_positiv', 'vat'
 
 
 class ContractProduct(PriceModel):

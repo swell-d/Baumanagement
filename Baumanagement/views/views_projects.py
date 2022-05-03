@@ -7,7 +7,7 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company
-from Baumanagement.models.models_projects import Project, ProjectTag
+from Baumanagement.models.models_projects import Project, ProjectLabel
 from Baumanagement.tables.tables_projects import ProjectTable
 from main.views import superuser_required, myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table, get_base_context
@@ -30,11 +30,11 @@ class FormClass(forms.ModelForm):
 
 
 def tags():
-    html = f'<a href="" onclick="mainTableTag(&quot;?tag=&quot;);return false;">{_("All")}</a>, '
+    html = f'<a href="" onclick="mainTableLabel(&quot;&quot;);return false;">{_("All")}</a>, '
     html += ', '.join(
-        f'#<a href="" onclick="mainTableTag(&quot;?tag={tag.id}&quot;);return false;">{tag.name}</a>'
-        for tag in ProjectTag.objects.order_by('name') if tag.count > 0)
-    html += ' &#9881;<a href="' + reverse('projecttags') + '">' + _('Manage labels') + '</a>'
+        f'#<a href="" onclick="mainTableLabel(&quot;{tag.id}&quot;);return false;">{tag.name}</a>'
+        for tag in ProjectLabel.objects.order_by('name') if tag.count > 0)
+    html += ' &#9881;<a href="' + reverse('projectlabels') + '">' + _('Manage labels') + '</a>'
     return format_html(html)
 
 

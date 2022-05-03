@@ -3,10 +3,10 @@ from django.shortcuts import render, redirect
 
 from Baumanagement.models.models_bills import Bill
 from Baumanagement.models.models_company import CompanyRole, Company
-from Baumanagement.models.models_contracts import ContractTag, Contract
+from Baumanagement.models.models_contracts import ContractLabel, Contract
 from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_payments import Payment
-from Baumanagement.models.models_projects import ProjectTag, Project
+from Baumanagement.models.models_projects import ProjectLabel, Project
 from bank_accounts.models import Account
 
 
@@ -68,19 +68,19 @@ def create_demo_data(lang):
     company1_account_usd = Account.objects.get_or_create(company=company1, name="USD", currency=usd)[0]
     company3_account_usd = Account.objects.get_or_create(company=company3, name="USD", currency=usd)[0]
 
-    projecttag = ProjectTag.objects.get_or_create(name=trans['Other'][lang])[0]
+    projecttag = ProjectLabel.objects.get_or_create(name=trans['Other'][lang])[0]
 
     project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1,
-                                            tag=projecttag)[0]
+                                            label=projecttag)[0]
 
-    contracttag = ContractTag.objects.get_or_create(name=trans['Other'][lang])[0]
+    contracttag = ContractLabel.objects.get_or_create(name=trans['Other'][lang])[0]
 
     contract1 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #1", project=project,
                                                company=company2, type=Contract.BUY, currency=eur,
-                                               amount_netto_positiv=100, vat=19, tag=contracttag)[0]
+                                               amount_netto_positiv=100, vat=19, label=contracttag)[0]
     contract2 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #2", project=project,
                                                company=company3, type=Contract.SELL, currency=usd,
-                                               amount_netto_positiv=200, vat=19, tag=contracttag)[0]
+                                               amount_netto_positiv=200, vat=19, label=contracttag)[0]
 
     Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #1.1", contract=contract1,
                                amount_netto_positiv=50, vat=19)

@@ -8,14 +8,14 @@ from Baumanagement.models.models_company import Company
 
 
 @with_author
-class ProjectTag(BaseModel):
+class ProjectLabel(BaseModel):
     name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
     parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True,
                                verbose_name=_('Classify label under'), related_name='children')
 
     class Meta:
-        verbose_name = _('Tag')
-        verbose_name_plural = _('Tags')
+        verbose_name = _('Label')
+        verbose_name_plural = _('Labels')
 
     def __str__(self):
         return f'{self.parent}/{self.name}' if self.parent else self.name
@@ -28,8 +28,8 @@ class ProjectTag(BaseModel):
     def count(self):
         return self.projects.count()
 
-    urls = 'projecttags'
-    url_id = 'projecttag_id'
+    urls = 'projectlabels'
+    url_id = 'projectlabel_id'
     table_fields = 'name',
     search_fields = 'name',
     form_fields = 'name', 'parent'
@@ -41,7 +41,7 @@ class Project(BaseModel, AddressModel, FileModel):
     code = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')
-    tag = models.ForeignKey(ProjectTag, blank=False, verbose_name=_('Tag'),
+    label = models.ForeignKey(ProjectLabel, blank=False, verbose_name=_('Label'),
                             on_delete=models.RESTRICT, related_name='projects')
 
     class Meta:
@@ -54,6 +54,6 @@ class Project(BaseModel, AddressModel, FileModel):
 
     urls = 'projects'
     url_id = 'project_id'
-    table_fields = 'created', 'company', 'name', 'code', 'tag', 'address', 'count_contracts', 'files'
-    search_fields = 'company__name', 'name', 'code', 'tag__name', 'address', 'city', 'land', 'count_contracts'
-    form_fields = 'open', 'company', 'name', 'code', 'tag', 'address', 'city', 'land'
+    table_fields = 'created', 'company', 'name', 'code', 'label', 'address', 'count_contracts', 'files'
+    search_fields = 'company__name', 'name', 'code', 'label__name', 'address', 'city', 'land', 'count_contracts'
+    form_fields = 'open', 'company', 'name', 'code', 'label', 'address', 'city', 'land'

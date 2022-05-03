@@ -94,7 +94,7 @@ def generate_objects_table(request, context, baseClass, tableClass, formClass, q
         queryset = baseClass.objects
 
     queryset = date_filter(request, queryset, baseClass, settings)
-    queryset = tag_filter(request, queryset)
+    queryset = label_filter(request, queryset)
     queryset = project_filter(request, baseClass, queryset, settings)
 
     if request.GET.get('sort'):
@@ -195,10 +195,10 @@ def edit_object_form(request, context, cls, object):
     context['buttons'] = ['Edit']
 
 
-def tag_filter(request, queryset):
-    tag = request.GET.get('tag')
-    if tag:
-        queryset = queryset.filter(tag=int(tag))
+def label_filter(request, queryset):
+    label = request.GET.get('label')
+    if label:
+        queryset = queryset.filter(label=int(label))
     return queryset
 
 

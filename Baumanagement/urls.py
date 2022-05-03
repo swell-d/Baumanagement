@@ -30,8 +30,8 @@ urlpatterns = [
     path("currencies", views_currencies.objects_table, name="currencies"),
     path("currency/<int:id>", views_currencies.object_table, name="currency_id"),
 
-    path("projecttags", views_projecttags.objects_table, name="projecttags"),
-    path("projecttag/<int:id>", views_projecttags.object_table, name="projecttag_id"),
+    path("projectlabels", views_projecttags.objects_table, name="projectlabels"),
+    path("projectlabel/<int:id>", views_projecttags.object_table, name="projectlabel_id"),
 
     path("projects", views_projects.objects_table, name="projects"),
     path("project/<int:id>", views_projects.object_table, name="project_id"),
@@ -39,8 +39,8 @@ urlpatterns = [
     path("project/<int:id>/payments", views_payments.project_payments, name="project_id_payments"),
     path("project/<int:id>/bills", views_bills.project_bills, name="project_id_bills"),
 
-    path("contracttags", views_contracttags.objects_table, name="contracttags"),
-    path("contracttag/<int:id>", views_contracttags.object_table, name="contracttag_id"),
+    path("contractlabels", views_contracttags.objects_table, name="contractlabels"),
+    path("contractlabel/<int:id>", views_contracttags.object_table, name="contractlabel_id"),
 
     path("contracts", views_contracts.objects_table, name="contracts"),
     path("contract/<int:id>", views_contracts.object_table, name="contract_id"),

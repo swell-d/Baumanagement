@@ -4,11 +4,11 @@ from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_projects import ProjectTag
+from Baumanagement.models.models_projects import ProjectLabel
 from main.tables import MyTable
 from main.views import myrender, generate_objects_table, generate_object_table, get_base_context
 
-baseClass = ProjectTag
+baseClass = ProjectLabel
 
 
 class TableClass(MyTable):
@@ -26,8 +26,8 @@ class FormClass(forms.ModelForm):
 @login_required
 def objects_table(request):
     context = get_base_context(request)
-    context['nodes'] = ProjectTag.objects.filter(parent__isnull=True)
-    context['nodes_link'] = 'projecttag'
+    context['nodes'] = ProjectLabel.objects.filter(parent__isnull=True)
+    context['nodes_link'] = 'projectlabel'
     generate_objects_table(request, context, baseClass, TableClass, FormClass)
     return myrender(request, context)
 

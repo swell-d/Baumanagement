@@ -8,12 +8,12 @@ from APP.urls import get_urls
 from Baumanagement.models.models_bills import Bill
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company
-from Baumanagement.models.models_contracts import Contract, ContractTag
+from Baumanagement.models.models_contracts import Contract, ContractLabel
 from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_payments import Payment
 from Baumanagement.models.models_products import Product, ProductCategory
-from Baumanagement.models.models_projects import Project, ProjectTag
+from Baumanagement.models.models_projects import Project, ProjectLabel
 from bank_accounts.models import Account
 from contacts.models import Contact
 
@@ -36,13 +36,13 @@ class UrlTests(TestCase):
         self.Account = Account.objects.create(name='test', company=self.Company)
         self.Contact = Contact.objects.create(name='test', company=self.Company)
 
-        self.ProjectTag = ProjectTag.objects.create(name='test')
-        self.Project = Project.objects.create(name='test', company=self.Company, tag=self.ProjectTag)
+        self.ProjectTag = ProjectLabel.objects.create(name='test')
+        self.Project = Project.objects.create(name='test', company=self.Company, label=self.ProjectTag)
 
-        self.ContractTag = ContractTag.objects.create(name='test')
+        self.ContractTag = ContractLabel.objects.create(name='test')
         self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,
                                                 amount_netto_positiv=1, vat=1, date=datetime.now(),
-                                                type=Contract.BUY, tag=self.ContractTag)
+                                                type=Contract.BUY, label=self.ContractTag)
 
         self.Payment = Payment.objects.create(name='test', contract=self.Contract, amount_netto_positiv=1, vat=1,
                                               date=datetime.now(),
