@@ -53,13 +53,19 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
-    'Baumanagement.apps.BaumanagementConfig',
+
     'author',
     'crispy_forms',
     'crispy_bootstrap5',
     'bootstrap5',
     'django_tables2',
 ]
+
+MY_APPS = [
+    'Baumanagement.apps.BaumanagementConfig',
+
+]
+INSTALLED_APPS += MY_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -79,7 +85,7 @@ ROOT_URLCONF = 'APP.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'), 'Baumanagement/templates'],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
