@@ -16,7 +16,8 @@ from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
-from Baumanagement.models.models_settings import Settings, Visits, SearchQueries
+from settings.models import Settings
+from statistic.models import Visits, SearchQueries
 
 
 def superuser_required(function):
