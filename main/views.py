@@ -54,6 +54,8 @@ def my404(request, exception):
 
 def upload_files(request, new_object):
     for file in request.FILES.getlist('file'):
+        if str(file.name).endswith('.py'):
+            continue
         file_instance = File.objects.create(name=file.name, file=file)
         new_object.file_ids.append(file_instance.id)
         new_object.save()

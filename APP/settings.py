@@ -64,7 +64,7 @@ INSTALLED_APPS = [
 ]
 
 for each in glob.glob(join(BASE_DIR / '*', "apps.py")):
-    app = each.split('\\')[-2]
+    app = Path(each).resolve().parent.name
     INSTALLED_APPS += [f'{app}.apps.{app.replace("_", " ").title().replace(" ", "")}Config']
 
 MIDDLEWARE = [

@@ -1,5 +1,6 @@
 import glob
 from os.path import join
+from pathlib import Path
 
 from django.conf import settings
 from django.conf.urls.static import static
@@ -21,7 +22,7 @@ urlpatterns = [
 for each in glob.glob(join(settings.BASE_DIR / '*', "urls.py")):
     if 'APP' in each:
         continue
-    app = each.split('\\')[-2]
+    app = Path(each).resolve().parent.name
     urlpatterns += [path('', include(f'{app}.urls'))]
 
 
