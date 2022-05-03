@@ -2,12 +2,9 @@ from django.urls import path
 
 from .views import views_bills, views_companies, views_delete, views_contracts, views_payments, views_projects, \
     views_accounts, views_comments, views_companyroles, views_currencies, views_contacts, views_projecttags, \
-    views_contracttags, views_products, views_productcategories, views_messages, views_first_run
+    views_contracttags, views_products, views_productcategories, views_messages
 
 urlpatterns = [
-    path("", views_projects.objects_table, name='index'),
-    path("first_run", views_first_run.first_run, name='first_run'),
-
     path("productcategories", views_productcategories.objects_table, name="productcategories"),
     path("productcategory/<int:id>", views_productcategories.object_table, name="productcategory_id"),
 
