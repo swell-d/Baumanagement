@@ -6,9 +6,9 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_comments import Comment
+from comments.models import Comment
 from main.tables import MyTable, Files
-from main.views import myrender, generate_objects_table, generate_object_table, get_base_context
+from main.views import get_base_context, generate_objects_table, myrender, generate_object_table
 
 baseClass = Comment
 
