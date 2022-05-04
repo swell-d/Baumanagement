@@ -111,7 +111,8 @@ class MyTable(tables.Table):
         return get_google_maps_link(record)
 
     def render_path(self, record, value):
-        return base_render(self, record, value)
+        return format_html(f'<a href="{modal if self.object_table else get_link(record)}" class="badge" '
+                           f'style="background-color:{record.color};">{value}</a>')
 
     def as_values(self, exclude_columns=None):
         if exclude_columns is None:

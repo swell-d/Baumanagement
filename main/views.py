@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.forms import ModelForm
+from django.forms import ModelForm, TextInput
 from django.http import HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -263,3 +263,7 @@ def get_base_context(request):
 
     return {'settings': Settings.objects.get_or_create(user=request.user)[0],
             'tables': []}
+
+
+class ColorFieldWidget(TextInput):
+    input_type = 'color'

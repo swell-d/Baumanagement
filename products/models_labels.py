@@ -20,6 +20,6 @@ class ProductCategory(Label, BaseModel):
 
     urls = 'productcategories'
     url_id = 'productcategory_id'
-    table_fields = 'path',
+    table_fields = 'path', 'name'
     search_fields = 'path',
-    form_fields = 'name', 'parent'
+    form_fields = 'name', 'parent', 'color'

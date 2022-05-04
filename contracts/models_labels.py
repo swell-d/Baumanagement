@@ -16,6 +16,6 @@ class ContractLabel(Label, BaseModel):
 
     urls = 'contractlabels'
     url_id = 'contractlabel_id'
-    table_fields = 'path',
+    table_fields = 'path', 'name'
     search_fields = 'path',
-    form_fields = 'name', 'parent'
+    form_fields = 'name', 'parent', 'color'

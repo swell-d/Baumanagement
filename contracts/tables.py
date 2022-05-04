@@ -20,7 +20,8 @@ class ContractTable(MyTable, Files):
 
     def render_label(self, record, value):
         return format_html(
-            ", ".join([f'<a href="{reverse(record.url_id, args=[record.id])}">{label}</a>' for label in value.all()]))
+            ", ".join([f'<a href="{reverse(record.url_id, args=[record.id])}" class="badge" style="background-color: '
+                       f'{label.color};">{label}</a>' for label in value.all()]))
 
     def render_bills_amount(self, record, value):
         link = reverse('contract_id_bills', args=[record.id])
