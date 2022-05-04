@@ -22,7 +22,7 @@ class FormClass(forms.ModelForm):
         model = baseClass
         fields = baseClass.form_fields
 
-    color = forms.CharField(widget=ColorFieldWidget)
+    color = forms.CharField(widget=ColorFieldWidget, initial='#FFFFFF')
 
 
 @login_required
