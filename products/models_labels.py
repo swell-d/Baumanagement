@@ -14,10 +14,6 @@ class ProductCategory(Label, BaseModel):
         verbose_name = _('Category')
         verbose_name_plural = _('Categories')
 
-    @staticmethod
-    def extra_fields(qs):
-        return qs.all()
-
     @property
     def count(self):
         return self.products.count()

@@ -1,7 +1,9 @@
+{% load i18n %}
+
 {% if nodes %}
     <div class="row">
         <div class="col">
-            <h2>Tree view:</h2>
+            <h2>{% trans 'Tree view' %}:</h2>
             <ul class="list-group treeCSS ms-3">
                 {% include 'tree/tree_item.html' %}
             </ul>

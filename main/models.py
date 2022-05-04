@@ -81,12 +81,29 @@ class Label(models.Model):
         abstract = True
 
     def __str__(self):
-        return f'{self.parent}/{self.name}' if self.parent else self.name
+        return self.path
+
+    @staticmethod
+    def extra_fields(qs):
+        return qs.order_by('path')
+
+    @classmethod
+    def root_labels(cls):
+        return cls.objects.filter(parent__isnull=True).order_by('name')
+
+    @classmethod
+    def update_children(cls, children):
+        for each in children:
+            each.save(recursive=False)
+            if each.children:
+                cls.update_children(each.children.all())
 
     def save(self, *args, **kwargs):
-        self.path = str(self)
+        self.path = f'{self.parent}/{self.name}' if self.parent else self.name
+        recursive = kwargs.pop('recursive', True)
         super().save(*args, **kwargs)
-        # ToDo update all children
+        if recursive:
+            self.update_children(self.children.all())
 
 
 def add_search_field(queryset, request):

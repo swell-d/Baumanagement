@@ -26,7 +26,7 @@ class FormClass(forms.ModelForm):
 @login_required
 def objects_table(request):
     context = get_base_context(request)
-    context['nodes'] = baseClass.objects.filter(parent__isnull=True)
+    context['nodes'] = baseClass.root_labels()
     context['nodes_link'] = baseClass.url_id
     generate_objects_table(request, context, baseClass, TableClass, FormClass)
     return myrender(request, context)
@@ -40,7 +40,7 @@ def object_table(request, id):
         raise Http404
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
-                              {'text': queryset.first().name}]
+                              {'text': queryset.first().path}]
 
     generate_object_table(request, context, baseClass, TableClass, FormClass, queryset)
     return myrender(request, context)
