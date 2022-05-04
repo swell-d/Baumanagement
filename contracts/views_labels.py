@@ -26,8 +26,8 @@ class FormClass(forms.ModelForm):
 @login_required
 def objects_table(request):
     context = get_base_context(request)
-    context['nodes'] = ContractLabel.objects.filter(parent__isnull=True)
-    context['nodes_link'] = 'contractlabel'
+    context['nodes'] = baseClass.objects.filter(parent__isnull=True)
+    context['nodes_link'] = baseClass.url_id
     generate_objects_table(request, context, baseClass, TableClass, FormClass)
     return myrender(request, context)
 
