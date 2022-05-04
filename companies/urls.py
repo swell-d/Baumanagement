@@ -10,11 +10,10 @@ import payments.views
 import projects.views
 
 urlpatterns = [
-    path("companyroles", companies.views_labels.objects_table, name="companyroles"),
-    path("companyrole/<int:id>", companies.views_labels.object_table, name="companyrole_id"),
+    path("companylabels", companies.views_labels.objects_table, name="companylabels"),
+    path("companylabel/<int:id>", companies.views_labels.object_table, name="companylabel_id"),
 
     path("companies", companies.views.objects_table, name="companies"),
-    path("companies/<int:id>", companies.views.companies_by_role, name="companies_id"),
     path("company/<int:id>", companies.views.object_table, name="company_id"),
     path("company/<int:id>/accounts", bank_accounts.views.company_accounts, name="company_id_accounts"),
     path("company/<int:id>/contacts", contacts.views.company_contacts, name="company_id_contacts"),

@@ -1,17 +1,14 @@
 from author.decorators import with_author
-from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from main.models import BaseModel
+from main.models import BaseModel, Label
 
 
 @with_author
-class CompanyRole(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Role'), unique=True)
-
+class CompanyLabel(Label, BaseModel):
     class Meta:
-        verbose_name = _('Role')
-        verbose_name_plural = _('Roles')
+        verbose_name = _('Label')
+        verbose_name_plural = _('Labels')
 
     @staticmethod
     def extra_fields(qs):
@@ -21,8 +18,8 @@ class CompanyRole(BaseModel):
     def count(self):
         return self.companies.count()
 
-    urls = 'companyroles'
-    url_id = 'companyrole_id'
-    table_fields = 'name',
-    search_fields = 'name',
-    form_fields = 'name',
+    urls = 'companylabels'
+    url_id = 'companylabel_id'
+    table_fields = 'path',
+    search_fields = 'path',
+    form_fields = 'name', 'parent'

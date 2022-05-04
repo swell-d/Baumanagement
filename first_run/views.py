@@ -4,7 +4,7 @@ from django.shortcuts import render, redirect
 from bank_accounts.models import Account
 from bills.models import Bill
 from companies.models import Company
-from companies.models_labels import CompanyRole
+from companies.models_labels import CompanyLabel
 from contracts.models import Contract
 from contracts.models_labels import ContractLabel
 from currencies.models import Currency
@@ -52,20 +52,20 @@ def create_demo_data(lang):
     eur = Currency.objects.get_or_create(name='Euro', code='EUR', symbol='€', rate=1)[0]
     usd = Currency.objects.get_or_create(name='US-Dollar', code='USD', symbol='$', rate=1.09)[0]
 
-    role1 = CompanyRole.objects.get_or_create(name=trans['My company'][lang])[0]
-    role2 = CompanyRole.objects.get_or_create(name=trans['Supplier'][lang])[0]
-    role3 = CompanyRole.objects.get_or_create(name=trans['Client'][lang])[0]
+    label1 = CompanyLabel.objects.get_or_create(name=trans['My company'][lang])[0]
+    label2 = CompanyLabel.objects.get_or_create(name=trans['Supplier'][lang])[0]
+    label3 = CompanyLabel.objects.get_or_create(name=trans['Client'][lang])[0]
 
     company1 = Company.objects.get_or_create(name=trans['My company'][lang])[0]
-    company1.role.set([role1, ])
+    company1.label.set([label1, ])
     company1.save()
 
     company2 = Company.objects.get_or_create(name=f"{trans['Supplier'][lang]} #1")[0]
-    company2.role.set([role2, ])
+    company2.label.set([label2, ])
     company2.save()
 
     company3 = Company.objects.get_or_create(name=f"{trans['Client'][lang]} #1")[0]
-    company3.role.set([role3, ])
+    company3.label.set([label3, ])
     company3.save()
 
     company1_account_usd = Account.objects.get_or_create(company=company1, name="USD", currency=usd)[0]
@@ -73,17 +73,23 @@ def create_demo_data(lang):
 
     projecttag = ProjectLabel.objects.get_or_create(name=trans['Other'][lang])[0]
 
-    project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1,
-                                            label=projecttag)[0]
+    project = Project.objects.get_or_create(name=f"{trans['Project'][lang]} #1", company=company1)[0]
+    project.label.set([projecttag, ])
+    project.save()
 
     contracttag = ContractLabel.objects.get_or_create(name=trans['Other'][lang])[0]
 
     contract1 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #1", project=project,
                                                company=company2, type=Contract.BUY, currency=eur,
-                                               amount_netto_positiv=100, vat=19, label=contracttag)[0]
+                                               amount_netto_positiv=100, vat=19)[0]
+    contract1.label.set([contracttag, ])
+    contract1.save()
+
     contract2 = Contract.objects.get_or_create(name=f"{trans['Contract'][lang]} #2", project=project,
                                                company=company3, type=Contract.SELL, currency=usd,
-                                               amount_netto_positiv=200, vat=19, label=contracttag)[0]
+                                               amount_netto_positiv=200, vat=19)[0]
+    contract2.label.set([contracttag, ])
+    contract2.save()
 
     Bill.objects.get_or_create(name=f"{trans['Bill'][lang]} #1.1", contract=contract1,
                                amount_netto_positiv=50, vat=19)

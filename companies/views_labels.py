@@ -4,11 +4,11 @@ from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from companies.models_labels import CompanyRole
+from companies.models_labels import CompanyLabel
 from main.tables import MyTable
 from main.views import myrender, generate_objects_table, generate_object_table, get_base_context
 
-baseClass = CompanyRole
+baseClass = CompanyLabel
 
 
 class TableClass(MyTable):
@@ -26,6 +26,8 @@ class FormClass(forms.ModelForm):
 @login_required
 def objects_table(request):
     context = get_base_context(request)
+    context['nodes'] = baseClass.objects.filter(parent__isnull=True)
+    context['nodes_link'] = baseClass.url_id
     generate_objects_table(request, context, baseClass, TableClass, FormClass)
     return myrender(request, context)
 

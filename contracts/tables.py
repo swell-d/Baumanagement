@@ -1,5 +1,6 @@
 import django_tables2 as tables
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from contracts.models import Contract
@@ -16,6 +17,10 @@ class ContractTable(MyTable, Files):
     bills_amount = SummingColumn2F(verbose_name=_('Bills'))
     payments_amount = SummingColumn2F(verbose_name=_('Payments'))
     files = tables.Column(verbose_name=_('Files'), orderable=False)
+
+    def render_label(self, record, value):
+        return format_html(
+            ", ".join([f'<a href="{reverse(record.url_id, args=[record.id])}">{label}</a>' for label in value.all()]))
 
     def render_bills_amount(self, record, value):
         link = reverse('contract_id_bills', args=[record.id])

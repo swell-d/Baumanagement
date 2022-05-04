@@ -19,4 +19,4 @@ class ProductTable(MyTable, Files):
 
     def render_categories(self, record, value):
         return format_html(
-            "<br>".join([f'<a href="{reverse("product_id", args=[record.id])}">{cat}</a>' for cat in value.all()]))
+            "<br>".join([f'<a href="{reverse(record.url_id, args=[record.id])}">{cat}</a>' for cat in value.all()]))

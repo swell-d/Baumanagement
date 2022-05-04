@@ -21,8 +21,7 @@ class Contract(BaseModel, PriceModel, FileModel):
                                  on_delete=models.RESTRICT, related_name='contracts', default=Currency.get_EUR_id)
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
-    label = models.ForeignKey(ContractLabel, blank=False, verbose_name=_('Label'),
-                              on_delete=models.RESTRICT, related_name='contracts')
+    label = models.ManyToManyField(ContractLabel, blank=True, verbose_name=_('Labels'), related_name='contracts')
 
     BUY = PriceModel.BUY
     SELL = PriceModel.SELL
@@ -51,7 +50,7 @@ class Contract(BaseModel, PriceModel, FileModel):
     urls = 'contracts'
     url_id = 'contract_id'
     table_fields = 'created', 'project', 'company', 'name', 'date', 'label', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
-    search_fields = 'project__name', 'company__name', 'type', 'name', 'label__name', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
+    search_fields = 'project__name', 'company__name', 'type', 'name', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
     form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'label', 'currency', 'amount_netto_positiv', 'vat'
 
 

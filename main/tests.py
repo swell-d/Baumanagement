@@ -9,7 +9,7 @@ from bank_accounts.models import Account
 from bills.models import Bill
 from comments.models import Comment
 from companies.models import Company
-from companies.models_labels import CompanyRole
+from companies.models_labels import CompanyLabel
 from contacts.models import Contact
 from contracts.models import Contract
 from contracts.models_labels import ContractLabel
@@ -32,21 +32,27 @@ class UrlTests(TestCase):
 
         self.ProductCategory = ProductCategory.objects.create(name='test')
         self.Product = Product.objects.create(name='test')
+        self.Product.categories.set([self.ProductCategory, ])
+        self.Product.save()
 
-        self.CompanyRole = CompanyRole.objects.create(name='test')
+        self.CompanyLabel = CompanyLabel.objects.create(name='test')
         self.Company = Company.objects.create(name='test')
-        self.Company.role.add(self.CompanyRole)
+        self.Company.label.add(self.CompanyLabel)
         self.Company.save()
         self.Account = Account.objects.create(name='test', company=self.Company)
         self.Contact = Contact.objects.create(name='test', company=self.Company)
 
-        self.ProjectTag = ProjectLabel.objects.create(name='test')
-        self.Project = Project.objects.create(name='test', company=self.Company, label=self.ProjectTag)
+        self.ProjectLabel = ProjectLabel.objects.create(name='test')
+        self.Project = Project.objects.create(name='test', company=self.Company)
+        self.Project.label.add(self.ProjectLabel)
+        self.Project.save()
 
-        self.ContractTag = ContractLabel.objects.create(name='test')
+        self.ContractLabel = ContractLabel.objects.create(name='test')
         self.Contract = Contract.objects.create(name='test', project=self.Project, company=self.Company,
                                                 amount_netto_positiv=1, vat=1, date=datetime.now(),
-                                                type=Contract.BUY, label=self.ContractTag)
+                                                type=Contract.BUY)
+        self.Contract.label.add(self.ContractLabel)
+        self.Contract.save()
 
         self.Payment = Payment.objects.create(name='test', contract=self.Contract, amount_netto_positiv=1, vat=1,
                                               date=datetime.now(),

@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 from bank_accounts.views import generate_accounts_by_queryset
 from bills.views import company_bills_qs, generate_bills_by_queryset
 from companies.models import Company
-from companies.models_labels import CompanyRole
+from companies.models_labels import CompanyLabel
 from companies.tables import CompanyTable
 from contacts.views import generate_contacts_by_queryset
 from contracts.models import Contract
@@ -31,11 +31,11 @@ class FormClass(forms.ModelForm):
 
 
 def tags():
-    html = f'''<a href="{reverse('companies')}">{_('All')}</a> ({baseClass.objects.count()}), '''
+    html = f'<a href="" onclick="mainTableLabel(&quot;&quot;);return false;">{_("All")}</a>, '
     html += ', '.join(
-        f'''#<a href="{reverse('companies_id', args=[role.id])}">{role.name}</a> ({role.count})'''
-        for role in CompanyRole.objects.order_by('name') if role.count > 0)
-    html += ' &#9881;<a href="' + reverse('companyroles') + '">' + _('Manage roles') + '</a>'
+        f'#<a href="" onclick="mainTableLabel(&quot;{tag.id}&quot;);return false;">{str(tag)}</a>'
+        for tag in CompanyLabel.objects.order_by('path') if tag.count > 0)
+    html += ' &#9881;<a href="' + reverse('companylabels') + '">' + _('Manage labels') + '</a>'
     return format_html(html)
 
 
@@ -107,17 +107,3 @@ def get_partners(company, contracts):
         partners_ids.add(each.project.company.id)
     partners_ids.discard(company.id)
     return Company.objects.filter(id__in=partners_ids)
-
-
-@login_required
-def companies_by_role(request, id):
-    context = get_base_context(request)
-    role = get_object_or_404(CompanyRole, id=id)
-    queryset = baseClass.objects.filter(role=id)
-
-    context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
-                              {'text': role.name}]
-
-    generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
-    context['tags1'] = tags()
-    return myrender(request, context)

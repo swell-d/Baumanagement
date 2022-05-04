@@ -19,6 +19,11 @@ class FormClass(forms.ModelForm):
         fields = baseClass.form_fields
 
 
+def tags():
+    html = '&#9881;<a href="' + reverse('productcategories') + '">' + _('Manage categories') + '</a>'
+    return format_html(html)
+
+
 @login_required
 def objects_table(request):
     context = get_base_context(request)
@@ -39,8 +44,3 @@ def object_table(request, id):
 
     generate_object_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
-
-
-def tags():
-    html = '&#9881;<a href="' + reverse('productcategories') + '">' + _('Manage categories') + '</a>'
-    return format_html(html)

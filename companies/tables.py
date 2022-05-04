@@ -15,6 +15,6 @@ class CompanyTable(MyTable, Files):
     id = tables.Column(visible=True, verbose_name=_('ID'))
     files = tables.Column(verbose_name=_('Files'), orderable=False)
 
-    def render_role(self, record, value):
+    def render_label(self, record, value):
         return format_html(
-            ", ".join([f'<a href="{reverse("company_id", args=[record.id])}">{role}</a>' for role in value.all()]))
+            ", ".join([f'<a href="{reverse(record.url_id, args=[record.id])}">{label}</a>' for label in value.all()]))

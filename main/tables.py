@@ -110,6 +110,9 @@ class MyTable(tables.Table):
     def render_address(self, record, value):
         return get_google_maps_link(record)
 
+    def render_path(self, record, value):
+        return base_render(self, record, value)
+
     def as_values(self, exclude_columns=None):
         if exclude_columns is None:
             exclude_columns = ()

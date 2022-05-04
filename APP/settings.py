@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'bootstrap5',
     'django_tables2',
+    'colorfield'
 ]
 
 for each in glob.glob(join(BASE_DIR / '*', "apps.py")):

@@ -1,5 +1,6 @@
 from decimal import Decimal
 
+from colorfield.fields import ColorField
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import Q
@@ -67,6 +68,25 @@ class FileModel(models.Model):
     def files(self):
         from files.models import File
         return list(filter(None, [get_or_none(File, id=id) for id in self.file_ids]))
+
+
+class Label(models.Model):
+    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
+    parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True,
+                               verbose_name=_('Classify label under'), related_name='children')
+    color = ColorField(default='#FFFFFF')
+    path = models.TextField(max_length=256, null=True, blank=True, verbose_name=_('Full path'), unique=True)
+
+    class Meta:
+        abstract = True
+
+    def __str__(self):
+        return f'{self.parent}/{self.name}' if self.parent else self.name
+
+    def save(self, *args, **kwargs):
+        self.path = str(self)
+        super().save(*args, **kwargs)
+        # ToDo update all children
 
 
 def add_search_field(queryset, request):

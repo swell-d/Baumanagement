@@ -14,8 +14,7 @@ class Project(BaseModel, AddressModel, FileModel):
     code = models.CharField(max_length=256, null=False, blank=True, verbose_name=_('Code'))
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='projects')
-    label = models.ForeignKey(ProjectLabel, blank=False, verbose_name=_('Label'),
-                              on_delete=models.RESTRICT, related_name='projects')
+    label = models.ManyToManyField(ProjectLabel, blank=True, verbose_name=_('Labels'), related_name='projects')
 
     class Meta:
         verbose_name = _('Project')
@@ -28,5 +27,5 @@ class Project(BaseModel, AddressModel, FileModel):
     urls = 'projects'
     url_id = 'project_id'
     table_fields = 'created', 'company', 'name', 'code', 'label', 'address', 'count_contracts', 'files'
-    search_fields = 'company__name', 'name', 'code', 'label__name', 'address', 'city', 'land', 'count_contracts'
+    search_fields = 'company__name', 'name', 'code', 'address', 'city', 'land', 'count_contracts'
     form_fields = 'open', 'company', 'name', 'code', 'label', 'address', 'city', 'land'

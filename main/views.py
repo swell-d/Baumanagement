@@ -198,7 +198,7 @@ def edit_object_form(request, context, cls, object):
 def label_filter(request, queryset):
     label = request.GET.get('label')
     if label:
-        queryset = queryset.filter(label=int(label))
+        queryset = queryset.filter(label__id=int(label))
     return queryset
 
 

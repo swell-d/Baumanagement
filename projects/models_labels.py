@@ -1,22 +1,14 @@
 from author.decorators import with_author
-from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from main.models import BaseModel
+from main.models import BaseModel, Label
 
 
 @with_author
-class ProjectLabel(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Name'))
-    parent = models.ForeignKey('self', on_delete=models.RESTRICT, null=True, blank=True,
-                               verbose_name=_('Classify label under'), related_name='children')
-
+class ProjectLabel(Label, BaseModel):
     class Meta:
         verbose_name = _('Label')
         verbose_name_plural = _('Labels')
-
-    def __str__(self):
-        return f'{self.parent}/{self.name}' if self.parent else self.name
 
     @staticmethod
     def extra_fields(qs):
@@ -28,6 +20,6 @@ class ProjectLabel(BaseModel):
 
     urls = 'projectlabels'
     url_id = 'projectlabel_id'
-    table_fields = 'name',
-    search_fields = 'name',
+    table_fields = 'path',
+    search_fields = 'path',
     form_fields = 'name', 'parent'

@@ -34,7 +34,7 @@ def tags():
     html = f'<a href="" onclick="mainTableLabel(&quot;&quot;);return false;">{_("All")}</a>, '
     html += ', '.join(
         f'#<a href="" onclick="mainTableLabel(&quot;{tag.id}&quot;);return false;">{str(tag)}</a>'
-        for tag in ProjectLabel.objects.order_by('name') if tag.count > 0)
+        for tag in ProjectLabel.objects.order_by('path') if tag.count > 0)
     html += ' &#9881;<a href="' + reverse('projectlabels') + '">' + _('Manage labels') + '</a>'
     return format_html(html)
 
