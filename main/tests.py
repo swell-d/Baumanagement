@@ -8,7 +8,6 @@ from APP.urls import get_urls
 from Baumanagement.models.models_bills import Bill
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company
-from Baumanagement.models.models_contracts import Contract, ContractLabel
 from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_payments import Payment
@@ -16,6 +15,7 @@ from Baumanagement.models.models_products import Product, ProductCategory
 from Baumanagement.models.models_projects import Project, ProjectLabel
 from bank_accounts.models import Account
 from contacts.models import Contact
+from contracts.models import ContractLabel, Contract
 
 
 class UrlTests(TestCase):

@@ -8,7 +8,7 @@ from django.shortcuts import render, get_object_or_404
 from xlsx2html import xlsx2html
 
 from Baumanagement.models.models_bills import Bill
-from Baumanagement.models.models_contracts import Contract
+from contracts.models import Contract
 
 
 def generate_excel(id):

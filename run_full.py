@@ -20,3 +20,5 @@ if __name__ == '__main__':
 
 #  python manage.py makemessages -l de --ignore venv
 #  python manage.py compilemessages --ignore venv
+
+# pip freeze | %{$_.split('==')[0]} | %{pip install --upgrade $_}

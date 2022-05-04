@@ -2,9 +2,10 @@ from django.urls import path
 
 import bank_accounts.views
 import contacts.views
-from .views import views_bills, views_companies, views_delete, views_contracts, views_payments, views_projects, \
+import contracts.views
+from .views import views_bills, views_companies, views_delete, views_payments, views_projects, \
     views_comments, views_companyroles, views_currencies, views_projecttags, \
-    views_contracttags, views_products, views_productcategories, views_messages
+    views_products, views_productcategories, views_messages
 
 urlpatterns = [
     path("productcategories", views_productcategories.objects_table, name="productcategories"),
@@ -22,7 +23,7 @@ urlpatterns = [
     path("company/<int:id>/accounts", bank_accounts.views.company_accounts, name="company_id_accounts"),
     path("company/<int:id>/contacts", contacts.views.company_contacts, name="company_id_contacts"),
     path("company/<int:id>/projects", views_projects.company_projects, name="company_id_projects"),
-    path("company/<int:id>/contracts", views_contracts.company_contracts, name="company_id_contracts"),
+    path("company/<int:id>/contracts", contracts.views.company_contracts, name="company_id_contracts"),
     path("company/<int:id>/payments", views_payments.company_payments, name="company_id_payments"),
     path("company/<int:id>/bills", views_bills.company_bills, name="company_id_bills"),
     path("company/<int:id>/companies", views_companies.company_companies, name="company_id_companies"),
@@ -35,17 +36,9 @@ urlpatterns = [
 
     path("projects", views_projects.objects_table, name="projects"),
     path("project/<int:id>", views_projects.object_table, name="project_id"),
-    path("project/<int:id>/contracts", views_contracts.project_contracts, name="project_id_contracts"),
+    path("project/<int:id>/contracts", contracts.views.project_contracts, name="project_id_contracts"),
     path("project/<int:id>/payments", views_payments.project_payments, name="project_id_payments"),
     path("project/<int:id>/bills", views_bills.project_bills, name="project_id_bills"),
-
-    path("contractlabels", views_contracttags.objects_table, name="contractlabels"),
-    path("contractlabel/<int:id>", views_contracttags.object_table, name="contractlabel_id"),
-
-    path("contracts", views_contracts.objects_table, name="contracts"),
-    path("contract/<int:id>", views_contracts.object_table, name="contract_id"),
-    path("contract/<int:id>/payments", views_payments.contract_payments, name="contract_id_payments"),
-    path("contract/<int:id>/bills", views_bills.contract_bills, name="contract_id_bills"),
 
     path("payments", views_payments.objects_table, name="payments"),
     path("payment/<int:id>", views_payments.object_table, name="payment_id"),

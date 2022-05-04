@@ -2,7 +2,7 @@ from decimal import Decimal
 
 from django import forms
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, F, Case, When
+from django.db.models import F, Q, Case, When
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
@@ -10,15 +10,15 @@ from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company
-from Baumanagement.models.models_contracts import Contract, ContractLabel
 from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
-from Baumanagement.tables.tables_contracts import ContractTable
-from main.views import myrender, generate_objects_table, generate_object_table, generate_next_objects_table, \
-    get_base_context
-from Baumanagement.views.views_bills import generate_bills_by_queryset, contract_bills_qs
-from Baumanagement.views.views_payments import generate_payments_by_queryset, contract_payments_qs
+from Baumanagement.views.views_bills import contract_bills_qs, generate_bills_by_queryset
+from Baumanagement.views.views_payments import contract_payments_qs, generate_payments_by_queryset
+from contracts.models import Contract, ContractLabel
+from contracts.tables import ContractTable
+from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
+    generate_next_objects_table
 
 baseClass = Contract
 tableClass = ContractTable

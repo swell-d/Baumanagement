@@ -1,13 +1,13 @@
 from author.decorators import with_author
 from django.db import models
-from django.db.models import Sum, DecimalField, OuterRef, Subquery, Case, When
+from django.db.models import OuterRef, Sum, Subquery, DecimalField, Case, When
 from django.utils.translation import gettext_lazy as _
 
-from main.models import BaseModel, PriceModel, FileModel
 from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_products import Product
 from Baumanagement.models.models_projects import Project
+from main.models import BaseModel, PriceModel, FileModel
 
 
 @with_author
@@ -49,7 +49,7 @@ class Contract(BaseModel, PriceModel, FileModel):
     company = models.ForeignKey(Company, null=False, blank=False, verbose_name=_('Company'),
                                 on_delete=models.RESTRICT, related_name='contracts')
     label = models.ForeignKey(ContractLabel, blank=False, verbose_name=_('Label'),
-                            on_delete=models.RESTRICT, related_name='contracts')
+                              on_delete=models.RESTRICT, related_name='contracts')
 
     BUY = PriceModel.BUY
     SELL = PriceModel.SELL
@@ -86,7 +86,6 @@ class ContractProduct(PriceModel):
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='products')
     product = models.ForeignKey(Product, null=False, blank=False, verbose_name=_('Product'),
-                                 on_delete=models.RESTRICT)
+                                on_delete=models.RESTRICT)
     count = models.FloatField(null=False, blank=False, verbose_name=_('Count'), default=1.0)
     use_product_price = models.BooleanField(default=True)
-

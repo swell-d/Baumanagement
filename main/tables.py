@@ -183,10 +183,10 @@ def format_amount(value, link, symbol, arrow=False):
         f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol} {'➡' if arrow else ''}</a> ️''')
 
 
-def base_render(table, record, value):
-    return format_html(f'<a href="{modal if table.object_table else get_link(record)}">{value}</a>')
+def base_render(tbl, record, value):
+    return format_html(f'<a href="{modal if tbl.object_table else get_link(record)}">{value}</a>')
 
 
-def date_render(table, record, value):
-    return format_html(f'<a href="{modal if table.object_table else get_link(record)}">'
+def date_render(tbl, record, value):
+    return format_html(f'<a href="{modal if tbl.object_table else get_link(record)}">'
                        f'{value.strftime("%d.%m.%Y") if value else "—"}</a>')
