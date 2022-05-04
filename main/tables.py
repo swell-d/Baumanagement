@@ -39,7 +39,7 @@ class MyTable(tables.Table):
     {record.created.astimezone(default_timezone).strftime(df)} 
 </a>
 <div class="mytooltip">
-    🛈
+    &#9432;
     <span class="mytooltiptext small">
         <strong>{_("Created")}</strong>:<br> 
         {record.created.astimezone(default_timezone).strftime(dtf)}<br>
@@ -184,7 +184,7 @@ def get_link(record):
 
 def format_amount(value, link, symbol, arrow=False):
     return format_html(
-        f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol} {'➡' if arrow else ''}</a> ️''')
+        f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol} {'&#8694;' if arrow else ''}</a> ️''')
 
 
 def base_render(tbl, record, value):
