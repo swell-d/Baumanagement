@@ -7,7 +7,7 @@ from django.http import FileResponse
 from django.shortcuts import render, get_object_or_404
 from xlsx2html import xlsx2html
 
-from Baumanagement.models.models_bills import Bill
+from bills.models import Bill
 from contracts.models import Contract
 
 

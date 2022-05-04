@@ -9,10 +9,10 @@ from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import CompanyRole, Company
 from Baumanagement.tables.tables_companies import CompanyTable
-from Baumanagement.views.views_bills import generate_bills_by_queryset, company_bills_qs
 from Baumanagement.views.views_payments import generate_payments_by_queryset, company_payments_qs
 from Baumanagement.views.views_projects import generate_projects_by_queryset
 from bank_accounts.views import generate_accounts_by_queryset
+from bills.views import company_bills_qs, generate_bills_by_queryset
 from contacts.views import generate_contacts_by_queryset
 from contracts.models import Contract
 from contracts.views import company_contracts_qs, generate_contracts_by_queryset

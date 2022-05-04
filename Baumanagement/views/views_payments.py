@@ -10,8 +10,8 @@ from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_payments import Payment
 from Baumanagement.models.models_projects import Project
 from Baumanagement.tables.tables_payments import PaymentTable
-from Baumanagement.views.views_bills import qs_annotate
 from bank_accounts.models import Account
+from bills.views import qs_annotate
 from contracts.models import Contract
 from main.views import myrender, generate_objects_table, generate_object_table, generate_next_objects_table, \
     get_base_context

@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_bills import Bill
+from bills.models import Bill
 from main.tables import Files, SummingColumn2F, MyTable
 
 
