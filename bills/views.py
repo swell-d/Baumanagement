@@ -1,6 +1,5 @@
 from decimal import Decimal
 
-from bills.tables import BillTable
 from django import forms
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Q, Case, When
@@ -9,9 +8,10 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_projects import Project
 from bills.models import Bill
+from bills.tables import BillTable
+from companies.models import Company
 from contracts.models import Contract
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
     generate_next_objects_table

@@ -7,8 +7,8 @@ from django.utils.translation import gettext_lazy as _
 from schwifty import IBAN
 from schwifty.exceptions import SchwiftyException
 
-from Baumanagement.models.models_company import Company
-from Baumanagement.models.models_currency import Currency
+from companies.models import Company
+from currencies.models import Currency
 from main.models import BaseModel, FileModel
 
 

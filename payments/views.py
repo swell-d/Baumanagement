@@ -6,10 +6,10 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_projects import Project
 from bank_accounts.models import Account
 from bills.views import qs_annotate
+from companies.models import Company
 from contracts.models import Contract
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
     generate_next_objects_table

@@ -3,8 +3,8 @@ from django.db import models
 from django.db.models import TextField
 from django.utils.translation import gettext_lazy as _
 
+from currencies.models import Currency
 from main.models import BaseModel, PriceModel, FileModel
-from Baumanagement.models.models_currency import Currency
 
 
 @with_author

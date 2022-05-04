@@ -3,10 +3,10 @@ from django.db import models
 from django.db.models import OuterRef, Sum, Subquery, DecimalField, Case, When
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Company
-from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_products import Product
 from Baumanagement.models.models_projects import Project
+from companies.models import Company
+from currencies.models import Currency
 from main.models import BaseModel, PriceModel, FileModel
 
 

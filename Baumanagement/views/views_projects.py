@@ -6,10 +6,10 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_projects import Project, ProjectLabel
 from Baumanagement.tables.tables_projects import ProjectTable
 from bills.views import project_bills_qs, generate_bills_by_queryset
+from companies.models import Company
 from contracts.views import project_contracts_qs, generate_contracts_by_queryset
 from main.views import superuser_required, myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table, get_base_context

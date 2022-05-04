@@ -2,7 +2,7 @@ from author.decorators import with_author
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_currency import Currency
+from currencies.models import Currency
 from main.models import BaseModel, AddressModel, FileModel
 
 

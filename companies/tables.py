@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Company
+from companies.models import Company
 from main.tables import Files, MyTable
 
 

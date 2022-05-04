@@ -4,7 +4,7 @@ from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import CompanyRole
+from companies.models import CompanyRole
 from main.tables import MyTable
 from main.views import myrender, generate_objects_table, generate_object_table, get_base_context
 

@@ -9,12 +9,12 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_company import Company
-from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_projects import Project
 from bills.views import contract_bills_qs, generate_bills_by_queryset
+from companies.models import Company
 from contracts.models import Contract, ContractLabel
 from contracts.tables import ContractTable
+from currencies.models import Currency
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
     generate_next_objects_table
 from notifications.models import Notification
