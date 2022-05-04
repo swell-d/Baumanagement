@@ -13,12 +13,12 @@ from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_currency import Currency
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
-from Baumanagement.views.views_payments import contract_payments_qs, generate_payments_by_queryset
 from bills.views import contract_bills_qs, generate_bills_by_queryset
 from contracts.models import Contract, ContractLabel
 from contracts.tables import ContractTable
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
     generate_next_objects_table
+from payments.views import contract_payments_qs, generate_payments_by_queryset
 
 baseClass = Contract
 tableClass = ContractTable

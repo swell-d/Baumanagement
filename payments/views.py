@@ -1,20 +1,20 @@
 from django import forms
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, F, Case, When
+from django.db.models import F, Q, Case, When
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company
-from Baumanagement.models.models_payments import Payment
 from Baumanagement.models.models_projects import Project
-from Baumanagement.tables.tables_payments import PaymentTable
 from bank_accounts.models import Account
 from bills.views import qs_annotate
 from contracts.models import Contract
-from main.views import myrender, generate_objects_table, generate_object_table, generate_next_objects_table, \
-    get_base_context
+from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
+    generate_next_objects_table
+from payments.models import Payment
+from payments.tables import PaymentTable
 
 baseClass = Payment
 tableClass = PaymentTable

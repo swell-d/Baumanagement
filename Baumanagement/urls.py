@@ -4,7 +4,8 @@ import bank_accounts.views
 import bills.views
 import contacts.views
 import contracts.views
-from .views import views_companies, views_delete, views_payments, views_projects, \
+import payments.views
+from .views import views_companies, views_delete, views_projects, \
     views_comments, views_companyroles, views_currencies, views_projecttags, \
     views_products, views_productcategories, views_messages
 
@@ -25,7 +26,7 @@ urlpatterns = [
     path("company/<int:id>/contacts", contacts.views.company_contacts, name="company_id_contacts"),
     path("company/<int:id>/projects", views_projects.company_projects, name="company_id_projects"),
     path("company/<int:id>/contracts", contracts.views.company_contracts, name="company_id_contracts"),
-    path("company/<int:id>/payments", views_payments.company_payments, name="company_id_payments"),
+    path("company/<int:id>/payments", payments.views.company_payments, name="company_id_payments"),
     path("company/<int:id>/bills", bills.views.company_bills, name="company_id_bills"),
     path("company/<int:id>/companies", views_companies.company_companies, name="company_id_companies"),
 
@@ -38,11 +39,8 @@ urlpatterns = [
     path("projects", views_projects.objects_table, name="projects"),
     path("project/<int:id>", views_projects.object_table, name="project_id"),
     path("project/<int:id>/contracts", contracts.views.project_contracts, name="project_id_contracts"),
-    path("project/<int:id>/payments", views_payments.project_payments, name="project_id_payments"),
+    path("project/<int:id>/payments", payments.views.project_payments, name="project_id_payments"),
     path("project/<int:id>/bills", bills.views.project_bills, name="project_id_bills"),
-
-    path("payments", views_payments.objects_table, name="payments"),
-    path("payment/<int:id>", views_payments.object_table, name="payment_id"),
 
     path("comments", views_comments.objects_table, name="comments"),
     path("comment/<int:id>", views_comments.object_table, name="comment_id"),

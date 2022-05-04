@@ -9,11 +9,11 @@ from django.utils.translation import gettext_lazy as _
 from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_projects import Project, ProjectLabel
 from Baumanagement.tables.tables_projects import ProjectTable
-from Baumanagement.views.views_payments import generate_payments_by_queryset, project_payments_qs
 from bills.views import project_bills_qs, generate_bills_by_queryset
 from contracts.views import project_contracts_qs, generate_contracts_by_queryset
 from main.views import superuser_required, myrender, generate_objects_table, generate_object_table, \
     generate_next_objects_table, get_base_context
+from payments.views import project_payments_qs, generate_payments_by_queryset
 
 baseClass = Project
 tableClass = ProjectTable

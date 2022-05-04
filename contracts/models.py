@@ -64,7 +64,7 @@ class Contract(BaseModel, PriceModel, FileModel):
     @staticmethod
     def extra_fields(qs):
         from bills.models import Bill
-        from Baumanagement.models.models_payments import Payment
+        from payments.models import Payment
         bills = Bill.objects.filter(contract_id=OuterRef('pk'), open=True).values(
             'contract__pk').annotate(sum=Sum('amount_brutto_positiv')).values('sum')
         payments = Payment.objects.filter(contract_id=OuterRef('pk'), open=True).values(
