@@ -2,6 +2,7 @@ import inspect
 from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
+from django.db import IntegrityError
 from django.forms import ModelForm
 from django.http import HttpResponseNotFound
 from django.shortcuts import redirect, render
@@ -145,17 +146,20 @@ def create_new_object_or_get_error(request, cls):
         return None
     formset = cls(request.POST, request.FILES)
     if formset.is_valid():
-        new_object = formset.save(commit=False)
-        new_object.save()
-        formset.save_m2m()
-        verbose_name = new_object.verbose_name()
-        link = reverse(new_object.url_id, args=[new_object.id])
-        Notification.message(
-            request, f'{verbose_name} "<a href="{link}">{new_object.name}</a>" ' + _("created"), 'SUCCESS'
-        )
-        upload_files(request, new_object)
-        add_comment_to_object(request, new_object)
-        return None
+        try:
+            new_object = formset.save(commit=False)
+            new_object.save()
+            formset.save_m2m()
+            verbose_name = new_object.verbose_name()
+            link = reverse(new_object.url_id, args=[new_object.id])
+            Notification.message(
+                request, f'{verbose_name} "<a href="{link}">{new_object.name}</a>" ' + _("created"), 'SUCCESS'
+            )
+            upload_files(request, new_object)
+            add_comment_to_object(request, new_object)
+            return None
+        except IntegrityError:
+            Notification.message(request, _("Object already exist"), 'ERROR')
     else:
         Notification.message(request, formset.errors, 'ERROR')
         return formset
