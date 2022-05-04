@@ -2,12 +2,12 @@ from django.urls import path
 
 import bills.views
 import contracts.views
+import contracts.views_labels
 import payments.views
-from contracts import views_contracttags
 
 urlpatterns = [
-    path("contractlabels", views_contracttags.objects_table, name="contractlabels"),
-    path("contractlabel/<int:id>", views_contracttags.object_table, name="contractlabel_id"),
+    path("contractlabels", contracts.views_labels.objects_table, name="contractlabels"),
+    path("contractlabel/<int:id>", contracts.views_labels.object_table, name="contractlabel_id"),
 
     path("contracts", contracts.views.objects_table, name="contracts"),
     path("contract/<int:id>", contracts.views.object_table, name="contract_id"),
