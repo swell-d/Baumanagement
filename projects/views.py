@@ -10,7 +10,7 @@ from bills.views import project_bills_qs, generate_bills_by_queryset
 from companies.models import Company
 from contracts.views import project_contracts_qs, generate_contracts_by_queryset
 from main.views import superuser_required, get_base_context, generate_objects_table, myrender, generate_object_table, \
-    generate_next_objects_table
+    generate_next_objects_table, labels
 from payments.views import project_payments_qs, generate_payments_by_queryset
 from projects.models import Project
 from projects.models_labels import ProjectLabel
@@ -18,6 +18,7 @@ from projects.tables import ProjectTable
 
 baseClass = Project
 tableClass = ProjectTable
+labelClass = ProjectLabel
 
 
 class FormClass(forms.ModelForm):
@@ -43,7 +44,7 @@ def tags():
 @login_required
 def objects_table(request):
     context = get_base_context(request)
-    context['tags1'] = tags()
+    context['labels'] = labels(labelClass)
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
@@ -79,7 +80,7 @@ def object_table(request, id):
 def company_projects(request, id):
     context = get_base_context(request)
     company = get_object_or_404(Company, id=id)
-    context['tags1'] = tags()
+    context['labels'] = labels(labelClass)
     queryset = company.projects.all()
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

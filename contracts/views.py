@@ -6,7 +6,6 @@ from django.db.models import F, Q, Case, When
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from bills.views import contract_bills_qs, generate_bills_by_queryset
@@ -16,13 +15,14 @@ from contracts.models_labels import ContractLabel
 from contracts.tables import ContractTable
 from currencies.models import Currency
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
-    generate_next_objects_table
+    generate_next_objects_table, labels
 from notifications.models import Notification
 from payments.views import contract_payments_qs, generate_payments_by_queryset
 from projects.models import Project
 
 baseClass = Contract
 tableClass = ContractTable
+labelClass = ContractLabel
 
 
 class FormClass(forms.ModelForm):
@@ -39,19 +39,10 @@ class FormClass(forms.ModelForm):
         widgets = {'date': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')}
 
 
-def tags():
-    html = f'<a href="" onclick="mainTableLabel(&quot;&quot;);return false;">{_("All")}</a>, '
-    html += ', '.join(
-        f'#<a href="" onclick="mainTableLabel(&quot;{tag.id}&quot;);return false;">{str(tag)}</a>'
-        for tag in ContractLabel.objects.order_by('path') if tag.count > 0)
-    html += ' &#9881;<a href="' + reverse('contractlabels') + '">' + _('Manage labels') + '</a>'
-    return format_html(html)
-
-
 @login_required
 def objects_table(request):
     context = get_base_context(request)
-    context['tags1'] = tags()
+    context['labels'] = labels(labelClass)
     queryset = qs_annotate(baseClass.objects)
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
@@ -116,7 +107,7 @@ def disable_children(request, contract):
 def company_contracts(request, id):
     context = get_base_context(request)
     company = get_object_or_404(Company, id=id)
-    context['tags1'] = tags()
+    context['labels'] = labels(labelClass)
     queryset = company_contracts_qs(company)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},
@@ -134,7 +125,7 @@ def company_contracts_qs(company):
 def project_contracts(request, id):
     context = get_base_context(request)
     project = get_object_or_404(Project, id=id)
-    context['tags1'] = tags()
+    context['labels'] = labels(labelClass)
     queryset = project_contracts_qs(project)
 
     context['breadcrumbs'] = [{'link': reverse(baseClass.urls), 'text': _("All")},

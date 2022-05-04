@@ -6,7 +6,6 @@ from django.db.models import F, Q, Case, When
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from bills.models import Bill
@@ -15,11 +14,12 @@ from bills.tables import BillTable
 from companies.models import Company
 from contracts.models import Contract
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
-    generate_next_objects_table
+    generate_next_objects_table, labels
 from projects.models import Project
 
 baseClass = Bill
 tableClass = BillTable
+labelClass = BillLabel
 
 
 class FormClass(forms.ModelForm):
@@ -33,19 +33,10 @@ class FormClass(forms.ModelForm):
         widgets = {'date': forms.DateInput(attrs={'type': 'date'}, format='%Y-%m-%d')}
 
 
-def tags():
-    html = f'<a href="" onclick="mainTableLabel(&quot;&quot;);return false;">{_("All")}</a>, '
-    html += ', '.join(
-        f'#<a href="" onclick="mainTableLabel(&quot;{tag.id}&quot;);return false;">{str(tag)}</a>'
-        for tag in BillLabel.objects.order_by('path') if tag.count > 0)
-    html += ' &#9881;<a href="' + reverse('billlabels') + '">' + _('Manage labels') + '</a>'
-    return format_html(html)
-
-
 @login_required
 def objects_table(request):
     context = get_base_context(request)
-    context['tags1'] = tags()
+    context['labels'] = labels(labelClass)
     queryset = qs_annotate(baseClass.objects)
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
     return myrender(request, context)
@@ -79,7 +70,7 @@ def object_table(request, id):
 @login_required
 def company_bills(request, id):
     context = get_base_context(request)
-    context['tags1'] = tags()
+    context['labels'] = labels(labelClass)
     company = get_object_or_404(Company, id=id)
     queryset = company_bills_qs(company)
 
@@ -105,7 +96,7 @@ def company_bills_qs(company):
 @login_required
 def project_bills(request, id):
     context = get_base_context(request)
-    context['tags1'] = tags()
+    context['labels'] = labels(labelClass)
     project = get_object_or_404(Project, id=id)
     queryset = project_bills_qs(project)
 
@@ -129,7 +120,7 @@ def project_bills_qs(project):
 @login_required
 def contract_bills(request, id):
     context = get_base_context(request)
-    context['tags1'] = tags()
+    context['labels'] = labels(labelClass)
     contract = get_object_or_404(Contract, id=id)
     queryset = contract_bills_qs(contract)
 

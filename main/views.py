@@ -7,6 +7,7 @@ from django.forms import ModelForm, TextInput
 from django.http import HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.timezone import make_aware
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
@@ -267,3 +268,13 @@ def get_base_context(request):
 
 class ColorFieldWidget(TextInput):
     input_type = 'color'
+
+
+def labels(cls):
+    html = f'<a href="" onclick="mainTableLabel(&quot;&quot;);return false;">{_("All")}</a>, '
+    html += ', '.join(
+        f'#<a href="" onclick="mainTableLabel(&quot;{tag.id}&quot;);return false;">{str(tag)}</a>'
+        for tag in cls.objects.order_by('path') if tag.count > 0)
+    html = html.strip(', ')
+    html += ' &#9881;<a href="' + reverse(cls.urls) + '">' + _('Manage labels') + '</a>'
+    return format_html(html)

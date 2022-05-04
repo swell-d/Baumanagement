@@ -4,7 +4,6 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from bank_accounts.views import generate_accounts_by_queryset
@@ -16,12 +15,13 @@ from contacts.views import generate_contacts_by_queryset
 from contracts.models import Contract
 from contracts.views import company_contracts_qs, generate_contracts_by_queryset
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
-    generate_next_objects_table
+    generate_next_objects_table, labels
 from payments.views import company_payments_qs, generate_payments_by_queryset
 from projects.views import generate_projects_by_queryset
 
 baseClass = Company
 tableClass = CompanyTable
+labelClass = CompanyLabel
 
 
 class FormClass(forms.ModelForm):
@@ -30,20 +30,11 @@ class FormClass(forms.ModelForm):
         fields = baseClass.form_fields
 
 
-def tags():
-    html = f'<a href="" onclick="mainTableLabel(&quot;&quot;);return false;">{_("All")}</a>, '
-    html += ', '.join(
-        f'#<a href="" onclick="mainTableLabel(&quot;{tag.id}&quot;);return false;">{str(tag)}</a>'
-        for tag in CompanyLabel.objects.order_by('path') if tag.count > 0)
-    html += ' &#9881;<a href="' + reverse('companylabels') + '">' + _('Manage labels') + '</a>'
-    return format_html(html)
-
-
 @login_required
 def objects_table(request):
     context = get_base_context(request)
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
-    context['tags1'] = tags()
+    context['labels'] = labels(labelClass)
     return myrender(request, context)
 
 

@@ -27,7 +27,7 @@ def tags():
 @login_required
 def objects_table(request):
     context = get_base_context(request)
-    context['tags1'] = tags()
+    context['labels'] = tags()
     generate_objects_table(request, context, baseClass, tableClass, FormClass)
     return myrender(request, context)
 
