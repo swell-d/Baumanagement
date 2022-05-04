@@ -5,7 +5,7 @@ import bills.views
 import contacts.views
 import contracts.views
 import payments.views
-from .views import views_companies, views_delete, views_projects, \
+from .views import views_companies, views_projects, \
     views_comments, views_companyroles, views_currencies, views_projecttags, \
     views_products, views_productcategories, views_messages
 
@@ -44,8 +44,6 @@ urlpatterns = [
 
     path("comments", views_comments.objects_table, name="comments"),
     path("comment/<int:id>", views_comments.object_table, name="comment_id"),
-
-    path("delete_file/<int:id>", views_delete.delete_file, name="delete_file_id"),
 
     path("messages", views_messages.objects_table, name="messages"),
     path("message/<int:id>", views_messages.object_table, name="message_id"),

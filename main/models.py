@@ -65,7 +65,7 @@ class FileModel(models.Model):
 
     @property
     def files(self):
-        from Baumanagement.models.models_files import File
+        from files.models import File
         return list(filter(None, [get_or_none(File, id=id) for id in self.file_ids]))
 
 

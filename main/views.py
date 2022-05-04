@@ -12,9 +12,9 @@ from django_tables2 import RequestConfig
 from django_tables2.export import TableExport
 
 from Baumanagement.models.models_comments import Comment
-from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
+from files.models import File
 from main.models import get_base_models, add_search_field, get_or_none
 from settings.models import Settings
 from statistic.models import Visits, SearchQueries

@@ -1,10 +1,10 @@
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse, Http404
+from django.http import Http404, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_files import File
 from Baumanagement.models.models_messages import MyMessage
+from files.models import File
 
 
 @login_required
