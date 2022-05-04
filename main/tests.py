@@ -5,7 +5,6 @@ from django.contrib.auth.models import User, Group
 from django.test import TestCase, Client
 
 from APP.urls import get_urls
-from Baumanagement.models.models_products import Product, ProductCategory
 from bank_accounts.models import Account
 from bills.models import Bill
 from comments.models import Comment
@@ -15,6 +14,7 @@ from contracts.models import ContractLabel, Contract
 from files.models import File
 from notifications.models import Notification
 from payments.models import Payment
+from products.models import ProductCategory, Product
 from projects.models import ProjectLabel, Project
 
 

@@ -4,7 +4,7 @@ from django.db.models import TextField
 from django.utils.translation import gettext_lazy as _
 
 from currencies.models import Currency
-from main.models import BaseModel, PriceModel, FileModel
+from main.models import BaseModel, FileModel, PriceModel
 
 
 @with_author
