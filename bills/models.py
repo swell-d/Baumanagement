@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models import F
 from django.utils.translation import gettext_lazy as _
 
+from bills.models_labels import BillLabel
 from contracts.models import Contract
 from main.models import BaseModel, PriceModel, FileModel
 
@@ -13,6 +14,7 @@ class Bill(BaseModel, PriceModel, FileModel):
     date = models.DateField(null=True, blank=True, verbose_name=_('Date'))
     contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
                                  on_delete=models.RESTRICT, related_name='bills')
+    label = models.ManyToManyField(BillLabel, blank=True, verbose_name=_('Labels'), related_name='bills')
 
     class Meta:
         verbose_name = _('Bill')
@@ -32,6 +34,6 @@ class Bill(BaseModel, PriceModel, FileModel):
 
     urls = 'bills'
     url_id = 'bill_id'
-    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
+    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'label', 'files', 'amount_netto', 'vat', 'amount_brutto'
     search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
-    form_fields = 'open', 'contract', 'name', 'date', 'amount_netto_positiv', 'vat'
+    form_fields = 'open', 'contract', 'name', 'date', 'label', 'amount_netto_positiv', 'vat'

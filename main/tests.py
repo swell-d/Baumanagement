@@ -7,6 +7,7 @@ from django.test import TestCase, Client
 from APP.urls import get_urls
 from bank_accounts.models import Account
 from bills.models import Bill
+from bills.models_labels import BillLabel
 from comments.models import Comment
 from companies.models import Company
 from companies.models_labels import CompanyLabel
@@ -57,6 +58,8 @@ class UrlTests(TestCase):
         self.Payment = Payment.objects.create(name='test', contract=self.Contract, amount_netto_positiv=1, vat=1,
                                               date=datetime.now(),
                                               account_from=self.Account, account_to=self.Account)
+
+        self.BillLabel = BillLabel.objects.create(name='test')
         self.Bill = Bill.objects.create(name='test', contract=self.Contract, amount_netto_positiv=1, vat=1,
                                         date=datetime.now())
         self.Comment = Comment.objects.create(name='test')
