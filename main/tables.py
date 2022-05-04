@@ -114,6 +114,11 @@ class MyTable(tables.Table):
         return format_html(f'<a href="{modal if self.object_table else get_link(record)}" class="badge" '
                            f'style="background-color:{record.color};">{value}</a>')
 
+    def render_label(self, record, value):
+        return format_html(
+            " ".join([f'<a href="{reverse(record.url_id, args=[record.id])}" class="badge" style="background-color: '
+                      f'{label.color};">{label}</a>' for label in value.all()]))
+
     def as_values(self, exclude_columns=None):
         if exclude_columns is None:
             exclude_columns = ()
