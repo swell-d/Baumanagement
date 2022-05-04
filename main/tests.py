@@ -6,7 +6,6 @@ from django.test import TestCase, Client
 
 from APP.urls import get_urls
 from Baumanagement.models.models_products import Product, ProductCategory
-from Baumanagement.models.models_projects import Project, ProjectLabel
 from bank_accounts.models import Account
 from bills.models import Bill
 from comments.models import Comment
@@ -16,6 +15,7 @@ from contracts.models import ContractLabel, Contract
 from files.models import File
 from notifications.models import Notification
 from payments.models import Payment
+from projects.models import ProjectLabel, Project
 
 
 class UrlTests(TestCase):

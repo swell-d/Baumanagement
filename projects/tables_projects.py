@@ -3,8 +3,8 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_projects import Project
 from main.tables import Files, SummingColumnInt, MyTable
+from projects.models import Project
 
 
 class ProjectTable(MyTable, Files):

@@ -7,7 +7,6 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.views.views_projects import generate_projects_by_queryset
 from bank_accounts.views import generate_accounts_by_queryset
 from bills.views import company_bills_qs, generate_bills_by_queryset
 from companies.models import Company, CompanyRole
@@ -18,6 +17,7 @@ from contracts.views import company_contracts_qs, generate_contracts_by_queryset
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
     generate_next_objects_table
 from payments.views import company_payments_qs, generate_payments_by_queryset
+from projects.views import generate_projects_by_queryset
 
 baseClass = Company
 tableClass = CompanyTable

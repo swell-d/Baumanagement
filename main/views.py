@@ -11,11 +11,11 @@ from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
 from django_tables2.export import TableExport
 
-from Baumanagement.models.models_projects import Project
 from comments.models import Comment
 from files.models import File
 from main.models import get_base_models, add_search_field, get_or_none
 from notifications.models import Notification
+from projects.models import Project
 from settings.models import Settings
 from statistic.models import Visits, SearchQueries
 

@@ -10,10 +10,10 @@ from django.urls import URLPattern, URLResolver
 from django.urls import include, path
 from django.views.static import serve
 
-from Baumanagement.views import views_projects
+import projects.views
 
 urlpatterns = [
-    path('', views_projects.objects_table, name='index'),
+    path('', projects.views.objects_table, name='index'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('i18n/', include('django.conf.urls.i18n')),

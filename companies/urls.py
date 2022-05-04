@@ -6,7 +6,7 @@ import companies.views
 import contacts.views
 import contracts.views
 import payments.views
-from Baumanagement.views import views_projects
+import projects.views
 from companies import views_companyroles
 
 urlpatterns = [
@@ -18,7 +18,7 @@ urlpatterns = [
     path("company/<int:id>", companies.views.object_table, name="company_id"),
     path("company/<int:id>/accounts", bank_accounts.views.company_accounts, name="company_id_accounts"),
     path("company/<int:id>/contacts", contacts.views.company_contacts, name="company_id_contacts"),
-    path("company/<int:id>/projects", views_projects.company_projects, name="company_id_projects"),
+    path("company/<int:id>/projects", projects.views.company_projects, name="company_id_projects"),
     path("company/<int:id>/contracts", contracts.views.company_contracts, name="company_id_contracts"),
     path("company/<int:id>/payments", payments.views.company_payments, name="company_id_payments"),
     path("company/<int:id>/bills", bills.views.company_bills, name="company_id_bills"),

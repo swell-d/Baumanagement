@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_projects import Project
 from currencies.models import Currency
+from projects.models import Project
 
 
 class Settings(models.Model):

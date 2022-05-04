@@ -6,7 +6,6 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_projects import Project
 from bank_accounts.models import Account
 from bills.views import qs_annotate
 from companies.models import Company
@@ -15,6 +14,7 @@ from main.views import get_base_context, generate_objects_table, myrender, gener
     generate_next_objects_table
 from payments.models import Payment
 from payments.tables import PaymentTable
+from projects.models import Project
 
 baseClass = Payment
 tableClass = PaymentTable

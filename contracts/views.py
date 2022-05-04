@@ -9,7 +9,6 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_projects import Project
 from bills.views import contract_bills_qs, generate_bills_by_queryset
 from companies.models import Company
 from contracts.models import Contract, ContractLabel
@@ -19,6 +18,7 @@ from main.views import get_base_context, generate_objects_table, myrender, gener
     generate_next_objects_table
 from notifications.models import Notification
 from payments.views import contract_payments_qs, generate_payments_by_queryset
+from projects.models import Project
 
 baseClass = Contract
 tableClass = ContractTable
