@@ -13,7 +13,7 @@ from main.views import superuser_required, get_base_context, generate_objects_ta
     generate_next_objects_table
 from payments.views import project_payments_qs, generate_payments_by_queryset
 from projects.models import Project, ProjectLabel
-from projects.tables_projects import ProjectTable
+from projects.tables import ProjectTable
 
 baseClass = Project
 tableClass = ProjectTable
