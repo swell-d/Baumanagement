@@ -3,15 +3,15 @@ from django.urls import path
 import bank_accounts.views
 import bills.views
 import companies.views
-import companies.views_companyroles
+import companies.views_labels
 import contacts.views
 import contracts.views
 import payments.views
 import projects.views
 
 urlpatterns = [
-    path("companyroles", companies.views_companyroles.objects_table, name="companyroles"),
-    path("companyrole/<int:id>", companies.views_companyroles.object_table, name="companyrole_id"),
+    path("companyroles", companies.views_labels.objects_table, name="companyroles"),
+    path("companyrole/<int:id>", companies.views_labels.object_table, name="companyrole_id"),
 
     path("companies", companies.views.objects_table, name="companies"),
     path("companies/<int:id>", companies.views.companies_by_role, name="companies_id"),
