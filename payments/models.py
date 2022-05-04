@@ -6,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from bank_accounts.models import Account
 from contracts.models import Contract
 from main.models import BaseModel, PriceModel, FileModel
+from payments.models_labels import PaymentLabel
 
 
 @with_author
@@ -18,6 +19,7 @@ class Payment(BaseModel, PriceModel, FileModel):
                                      on_delete=models.RESTRICT, related_name='payments_from')
     account_to = models.ForeignKey(Account, null=False, blank=False, verbose_name=_('Top-up account'),
                                    on_delete=models.RESTRICT, related_name='payments_to')
+    label = models.ManyToManyField(PaymentLabel, blank=True, verbose_name=_('Labels'), related_name='payments')
 
     class Meta:
         verbose_name = _('Payment')
@@ -37,6 +39,6 @@ class Payment(BaseModel, PriceModel, FileModel):
 
     urls = 'payments'
     url_id = 'payment_id'
-    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'files', 'amount_netto', 'vat', 'amount_brutto'
+    table_fields = 'created', 'project', 'company', 'contract', 'name', 'date', 'label', 'files', 'amount_netto', 'vat', 'amount_brutto'
     search_fields = 'project', 'company', 'contract__name', 'name', 'amount_netto', 'vat', 'amount_brutto'
-    form_fields = 'open', 'contract', 'name', 'date', 'account_from', 'account_to', 'amount_netto_positiv', 'vat'
+    form_fields = 'open', 'contract', 'name', 'date', 'label', 'account_from', 'account_to', 'amount_netto_positiv', 'vat'

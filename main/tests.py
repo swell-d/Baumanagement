@@ -17,6 +17,7 @@ from contracts.models_labels import ContractLabel
 from files.models import File
 from notifications.models import Notification
 from payments.models import Payment
+from payments.models_labels import PaymentLabel
 from products.models import Product
 from products.models_labels import ProductCategory
 from projects.models import Project
@@ -55,6 +56,7 @@ class UrlTests(TestCase):
         self.Contract.label.add(self.ContractLabel)
         self.Contract.save()
 
+        self.PaymentLabel = PaymentLabel.objects.create(name='test')
         self.Payment = Payment.objects.create(name='test', contract=self.Contract, amount_netto_positiv=1, vat=1,
                                               date=datetime.now(),
                                               account_from=self.Account, account_to=self.Account)
