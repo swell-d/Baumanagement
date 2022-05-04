@@ -11,13 +11,13 @@ from django.utils.translation import gettext_lazy as _
 
 from Baumanagement.models.models_company import Company
 from Baumanagement.models.models_currency import Currency
-from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
 from bills.views import contract_bills_qs, generate_bills_by_queryset
 from contracts.models import Contract, ContractLabel
 from contracts.tables import ContractTable
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
     generate_next_objects_table
+from notifications.models import Notification
 from payments.views import contract_payments_qs, generate_payments_by_queryset
 
 baseClass = Contract
@@ -95,7 +95,7 @@ def disable_children(request, contract):
 
                 verbose_name = bill.verbose_name()
                 link = reverse(bill.url_id, args=[bill.id])
-                MyMessage.message(
+                Notification.message(
                     request, f'{verbose_name} "<a href="{link}">{bill.name}</a>" ' + _("disabled"), 'WARNING'
                 )
 
@@ -106,7 +106,7 @@ def disable_children(request, contract):
 
                 verbose_name = payment.verbose_name()
                 link = reverse(payment.url_id, args=[payment.id])
-                MyMessage.message(
+                Notification.message(
                     request, f'{verbose_name} "<a href="{link}">{payment.name}</a>" ' + _("disabled"), 'WARNING'
                 )
 

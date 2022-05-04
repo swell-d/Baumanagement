@@ -5,11 +5,11 @@ from django.urls import reverse
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
-from Baumanagement.models.models_messages import MyMessage
 from main.tables import MyTable
-from main.views import myrender, generate_objects_table, generate_object_table, get_base_context
+from main.views import get_base_context, generate_objects_table, myrender, generate_object_table
+from notifications.models import Notification
 
-baseClass = MyMessage
+baseClass = Notification
 
 
 class TableClass(MyTable):
@@ -33,7 +33,7 @@ class FormClass(forms.ModelForm):
 @login_required
 def objects_table(request):
     context = get_base_context(request)
-    queryset = MyMessage.objects.filter(author=request.user)
+    queryset = Notification.objects.filter(author=request.user)
     generate_objects_table(request, context, baseClass, TableClass, FormClass, queryset)
     return myrender(request, context)
 

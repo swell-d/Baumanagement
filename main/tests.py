@@ -7,7 +7,6 @@ from django.test import TestCase, Client
 from APP.urls import get_urls
 from Baumanagement.models.models_comments import Comment
 from Baumanagement.models.models_company import CompanyRole, Company
-from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_products import Product, ProductCategory
 from Baumanagement.models.models_projects import Project, ProjectLabel
 from bank_accounts.models import Account
@@ -15,6 +14,7 @@ from bills.models import Bill
 from contacts.models import Contact
 from contracts.models import ContractLabel, Contract
 from files.models import File
+from notifications.models import Notification
 from payments.models import Payment
 
 
@@ -51,7 +51,7 @@ class UrlTests(TestCase):
                                         date=datetime.now())
         self.Comment = Comment.objects.create(name='test')
 
-        self.Message = MyMessage.objects.create(name='test', level=25)
+        self.Message = Notification.objects.create(name='test', level=25)
 
         Path("media").mkdir(parents=True, exist_ok=True)
         with open('media/test.txt', 'w') as file:

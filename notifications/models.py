@@ -9,8 +9,8 @@ from main.models import BaseModel
 
 
 @with_author
-class MyMessage(BaseModel):
-    name = models.TextField(null=False, blank=False, verbose_name=_('Message'))
+class Notification(BaseModel):
+    name = models.TextField(null=False, blank=False, verbose_name=_('Notification'))
     level = models.IntegerField(null=False, blank=False, verbose_name=_('Level'))
 
     BOOTSTRAP_CLASSES = {
@@ -41,7 +41,7 @@ class MyMessage(BaseModel):
 
     @classmethod
     def message(cls, request, error, level='ERROR'):
-        MyMessage.objects.create(author=request.user, name=error, level=DEFAULT_LEVELS.get(level, 40))
+        cls.objects.create(author=request.user, name=error, level=DEFAULT_LEVELS.get(level, 40))
 
         error = format_html(str(error))
         if level == 'DEBUG':
@@ -55,8 +55,8 @@ class MyMessage(BaseModel):
         else:
             messages.error(request, error)
 
-    urls = 'messages'
-    url_id = 'message_id'
+    urls = 'notifications'
+    url_id = 'notification_id'
     table_fields = 'created', 'name', 'level'
     search_fields = 'name', 'level'
     form_fields = 'name', 'level'

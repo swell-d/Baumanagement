@@ -7,7 +7,7 @@ import contracts.views
 import payments.views
 from .views import views_companies, views_projects, \
     views_comments, views_companyroles, views_currencies, views_projecttags, \
-    views_products, views_productcategories, views_messages
+    views_products, views_productcategories
 
 urlpatterns = [
     path("productcategories", views_productcategories.objects_table, name="productcategories"),
@@ -43,9 +43,5 @@ urlpatterns = [
     path("project/<int:id>/bills", bills.views.project_bills, name="project_id_bills"),
 
     path("comments", views_comments.objects_table, name="comments"),
-    path("comment/<int:id>", views_comments.object_table, name="comment_id"),
-
-    path("messages", views_messages.objects_table, name="messages"),
-    path("message/<int:id>", views_messages.object_table, name="message_id"),
-
+    path("comment/<int:id>", views_comments.object_table, name="comment_id")
 ]

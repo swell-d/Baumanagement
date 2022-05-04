@@ -12,10 +12,10 @@ from django_tables2 import RequestConfig
 from django_tables2.export import TableExport
 
 from Baumanagement.models.models_comments import Comment
-from Baumanagement.models.models_messages import MyMessage
 from Baumanagement.models.models_projects import Project
 from files.models import File
 from main.models import get_base_models, add_search_field, get_or_none
+from notifications.models import Notification
 from settings.models import Settings
 from statistic.models import Visits, SearchQueries
 
@@ -62,7 +62,7 @@ def upload_files(request, new_object):
 
         verbose_name = file_instance.verbose_name()
         link = file_instance.file.url
-        MyMessage.message(
+        Notification.message(
             request, f'{verbose_name} "<a href="{link}">{file_instance.name}</a>" ' + _("uploaded"), 'SUCCESS'
         )
 
@@ -150,14 +150,14 @@ def create_new_object_or_get_error(request, cls):
         formset.save_m2m()
         verbose_name = new_object.verbose_name()
         link = reverse(new_object.url_id, args=[new_object.id])
-        MyMessage.message(
+        Notification.message(
             request, f'{verbose_name} "<a href="{link}">{new_object.name}</a>" ' + _("created"), 'SUCCESS'
         )
         upload_files(request, new_object)
         add_comment_to_object(request, new_object)
         return None
     else:
-        MyMessage.message(request, formset.errors, 'ERROR')
+        Notification.message(request, formset.errors, 'ERROR')
         return formset
 
 
@@ -182,12 +182,12 @@ def edit_object_form(request, context, cls, object):
                 formset.save_m2m()
                 verbose_name = object.verbose_name()
                 link = reverse(object.url_id, args=[object.id])
-                MyMessage.message(
+                Notification.message(
                     request, f'{verbose_name} "<a href="{link}">{object.name}</a>" ' + _("changed"), 'SUCCESS'
                 )
                 upload_files(request, object)
             else:
-                MyMessage.message(request, formset.errors, 'ERROR')
+                Notification.message(request, formset.errors, 'ERROR')
             error_form = formset
     context['form'] = error_form or context.get('form') or cls(instance=object)
     if 'FileModel' in str(inspect.getmro(object.__class__)):
