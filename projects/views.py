@@ -12,7 +12,8 @@ from contracts.views import project_contracts_qs, generate_contracts_by_queryset
 from main.views import superuser_required, get_base_context, generate_objects_table, myrender, generate_object_table, \
     generate_next_objects_table
 from payments.views import project_payments_qs, generate_payments_by_queryset
-from projects.models import Project, ProjectLabel
+from projects.models import Project
+from projects.models_labels import ProjectLabel
 from projects.tables import ProjectTable
 
 baseClass = Project

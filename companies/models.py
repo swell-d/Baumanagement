@@ -2,31 +2,9 @@ from author.decorators import with_author
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
+from companies.models_labels import CompanyRole
 from currencies.models import Currency
 from main.models import BaseModel, AddressModel, FileModel
-
-
-@with_author
-class CompanyRole(BaseModel):
-    name = models.CharField(max_length=256, null=False, blank=False, verbose_name=_('Role'), unique=True)
-
-    class Meta:
-        verbose_name = _('Role')
-        verbose_name_plural = _('Roles')
-
-    @staticmethod
-    def extra_fields(qs):
-        return qs.all()
-
-    @property
-    def count(self):
-        return self.companies.count()
-
-    urls = 'companyroles'
-    url_id = 'companyrole_id'
-    table_fields = 'name',
-    search_fields = 'name',
-    form_fields = 'name',
 
 
 @with_author

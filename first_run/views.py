@@ -3,11 +3,14 @@ from django.shortcuts import render, redirect
 
 from bank_accounts.models import Account
 from bills.models import Bill
-from companies.models import CompanyRole, Company
-from contracts.models import ContractLabel, Contract
+from companies.models import Company
+from companies.models_labels import CompanyRole
+from contracts.models import Contract
+from contracts.models_labels import ContractLabel
 from currencies.models import Currency
 from payments.models import Payment
-from projects.models import ProjectLabel, Project
+from projects.models import Project
+from projects.models_labels import ProjectLabel
 
 
 def first_run(request):

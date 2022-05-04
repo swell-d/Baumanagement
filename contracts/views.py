@@ -11,7 +11,8 @@ from django.utils.translation import gettext_lazy as _
 
 from bills.views import contract_bills_qs, generate_bills_by_queryset
 from companies.models import Company
-from contracts.models import Contract, ContractLabel
+from contracts.models import Contract
+from contracts.models_labels import ContractLabel
 from contracts.tables import ContractTable
 from currencies.models import Currency
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \

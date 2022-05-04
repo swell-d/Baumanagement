@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from main.tables import MyTable
 from main.views import myrender, generate_objects_table, generate_object_table, get_base_context
-from products.models import ProductCategory
+from products.models_labels import ProductCategory
 
 baseClass = ProductCategory
 

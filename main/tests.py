@@ -8,14 +8,18 @@ from APP.urls import get_urls
 from bank_accounts.models import Account
 from bills.models import Bill
 from comments.models import Comment
-from companies.models import CompanyRole, Company
+from companies.models import Company
+from companies.models_labels import CompanyRole
 from contacts.models import Contact
-from contracts.models import ContractLabel, Contract
+from contracts.models import Contract
+from contracts.models_labels import ContractLabel
 from files.models import File
 from notifications.models import Notification
 from payments.models import Payment
-from products.models import ProductCategory, Product
-from projects.models import ProjectLabel, Project
+from products.models import Product
+from products.models_labels import ProductCategory
+from projects.models import Project
+from projects.models_labels import ProjectLabel
 
 
 class UrlTests(TestCase):
