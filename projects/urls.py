@@ -4,11 +4,11 @@ import bills.views
 import contracts.views
 import payments.views
 import projects.views
-import projects.views_projecttags
+import projects.views_labels
 
 urlpatterns = [
-    path("projectlabels", projects.views_projecttags.objects_table, name="projectlabels"),
-    path("projectlabel/<int:id>", projects.views_projecttags.object_table, name="projectlabel_id"),
+    path("projectlabels", projects.views_labels.objects_table, name="projectlabels"),
+    path("projectlabel/<int:id>", projects.views_labels.object_table, name="projectlabel_id"),
 
     path("projects", projects.views.objects_table, name="projects"),
     path("project/<int:id>", projects.views.object_table, name="project_id"),
