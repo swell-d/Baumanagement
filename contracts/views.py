@@ -3,8 +3,9 @@ from decimal import Decimal
 from django import forms
 from django.contrib.auth.decorators import login_required
 from django.db.models import F, Q, Case, When
+from django.forms import inlineformset_factory
 from django.http import Http404
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
@@ -12,6 +13,7 @@ from bills.views import contract_bills_qs, generate_bills_by_queryset
 from companies.models import Company
 from contracts.models import Contract
 from contracts.models_labels import ContractLabel
+from contracts.models_products import ContractProduct
 from contracts.tables import ContractTable
 from currencies.models import Currency
 from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
@@ -23,6 +25,7 @@ from projects.models import Project
 baseClass = Contract
 tableClass = ContractTable
 labelClass = ContractLabel
+productsClass = ContractProduct
 
 
 class FormClass(forms.ModelForm):
@@ -74,6 +77,16 @@ def object_table(request, id):
 
     payments = contract_payments_qs(contract)
     generate_payments_by_queryset(request, context, payments)
+
+    ProductsForm = inlineformset_factory(baseClass, productsClass, fields=('product', 'count'))
+
+    if request.POST.get('editProducts'):
+        formset = ProductsForm(request.POST, request.FILES, instance=contract)
+        if formset.is_valid():
+            formset.save()
+            return redirect(request.path)
+    else:
+        context['productsform'] = ProductsForm(instance=contract)
 
     return myrender(request, context)
 
