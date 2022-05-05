@@ -7,7 +7,6 @@ from companies.models import Company
 from contracts.models_labels import ContractLabel
 from currencies.models import Currency
 from main.models import BaseModel, PriceModel, FileModel
-from products.models import Product
 from projects.models import Project
 
 
@@ -52,12 +51,3 @@ class Contract(BaseModel, PriceModel, FileModel):
     table_fields = 'created', 'project', 'company', 'name', 'date', 'label', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
     search_fields = 'project__name', 'company__name', 'type', 'name', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
     form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'label', 'currency', 'amount_netto_positiv', 'vat'
-
-
-class ContractProduct(PriceModel):
-    contract = models.ForeignKey(Contract, null=False, blank=False, verbose_name=_('Contract'),
-                                 on_delete=models.RESTRICT, related_name='products')
-    product = models.ForeignKey(Product, null=False, blank=False, verbose_name=_('Product'),
-                                on_delete=models.RESTRICT)
-    count = models.FloatField(null=False, blank=False, verbose_name=_('Count'), default=1.0)
-    use_product_price = models.BooleanField(default=True)
