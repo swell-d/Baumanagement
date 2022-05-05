@@ -1,0 +1,24 @@
+{% load i18n %}
+
+<div class="row">
+
+    {% include 'tables/table_header/breadcrumbs.html' %}
+
+    <div class="col d-flex align-items-center justify-content-end">
+        {% if form %}{% include "tables/table_header/form.html" %}{% endif %}
+    </div>
+
+    <div class="col d-flex align-items-center justify-content-end">
+
+        {% include 'tables/table_header/project_select.html' %}
+
+        {% include 'tables/table_header/date_filters.html' %}
+
+        {% include 'tables/table_header/search_field.html' %}
+
+        <input type="hidden" id="sort" name="sort">
+        <input type="hidden" id="label" name="label">
+
+    </div>
+
+</div>

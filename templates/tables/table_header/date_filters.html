@@ -1,0 +1,14 @@
+{% if date_fields %}
+    <input class="form-control m-2" type="date" id="dateFrom" name="dateFrom" onchange="mainTableReload()"
+            {% if settings.date_from %} value="{{ settings.date_from|date:"Y-m-d" }}"
+           style="background-color: #FFFCC8;"{% endif %}>—
+    <input class="form-control m-2" type="date" id="dateTo" name="dateTo" onchange="mainTableReload()"
+            {% if settings.date_to %} value="{{ settings.date_to|date:"Y-m-d" }}"
+           style="background-color: #FFFCC8;"{% endif %}>
+    <script>
+        document.getElementById("dateFrom").addEventListener('focusin', setInputBackground);
+        document.getElementById("dateFrom").addEventListener('focusout', setInputBackground);
+        document.getElementById("dateTo").addEventListener('focusin', setInputBackground);
+        document.getElementById("dateTo").addEventListener('focusout', setInputBackground);
+    </script>
+{% endif %}

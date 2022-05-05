@@ -1,0 +1,10 @@
+{% load i18n %}
+
+{% if search_field %}
+    <input class="form-control m-2" type="text" id="search" name="search" oninput="mainTableReload()"
+           placeholder="{% blocktrans %}Search{% endblocktrans %}">
+    <script>
+        document.getElementById("search").addEventListener('focusin', setInputBackground);
+        document.getElementById("search").addEventListener('focusout', setInputBackground);
+    </script>
+{% endif %}

@@ -8,7 +8,13 @@
 
     {% include 'tree/tree.html' %}
 
-    {% include 'tables/first_table.html' %}
+    {% include 'tables/table_header.html' %}
+
+    {% include 'tables/labels.html' %}
+
+    <div class="row" id="main-table">
+        {% include 'tables/maintable.html' %}
+    </div>
 
     {% include 'tables/tabs.html' %}
 

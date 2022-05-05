@@ -1,0 +1,18 @@
+{% load i18n %}
+
+{% if 'contracts' in request.path or 'bills' in request.path or 'payments' in request.path %}
+    <select name="project" id="project" class="select form-select" oninput="mainTableReload()"
+            {% if settings.active_project %} style="background-color: #FFFCC8;"{% endif %}>
+        <option value="">{% translate "All" %} {% translate "Projects" %}</option>
+        {% for project in projects %}
+            <option value="{{ project.id }}"{% if project == settings.active_project %}
+                    selected="selected"{% endif %}>
+                {{ project.name }}
+            </option>
+        {% endfor %}
+    </select>
+    <script>
+        document.getElementById("project").addEventListener('focusin', setInputBackground);
+        document.getElementById("project").addEventListener('focusout', setInputBackground);
+    </script>
+{% endif %}
