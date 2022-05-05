@@ -192,7 +192,7 @@ def get_link(record):
 
 def format_amount(value, link, symbol, arrow=False):
     return format_html(
-        f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f} {symbol} {'&#8694;' if arrow else ''}</a> ️''')
+        f'''<a href="{link}"{' class="text-danger"' if value < 0 else ''}>{value:.2f}&nbsp;{symbol}{'&nbsp;&#8694;' if arrow else ''}</a> ️''')
 
 
 def base_render(tbl, record, value):
