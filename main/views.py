@@ -37,6 +37,9 @@ class CommentFormClass(ModelForm):
 
 
 def myrender(request, context):
+    if request.POST:
+        return redirect(request.path)
+
     export_format = request.GET.get("_export", None)
     if export_format and TableExport.is_valid_format(export_format):
         exporter = TableExport(export_format, context['table1'])
@@ -176,9 +179,7 @@ def new_object_form(request, context, cls):
 def edit_object_form(request, context, cls, object):
     error_form = None
     if request.method == 'POST':
-        if request.POST.get('createCopy'):
-            error_form = create_new_object_or_get_error(request, cls)
-        else:
+        if request.POST.get('mainObject'):
             formset = cls(request.POST, request.FILES, instance=object)
             if formset.is_valid():
                 object = formset.save(commit=False)
@@ -193,6 +194,10 @@ def edit_object_form(request, context, cls, object):
             else:
                 Notification.message(request, formset.errors, 'ERROR')
             error_form = formset
+        elif request.POST.get('createCopy'):
+            error_form = create_new_object_or_get_error(request, cls)
+        elif request.POST.get('editProducts'):
+            pass
     context['form'] = error_form or context.get('form') or cls(instance=object)
     if 'FileModel' in str(inspect.getmro(object.__class__)):
         context['files_form'] = object.files
