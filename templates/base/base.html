@@ -22,13 +22,17 @@
 
 <body>
 
-{% include "base/navbar.html" %}
+<header>
+    {% include "base/navbar.html" %}
+</header>
 
 <div class="container-fluid">
     {% block content %}{% endblock %}
 </div>
 
-{% include "base/footer.html" %}
+<footer>
+    {% include "base/footer.html" %}
+</footer>
 
 </body>
 </html>

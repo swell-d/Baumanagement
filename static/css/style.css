@@ -1,3 +1,8 @@
+body {
+    padding-top: 74px;
+    padding-bottom: 56px;
+}
+
 table.table a, ol.breadcrumb a, ul.treeCSS a {
     text-decoration: none;
     color: #212529;

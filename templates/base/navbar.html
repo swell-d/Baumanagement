@@ -2,7 +2,7 @@
 {% load static %}
 {% load auth_extras %}
 
-<nav class="navbar navbar-expand-md navbar-light bg-light">
+<nav class="navbar fixed-top navbar-expand-md navbar-light bg-light">
     <div class="container-fluid">
         <a class="navbar-brand" href="{% url 'index' %}">
             <img class="me-2" src="{% static 'favicon-48x48.png' %}" alt="Baumanagement" width="48" height="48"/>
@@ -58,7 +58,9 @@
                     </a>
                     <ul class="dropdown-menu me-10 dropdown-menu-right" aria-labelledby="userDropdown">
                         <li>
-                            <a class="dropdown-item" href="{% url 'notifications' %}">{% translate "Notifications" %}</a>
+                            <a class="dropdown-item" href="{% url 'notifications' %}">
+                                {% translate "Notifications" %}
+                            </a>
                         </li>
                         <li>
                             <hr class="dropdown-divider">
