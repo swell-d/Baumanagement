@@ -11,3 +11,22 @@
         </div>
     </div>
 {% endif %}
+
+{% if categories %}
+    <div class="row labels align-items-center">
+        <div class="col">
+            <select class="form-select form-select-sm mt-2 mb-2" aria-label=".form-select-sm example"
+                    oninput="mainTableReload()" id="product_category">
+                <option value="" selected>{% trans 'All products' %}</option>
+                {% for category in categories.objects %}
+                    <option value="{{ category.id }}">{{ category.tree_view|safe }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col">
+            <span>
+                &#9881;<a href="{% url categories.urls %}">{% trans 'Manage categories' %}</a>
+            </span>
+        </div>
+    </div>
+{% endif %}

@@ -88,6 +88,16 @@ class Label(models.Model):
         return qs.order_by('path')
 
     @classmethod
+    def check_parents(cls, obj):
+        if obj.parent:
+            return 1 + cls.check_parent(obj.parent)
+        return 1
+
+    def tree_view(self):
+        deep = self.check_parents(self.parent) if self.parent else 0
+        return '&emsp;' * deep + self.path
+
+    @classmethod
     def root_labels(cls):
         return cls.objects.filter(parent__isnull=True).order_by('name')
 

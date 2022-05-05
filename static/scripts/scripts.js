@@ -14,6 +14,9 @@ function mainTableReload() {
     if ((document.getElementById("label") || {}).value) {
         urlSearchParams.set('label', document.getElementById("label").value);
     }
+    if ((document.getElementById("product_category") || {}).value) {
+        urlSearchParams.set('label', document.getElementById("product_category").value);
+    }
     if ((document.getElementById("project") || {}).value) {
         urlSearchParams.set('project', document.getElementById("project").value);
     }

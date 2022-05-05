@@ -202,7 +202,10 @@ def edit_object_form(request, context, cls, object):
 def label_filter(request, queryset):
     label = request.GET.get('label')
     if label:
-        queryset = queryset.filter(label__id=int(label))
+        if reverse('products') not in request.path:
+            return queryset.filter(label__id=int(label))
+        else:
+            return queryset.filter(categories__id=int(label))
     return queryset
 
 
