@@ -3,7 +3,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
-from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 
 from bills.views import project_bills_qs, generate_bills_by_queryset
@@ -29,15 +28,6 @@ class FormClass(forms.ModelForm):
     class Meta:
         model = baseClass
         fields = baseClass.form_fields
-
-
-def tags():
-    html = f'<a href="" onclick="mainTableLabel(&quot;&quot;);return false;">{_("All")}</a>, '
-    html += ', '.join(
-        f'#<a href="" onclick="mainTableLabel(&quot;{tag.id}&quot;);return false;">{str(tag)}</a>'
-        for tag in ProjectLabel.objects.order_by('path') if tag.count > 0)
-    html += ' &#9881;<a href="' + reverse('projectlabels') + '">' + _('Manage labels') + '</a>'
-    return format_html(html)
 
 
 @superuser_required
