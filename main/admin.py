@@ -1,9 +1,10 @@
 from django.apps import apps
 from django.contrib import admin
 
-models = apps.get_models()
+from contracts.models_products import ContractProduct
 
-for cls in models:
+
+for cls in apps.get_models():
     try:
         admin.site.register(cls)
     except admin.sites.AlreadyRegistered:
