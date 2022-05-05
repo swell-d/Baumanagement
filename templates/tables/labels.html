@@ -1,32 +1,34 @@
 {% load i18n %}
 
 {% if labels %}
-    <div class="row labels">
-        <div class="col">
-            <a href="" onclick="mainTableLabel('');return false;">{% trans 'All' %}</a>
-            {% for label in labels.objects %}
-                #<a href="" onclick="mainTableLabel({{label.id}});return false;">{{label.path}}</a>
-            {% endfor %}
-            &#9881;<a href="{% url labels.urls %}">{% trans 'Manage labels' %}</a>
-        </div>
+<div class="row labels">
+    <div class="col">
+        <a href="" onclick="mainTableLabel('');return false;">{% trans 'All' %}</a>
+        {% for label in labels.objects %}
+        &emsp;#<a href="" onclick="mainTableLabel({{label.id}});return false;">{{label.path}}</a>
+        {% endfor %}
+        &emsp;&#9881;<a href="{% url labels.urls %}">{% trans 'Manage labels' %}</a>
     </div>
+</div>
 {% endif %}
 
 {% if categories %}
-    <div class="row labels align-items-center">
-        <div class="col">
-            <select class="form-select form-select-sm mt-2 mb-2" aria-label=".form-select-sm example"
-                    oninput="mainTableReload()" id="product_category">
-                <option value="" selected>{% trans 'All products' %}</option>
-                {% for category in categories.objects %}
-                    <option value="{{ category.id }}">{{ category.tree_view|safe }}</option>
-                {% endfor %}
-            </select>
-        </div>
-        <div class="col">
-            <span>
-                &#9881;<a href="{% url categories.urls %}">{% trans 'Manage categories' %}</a>
-            </span>
-        </div>
+<div class="row labels align-items-center">
+    <div class="col-auto">
+        <select class="form-select form-select-sm mt-2 mb-2" aria-label=".form-select-sm example"
+                oninput="mainTableReload()" id="product_category">
+            <option value="" selected>{% trans 'All products' %}</option>
+            {% for category in categories.objects %}
+            <option value="{{ category.id }}">{{ category.tree_view|safe }}</option>
+            {% endfor %}
+        </select>
     </div>
+    <div class="col-auto">
+        &#9881;<a href="{% url categories.urls %}">{% trans 'Manage categories' %}</a>
+    </div>
+</div>
+<script>
+        document.getElementById("product_category").addEventListener('focusin', setInputBackground);
+        document.getElementById("product_category").addEventListener('focusout', setInputBackground);
+</script>
 {% endif %}
