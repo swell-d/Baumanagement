@@ -1,7 +1,13 @@
+{% load i18n %}
+
 {% if labels %}
-    <div class="row tags">
+    <div class="row labels">
         <div class="col">
-            {{ labels }}
+            <a href="" onclick="mainTableLabel('');return false;">{% trans 'All' %}</a>
+            {% for label in labels.objects %}
+                #<a href="" onclick="mainTableLabel({{label.id}});return false;">{{label.path}}</a>
+            {% endfor %}
+            &#9881;<a href="{% url labels.urls %}">{% trans 'Manage labels' %}</a>
         </div>
     </div>
 {% endif %}
