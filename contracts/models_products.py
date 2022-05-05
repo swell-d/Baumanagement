@@ -14,5 +14,9 @@ class ContractProduct(PriceModel):
     count = models.FloatField(null=False, blank=False, verbose_name=_('Count'), default=1.0)
     use_product_price = models.BooleanField(default=True)
 
+    class Meta:
+        verbose_name = _('Product')
+        verbose_name_plural = _('Products')
+
     def __str__(self):
         return f'{self.contract.name} :: {self.product.name}'

@@ -1,6 +1,10 @@
+from django.apps import apps
 from django.contrib import admin
 
-from main.models import BaseModel
+models = apps.get_models()
 
-for cls in BaseModel.__subclasses__():
-    admin.site.register(cls)
+for cls in models:
+    try:
+        admin.site.register(cls)
+    except admin.sites.AlreadyRegistered:
+        pass
