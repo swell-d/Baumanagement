@@ -90,7 +90,7 @@ class Label(models.Model):
     @classmethod
     def check_parents(cls, obj):
         if obj.parent:
-            return 1 + cls.check_parent(obj.parent)
+            return 1 + cls.check_parents(obj.parent)
         return 1
 
     def tree_view(self):
