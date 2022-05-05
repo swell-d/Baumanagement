@@ -31,6 +31,9 @@ class MyTable(tables.Table):
         attrs = {'class': 'table table-hover', "thead": {"class": "table-secondary"}}  # table-sm
         row_attrs = {"class": lambda record: "text-muted" if not record.open else ""}
 
+    def render_id(self, record, value):
+        return base_render(self, record, value)
+
     def render_created(self, record, value):
         dtf = self.settings.datetime_format if self.settings else "%d.%m.%Y %H:%M"
         df = self.settings.date_format if self.settings else "%d.%m.%y"
