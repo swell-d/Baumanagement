@@ -41,7 +41,7 @@
                     </tr>
                 {% endfor %}
                 {% with productsform.empty_form as line %}
-                    <tr id="products_form-empty_row">
+                    <tr id="products_form-empty_row" class="collapse">
                         <th>{{ line.product }}</th>
                         <th>{{ line.count }}</th>
                         <th>{{ line.use_product_price }}</th>
