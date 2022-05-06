@@ -48,6 +48,6 @@ class Contract(BaseModel, PriceModel, FileModel):
 
     urls = 'contracts'
     url_id = 'contract_id'
-    table_fields = 'created', 'project', 'company', 'name', 'date', 'label', 'files', 'type', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
-    search_fields = 'project__name', 'company__name', 'type', 'name', 'amount_netto', 'vat', 'amount_brutto', 'bills_amount', 'payments_amount'
-    form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'label', 'currency', 'amount_netto_positiv', 'vat'
+    table_fields = 'created', 'project', 'company', 'name', 'date', 'label', 'files', 'type', 'amount_netto', 'amount_brutto', 'bills_amount', 'payments_amount'
+    search_fields = 'project__name', 'company__name', 'name', 'type', 'amount_netto', 'amount_brutto', 'bills_amount', 'payments_amount'
+    form_fields = 'open', 'project', 'company', 'type', 'name', 'date', 'label', 'currency'
