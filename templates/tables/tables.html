@@ -17,22 +17,7 @@
         {% include 'tables/maintable.html' %}
     </div>
 
-    {% if productsform %}
-        <div class="row">
-            <form method="post">
-                {% csrf_token %}
-                {{ productsform.management_form }}
-                {% for form in productsform %}
-                    <div class="mb-1">
-                        {{ form }}
-                    </div>
-                {% endfor %}
-                <button type="submit" class="btn btn-success mt-2 mb-3" name="editProducts" value="editProducts">
-                    {% translate "Save" %}
-                </button>
-            </form>
-        </div>
-    {% endif %}
+    {% include 'tables/productsform.html' %}
 
     {% include 'tables/tabs.html' %}
 

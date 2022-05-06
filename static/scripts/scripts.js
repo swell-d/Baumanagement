@@ -63,3 +63,8 @@ function openTab(evt, cityName) {
 function setInputBackground() {
     this.style.backgroundColor = !!this.value ? "#FFFCC8" : "white";
 }
+
+function deleteProduct(row) {
+    document.getElementById("id_products-" + row + "-DELETE").value = "on";
+    document.getElementById("products_form_button").click();
+}

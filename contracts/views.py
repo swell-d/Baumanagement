@@ -86,7 +86,7 @@ def object_table(request, id):
     payments = contract_payments_qs(contract)
     generate_payments_by_queryset(request, context, payments)
 
-    ProductsForm = inlineformset_factory(baseClass, productsClass, fields=(
+    ProductsForm = inlineformset_factory(baseClass, productsClass, extra=1, fields=(
         'product', 'count', 'use_product_price', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'))
 
     if request.POST.get('editProducts'):
@@ -111,6 +111,7 @@ def object_table(request, id):
             return redirect(request.path)
     else:
         context['productsform'] = ProductsForm(instance=contract)
+        # context['products'] = contract.products.all()
 
     return myrender(request, context)
 

@@ -1,0 +1,6 @@
+{% load filters %}
+
+<input type="hidden" name="products-{{ forloop.counter0 }}-product" id="id_products-{{ forloop.counter0 }}-product"
+       value="{% if forloop.counter0 < products.count %}{% with products|list_index:forloop.counter0 as product %}{{ product.product.id }}{% endwith %}{% endif %}">
+<input type="text" name="products-{{ forloop.counter0 }}-product_name" id="id_products-{{ forloop.counter0 }}-product_name"
+       value="{% if forloop.counter0 < products.count %}{% with products|list_index:forloop.counter0 as product %}{{ product.product.name }}{% endwith %}{% endif %}">
