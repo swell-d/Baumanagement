@@ -1,7 +1,8 @@
 {% load i18n %}
 {% load crispy_forms_tags %}
 
-<button type="button" class="btn btn-secondary m-2" data-bs-toggle="modal" data-bs-target="#ModalForm">
+<button type="button" class="btn btn-secondary m-2" data-bs-toggle="modal" data-bs-target="#ModalForm"
+        id="main_form_button">
     {% if "New" in buttons %}{% translate "New" %}{% endif %}{% if "Edit" in buttons %}{% translate "Edit" %}{% endif %}
 </button>
 
@@ -90,3 +91,9 @@
         </div>
     </div>
 </div>
+
+{% if form.errors %}
+    <script>
+        document.getElementById("main_form_button").click();
+    </script>
+{% endif %}
