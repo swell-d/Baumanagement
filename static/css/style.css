@@ -185,3 +185,6 @@ ul.errorlist {
 #products_form input {
     text-align: center;
 }
+#products_form-empty_row {
+    visibility: collapse;
+}

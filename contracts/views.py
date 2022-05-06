@@ -101,7 +101,7 @@ def object_table(request, id):
     #         )
     #
     # ProductsForm = inlineformset_factory(baseClass, productsClass, form=Form, extra=1)
-    ProductsForm = inlineformset_factory(baseClass, productsClass, extra=1, fields=(
+    ProductsForm = inlineformset_factory(baseClass, productsClass, extra=0, fields=(
         'product', 'count', 'use_product_price', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'))
 
     if request.POST.get('editProducts'):
