@@ -86,6 +86,21 @@ def object_table(request, id):
     payments = contract_payments_qs(contract)
     generate_payments_by_queryset(request, context, payments)
 
+    # class Form(forms.ModelForm):
+    #     product = forms.CharField(widget=forms.TextInput(attrs={'class': 'text-center'}))
+    #     count = forms.FloatField(widget=forms.TextInput(attrs={'class': 'text-center'}))
+    #     use_product_price = forms.BooleanField(widget=forms.TextInput(attrs={'class': 'text-center'}))
+    #     amount_netto_positiv = forms.DecimalField(widget=forms.TextInput(attrs={'class': 'text-center'}))
+    #     vat = forms.FloatField(widget=forms.TextInput(attrs={'class': 'text-center'}))
+    #     amount_brutto_positiv = forms.DecimalField(widget=forms.TextInput(attrs={'class': 'text-center'}))
+    #
+    #     class Meta:
+    #         model = productsClass
+    #         fields = (
+    #             'product', 'count', 'use_product_price', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'
+    #         )
+    #
+    # ProductsForm = inlineformset_factory(baseClass, productsClass, form=Form, extra=1)
     ProductsForm = inlineformset_factory(baseClass, productsClass, extra=1, fields=(
         'product', 'count', 'use_product_price', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'))
 

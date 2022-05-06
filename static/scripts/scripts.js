@@ -65,6 +65,7 @@ function setInputBackground() {
 }
 
 function deleteProduct(row) {
+    document.getElementById("row-" + row).classList.add("table-danger");
+    document.getElementById("id_products-" + row +"-delete-button").style.visibility = "hidden";
     document.getElementById("id_products-" + row + "-DELETE").value = "on";
-    document.getElementById("products_form_button").click();
 }
