@@ -180,3 +180,8 @@ ul.errorlist {
   border-style: solid;
   border-color: transparent transparent gray transparent;
 }
+
+/* products_form */
+#products_form input {
+    text-align: center;
+}

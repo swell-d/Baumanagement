@@ -29,10 +29,12 @@
                         <th>{{ line.vat }}</th>
                         <th>{{ line.amount_brutto_positiv }}</th>
                         <th>
+                            {% if forloop.counter < productsform|length %}
                             <input type="hidden" name="products-{{ forloop.counter0 }}-DELETE"
                                    id="id_products-{{ forloop.counter0 }}-DELETE">
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
                                         onclick="deleteProduct({{ forloop.counter0 }});"></button>
+                            {% endif %}
                         </th>
                     </tr>
                     {% endfor %}
