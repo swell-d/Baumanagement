@@ -8,3 +8,8 @@ register = template.Library()
 def is_admin(user):
     group = Group.objects.get_or_create(name='admins')[0]
     return group in user.groups.all()
+
+
+@register.filter(name='list_index')
+def list_index(indexable, i):
+    return indexable[i]
