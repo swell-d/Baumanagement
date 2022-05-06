@@ -20,6 +20,7 @@ from main.views import get_base_context, generate_objects_table, myrender, gener
     generate_next_objects_table, labels
 from notifications.models import Notification
 from payments.views import contract_payments_qs, generate_payments_by_queryset
+from products.models import Product
 from projects.models import Project
 
 baseClass = Contract
@@ -48,6 +49,13 @@ def objects_table(request):
     context['labels'] = labels(labelClass)
     queryset = qs_annotate(baseClass.objects)
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
+
+    if request.POST.get('mainObject'):  # ToDo refactor
+        contract = baseClass.objects.last()
+        ContractProduct.objects.create(product=Product.objects.first(), contract=contract,
+                                       use_product_price=False)
+        redirect(reverse(baseClass.url_id, args=[contract.id]))
+
     return myrender(request, context)
 
 
@@ -78,12 +86,27 @@ def object_table(request, id):
     payments = contract_payments_qs(contract)
     generate_payments_by_queryset(request, context, payments)
 
-    ProductsForm = inlineformset_factory(baseClass, productsClass, fields=('product', 'count'))
+    ProductsForm = inlineformset_factory(baseClass, productsClass, fields=(
+        'product', 'count', 'use_product_price', 'amount_netto_positiv', 'vat', 'amount_brutto_positiv'))
 
     if request.POST.get('editProducts'):
         formset = ProductsForm(request.POST, request.FILES, instance=contract)
         if formset.is_valid():
             formset.save()
+
+            amount_netto_sum = Decimal(0)
+            amount_brutto_sum = Decimal(0)
+            for product in contract.products.all():
+                if product.use_product_price:
+                    amount_netto_sum += Decimal(float(product.product.amount_netto_positiv) * product.count)
+                    amount_brutto_sum += Decimal(float(product.product.amount_brutto_positiv) * product.count)
+                else:
+                    amount_netto_sum += Decimal(float(product.amount_netto_positiv) * product.count)
+                    amount_brutto_sum += Decimal(float(product.amount_brutto_positiv) * product.count)
+            contract.amount_netto_positiv = amount_netto_sum
+            contract.amount_brutto_positiv = amount_brutto_sum
+            contract.save_count_vat()
+
             return redirect(request.path)
     else:
         context['productsform'] = ProductsForm(instance=contract)
