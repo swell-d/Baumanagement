@@ -98,11 +98,12 @@ def object_table(request, id):
             amount_brutto_sum = Decimal(0)
             for product in contract.products.all():
                 if product.use_product_price:
-                    amount_netto_sum += Decimal(float(product.product.amount_netto_positiv) * product.count)
-                    amount_brutto_sum += Decimal(float(product.product.amount_brutto_positiv) * product.count)
-                else:
-                    amount_netto_sum += Decimal(float(product.amount_netto_positiv) * product.count)
-                    amount_brutto_sum += Decimal(float(product.amount_brutto_positiv) * product.count)
+                    product.amount_netto_positiv = product.product.amount_netto_positiv
+                    product.vat = product.product.vat
+                    product.amount_brutto_positiv = product.product.amount_brutto_positiv
+                    product.save()
+                amount_netto_sum += Decimal(float(product.amount_netto_positiv) * product.count)
+                amount_brutto_sum += Decimal(float(product.amount_brutto_positiv) * product.count)
             contract.amount_netto_positiv = amount_netto_sum
             contract.amount_brutto_positiv = amount_brutto_sum
             contract.save_count_vat()
