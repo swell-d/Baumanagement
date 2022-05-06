@@ -61,9 +61,7 @@ class PriceModel(models.Model):
         elif self.amount_netto_positiv and not self.vat and self.amount_brutto_positiv:
             self.save_count_vat(*args, **kwargs)
         else:
-            if Decimal(float(self.amount_netto_positiv) * (100 + self.vat) / 100) != self.amount_brutto_positiv:
-                raise ValueError  # ToDo form validation
-            super().save(*args, **kwargs)
+            self.save_count_brutto(*args, **kwargs)  # ToDo form validation
 
     def save_count_netto(self, *args, **kwargs):
         self.amount_netto_positiv = Decimal(float(self.amount_brutto_positiv) * 100 / (100 + self.vat))

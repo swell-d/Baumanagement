@@ -1,17 +1,17 @@
 {% load i18n %}
+{% load static %}
 
 {% if productsform %}
 <div class="row">
     <form method="post" id="products_form">
         {% csrf_token %}
         {{ productsform.management_form }}
-        {{ productsform.non_form_errors }}
         <table class="table table-hover">
             <thead class="table-secondary">
                 <tr>
                     <th scope="col">{% trans 'Product' %}</th>
                     <th scope="col">{% trans 'Count' %}</th>
-                    <th scope="col">{% trans 'Use price' %}</th>
+                    <th scope="col">{% trans 'Use pricelist' %}</th>
                     <th scope="col">{% trans 'Netto price' %}</th>
                     <th scope="col">{% trans 'VAT' %}</th>
                     <th scope="col">{% trans 'Brutto price' %}</th>
@@ -19,16 +19,19 @@
                 </tr>
             </thead>
             <tbody id="products_form-tbody">
-                {% for line in productsform %}
-                    {{ line.id }}
+                {% for form in productsform %}
+                    {{ form.id }}
                     <tr id="row-{{ forloop.counter0 }}">
-                        <th>{{ line.product }}</th>
-                        <th>{{ line.count }}</th>
-                        <th>{{ line.use_product_price }}</th>
-                        <th>{{ line.amount_netto_positiv }}</th>
-                        <th>{{ line.vat }}</th>
-                        <th>{{ line.amount_brutto_positiv }}</th>
-                        <th>
+                        <td{% if form.errors.product %} class="table-danger"{% endif %}>{{ form.product }}</td>
+                        <td{% if form.errors.count %} class="table-danger"{% endif %}>{{ form.count }}</td>
+                        <td{% if form.errors.use_product_price %} class="table-danger"{% endif %}>
+                            {{ form.use_product_price }}</td>
+                        <td{% if form.errors.amount_netto_positiv %} class="table-danger"{% endif %}>
+                            {{ form.amount_netto_positiv }}</td>
+                        <td{% if form.errors.vat %} class="table-danger"{% endif %}>{{ form.vat }}</td>
+                        <td{% if form.errors.amount_brutto_positiv %} class="table-danger"{% endif %}>
+                            {{ form.amount_brutto_positiv }}</td>
+                        <td>
                             {% if forloop.counter0 < productsform|length %}
                             <input type="hidden" name="products-{{ forloop.counter0 }}-DELETE"
                                    id="id_products-{{ forloop.counter0 }}-DELETE">
@@ -37,40 +40,39 @@
                                     aria-label="{% trans 'close' %}">
                             </button>
                             {% endif %}
-                        </th>
+                        </td>
                     </tr>
                 {% endfor %}
-                {% with productsform.empty_form as line %}
-                    <tr id="products_form-empty_row" class="collapse">
-                        <th>{{ line.product }}</th>
-                        <th>{{ line.count }}</th>
-                        <th>{{ line.use_product_price }}</th>
-                        <th>{{ line.amount_netto_positiv }}</th>
-                        <th>{{ line.vat }}</th>
-                        <th>{{ line.amount_brutto_positiv }}</th>
-                        <th></th>
-                    </tr>
-                {% endwith %}
+                <tr id="products_form-empty_row" class="collapse">
+                    <td>{{ productsform.empty_form.product }}</td>
+                    <td>{{ productsform.empty_form.count }}</td>
+                    <td>{{ productsform.empty_form.use_product_price }}</td>
+                    <td>{{ productsform.empty_form.amount_netto_positiv }}</td>
+                    <td>{{ productsform.empty_form.vat }}</td>
+                    <td>{{ productsform.empty_form.amount_brutto_positiv }}</td>
+                    <td></td>
+                </tr>
             </tbody>
         </table>
-        <button type="button" class="btn btn-outline-secondary mt-2 mb-3 me-2" id="add_product_button"
+
+        <div class="row">
+            <div class="col">
+                <button type="button" class="btn btn-outline-success mb-3" id="add_product_button"
                 onclick="addProduct();">{% translate "Add product" %}
-        </button>
-        <button type="submit" class="btn btn-secondary mt-2 mb-3" name="editProducts" value="editProducts"
-                id="products_form_button">{% translate "Save" %}
-        </button>
+                </button>
+            </div>
+            <div class="col text-end">
+                <button type="button" class="btn btn-outline-secondary mb-3 me-2" data-bs-dismiss="modal"
+                        onClick="location.href=location.href">{% translate "Cancel" %}
+                </button>
+                <button type="submit" class="btn btn-success mb-3" name="editProducts" value="editProducts"
+                        id="products_form_button" onclick="removeDisabled();">{% translate "Save" %}
+                </button>
+            </div>
+        </div>
+
     </form>
 </div>
-<script>
-    function addProduct() {
-        const count = new Number(document.getElementById("id_products-TOTAL_FORMS").value);
-        const copyRow = document.getElementById("products_form-empty_row").cloneNode(true);
-        copyRow.setAttribute('class', 'table-success');
-        copyRow.setAttribute('id', 'row-'+ count);
-        const regexp = new RegExp('__prefix__', 'g');
-        copyRow.innerHTML = copyRow.innerHTML.replace(regexp, count);
-        document.getElementById("products_form-tbody").append(copyRow);
-        document.getElementById("id_products-TOTAL_FORMS").value = count + 1;
-    }
-</script>
+
+<script src="{% static 'scripts/products_form.js' %}"></script>
 {% endif %}

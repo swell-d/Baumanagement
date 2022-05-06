@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.forms import ModelForm, TextInput
+from django.forms import ModelForm, TextInput, forms
 from django.http import HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -36,8 +36,14 @@ class CommentFormClass(ModelForm):
         fields = Comment.form_fields
 
 
+class EmptyForm(forms.Form):
+    base_fields = 'base',
+
+
 def myrender(request, context):
-    if request.POST:
+    if request.POST \
+            and not context.get('form', EmptyForm()).errors \
+            and not context.get('productsform', EmptyForm()).errors:
         return redirect(request.path)
 
     export_format = request.GET.get("_export", None)
