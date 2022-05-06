@@ -54,7 +54,28 @@ class PriceModel(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        self.amount_brutto_positiv = Decimal(float(self.amount_netto_positiv) * (1 + self.vat / 100))
+        if self.amount_netto_positiv and not self.amount_brutto_positiv:
+            self.save_count_brutto(*args, **kwargs)
+        elif not self.amount_netto_positiv and self.amount_brutto_positiv:
+            self.save_count_netto(*args, **kwargs)
+        elif self.amount_netto_positiv and not self.vat and self.amount_brutto_positiv:
+            self.save_count_vat(*args, **kwargs)
+        else:
+            super().save(*args, **kwargs)
+
+    def save_count_netto(self, *args, **kwargs):
+        self.amount_netto_positiv = Decimal(float(self.amount_brutto_positiv) * 100 / (100 + self.vat))
+        super().save(*args, **kwargs)
+
+    def save_count_brutto(self, *args, **kwargs):
+        self.amount_brutto_positiv = Decimal(float(self.amount_netto_positiv) * (100 + self.vat) / 100)
+        super().save(*args, **kwargs)
+
+    def save_count_vat(self, *args, **kwargs):
+        if self.amount_netto_positiv != 0:
+            self.vat = round((self.amount_brutto_positiv / self.amount_netto_positiv - 1) * 100, 3)
+        else:
+            self.vat = 0.0
         super().save(*args, **kwargs)
 
 
