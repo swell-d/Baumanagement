@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
 from django.db import IntegrityError
-from django.forms import ModelForm, TextInput, forms
+from django.forms import TextInput, forms
 from django.http import HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -14,7 +14,8 @@ from django_tables2.export import TableExport
 
 from comments.models import Comment
 from files.models import File
-from main.models import get_base_models, add_search_field, get_or_none
+from main.comments import CommentFormClass, add_comment_to_object
+from main.models import add_search_field, get_or_none
 from main.upload_files import upload_files
 from notifications.models import Notification
 from projects.models import Project
@@ -29,12 +30,6 @@ def superuser_required(function):
         return redirect(reverse('first_run'))
 
     return wrapper
-
-
-class CommentFormClass(ModelForm):
-    class Meta:
-        model = Comment
-        fields = Comment.form_fields
 
 
 class EmptyForm(forms.Form):
@@ -61,18 +56,6 @@ def myrender(request, context):
 
 def my404(request, exception):
     return HttpResponseNotFound(render(request, 'errors/404.html'))
-
-
-def add_comment_to_object(request, new_object):
-    path = request.POST.get('newCommentNextURL')
-    if path:
-        object_name, id = path.strip('/').split('/')
-        if '?' in id:
-            id = id[:id.find('?')]
-        base_models = get_base_models()
-        obj = base_models[object_name].objects.get(id=int(id))
-        obj.comment_ids.append(new_object.id)
-        obj.save()
 
 
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):
