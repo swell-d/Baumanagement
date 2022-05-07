@@ -30,8 +30,8 @@
             }
             #summernote {
                 position: absolute;
-                left: 2mm;
-                top: 2mm;
+                left: 7px;
+                top: 7px;
             }
         }
     </style>
@@ -45,15 +45,18 @@
 
     <div class="row">
         <div class="col">
-            <button type="button" id="save" class="btn btn-success d-none" onclick="save()" style="margin:10px;">
+            <button type="button" id="cancel" class="btn btn-outline-secondary d-none m-3"
+                    onClick="location.href=location.href">{% translate "Cancel" %}
+            </button>
+            <button type="button" id="save" class="btn btn-success d-none m-3 ms-0" onclick="save()">
                 {% translate "Save" %}
             </button>
-            <button type="button" id="edit" class="btn btn-outline-secondary"
-                    onclick="edit({% if LANGUAGE_CODE == 'de' %}'de-DE'{% else %}'en-US'{% endif %})"
-                    style="margin:10px;">{% translate "Edit" %}
+            <button type="button" id="edit" class="btn btn-outline-secondary m-3"
+                    onclick="edit({% if LANGUAGE_CODE == 'de' %}'de-DE'{% else %}'en-US'{% endif %})">
+                {% translate "Edit" %}
             </button>
-            <button type="button" id="print" class="btn btn-secondary" onclick="window.print()"
-                    style="margin:10px; margin-left: 0px;">{% translate "Print" %}
+            <button type="button" id="print" class="btn btn-secondary m-3 ms-0" onclick="window.print()">
+                {% translate "Print" %}
             </button>
         </div>
     </div>

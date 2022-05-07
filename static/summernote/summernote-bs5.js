@@ -9715,12 +9715,12 @@ var HintPopover = /*#__PURE__*/function () {
       'placeholder': Placeholder,
       'buttons': Buttons,
       'toolbar': Toolbar,
-      'linkDialog': LinkDialog,
-      'linkPopover': LinkPopover,
+      // 'linkDialog': LinkDialog,
+      // 'linkPopover': LinkPopover,
       'imageDialog': ImageDialog,
-      'imagePopover': ImagePopover,
-      'tablePopover': TablePopover,
-      'videoDialog': VideoDialog,
+      // 'imagePopover': ImagePopover,
+      // 'tablePopover': TablePopover,
+      // 'videoDialog': VideoDialog,
       'helpDialog': HelpDialog,
       'airPopover': AirPopover
     },
@@ -9731,7 +9731,7 @@ var HintPopover = /*#__PURE__*/function () {
     otherStaticBar: '',
     // toolbar
     codeviewKeepButton: false,
-    toolbar: [['style', ['style']], ['font', ['bold', 'underline', 'clear']], ['fontname', ['fontname']], ['color', ['color']], ['para', ['ul', 'ol', 'paragraph']], ['table', ['table']], ['insert', ['link', 'picture', 'video']], ['view', ['fullscreen', 'codeview', 'help']]],
+    toolbar: [['style', ['style']], ['font', ['bold', 'underline', 'clear']], ['fontname', ['fontname']], ['color', ['color']], ['para', ['ul', 'ol', 'paragraph']], ['table', ['table']], ['insert', ['picture']], ['view', ['fullscreen', 'codeview', 'help']]],
     // popover
     popatmouse: true,
     popover: {
@@ -9755,7 +9755,7 @@ var HintPopover = /*#__PURE__*/function () {
     styleWithCSS: false,
     shortcuts: true,
     textareaAutoSync: true,
-    tooltip: 'auto',
+    // tooltip: 'auto',
     container: null,
     maxTextLength: 0,
     blockquoteBreakingLevel: 2,
@@ -9976,7 +9976,7 @@ var Renderer = /*#__PURE__*/function () {
 
       if (this.options && this.options.data) {
         external_jQuery_default().each(this.options.data, function (k, v) {
-          $node.attr('data-' + k, v);
+          $node.attr('data-bs-' + k, v);
         });
       }
 
