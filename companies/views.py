@@ -14,9 +14,10 @@ from companies.tables import CompanyTable
 from contacts.views import generate_contacts_by_queryset
 from contracts.models import Contract
 from contracts.views import company_contracts_qs, generate_contracts_by_queryset
+from main.view_functions import get_base_context, labels
 from main.view_renders import myrender
-from main.views import get_base_context, generate_objects_table, generate_object_table, \
-    generate_next_objects_table, labels
+from main.views import generate_objects_table, generate_object_table, \
+    generate_next_objects_table
 from payments.views import company_payments_qs, generate_payments_by_queryset
 from projects.views import generate_projects_by_queryset
 

@@ -2,8 +2,6 @@ from django.shortcuts import redirect, render
 from django_tables2.export import TableExport
 
 from main.forms import EmptyForm
-from projects.models import Project
-from settings.models import Settings
 
 
 def myrender(request, context):
@@ -16,9 +14,6 @@ def myrender(request, context):
     if export_format and TableExport.is_valid_format(export_format):
         exporter = TableExport(export_format, context['table1'])
         return exporter.response("table.{}".format(export_format))
-
-    context['projects'] = Project.objects.filter(open=True)
-    context['settings'] = Settings.objects.get_or_create(user=request.user)[0]
 
     template = 'tables/tables.html' if not request.GET else 'tables/maintable.html'
     return render(request, template, context)

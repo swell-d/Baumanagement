@@ -10,9 +10,10 @@ from bank_accounts.models import Account
 from bills.views import qs_annotate
 from companies.models import Company
 from contracts.models import Contract
+from main.view_functions import get_base_context, labels
 from main.view_renders import myrender
-from main.views import get_base_context, generate_objects_table, generate_object_table, \
-    generate_next_objects_table, labels
+from main.views import generate_objects_table, generate_object_table, \
+    generate_next_objects_table
 from payments.models import Payment
 from payments.models_labels import PaymentLabel
 from payments.tables import PaymentTable
@@ -37,6 +38,7 @@ class FormClass(forms.ModelForm):
 @login_required
 def objects_table(request):
     context = get_base_context(request)
+    context['projects'] = Project.objects.filter(open=True)
     context['labels'] = labels(labelClass)
     queryset = qs_annotate(baseClass.objects)
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
