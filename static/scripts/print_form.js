@@ -1,8 +1,12 @@
-function edit() {
+function edit(lang) {
     document.getElementById("save").classList.remove("d-none");
     document.getElementById("edit").classList.add("d-none");
     document.getElementById("print").classList.add("d-none");
-    $('#summernote').summernote();
+    $('#summernote').summernote({
+        width: 814,
+        height: 1143,
+        lang: lang
+    });
 };
 
 function save() {
