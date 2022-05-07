@@ -10,13 +10,11 @@
     <meta charset="UTF-8">
     <link rel="icon" type="image/png" href="{% static 'favicon-48x48.png' %}" sizes="48x48"/>
 
-    {% bootstrap_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'summernote/summernote-bs5.min.css' %}"/>
-
-    {% bootstrap_javascript %}
-    <script src="{% static 'summernote/summernote-bs5.min.js' %}"></script>
-
     <script type="text/javascript" src="//code.jquery.com/jquery-3.6.0.min.js"></script>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link rel="stylesheet" type="text/css" href="{% static 'summernote/summernote-bs5.min.css' %}"/>
+    <script src="{% static 'summernote/summernote-bs5.min.js' %}"></script>
 
     <style>
         @media print {
