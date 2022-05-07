@@ -15,6 +15,7 @@ from django_tables2.export import TableExport
 from comments.models import Comment
 from files.models import File
 from main.models import get_base_models, add_search_field, get_or_none
+from main.upload_files import upload_files
 from notifications.models import Notification
 from projects.models import Project
 from settings.models import Settings
@@ -60,21 +61,6 @@ def myrender(request, context):
 
 def my404(request, exception):
     return HttpResponseNotFound(render(request, 'errors/404.html'))
-
-
-def upload_files(request, new_object):
-    for file in request.FILES.getlist('file'):
-        if str(file.name).endswith('.py'):
-            continue
-        file_instance = File.objects.create(name=file.name, file=file)
-        new_object.file_ids.append(file_instance.id)
-        new_object.save()
-
-        verbose_name = file_instance.verbose_name()
-        link = file_instance.file.url
-        Notification.message(
-            request, f'{verbose_name} "<a href="{link}">{file_instance.name}</a>" ' + _("uploaded"), 'SUCCESS'
-        )
 
 
 def add_comment_to_object(request, new_object):
