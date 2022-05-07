@@ -9,7 +9,8 @@ from bank_accounts.models import Account
 from bank_accounts.tables import AccountTable
 from companies.models import Company
 from currencies.models import Currency
-from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
+from main.view_renders import myrender
+from main.views import get_base_context, generate_objects_table, generate_object_table, \
     generate_next_objects_table
 from payments.views import account_payments_qs, generate_payments_by_queryset
 

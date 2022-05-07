@@ -9,7 +9,8 @@ from django.utils.translation import gettext_lazy as _
 from bills.views import project_bills_qs, generate_bills_by_queryset
 from companies.models import Company
 from contracts.views import project_contracts_qs, generate_contracts_by_queryset
-from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
+from main.view_renders import myrender
+from main.views import get_base_context, generate_objects_table, generate_object_table, \
     generate_next_objects_table, labels
 from payments.views import project_payments_qs, generate_payments_by_queryset
 from projects.models import Project

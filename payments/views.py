@@ -10,7 +10,8 @@ from bank_accounts.models import Account
 from bills.views import qs_annotate
 from companies.models import Company
 from contracts.models import Contract
-from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
+from main.view_renders import myrender
+from main.views import get_base_context, generate_objects_table, generate_object_table, \
     generate_next_objects_table, labels
 from payments.models import Payment
 from payments.models_labels import PaymentLabel

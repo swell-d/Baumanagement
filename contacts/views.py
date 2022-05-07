@@ -8,7 +8,8 @@ from django.utils.translation import gettext_lazy as _
 from companies.models import Company
 from contacts.models import Contact
 from contacts.tables import ContactTable
-from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
+from main.view_renders import myrender
+from main.views import get_base_context, generate_objects_table, generate_object_table, \
     generate_next_objects_table
 
 baseClass = Contact

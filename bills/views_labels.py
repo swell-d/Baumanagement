@@ -7,7 +7,8 @@ from django.utils.translation import gettext_lazy as _
 from bills.models_labels import BillLabel
 from main.forms import ColorFieldWidget
 from main.tables import MyTable
-from main.views import myrender, generate_objects_table, generate_object_table, get_base_context
+from main.view_renders import myrender
+from main.views import generate_objects_table, generate_object_table, get_base_context
 
 baseClass = BillLabel
 

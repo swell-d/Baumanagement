@@ -16,11 +16,11 @@ from contracts.models_labels import ContractLabel
 from contracts.models_products import ContractProduct
 from contracts.tables import ContractTable
 from currencies.models import Currency
-from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
+from main.view_renders import myrender
+from main.views import get_base_context, generate_objects_table, generate_object_table, \
     generate_next_objects_table, labels
 from notifications.models import Notification
 from payments.views import contract_payments_qs, generate_payments_by_queryset
-from products.models import Product
 from projects.models import Project
 
 baseClass = Contract

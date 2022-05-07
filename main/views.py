@@ -2,46 +2,20 @@ import inspect
 from datetime import datetime, timedelta
 
 from django.db import IntegrityError
-from django.http import HttpResponseNotFound
-from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils.timezone import make_aware
 from django.utils.translation import gettext_lazy as _
 from django_tables2 import RequestConfig
-from django_tables2.export import TableExport
 
 from comments.models import Comment
 from files.models import File
 from main.comments import CommentFormClass, add_comment_to_object
-from main.forms import EmptyForm
 from main.models import add_search_field, get_or_none
 from main.upload_files import upload_files
 from notifications.models import Notification
 from projects.models import Project
 from settings.models import Settings
 from statistic.models import Visits, SearchQueries
-
-
-def myrender(request, context):
-    if request.POST \
-            and not context.get('form', EmptyForm()).errors \
-            and not context.get('productsform', EmptyForm()).errors:
-        return redirect(request.path)
-
-    export_format = request.GET.get("_export", None)
-    if export_format and TableExport.is_valid_format(export_format):
-        exporter = TableExport(export_format, context['table1'])
-        return exporter.response("table.{}".format(export_format))
-
-    context['projects'] = Project.objects.all()
-    context['settings'] = Settings.objects.get_or_create(user=request.user)[0]
-
-    template = 'tables/tables.html' if not request.GET else 'tables/maintable.html'
-    return render(request, template, context)
-
-
-def my404(request, exception):
-    return HttpResponseNotFound(render(request, 'errors/404.html'))
 
 
 def generate_objects_table(request, context, baseClass, tableClass, formClass, queryset=None):

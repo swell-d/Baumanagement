@@ -4,7 +4,8 @@ from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
-from main.views import get_base_context, generate_objects_table, myrender, generate_object_table
+from main.view_renders import myrender
+from main.views import get_base_context, generate_objects_table, generate_object_table
 from products.models import Product
 from products.models_labels import ProductCategory
 from products.tables import ProductTable
