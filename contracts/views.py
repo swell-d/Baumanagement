@@ -49,13 +49,6 @@ def objects_table(request):
     context['labels'] = labels(labelClass)
     queryset = qs_annotate(baseClass.objects)
     generate_objects_table(request, context, baseClass, tableClass, FormClass, queryset)
-
-    if request.POST.get('mainObject'):  # ToDo refactor
-        contract = baseClass.objects.last()
-        ContractProduct.objects.create(product=Product.objects.first(), contract=contract,
-                                       use_product_price=False)
-        redirect(reverse(baseClass.url_id, args=[contract.id]))
-
     return myrender(request, context)
 
 
