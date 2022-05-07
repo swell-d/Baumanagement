@@ -93,7 +93,6 @@ def create_new_object_or_get_error(request, cls):
         except IntegrityError:
             Notification.message(request, _("Object already exist"), 'ERROR')
     else:
-        Notification.message(request, formset.errors, 'ERROR')
         return formset
 
 
@@ -120,8 +119,6 @@ def edit_object_form(request, context, cls, object):
                     request, f'{verbose_name} "<a href="{link}">{object.name}</a>" ' + _("changed"), 'SUCCESS'
                 )
                 upload_files(request, object)
-            else:
-                Notification.message(request, formset.errors, 'ERROR')
             error_form = formset
         elif request.POST.get('createCopy'):
             error_form = create_new_object_or_get_error(request, cls)
