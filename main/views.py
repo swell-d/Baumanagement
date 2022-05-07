@@ -1,7 +1,6 @@
 import inspect
 from datetime import datetime, timedelta
 
-from django.contrib.auth.models import User
 from django.db import IntegrityError
 from django.forms import TextInput, forms
 from django.http import HttpResponseNotFound
@@ -21,15 +20,6 @@ from notifications.models import Notification
 from projects.models import Project
 from settings.models import Settings
 from statistic.models import Visits, SearchQueries
-
-
-def superuser_required(function):
-    def wrapper(*args, **kwargs):
-        if User.objects.all():
-            return function(*args, **kwargs)
-        return redirect(reverse('first_run'))
-
-    return wrapper
 
 
 class EmptyForm(forms.Form):

@@ -1,14 +1,15 @@
 from django import forms
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import Http404
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
 from bills.views import project_bills_qs, generate_bills_by_queryset
 from companies.models import Company
 from contracts.views import project_contracts_qs, generate_contracts_by_queryset
-from main.views import superuser_required, get_base_context, generate_objects_table, myrender, generate_object_table, \
+from main.views import get_base_context, generate_objects_table, myrender, generate_object_table, \
     generate_next_objects_table, labels
 from payments.views import project_payments_qs, generate_payments_by_queryset
 from projects.models import Project
@@ -28,6 +29,15 @@ class FormClass(forms.ModelForm):
     class Meta:
         model = baseClass
         fields = baseClass.form_fields
+
+
+def superuser_required(function):
+    def wrapper(*args, **kwargs):
+        if User.objects.all():
+            return function(*args, **kwargs)
+        return redirect(reverse('first_run'))
+
+    return wrapper
 
 
 @superuser_required
