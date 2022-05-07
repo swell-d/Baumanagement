@@ -2,7 +2,6 @@ import inspect
 from datetime import datetime, timedelta
 
 from django.db import IntegrityError
-from django.forms import TextInput, forms
 from django.http import HttpResponseNotFound
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -14,16 +13,13 @@ from django_tables2.export import TableExport
 from comments.models import Comment
 from files.models import File
 from main.comments import CommentFormClass, add_comment_to_object
+from main.forms import EmptyForm
 from main.models import add_search_field, get_or_none
 from main.upload_files import upload_files
 from notifications.models import Notification
 from projects.models import Project
 from settings.models import Settings
 from statistic.models import Visits, SearchQueries
-
-
-class EmptyForm(forms.Form):
-    base_fields = 'base',
 
 
 def myrender(request, context):
@@ -236,10 +232,6 @@ def get_base_context(request):
 
     return {'settings': Settings.objects.get_or_create(user=request.user)[0],
             'tables': []}
-
-
-class ColorFieldWidget(TextInput):
-    input_type = 'color'
 
 
 def labels(cls):

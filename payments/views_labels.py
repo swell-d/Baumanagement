@@ -4,8 +4,9 @@ from django.http import Http404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 
+from main.forms import ColorFieldWidget
 from main.tables import MyTable
-from main.views import myrender, generate_objects_table, generate_object_table, get_base_context, ColorFieldWidget
+from main.views import myrender, generate_objects_table, generate_object_table, get_base_context
 from payments.models_labels import PaymentLabel
 
 baseClass = PaymentLabel
